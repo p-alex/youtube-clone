@@ -6,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+    transition: background 200ms ease-in-out;
   }
 
   body {
@@ -21,5 +22,6 @@ export const GlobalStyle = createGlobalStyle`
 
   a {
     cursor: pointer;
+    text-decoration: none;
   }
 `;

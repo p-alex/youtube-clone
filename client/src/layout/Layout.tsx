@@ -15,6 +15,7 @@ const lightTheme = {
   btnHoverBg: '#e1e0e0',
   borderColor: '#d2d2d2',
   inputBg: '#fefeff',
+  hrColor: 'silver',
 };
 
 const darkTheme = {
@@ -26,6 +27,7 @@ const darkTheme = {
   btnHoverBg: '#3b3a3b',
   borderColor: '#343534',
   inputBg: '#121213',
+  hrColor: '#333',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

@@ -10,5 +10,6 @@ declare module 'styled-components' {
     btnHoverBg: string;
     borderColor: string;
     inputBg: string;
+    hrColor: string;
   }
 }
