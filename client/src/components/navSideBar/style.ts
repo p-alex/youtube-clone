@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { CONTAINER_HORIZONTAL_PADDING } from '../../layout/style';
 
 export const NavSideBar_Wrapper = styled.div`
   position: fixed;
@@ -32,7 +33,7 @@ export const NavSideBar_Header = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 12px 20px;
+  padding: 12px ${CONTAINER_HORIZONTAL_PADDING}px;
 `;
 
 export const NavSideBar_CloseBtn = styled.button`
@@ -77,4 +78,14 @@ export const NavSideBar_Button = styled.button`
   &:hover {
     background-color: ${(props) => props.theme.btnHoverBg};
   }
+`;
+
+export const LoginContainer = styled.div`
+  width: 100%;
+  padding: 10px 20px;
+`;
+
+export const LoginTitle = styled.p`
+  color: ${(props) => props.theme.textColor};
+  margin-bottom: 10px;
 `;

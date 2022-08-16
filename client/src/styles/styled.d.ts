@@ -11,5 +11,12 @@ declare module 'styled-components' {
     borderColor: string;
     inputBg: string;
     hrColor: string;
+    accentColor: string;
+    subscribeBtn: {
+      subBg: string;
+      subTextColor: string;
+      unsubBg: string;
+      unsubTextColor: string;
+    };
   }
 }

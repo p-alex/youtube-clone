@@ -1,9 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logo from '../logo/Logo';
 import HomeIcon from '@mui/icons-material/Home';
-import ExploreIcon from '@mui/icons-material/Explore';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -14,6 +12,8 @@ import { RootState } from '../../app/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../../app/features/themeSlice';
 import {
+  LoginContainer,
+  LoginTitle,
   NavSideBar_Backdrop,
   NavSideBar_Button,
   NavSideBar_ButtonItem,
@@ -24,11 +24,14 @@ import {
   NavSideBar_Header,
   NavSideBar_HorizontalLine,
   NavSideBar_Wrapper,
-} from './NavSideBar.styled';
+} from './style';
+import SignInButton from '../../ui/SignInButton';
+import useAuth from '../../hooks/useAuth';
 
 const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }) => {
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
+  const { isAuth } = useAuth();
   return (
     <NavSideBar_Wrapper>
       <NavSideBar_Container
@@ -42,9 +45,7 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
           <NavSideBar_CloseBtn onClick={handleToggleSideBar}>
             <MenuIcon />
           </NavSideBar_CloseBtn>
-          <Link href={'/'}>
-            <Logo />
-          </Link>
+          <Logo />
         </NavSideBar_Header>
         <NavSideBar_ButtonList>
           <NavSideBar_ButtonItem>
@@ -55,27 +56,35 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
             </Link>
           </NavSideBar_ButtonItem>
 
-          <NavSideBar_ButtonItem>
-            <NavSideBar_ButtonLink>
-              <ExploreIcon /> Explore
-            </NavSideBar_ButtonLink>
-          </NavSideBar_ButtonItem>
+          {isAuth && (
+            <>
+              <NavSideBar_ButtonItem>
+                <NavSideBar_ButtonLink>
+                  <SubscriptionsIcon /> Subscriptions
+                </NavSideBar_ButtonLink>
+              </NavSideBar_ButtonItem>
 
-          <NavSideBar_ButtonItem>
-            <NavSideBar_ButtonLink>
-              <SubscriptionsIcon /> Subscriptions
-            </NavSideBar_ButtonLink>
-          </NavSideBar_ButtonItem>
+              <NavSideBar_HorizontalLine />
 
-          <NavSideBar_HorizontalLine />
-
-          <NavSideBar_ButtonItem>
-            <NavSideBar_ButtonLink>
-              <VideoLibraryIcon /> Library
-            </NavSideBar_ButtonLink>
-          </NavSideBar_ButtonItem>
+              <NavSideBar_ButtonItem>
+                <NavSideBar_ButtonLink>
+                  <VideoLibraryIcon /> Library
+                </NavSideBar_ButtonLink>
+              </NavSideBar_ButtonItem>
+            </>
+          )}
 
           <NavSideBar_HorizontalLine />
+
+          {!isAuth && (
+            <>
+              <LoginContainer>
+                <LoginTitle>Sign in to like videos, comment, and subscribe.</LoginTitle>
+                <SignInButton />
+              </LoginContainer>
+              <NavSideBar_HorizontalLine />
+            </>
+          )}
 
           <NavSideBar_ButtonItem>
             <NavSideBar_Button onClick={() => dispatch(toggleTheme())}>

@@ -16,6 +16,13 @@ const lightTheme = {
   borderColor: '#d2d2d2',
   inputBg: '#fefeff',
   hrColor: 'silver',
+  accentColor: '#3ea6ff',
+  subscribeBtn: {
+    subBg: '#fe0001',
+    subTextColor: '#fff',
+    unsubBg: '#313131',
+    unsubTextColor: '#a1aba7',
+  },
 };
 
 const darkTheme = {
@@ -28,10 +35,18 @@ const darkTheme = {
   borderColor: '#343534',
   inputBg: '#121213',
   hrColor: '#333',
+  accentColor: '#3ea6ff',
+  subscribeBtn: {
+    subBg: '#fe0001',
+    subTextColor: '#fff',
+    unsubBg: '#313131',
+    unsubTextColor: '#a1aba7',
+  },
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useSelector((state: RootState) => state.theme);
+
   return (
     <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
       <GlobalStyle />

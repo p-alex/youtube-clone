@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-  *{
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -23,5 +23,14 @@ export const GlobalStyle = createGlobalStyle`
   a {
     cursor: pointer;
     text-decoration: none;
+  }
+
+  p{
+    line-height: 20px;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 `;
