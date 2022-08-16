@@ -21,6 +21,8 @@ import { AnimatePresence } from 'framer-motion';
 import NavMobileSearch from '../navMobileSearch/NavMobileSeach';
 import SignInButton from '../../ui/SignInButton';
 import useAuth from '../../hooks/useAuth';
+import LogoutBtn from '../logoutBtn/LogoutBtn';
+import UploadModal from '../uploadModal/UploadModal';
 
 const NavBar = () => {
   const { isAuth, user } = useAuth();
@@ -90,10 +92,14 @@ const NavBar = () => {
           )}
 
           {!isAuth && <SignInButton />}
+          {isAuth && <LogoutBtn />}
         </NavBtnContainer>
       </NavContainer>
       <AnimatePresence>
         {isSideBarActive && <NavSideBar handleToggleSideBar={handleToggleSideBar} />}
+        {isUploadModalActive && (
+          <UploadModal handleToggleUploadModal={handleToggleUploadModal} />
+        )}
       </AnimatePresence>
     </>
   );
