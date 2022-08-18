@@ -57,7 +57,7 @@ export const NavSideBar_ButtonList = styled.ul`
 
 export const NavSideBar_ButtonItem = styled.li``;
 
-export const NavSideBar_ButtonLink = styled.a`
+export const NavSideBar_ButtonLink = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;

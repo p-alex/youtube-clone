@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logo from '../logo/Logo';
 import HomeIcon from '@mui/icons-material/Home';
@@ -27,13 +27,19 @@ import {
 } from './style';
 import SignInButton from '../../ui/SignInButton';
 import useAuth from '../../hooks/useAuth';
+import useDisableScroll from '../../hooks/useDisableScroll';
+import FocusTrapRedirectFocus from '../focusTrap';
 
 const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }) => {
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   const { isAuth } = useAuth();
+  useDisableScroll();
+  const firstFocusableElement = useRef<any>();
+  const lastFocusableElement = useRef<any>();
   return (
     <NavSideBar_Wrapper>
+      <FocusTrapRedirectFocus element={lastFocusableElement} />
       <NavSideBar_Container
         as={motion.div}
         initial={{ x: -100, opacity: 0 }}
@@ -42,7 +48,12 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
         exit={{ x: -100, opacity: 0 }}
       >
         <NavSideBar_Header>
-          <NavSideBar_CloseBtn onClick={handleToggleSideBar}>
+          <NavSideBar_CloseBtn
+            onClick={handleToggleSideBar}
+            ref={firstFocusableElement}
+            aria-label={'Close side bar'}
+            autoFocus={true}
+          >
             <MenuIcon />
           </NavSideBar_CloseBtn>
           <Logo />
@@ -50,26 +61,36 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
         <NavSideBar_ButtonList>
           <NavSideBar_ButtonItem>
             <Link href={'/'}>
-              <NavSideBar_ButtonLink>
-                <HomeIcon /> Home
-              </NavSideBar_ButtonLink>
+              <a>
+                <NavSideBar_ButtonLink>
+                  <HomeIcon /> Home
+                </NavSideBar_ButtonLink>
+              </a>
             </Link>
           </NavSideBar_ButtonItem>
 
           {isAuth && (
             <>
               <NavSideBar_ButtonItem>
-                <NavSideBar_ButtonLink>
-                  <SubscriptionsIcon /> Subscriptions
-                </NavSideBar_ButtonLink>
+                <Link href={'/'}>
+                  <a>
+                    <NavSideBar_ButtonLink>
+                      <SubscriptionsIcon /> Subscriptions
+                    </NavSideBar_ButtonLink>
+                  </a>
+                </Link>
               </NavSideBar_ButtonItem>
 
               <NavSideBar_HorizontalLine />
 
               <NavSideBar_ButtonItem>
-                <NavSideBar_ButtonLink>
-                  <VideoLibraryIcon /> Library
-                </NavSideBar_ButtonLink>
+                <Link href={'/'}>
+                  <a>
+                    <NavSideBar_ButtonLink>
+                      <VideoLibraryIcon /> Library
+                    </NavSideBar_ButtonLink>
+                  </a>
+                </Link>
               </NavSideBar_ButtonItem>
             </>
           )}
@@ -87,7 +108,10 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
           )}
 
           <NavSideBar_ButtonItem>
-            <NavSideBar_Button onClick={() => dispatch(toggleTheme())}>
+            <NavSideBar_Button
+              onClick={() => dispatch(toggleTheme())}
+              ref={lastFocusableElement}
+            >
               {theme === 'dark' ? (
                 <>
                   <LightModeIcon /> Light Mode
@@ -109,6 +133,7 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
         exit={{ opacity: 0 }}
         onClick={handleToggleSideBar}
       />
+      <FocusTrapRedirectFocus element={firstFocusableElement} />
     </NavSideBar_Wrapper>
   );
 };

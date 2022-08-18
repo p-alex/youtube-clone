@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   NavAddVideoBtn,
   NavBtnContainer,
@@ -32,8 +32,12 @@ const NavBar = () => {
 
   const [isUploadModalActive, setIsUploadModalActive] = useState(false);
 
+  const uploadModalToggleRef = useRef<any>();
+  const modelToggleRef = useRef<any>();
+
   const handleToggleSideBar = () => {
     setIsSideBarActive((prevState) => !prevState);
+    modelToggleRef.current?.focus();
   };
 
   const handleToggleMobileSearch = () => {
@@ -42,6 +46,7 @@ const NavBar = () => {
 
   const handleToggleUploadModal = () => {
     setIsUploadModalActive((prevState) => !prevState);
+    uploadModalToggleRef.current?.focus();
   };
 
   return (
@@ -51,7 +56,11 @@ const NavBar = () => {
       )}
       <NavContainer>
         <NavToggleAndLogoContainer>
-          <NavToggleSideBar onClick={handleToggleSideBar}>
+          <NavToggleSideBar
+            onClick={handleToggleSideBar}
+            ref={modelToggleRef}
+            aria-label="Toggle side bar"
+          >
             <MenuIcon />
           </NavToggleSideBar>
           <Logo />
@@ -77,6 +86,7 @@ const NavBar = () => {
               <NavAddVideoBtn
                 aria-label="Upload a video"
                 onClick={handleToggleUploadModal}
+                ref={uploadModalToggleRef}
               >
                 <VideoCallOutlinedIcon />
               </NavAddVideoBtn>
