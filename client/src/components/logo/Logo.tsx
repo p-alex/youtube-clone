@@ -1,13 +1,15 @@
 import React from 'react';
-import YouTubeIcon from '@mui/icons-material/YouTube';
+import { BsYoutube } from 'react-icons/bs';
 import Link from 'next/link';
-import { BigLogo } from './style';
+import { BigLogo, LogoBackDrop } from './style';
 
 const Logo = () => {
   return (
     <Link href={'/'}>
       <BigLogo>
-        <YouTubeIcon />
+        <LogoBackDrop>
+          <BsYoutube />
+        </LogoBackDrop>
         AlexTube
       </BigLogo>
     </Link>
