@@ -33,10 +33,13 @@ export const NavSideBar_Header = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 12px ${CONTAINER_HORIZONTAL_PADDING}px;
+  padding: 17px ${CONTAINER_HORIZONTAL_PADDING}px;
 `;
 
 export const NavSideBar_CloseBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: ${(props) => props.theme.textColor};
 `;
 

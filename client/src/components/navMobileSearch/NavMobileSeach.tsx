@@ -6,8 +6,7 @@ import {
   NavMobileSearchBtn,
   NavMobileSearchForm,
 } from './style';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchIcon from '@mui/icons-material/Search';
+import { MdArrowBack, MdSearch } from 'react-icons/md';
 
 const NavMobileSeach = ({
   handleToggleMobileSearch,
@@ -17,12 +16,12 @@ const NavMobileSeach = ({
   return (
     <Container>
       <CloseSearchBtn>
-        <ArrowBackIcon onClick={handleToggleMobileSearch} />
+        <MdArrowBack onClick={handleToggleMobileSearch} />
       </CloseSearchBtn>
       <NavMobileSearchForm>
         <NavMobileSearch placeholder="Search" autoFocus />
         <NavMobileSearchBtn>
-          <SearchIcon />
+          <MdSearch />
         </NavMobileSearchBtn>
       </NavMobileSearchForm>
     </Container>

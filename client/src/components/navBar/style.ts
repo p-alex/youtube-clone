@@ -9,6 +9,7 @@ export const NavContainer = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
+  height: 55px;
   background-color: ${(props) => props.theme.uiBg};
   z-index: 80;
   padding: 10px ${CONTAINER_HORIZONTAL_PADDING}px;
@@ -24,6 +25,9 @@ export const NavToggleAndLogoContainer = styled.div`
 `;
 
 export const NavToggleSideBar = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: ${(props) => props.theme.textColor};
 `;
 
@@ -88,8 +92,8 @@ export const NavAddVideoBtn = styled.button`
 `;
 
 export const NavProfileBtn = styled.button`
-  width: 32;
-  height: 32;
+  width: 32px;
+  height: 32px;
   & img {
     border-radius: 50%;
   }

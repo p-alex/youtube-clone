@@ -11,9 +11,8 @@ import {
   NavToggleAndLogoContainer,
   NavToggleSideBar,
 } from './style';
-import MenuIcon from '@mui/icons-material/Menu';
-import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
-import SearchIcon from '@mui/icons-material/Search';
+import { BiMenu } from 'react-icons/bi';
+import { MdOutlineVideoCall, MdSearch } from 'react-icons/md';
 import Image from 'next/image';
 import Logo from '../logo/Logo';
 import NavSideBar from '../navSideBar/NavSideBar';
@@ -21,12 +20,17 @@ import { AnimatePresence } from 'framer-motion';
 import NavMobileSearch from '../navMobileSearch/NavMobileSeach';
 import SignInButton from '../../ui/SignInButton';
 import useAuth from '../../hooks/useAuth';
-import LogoutBtn from '../logoutBtn/LogoutBtn';
 import UploadModal from '../uploadModal/UploadModal';
+import { useDispatch } from 'react-redux';
+import { disableKeyBinds, enableKeyBinds } from '../../app/features/videoSlice';
+import { ProfileDropDown } from '../profileDropDown/ProfileDropDown';
 
 const NavBar = () => {
   const { isAuth, user } = useAuth();
+  const dispatch = useDispatch();
   const [isSideBarActive, setIsSideBarActive] = useState(false);
+
+  const [isProfileDropDownActive, setIsProfileDropDownActive] = useState(false);
 
   const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
 
@@ -61,15 +65,19 @@ const NavBar = () => {
             ref={modelToggleRef}
             aria-label="Toggle side bar"
           >
-            <MenuIcon />
+            <BiMenu />
           </NavToggleSideBar>
           <Logo />
         </NavToggleAndLogoContainer>
 
         <NavSearchForm>
-          <NavSearch placeholder="Search" />
+          <NavSearch
+            placeholder="Search"
+            onFocus={() => dispatch(disableKeyBinds())}
+            onBlur={() => dispatch(enableKeyBinds())}
+          />
           <NavSearchBtn>
-            <SearchIcon />
+            <MdSearch />
           </NavSearchBtn>
         </NavSearchForm>
 
@@ -78,7 +86,7 @@ const NavBar = () => {
             aria-label="Search"
             onClick={() => setIsMobileSearchActive((prevState) => !prevState)}
           >
-            <SearchIcon />
+            <MdSearch />
           </NavMobileSearchBtn>
 
           {isAuth && (
@@ -88,21 +96,26 @@ const NavBar = () => {
                 onClick={handleToggleUploadModal}
                 ref={uploadModalToggleRef}
               >
-                <VideoCallOutlinedIcon />
+                <MdOutlineVideoCall />
               </NavAddVideoBtn>
-              <NavProfileBtn aria-label="Go to profile">
+              <NavProfileBtn
+                aria-label="Go to profile"
+                onClick={() => setIsProfileDropDownActive((prevState) => !prevState)}
+              >
                 <Image
-                  src={user ? user.profile_picture : '/images/profile_picture.jpg'}
+                  src={user ? user.profile_picture : '/images/default-profile-picture'}
                   width={32}
                   height={32}
                   alt=""
                 />
               </NavProfileBtn>
+              <AnimatePresence>
+                {isProfileDropDownActive && <ProfileDropDown />}
+              </AnimatePresence>
             </>
           )}
 
           {!isAuth && <SignInButton />}
-          {isAuth && <LogoutBtn />}
         </NavBtnContainer>
       </NavContainer>
       <AnimatePresence>
