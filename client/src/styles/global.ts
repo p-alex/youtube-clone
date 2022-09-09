@@ -33,4 +33,8 @@ export const GlobalStyle = createGlobalStyle`
     cursor: not-allowed;
     opacity: 0.6;
   }
+
+  svg {
+    font-size: 1.5rem;
+  }
 `;

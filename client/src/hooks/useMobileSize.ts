@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { MOBILE_BREAK_POINT } from '../layout/style';
 
 const useMobileSize = () => {
   const [isMobileSize, setIsMobileSize] = useState(false);
 
   const handleCheckWindowSize = () => {
-    if (window.innerWidth <= 980) {
+    if (window.innerWidth <= MOBILE_BREAK_POINT) {
       setIsMobileSize(true);
       return;
     }

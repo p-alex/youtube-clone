@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { RootState } from '../app/store';
 import NavBar from '../components/navBar/NavBar';
+import useAuth from '../hooks/useAuth';
 import { GlobalStyle } from '../styles/global';
-ThemeProvider;
 
 const lightTheme = {
-  siteBg: '#f8f8f9',
-  uiBg: '#fefeff',
+  siteBg: '#efefef',
+  uiBg: '#ffffff',
   textColor: '#0c161e',
   textMutedColor: '#959495',
   btnBg: '#f9f9f8',
@@ -46,11 +46,11 @@ const darkTheme = {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useSelector((state: RootState) => state.theme);
-
+  const { isAuth } = useAuth();
   return (
     <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
       <GlobalStyle />
-      <NavBar />
+      {isAuth && <NavBar />}
       {children}
     </ThemeProvider>
   );
