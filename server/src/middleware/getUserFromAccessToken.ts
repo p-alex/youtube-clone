@@ -10,17 +10,14 @@ export interface CustomRequest extends Request {
   };
 }
 
-export const requireAuth = (req: CustomRequest, res: Response, next: NextFunction) => {
+export const getUserFormAccessToken = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const authorizationHeader = req.headers.authorization;
-  if (!authorizationHeader)
-    return res
-      .status(400)
-      .json({ success: false, errors: [{ message: 'No authorization header' }] });
+  if (!authorizationHeader) return next();
   const accessToken = authorizationHeader.split(' ')[1];
-  if (!accessToken)
-    return res
-      .status(400)
-      .json({ success: false, errors: [{ message: 'No authorization header' }] });
   const decoded = verifyJwt<{
     user_id: string;
     email: string;

@@ -31,8 +31,7 @@ export const loginUserController = async (
       return res.status(400).json({
         success: false,
         errors: [{ message: 'Invalid email or password' }],
-        user: null,
-        accessToken: null,
+        result: null,
       });
 
     // Check if user is verified
@@ -40,8 +39,7 @@ export const loginUserController = async (
       return res.status(400).json({
         success: false,
         errors: [{ message: 'Please verify your email' }],
-        user: null,
-        accessToken: null,
+        result: null,
       });
     }
 
@@ -52,8 +50,7 @@ export const loginUserController = async (
       return res.status(400).json({
         success: false,
         errors: [{ message: 'Invalid email or password' }],
-        user: null,
-        accessToken: null,
+        result: null,
       });
 
     // Sign access token
@@ -79,13 +76,15 @@ export const loginUserController = async (
     return res.status(200).json({
       success: true,
       errors: [],
-      user: {
-        user_id: user.user_id,
-        email: user.email,
-        username: user.username,
-        profile_picture: user.profile_picture,
+      result: {
+        user: {
+          user_id: user.user_id,
+          email: user.email,
+          username: user.username,
+          profile_picture: user.profile_picture,
+        },
+        accessToken,
       },
-      accessToken,
     });
   } catch (error) {
     console.log(error);
@@ -93,8 +92,7 @@ export const loginUserController = async (
       success: false,
       results: 0,
       errors: [{ message: 'Something went wrong...' }],
-      user: null,
-      accessToken: null,
+      result: null,
     });
   }
 };
@@ -106,8 +104,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     return res.status(403).json({
       success: false,
       errors: [{ message: 'There is no rtoken cookie' }],
-      user: null,
-      accessToken: null,
+      result: null,
     });
 
   try {
@@ -120,8 +117,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
       return res.status(403).json({
         success: false,
         errors: [{ message: 'Invalid token' }],
-        user: null,
-        accessToken: null,
+        result: null,
       });
 
     const session = (await db.query(
@@ -141,8 +137,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
       return res.status(403).json({
         success: false,
         errors: [{ message: 'There is no session' }],
-        user: null,
-        accessToken: null,
+        result: null,
       });
 
     const newRefreshToken = await signRefreshToken(
@@ -169,13 +164,15 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       errors: [],
-      user: {
-        user_id: currentSession.user_id,
-        email: currentSession.email,
-        username: currentSession.username,
-        profile_picture: currentSession.profile_picture,
+      result: {
+        user: {
+          user_id: currentSession.user_id,
+          email: currentSession.email,
+          username: currentSession.username,
+          profile_picture: currentSession.profile_picture,
+        },
+        accessToken: newAccessToken,
       },
-      accessToken: newAccessToken,
     });
   } catch (error: any) {
     console.log(error);
@@ -189,8 +186,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
-      user: null,
-      accessToken: null,
+      result: null,
     });
   }
 };
@@ -214,6 +210,7 @@ export const logoutUserController = async (
     return res.status(200).json({
       success: true,
       errors: [],
+      result: null,
     });
   }
 
@@ -226,7 +223,7 @@ export const logoutUserController = async (
     if (!decoded)
       return res
         .status(403)
-        .json({ success: false, errors: [{ message: 'Invalid token' }] });
+        .json({ success: false, errors: [{ message: 'Invalid token' }], result: null });
 
     await db.query('DELETE FROM sessions WHERE session_id = $1 AND user_id = $2', [
       decoded.session_id,
@@ -242,9 +239,12 @@ export const logoutUserController = async (
     return res.status(200).json({
       success: true,
       errors: [],
+      result: null,
     });
   } catch (error: any) {
     console.log(error);
-    return res.status(500).json({ success: false, errors: [{ message: error.message }] });
+    return res
+      .status(500)
+      .json({ success: false, errors: [{ message: error.message }], result: null });
   }
 };
