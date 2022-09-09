@@ -1,12 +1,11 @@
-import { useMutation, UseMutationResult, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Logo from '../components/logo/Logo';
 import Layout from '../layout/Layout';
 import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../layout/style';
-import { registerUser } from '../services/user.service';
 import router from 'next/router';
+import useAxios from '../hooks/useAxios';
 
 const Wrapper = styled.div`
   position: relative;
@@ -100,40 +99,34 @@ const ErrorMessage = styled.p`
   margin-bottom: 15px;
 `;
 
-const SuccessMessage = styled.p`
-  color: lightgreen;
-  margin-bottom: 15px;
-`;
-
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const {
-    mutate: register,
-    isLoading,
-    data,
-  } = useMutation(() => registerUser({ email, username, password, confirmPassword }));
+  const [registerUser, { isLoading, errors }] = useAxios<{ user_id: string }>(
+    'api/users',
+    { method: 'POST', body: { email, username, password, confirmPassword } }
+  );
+
+  const handleResetForm = () => {
+    setEmail('');
+    setUsername('');
+    setPassword('');
+    setConfirmPassword('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && username && password && confirmPassword) register();
-  };
-
-  useEffect(() => {
-    const handleRedirectToLogin = () => {
-      router.push('/signin');
-    };
-    if (data?.success) {
-      setEmail('');
-      setUsername('');
-      setPassword('');
-      setConfirmPassword('');
-      setTimeout(handleRedirectToLogin, 400);
+    if (email && username && password && confirmPassword) {
+      const response = await registerUser();
+      if (response.success) {
+        handleResetForm();
+        router.push('/signin');
+      }
     }
-  }, [data]);
+  };
 
   return (
     <Layout>
@@ -143,9 +136,8 @@ const SignUp = () => {
             <Logo />
             <FormTitle>Sign Up</FormTitle>
           </LogoAndTitle>
-          {data?.success && <SuccessMessage>Success</SuccessMessage>}
-          {data?.errors &&
-            data.errors.map((error) => {
+          {errors &&
+            errors.map((error) => {
               return <ErrorMessage key={error.message}>{error.message}</ErrorMessage>;
             })}
           <FormLabel htmlFor="email">Email</FormLabel>

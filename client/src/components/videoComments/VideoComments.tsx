@@ -1,5 +1,5 @@
 import React from 'react';
-import SortIcon from '@mui/icons-material/Sort';
+import { MdSort } from 'react-icons/md';
 import Image from 'next/image';
 import Comment from '../comment/Comment';
 import {
@@ -15,20 +15,27 @@ import {
   TextArea,
 } from './style';
 import useAuth from '../../hooks/useAuth';
+import { disableKeyBinds, enableKeyBinds } from '../../app/features/videoSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 const VideoComments = () => {
-  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const profile_picture = useSelector(
+    (state: RootState) => state.auth.user?.profile_picture
+  );
+  const dispatch = useDispatch();
+  const array: any[] = [];
   const { isAuth } = useAuth();
   return (
     <Container>
       <Header>
         <CommentsCountParagraph>149 comments</CommentsCountParagraph>
         <SortBtn isActive={true}>
-          <SortIcon />
+          <MdSort />
           Top comments
         </SortBtn>
         <SortBtn isActive={false}>
-          <SortIcon />
+          <MdSort />
           Newest first
         </SortBtn>
       </Header>
@@ -37,13 +44,19 @@ const VideoComments = () => {
         <FormContainer>
           <ProfilePicture
             as={Image}
-            src={'/images/profile-picture.jpg'}
+            src={
+              profile_picture ? profile_picture : '/images/default-profile-picture.jpg'
+            }
             width={48}
             height={48}
             alt=""
           />
           <AddCommentForm>
-            <TextArea placeholder="Add a comment..." />
+            <TextArea
+              placeholder="Add a comment..."
+              onFocus={() => dispatch(disableKeyBinds())}
+              onBlur={() => dispatch(enableKeyBinds())}
+            />
             <CommentBtn>Comment</CommentBtn>
           </AddCommentForm>
         </FormContainer>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import { MdAccountCircle } from 'react-icons/md';
 
 export const Link = styled.a`
   display: flex;
@@ -17,7 +17,7 @@ export const Link = styled.a`
 const SignInButton = () => {
   return (
     <Link href={'/signin'}>
-      <AccountCircleOutlinedIcon />
+      <MdAccountCircle />
       Sign In
     </Link>
   );

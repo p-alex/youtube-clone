@@ -1,5 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { VideoInfo } from '../../app/features/videoSlice';
+import { RootState } from '../../app/store';
 import useAuth from '../../hooks/useAuth';
 import {
   Description,
@@ -13,13 +16,16 @@ import {
   UsernameAndSubsContainer,
 } from './style';
 
-const VideoDetails = () => {
+const VideoDetails = ({ video }: { video: VideoInfo }) => {
+  const profile_picture = useSelector(
+    (state: RootState) => state.auth.user?.profile_picture
+  );
   const { isAuth } = useAuth();
   return (
     <DetailsContainer>
       <ProfilePicture
         as={Image}
-        src={'/images/profile-picture.jpg'}
+        src={profile_picture ? profile_picture : '/images/default-profile-picture.jpg'}
         width={48}
         height={48}
         alt=""
@@ -27,18 +33,12 @@ const VideoDetails = () => {
       <Details>
         <DetailsHeader>
           <UsernameAndSubsContainer>
-            <Username>Jordbær</Username>
+            <Username>{video.username}</Username>
             <SubCount>1k subscribers</SubCount>
           </UsernameAndSubsContainer>
           {isAuth && <SubscribeBtn>Subscribe</SubscribeBtn>}
         </DetailsHeader>
-        <Description>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta ipsum rem cumque
-          quia nisi fugit dicta! Excepturi impedit accusamus dolores omnis quasi autem
-          esse asperiores repellat assumenda aliquam culpa, quia quod reiciendis
-          aspernatur necessitatibus ut in aut unde sit dolorum cumque alias adipisci. Enim
-          expedita unde iusto excepturi voluptate ea!
-        </Description>
+        <Description>{video.description}</Description>
       </Details>
     </DetailsContainer>
   );

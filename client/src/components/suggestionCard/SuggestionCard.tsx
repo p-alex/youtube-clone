@@ -11,9 +11,9 @@ import {
   Title,
   Username,
 } from './style';
-import { IVideo } from '../../app/features/videoSlice';
+import { IVideoSmall } from '../../app/features/videosSlice';
 
-const SuggestionCard = ({ video }: { video: IVideo }) => {
+const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
   return (
     <Container>
       <Body>
@@ -22,7 +22,7 @@ const SuggestionCard = ({ video }: { video: IVideo }) => {
             <a>
               <Thumbnail
                 as={Image}
-                src={video.image}
+                src={video.thumbnail_url}
                 alt=""
                 width={550}
                 height={309.375}
@@ -38,7 +38,7 @@ const SuggestionCard = ({ video }: { video: IVideo }) => {
           </Link>
           <Username>{video.username}</Username>
           <Stats>
-            {video.views} views • {video.createdAt}
+            {video.views} views • {video.created_at}
           </Stats>
         </Details>
       </Body>

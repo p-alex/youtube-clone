@@ -1,5 +1,5 @@
 import React from 'react';
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import { MdUnfoldMore } from 'react-icons/md';
 import { ToggleMobileCommentsBtn, Title } from './style';
 const ToggleMobileComments = ({
   handleToggleMobileComments,
@@ -12,7 +12,7 @@ const ToggleMobileComments = ({
         <Title>
           Comments <span>• 382</span>
         </Title>
-        <UnfoldMoreIcon />
+        <MdUnfoldMore />
       </ToggleMobileCommentsBtn>
     </div>
   );

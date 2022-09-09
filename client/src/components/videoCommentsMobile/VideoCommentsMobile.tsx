@@ -14,16 +14,19 @@ import {
   Title,
   TitleAndClose,
 } from './style';
-import CloseIcon from '@mui/icons-material/Close';
+import { MdClose } from 'react-icons/md';
 import Comment from '../comment/Comment';
 import useDisableScroll from '../../hooks/useDisableScroll';
 import { motion } from 'framer-motion';
+import { useDispatch } from 'react-redux';
+import { disableKeyBinds, enableKeyBinds } from '../../app/features/videoSlice';
 
 const VideoCommentsMobile = ({
   handleToggleMobileComments,
 }: {
   handleToggleMobileComments: () => void;
 }) => {
+  const dispatch = useDispatch();
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const [canMove, setCanMove] = useState(false);
   const [initialPos, setInitialPos] = useState(0);
@@ -78,7 +81,7 @@ const VideoCommentsMobile = ({
         <TitleAndClose>
           <Title>Comments</Title>
           <CloseBtn onClick={handleToggleMobileComments}>
-            <CloseIcon />
+            <MdClose />
           </CloseBtn>
         </TitleAndClose>
       </Header>
@@ -90,7 +93,11 @@ const VideoCommentsMobile = ({
           height={48}
         />
         <Form>
-          <FormInput placeholder="Add a comment..." />
+          <FormInput
+            placeholder="Add a comment..."
+            onFocus={() => dispatch(disableKeyBinds())}
+            onBlur={() => dispatch(enableKeyBinds())}
+          />
           <CommentBtn>Comment</CommentBtn>
         </Form>
       </FormContainer>

@@ -1,13 +1,12 @@
-import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import router from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { setUser } from '../app/features/authSlice';
+import { IUser, setUser } from '../app/features/authSlice';
 import Logo from '../components/logo/Logo';
+import useAxios from '../hooks/useAxios';
 import Layout from '../layout/Layout';
-import { loginUser } from '../services/auth.service';
 
 const Wrapper = styled.div`
   position: relative;
@@ -91,37 +90,26 @@ const ErrorMessage = styled.p`
   margin-bottom: 15px;
 `;
 
-const SuccessMessage = styled.p`
-  color: lightgreen;
-  margin-bottom: 15px;
-`;
-
 const SignIn = () => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('test@test.com');
-  const [password, setPassword] = useState('qwerty');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const {
-    mutate: login,
-    isLoading,
-    data,
-  } = useMutation(() => loginUser({ email, password }));
+  const [loginUser, { isLoading, errors }] = useAxios<{
+    user: IUser;
+    accessToken: string;
+  } | null>('api/auth', { method: 'POST', body: { email, password } });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email && password) {
-      login();
+      const { success, result } = await loginUser();
+      if (success && result) {
+        dispatch(setUser({ user: result.user, accessToken: result.accessToken }));
+        router.push('/');
+      }
     }
   };
-
-  useEffect(() => {
-    if (data?.accessToken) {
-      setEmail('');
-      setPassword('');
-      dispatch(setUser({ user: data.user, accessToken: data.accessToken }));
-      router.push('/');
-    }
-  }, [data, dispatch]);
 
   return (
     <Layout>
@@ -131,9 +119,8 @@ const SignIn = () => {
             <Logo />
             <FormTitle>Sign In</FormTitle>
           </LogoAndTitle>
-          {data && <SuccessMessage>Success</SuccessMessage>}
-          {data?.errors &&
-            data.errors.map((error) => {
+          {errors &&
+            errors.map((error) => {
               return <ErrorMessage key={error.message}>{error.message}</ErrorMessage>;
             })}
           <FormLabel htmlFor="email">Email</FormLabel>

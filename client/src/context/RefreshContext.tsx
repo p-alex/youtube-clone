@@ -1,8 +1,7 @@
-import React, { useEffect, useState, createContext, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../app/features/authSlice';
+import React, { useEffect, createContext, useRef } from 'react';
 import useAuth from '../hooks/useAuth';
-import { refreshToken } from '../services/auth.service';
+import useRefreshToken from '../hooks/useRefreshToken';
+import router from 'next/router';
 
 const RefreshContext = createContext({});
 
@@ -10,21 +9,19 @@ const RefreshContextProvider = ({ children }: { children: React.ReactNode }) => 
   const effectRan = useRef(false);
 
   const { isAuth } = useAuth();
-  const dispatch = useDispatch();
 
-  const handleTryRefresh = async () => {
+  const refreshToken = useRefreshToken();
+
+  const handleRefresh = async () => {
     const response = await refreshToken();
-    console.log(response);
-    if (!response?.success) return;
-    console.log('response', response);
-    dispatch(setUser({ user: response.user!, accessToken: response.accessToken! }));
+    if (!response.success) return router.push('/signin');
   };
 
   useEffect(() => {
     // Try to refresh token if rtoken cookie exists
     if (effectRan.current === false) {
       if (!isAuth) {
-        handleTryRefresh();
+        handleRefresh();
       }
     }
     return () => {

@@ -4,7 +4,8 @@ import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../layout/s
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 0;
+  padding: 20px 0;
+  height: 120px;
   gap: 10px;
   border-bottom: solid 1px ${(props) => props.theme.borderColor};
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
@@ -45,6 +46,7 @@ export const ReactAndRatioContainer = styled.div`
 
 export const ReactBtnContainer = styled.div`
   display: flex;
+  gap: 10px;
 `;
 
 export const RatioBar = styled.div<{ width: number }>`
@@ -67,4 +69,8 @@ export const ReactBtn = styled.button`
   gap: 10px;
   color: ${(props) => props.theme.textColor};
   padding: 10px;
+  font-size: 1.2rem;
+  & svg {
+    font-size: 1.6rem;
+  }
 `;

@@ -1,8 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import {
+  AiFillLike,
+  AiFillDislike,
+  AiOutlineLike,
+  AiOutlineDislike,
+} from 'react-icons/ai';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 import {
   Body,
   Button,
@@ -16,12 +22,22 @@ import {
 } from './style';
 
 const Comment = () => {
+  const profile_picture = useSelector(
+    (state: RootState) => state.auth.user?.profile_picture
+  );
   return (
     <Container>
       <Link href={'#'}>
         <a>
           <ProfilePicture>
-            <Image src={'/images/profile-picture.jpg'} width={40} height={40} alt="" />
+            <Image
+              src={
+                profile_picture ? profile_picture : '/images/default-profile-picture.jpg'
+              }
+              width={40}
+              height={40}
+              alt=""
+            />
           </ProfilePicture>
         </a>
       </Link>
@@ -42,10 +58,10 @@ const Comment = () => {
         </Text>
         <ButtonsContainer>
           <Button>
-            <ThumbUpOffAltIcon /> <span>200</span>
+            <AiOutlineLike /> <span>200</span>
           </Button>
           <Button>
-            <ThumbDownOffAltIcon /> <span>22134</span>
+            <AiOutlineDislike /> <span>22134</span>
           </Button>
           <Button>Reply</Button>
         </ButtonsContainer>

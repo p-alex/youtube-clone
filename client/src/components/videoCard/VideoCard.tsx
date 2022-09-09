@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IVideo } from '../../app/features/videoSlice';
 import {
   Body,
   Container,
@@ -12,22 +11,24 @@ import {
   Title,
   Username,
 } from './style';
+import { IVideoSmall } from '../../app/features/videosSlice';
+import { dateConverter } from '../../utils/dateConverter';
 
-const VideoCard = ({ video }: { video: IVideo }) => {
+const VideoCard = ({ video }: { video: IVideoSmall }) => {
   return (
     <Container>
-      <Link href={'/video/1'}>
-        <Thumbnail as={Image} src={video.image} alt="" width={700} height={393} />
+      <Link href={`/videos/${video.video_id}`}>
+        <Thumbnail as={Image} src={video.thumbnail_url} alt="" width={700} height={393} />
       </Link>
       <Body>
         <ProfilePicture src={video.profile_picture} width={36} height={36} />
         <Details>
-          <Link href={'/video/1'}>
+          <Link href={`/videos/${video.video_id}`}>
             <Title>{video.title}</Title>
           </Link>
           <Username>{video.username}</Username>
           <Stats>
-            {video.views} views • {video.createdAt}
+            {video.views} views • {dateConverter(new Date(video.created_at).getTime())}
           </Stats>
         </Details>
       </Body>

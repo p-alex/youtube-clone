@@ -9,6 +9,7 @@ export const ToggleMobileCommentsBtn = styled.button`
   align-items: center;
   justify-content: space-between;
   color: ${(props) => props.theme.textColor};
+  margin-bottom: 20px;
 `;
 
 export const Title = styled.p`

@@ -1,6 +1,10 @@
-import React from 'react';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import React, { useState, useEffect } from 'react';
+import {
+  AiOutlineLike,
+  AiOutlineDislike,
+  AiFillLike,
+  AiFillDislike,
+} from 'react-icons/ai';
 import {
   Header,
   RatioBar,
@@ -12,28 +16,68 @@ import {
   Title,
 } from './style';
 import useAuth from '../../hooks/useAuth';
+import { dislikeVideo, likeVideo, VideoInfo } from '../../app/features/videoSlice';
+import { dateConverter } from '../../utils/dateConverter';
+import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
-const VideoHeader = () => {
+const VideoHeader = ({ video }: { video: VideoInfo }) => {
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const dispatch = useDispatch();
   const { isAuth } = useAuth();
+
+  const [actionType, setActionType] = useState<'like' | 'dislike' | null>(null);
+
+  const [likeOrDislike, { isLoading, errors }] = useAxiosWithRetry<null>(
+    'api/videos/likes',
+    {
+      body: { action_type: actionType, video_id: video.video_id },
+      method: 'POST',
+      accessToken: accessToken!,
+    }
+  );
+
+  const handleLikeOrDislike = async () => {
+    if (actionType === 'like') dispatch(likeVideo());
+    if (actionType === 'dislike') dispatch(dislikeVideo());
+    await likeOrDislike();
+    setActionType(null);
+  };
+
+  useEffect(() => {
+    if (!actionType && accessToken) return;
+    handleLikeOrDislike();
+  }, [actionType]);
+
   return (
     <Header>
-      <Title>Norwegians React to Stereotypes</Title>
+      <Title>{video.title}</Title>
       <ReactContainer>
         <Stats>
-          <span>37,940 views</span>
+          <span>{video.views} views</span>
           <span>•</span>
-          <span>3 hours ago</span>
+          <span>{dateConverter(new Date(video.created_at).getTime())}</span>
         </Stats>
         <ReactAndRatioContainer>
           <ReactBtnContainer>
-            <ReactBtn disabled={!isAuth}>
-              <ThumbUpOffAltIcon /> 99
+            <ReactBtn
+              disabled={!isAuth || isLoading}
+              onClick={() => setActionType('like')}
+            >
+              {video.like_status ? <AiFillLike /> : <AiOutlineLike />} {video.total_likes}
             </ReactBtn>
-            <ReactBtn disabled={!isAuth}>
-              <ThumbDownOffAltIcon /> 2
+            <ReactBtn
+              disabled={!isAuth || isLoading}
+              onClick={() => setActionType('dislike')}
+            >
+              {video.like_status === false ? <AiFillDislike /> : <AiOutlineDislike />}{' '}
+              {video.total_dislikes}
             </ReactBtn>
           </ReactBtnContainer>
-          <RatioBar width={(99 / 101) * 100}></RatioBar>
+          <RatioBar
+            width={(video.total_likes / (video.total_dislikes + video.total_likes)) * 100}
+          ></RatioBar>
         </ReactAndRatioContainer>
       </ReactContainer>
     </Header>
