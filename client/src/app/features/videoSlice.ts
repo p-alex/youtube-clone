@@ -1,89 +1,88 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface IVideo {
-  title: string;
+export interface VideoInfo {
+  video_id: string;
+  user_id: string;
   username: string;
   profile_picture: string;
+  video_url: string;
+  title: string;
+  description: string;
   views: string;
-  createdAt: string;
-  image: string;
+  total_likes: number;
+  total_dislikes: number;
+  duration: number;
+  like_status: boolean | null;
+  created_at: string;
 }
 
-const initialState = {
-  videos: [
-    {
-      title: 'This is a test titleThis is a test title',
-      image: '/images/video-image-1.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-    {
-      title: 'This is a test title',
-      image: '/images/video-image-2.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-    {
-      title: 'This is a test title',
-      image: '/images/video-image-2.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-    {
-      title: 'This is a test title',
-      image: '/images/video-image-2.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-    {
-      title: 'This is a test title',
-      image: '/images/video-image-2.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-    {
-      title: 'This is a test title',
-      image: '/images/video-image-2.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-    {
-      title: 'This is a test title',
-      image: '/images/video-image-2.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-    {
-      title: 'This is a test title',
-      image: '/images/video-image-2.jpg',
-      username: 'Jordbær',
-      profile_picture: '/images/profile_picture.jpg',
-      views: '1.1k',
-      createdAt: '3 hours ago',
-    },
-  ],
+interface InitialState {
+  canUseVideoKeyBinds: boolean;
+  videoInfo: VideoInfo;
+}
+
+const initialState: InitialState = {
+  canUseVideoKeyBinds: true,
+  videoInfo: {
+    video_id: '',
+    user_id: '',
+    username: '',
+    profile_picture: '',
+    video_url: '',
+    title: '',
+    description: '',
+    views: '',
+    total_likes: 0,
+    total_dislikes: 0,
+    duration: 0,
+    like_status: null,
+    created_at: '',
+  },
 };
 
 const videoSlice = createSlice({
   name: 'video',
   initialState,
-  reducers: {},
+  reducers: {
+    setVideo: (state, action: PayloadAction<VideoInfo>) => {
+      state.videoInfo = action.payload;
+    },
+    likeVideo: (state) => {
+      if (state.videoInfo.like_status === true) {
+        state.videoInfo.like_status = null;
+        state.videoInfo.total_likes -= 1;
+      } else if (state.videoInfo.like_status === false) {
+        state.videoInfo.like_status = true;
+        state.videoInfo.total_likes += 1;
+        state.videoInfo.total_dislikes -= 1;
+      } else {
+        state.videoInfo.like_status = true;
+        state.videoInfo.total_likes += 1;
+      }
+    },
+    dislikeVideo: (state) => {
+      if (state.videoInfo.like_status === false) {
+        state.videoInfo.like_status = null;
+        state.videoInfo.total_dislikes -= 1;
+      } else if (state.videoInfo.like_status === true) {
+        state.videoInfo.like_status = false;
+        state.videoInfo.total_likes -= 1;
+        state.videoInfo.total_dislikes += 1;
+      } else {
+        state.videoInfo.like_status = false;
+        state.videoInfo.total_dislikes += 1;
+      }
+    },
+    disableKeyBinds: (state) => {
+      state.canUseVideoKeyBinds = false;
+    },
+    enableKeyBinds: (state) => {
+      state.canUseVideoKeyBinds = true;
+    },
+  },
 });
 
-export const {} = videoSlice.actions;
+export const { setVideo, disableKeyBinds, enableKeyBinds, likeVideo, dislikeVideo } =
+  videoSlice.actions;
 
 export default videoSlice.reducer;
