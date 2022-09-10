@@ -1,29 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Layout from '../../layout/Layout';
-import styled from 'styled-components';
-import VideoComments from '../../components/videoComments/VideoComments';
-import SuggestionCard from '../../components/suggestionCard/SuggestionCard';
-import VideoDetails from '../../components/videoDetails/VideoDetails';
-import VideoHeader from '../../components/videoHeader/VideoHeader';
+import React, { useEffect, useRef, useState } from "react";
+import Layout from "../../layout/Layout";
+import styled from "styled-components";
+import VideoComments from "../../components/videoComments/VideoComments";
+import SuggestionCard from "../../components/suggestionCard/SuggestionCard";
+import VideoDetails from "../../components/videoDetails/VideoDetails";
+import VideoHeader from "../../components/videoHeader/VideoHeader";
 import {
   COMMENTS_BREAK_POINT,
   CONTAINER_HORIZONTAL_PADDING,
   MOBILE_BREAK_POINT,
   NAV_BAR_HEIGHT,
-} from '../../layout/style';
-import Head from 'next/head';
-import ToggleMobileComments from '../../components/toggleMobileComments/ToggleMobileComments';
-import VideoCommentsMobile from '../../components/videoCommentsMobile/VideoCommentsMobile';
-import useWindowSize from '../../hooks/useWindowSize';
-import { AnimatePresence } from 'framer-motion';
-import { videos } from '../../utils/videosList';
-import { useRouter } from 'next/router';
-import { setVideo, VideoInfo } from '../../app/features/videoSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import useMobileSize from '../../hooks/useMobileSize';
-import VideoPlayer from '../../components/videoPlayer/VideoPlayer';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+} from "../../layout/style";
+import Head from "next/head";
+import ToggleMobileComments from "../../components/toggleMobileComments/ToggleMobileComments";
+import VideoCommentsMobile from "../../components/videoCommentsMobile/VideoCommentsMobile";
+import useWindowSize from "../../hooks/useWindowSize";
+import { AnimatePresence } from "framer-motion";
+import { videos } from "../../utils/videosList";
+import { useRouter } from "next/router";
+import { setVideo, VideoInfo } from "../../app/features/videoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import useMobileSize from "../../hooks/useMobileSize";
+import VideoPlayer from "../../components/videoPlayer/VideoPlayer";
+import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
 
 const Container = styled.main`
   position: relative;
@@ -68,7 +68,7 @@ const VideoDetailsContainer = styled.div`
 const SuggestionsColumn = styled.aside<{ isTheatreMode: boolean }>`
   width: 371px;
   grid-area: suggestions;
-  margin-top: ${(props) => (props.isTheatreMode ? '20px' : '0')};
+  margin-top: ${(props) => (props.isTheatreMode ? "20px" : "0")};
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -83,16 +83,17 @@ const VideoPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
   const video = useSelector((state: RootState) => state.video.videoInfo);
   const dispatch = useDispatch();
-  const [videoPlayerType, setVideoPlayerType] = useState<'desktop' | 'mobile' | ''>('');
+  const [videoPlayerType, setVideoPlayerType] = useState<
+    "desktop" | "mobile" | ""
+  >("");
   const isMobileSize = useMobileSize();
   const { query } = useRouter();
 
   const effectRan = useRef(false);
 
-  const [getVideo, { isLoading, errors }] = useAxiosWithRetry<{ video: VideoInfo }>(
-    `api/videos/${query.video_id}`,
-    { accessToken: auth.accessToken! }
-  );
+  const [getVideo, { isLoading, errors }] = useAxiosWithRetry<{
+    video: VideoInfo;
+  }>(`api/videos/${query.video_id}`, { accessToken: auth.accessToken! });
 
   const handleGetVideo = async () => {
     const response = await getVideo();
@@ -113,9 +114,9 @@ const VideoPage = () => {
   useEffect(() => {
     setIsTheatreMode(false);
     if (isMobileSize && !videoPlayerType) {
-      setVideoPlayerType('mobile');
+      setVideoPlayerType("mobile");
     } else if (!isMobileSize && !videoPlayerType) {
-      setVideoPlayerType('desktop');
+      setVideoPlayerType("desktop");
     }
   }, [isMobileSize]);
 
@@ -141,7 +142,7 @@ const VideoPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className={isTheatreMode ? 'theatre-mode' : ''}>
+      <Container className={isTheatreMode ? "theatre-mode" : ""}>
         <VideoColumn>
           <VideoContainer ref={videoContainerRef}>
             <VideoPlayer
@@ -168,7 +169,7 @@ const VideoPage = () => {
                 )}
               </AnimatePresence>
 
-              {!isWindowWidthUnder && <VideoComments />}
+              {!isWindowWidthUnder && <VideoComments video={video} />}
             </VideoDetailsContainer>
             {isTheatreMode && (
               <SuggestionsColumn isTheatreMode={isTheatreMode}>

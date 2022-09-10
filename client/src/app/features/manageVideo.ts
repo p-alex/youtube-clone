@@ -1,6 +1,20 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IVideo } from '../../pages/manage/videos';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export interface IVideo {
+  video_id: string;
+  user_id: string;
+  username: string;
+  profile_picture: string;
+  video_url: string;
+  thumbnail_url: string;
+  title: string;
+  description: string;
+  views: number;
+  duration: number;
+  total_likes: number;
+  total_dislikes: number;
+  created_at: string;
+}
 interface InitialState {
   videos: IVideo[];
   videoToEdit: IVideo | null;
@@ -14,7 +28,7 @@ const initialState: InitialState = {
 };
 
 export const manageVideosSlice = createSlice({
-  name: 'manageVideos',
+  name: "manageVideos",
   initialState,
   reducers: {
     setUserVideos: (state, action: PayloadAction<IVideo[]>) => {

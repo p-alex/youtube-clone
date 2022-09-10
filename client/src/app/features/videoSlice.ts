@@ -1,10 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface VideoInfo {
   video_id: string;
   user_id: string;
   username: string;
   profile_picture: string;
+  total_subscribers: number;
   video_url: string;
   title: string;
   description: string;
@@ -24,24 +25,25 @@ interface InitialState {
 const initialState: InitialState = {
   canUseVideoKeyBinds: true,
   videoInfo: {
-    video_id: '',
-    user_id: '',
-    username: '',
-    profile_picture: '',
-    video_url: '',
-    title: '',
-    description: '',
-    views: '',
+    video_id: "",
+    user_id: "",
+    username: "",
+    profile_picture: "",
+    total_subscribers: 0,
+    video_url: "",
+    title: "",
+    description: "",
+    views: "",
     total_likes: 0,
     total_dislikes: 0,
     duration: 0,
     like_status: null,
-    created_at: '',
+    created_at: "",
   },
 };
 
 const videoSlice = createSlice({
-  name: 'video',
+  name: "video",
   initialState,
   reducers: {
     setVideo: (state, action: PayloadAction<VideoInfo>) => {
@@ -82,7 +84,12 @@ const videoSlice = createSlice({
   },
 });
 
-export const { setVideo, disableKeyBinds, enableKeyBinds, likeVideo, dislikeVideo } =
-  videoSlice.actions;
+export const {
+  setVideo,
+  disableKeyBinds,
+  enableKeyBinds,
+  likeVideo,
+  dislikeVideo,
+} = videoSlice.actions;
 
 export default videoSlice.reducer;

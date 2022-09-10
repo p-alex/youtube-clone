@@ -1,37 +1,22 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import {
+  IVideo,
   removeVideo,
   resetVideoToDelete,
   setUserVideos,
-} from '../../app/features/manageVideo';
-import { RootState } from '../../app/store';
-import EditVideoModal from '../../components/editVideoModal/EditVideoModal';
-import ManageVideoCard from '../../components/manageVideoCard/ManageVideoCard';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
-import Layout from '../../layout/Layout';
-import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../../layout/style';
-import { PrimaryButton } from '../../ui/PrimaryBtn';
-
-export interface IVideo {
-  video_id: string;
-  user_id: string;
-  username: string;
-  profile_picture: string;
-  video_url: string;
-  thumbnail_url: string;
-  title: string;
-  description: string;
-  views: number;
-  duration: number;
-  total_likes: number;
-  total_dislikes: number;
-  created_at: string;
-}
+} from "../../app/features/manageVideo";
+import { RootState } from "../../app/store";
+import EditVideoModal from "../../components/editVideoModal/EditVideoModal";
+import ManageVideoCard from "../../components/manageVideoCard/ManageVideoCard";
+import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
+import Layout from "../../layout/Layout";
+import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from "../../layout/style";
+import { PrimaryButton } from "../../ui/PrimaryBtn";
 
 const Container = styled.div`
   position: relative;
@@ -99,18 +84,20 @@ const Manage = () => {
   );
   const dispatch = useDispatch();
 
-  const [getUserVideos, { isLoading }] = useAxiosWithRetry<{ videos: IVideo[] }>(
-    'api/videos/manage',
+  const [getUserVideos, { isLoading }] = useAxiosWithRetry<{
+    videos: IVideo[];
+  }>("api/videos/manage", {
+    accessToken: auth.accessToken!,
+  });
+
+  const [deleteVideo, { isLoading: isDeleteLoading }] = useAxiosWithRetry(
+    "api/videos",
     {
+      body: { video_id: videoToDelete },
+      method: "DELETE",
       accessToken: auth.accessToken!,
     }
   );
-
-  const [deleteVideo, { isLoading: isDeleteLoading }] = useAxiosWithRetry('api/videos', {
-    body: { video_id: videoToDelete },
-    method: 'DELETE',
-    accessToken: auth.accessToken!,
-  });
 
   const handleGetUserVideos = async () => {
     const response = await getUserVideos();
@@ -140,7 +127,7 @@ const Manage = () => {
             as={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ type: 'just' }}
+            transition={{ type: "just" }}
             exit={{ opacity: 0 }}
           >
             <ConfirmBackdrop
@@ -152,7 +139,9 @@ const Manage = () => {
                 <PrimaryButton onClick={() => dispatch(resetVideoToDelete())}>
                   Cancel
                 </PrimaryButton>
-                <PrimaryButton onClick={handleDeleteVideo}>Delete</PrimaryButton>
+                <PrimaryButton onClick={handleDeleteVideo}>
+                  Delete
+                </PrimaryButton>
               </ConfirmButtons>
             </ConfirmContainer>
           </ConfirmDelete>
