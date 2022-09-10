@@ -1,32 +1,36 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import {
   AddCommentInput,
   DeleteCommentInput,
   GetCommentsInput,
   LikeOrDislikeCommentInput,
   UpdateCommentInput,
-} from './comment.schema';
+} from "./comment.schema";
 import {
   addComment,
   deleteComment,
   getComments,
   likeOrDislikeComment,
   updateComment,
-} from './comment.service';
+} from "./comment.service";
 
 export const getCommentsController = async (
   req: Request<GetCommentsInput>,
   res: Response
 ) => {
-  const { video_id, page, limit } = req.params;
+  const { video_id, page } = req.params;
   try {
-    const comments = await getComments(video_id, page, limit);
-    return res.status(200).json({ success: true, errors: [], result: { comments } });
+    const comments = await getComments(video_id, page);
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { comments } });
   } catch (error: any) {
     console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
 
@@ -38,13 +42,17 @@ export const addCommentController = async (
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const comment = await addComment(video_id, user_id, text);
-    return res.status(201).json({ success: true, errors: [], result: { comment } });
+    const comment_id = await addComment(video_id, user_id, text);
+    return res
+      .status(201)
+      .json({ success: true, errors: [], result: { comment_id } });
   } catch (error: any) {
     console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
 
@@ -57,12 +65,16 @@ export const updateCommentController = async (
   const { user_id } = req.user;
   try {
     const comment = await updateComment(comment_id, user_id, text);
-    return res.status(200).json({ success: true, errors: [], result: { comment } });
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { comment } });
   } catch (error: any) {
     console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
 
@@ -70,17 +82,21 @@ export const deleteCommentController = async (
   req: Request<{}, {}, DeleteCommentInput>,
   res: Response
 ) => {
-  const { comment_id } = req.body;
+  const { comment_id, video_id } = req.body;
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const comment = await deleteComment(comment_id, user_id);
-    return res.status(200).json({ success: true, errors: [], result: { comment } });
+    const commentId = await deleteComment(comment_id, video_id, user_id);
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { comment_id: commentId } });
   } catch (error: any) {
     console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
 
@@ -97,8 +113,10 @@ export const likeOrDislikeCommentController = async (
     return res.status(200).json({ success: true, errors: [], result: null });
   } catch (error: any) {
     console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
