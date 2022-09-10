@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   position: fixed;
@@ -25,7 +25,7 @@ export const Backdrop = styled.div`
 export const Modal = styled.div`
   position: relative;
   width: 800px;
-  height: 85vh;
+  height: 95vh;
   max-height: 600px;
   border-radius: 3px;
   background-color: ${(props) => props.theme.uiBg};

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { MOBILE_BREAK_POINT } from '../../layout/style';
+import styled from "styled-components";
+import { MOBILE_BREAK_POINT } from "../../layout/style";
 
 export const Container = styled.div`
   position: fixed;
@@ -42,15 +42,19 @@ export const FormContainer = styled.form`
   overflow: none;
   top: 20px;
   max-width: 800px;
+  height: 95vh;
+  max-height: 700px;
   margin: auto;
   z-index: 502;
   padding: 20px;
+  overflow-y: scroll;
+
   background-color: ${(props) => props.theme.uiBg};
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     top: 0px;
     margin: 0;
-    height: calc(100vh);
-    overflow-y: scroll;
+    height: 100vh;
+    max-height: none;
   }
 `;
 
@@ -61,7 +65,7 @@ export const CloseBtn = styled.button`
   width: 35px;
   height: 35px;
   margin-bottom: 10px;
-  color: white;
+  color: ${(props) => props.theme.textColor};
 `;
 
 export const InputLabel = styled.label`
@@ -92,6 +96,6 @@ export const Tag = styled.p`
 
 export const ResultMessage = styled.p<{ isSuccess: boolean }>`
   font-weight: 700;
-  color: ${(props) => (props.isSuccess ? '#95C623' : 'red')};
+  color: ${(props) => (props.isSuccess ? "#95C623" : "red")};
   margin-top: 20px;
 `;
