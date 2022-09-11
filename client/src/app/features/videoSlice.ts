@@ -12,6 +12,7 @@ export interface VideoInfo {
   views: string;
   total_likes: number;
   total_dislikes: number;
+  total_comments: number;
   duration: number;
   like_status: boolean | null;
   created_at: string;
@@ -36,6 +37,7 @@ const initialState: InitialState = {
     views: "",
     total_likes: 0,
     total_dislikes: 0,
+    total_comments: 0,
     duration: 0,
     like_status: null,
     created_at: "",

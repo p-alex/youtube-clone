@@ -4,7 +4,6 @@ export const getCommentsSchema = object({
   params: object({
     video_id: string({}),
     page: string({}),
-    limit: string({}),
   }),
 });
 

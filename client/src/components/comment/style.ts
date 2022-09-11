@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -40,6 +40,16 @@ export const Text = styled.p`
   line-height: 20px;
 `;
 
+export const EditCommentForm = styled.form`
+  position: relative;
+  width: 100%;
+`;
+
+export const EditCommentButtons = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
 export const ButtonsContainer = styled.div`
   display: flex;
   gap: 20px;
@@ -51,7 +61,7 @@ export const Button = styled.button`
   gap: 10px;
   color: ${(props) => props.theme.textColor};
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 1rem;
   & span {
     color: ${(props) => props.theme.textMutedColor};
   }

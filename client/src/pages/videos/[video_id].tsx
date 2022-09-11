@@ -6,7 +6,6 @@ import SuggestionCard from "../../components/suggestionCard/SuggestionCard";
 import VideoDetails from "../../components/videoDetails/VideoDetails";
 import VideoHeader from "../../components/videoHeader/VideoHeader";
 import {
-  COMMENTS_BREAK_POINT,
   CONTAINER_HORIZONTAL_PADDING,
   MOBILE_BREAK_POINT,
   NAV_BAR_HEIGHT,
@@ -48,10 +47,6 @@ const VideoContainer = styled.div`
   position: relative;
   grid-area: video;
   z-index: 20;
-  @media (max-width: ${COMMENTS_BREAK_POINT}px) {
-    position: sticky;
-    top: ${NAV_BAR_HEIGHT}px;
-  }
 `;
 
 const VideoDetailsWrapper = styled.div`
@@ -97,7 +92,6 @@ const VideoPage = () => {
 
   const handleGetVideo = async () => {
     const response = await getVideo();
-    console.log(response);
     if (response.result) {
       dispatch(setVideo(response.result.video));
     }
@@ -130,8 +124,6 @@ const VideoPage = () => {
     setIsMobileCommentsActive((prevState) => !prevState);
   };
 
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-
   return (
     <Layout>
       <Head>
@@ -144,7 +136,7 @@ const VideoPage = () => {
       </Head>
       <Container className={isTheatreMode ? "theatre-mode" : ""}>
         <VideoColumn>
-          <VideoContainer ref={videoContainerRef}>
+          <VideoContainer>
             <VideoPlayer
               src={video.video_url}
               totalDuration={video.duration}
@@ -158,18 +150,21 @@ const VideoPage = () => {
               <VideoDetails video={video} />
               {isWindowWidthUnder && (
                 <ToggleMobileComments
+                  total_comments={video.total_comments}
                   handleToggleMobileComments={handleToggleMobileComments}
                 />
               )}
               <AnimatePresence>
                 {isMobileCommentsActive && isWindowWidthUnder && (
                   <VideoCommentsMobile
+                    video={video}
                     handleToggleMobileComments={handleToggleMobileComments}
                   />
                 )}
               </AnimatePresence>
-
-              {!isWindowWidthUnder && <VideoComments video={video} />}
+              {!isWindowWidthUnder && video.video_id && (
+                <VideoComments video={video} />
+              )}
             </VideoDetailsContainer>
             {isTheatreMode && (
               <SuggestionsColumn isTheatreMode={isTheatreMode}>
@@ -180,7 +175,6 @@ const VideoPage = () => {
             )}
           </VideoDetailsWrapper>
         </VideoColumn>
-
         {!isTheatreMode && (
           <SuggestionsColumn isTheatreMode={false}>
             {videos.map((video, index) => {

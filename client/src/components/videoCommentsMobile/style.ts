@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, NAV_BAR_HEIGHT } from '../../layout/style';
+import styled from "styled-components";
+import {
+  CONTAINER_HORIZONTAL_PADDING,
+  NAV_BAR_HEIGHT,
+} from "../../layout/style";
 
 export const Container = styled.div`
   position: fixed;
@@ -7,10 +10,10 @@ export const Container = styled.div`
   left: 0;
   right: 0;
   width: 100%;
-  top: calc(56.25vw + ${NAV_BAR_HEIGHT}px);
+  /* top: calc(56.25vw + ${NAV_BAR_HEIGHT}px); */
+  height: 75vh;
   background-color: ${(props) => props.theme.uiBg};
   z-index: 200;
-
   overflow-y: scroll;
 `;
 

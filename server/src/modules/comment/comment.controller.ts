@@ -19,8 +19,10 @@ export const getCommentsController = async (
   res: Response
 ) => {
   const { video_id, page } = req.params;
+  // @ts-ignore
+  const { user_id } = req.user;
   try {
-    const comments = await getComments(video_id, page);
+    const comments = await getComments(video_id, user_id, page);
     return res
       .status(200)
       .json({ success: true, errors: [], result: { comments } });

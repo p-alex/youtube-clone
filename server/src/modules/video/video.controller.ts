@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import {
   DeleteVideoInput,
   GetVideoTagsInput,
   LikeOrDislikeVideoInput,
   UpdateVideoInput,
   UploadVideoInput,
-} from './video.schema';
+} from "./video.schema";
 import {
   deleteVideo,
   getUserVideos,
@@ -18,20 +18,24 @@ import {
   updateVideo,
   uploadThumbnail,
   uploadVideo,
-} from './video.service';
-import fs from 'fs';
-import util from 'util';
-import { boolean } from 'zod';
+} from "./video.service";
+import fs from "fs";
+import util from "util";
+import { boolean } from "zod";
 const unlinkFile = util.promisify(fs.unlink);
 
 export const getVideosController = async (req: Request, res: Response) => {
   try {
     const videos = await getVideos();
-    return res.status(200).json({ success: true, errors: [], result: { videos } });
-  } catch (error: any) {
     return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+      .status(200)
+      .json({ success: true, errors: [], result: { videos } });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
 
@@ -40,11 +44,15 @@ export const getUserVideosController = async (req: Request, res: Response) => {
     // @ts-ignore
     const { user_id } = req.user;
     const videos = await getUserVideos(user_id);
-    return res.status(200).json({ success: true, errors: [], result: { videos } });
-  } catch (error: any) {
     return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+      .status(200)
+      .json({ success: true, errors: [], result: { videos } });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
 
@@ -53,10 +61,12 @@ export const getVideoController = async (req: Request, res: Response) => {
   // @ts-ignore
   const { user_id } = req.user;
   try {
-    const videoData = await getVideo(video_id);
-    const likeStatus = await getVideoLikeStatus(video_id, user_id);
-    const video = { ...videoData, ...likeStatus };
-    return res.status(200).json({ success: true, errors: [], result: { video } });
+    const videoData = await getVideo(video_id, user_id);
+    // const likeStatus = await getVideoLikeStatus(video_id, user_id);
+    // const video = { ...videoData, ...likeStatus };
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { video: videoData } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -79,7 +89,7 @@ export const uploadVideoController = async (
     if (!video?.mimetype)
       return res.status(400).json({
         success: false,
-        errors: [{ message: 'There is no file' }],
+        errors: [{ message: "There is no file" }],
         result: null,
       });
 
@@ -87,7 +97,9 @@ export const uploadVideoController = async (
     const uploadVideoResponse = await uploadVideo({ path: video.path });
 
     // Upload thumbnail to cloudinary
-    const uploadThumbnailResponse = await uploadThumbnail(videoData.thumbnail_url);
+    const uploadThumbnailResponse = await uploadThumbnail(
+      videoData.thumbnail_url
+    );
 
     // // Save secure urls in videoData
     videoData.video_url = uploadVideoResponse.secure_url;
@@ -106,9 +118,11 @@ export const uploadVideoController = async (
     });
   } catch (error: any) {
     console.log(error);
-    return res
-      .status(error?.http_code ? error.http_code : 500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+    return res.status(error?.http_code ? error.http_code : 500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
   }
 };
 
@@ -122,7 +136,7 @@ export const updateVideoController = async (
   try {
     const video_id = await updateVideo(videoData, user_id);
 
-    if (!video_id) throw new Error('Something went wrong...');
+    if (!video_id) throw new Error("Something went wrong...");
 
     return res.status(200).json({
       success: true,
@@ -148,7 +162,9 @@ export const deleteVideoController = async (
   const { user_id } = req.user;
   try {
     const id = await deleteVideo(video_id, user_id);
-    return res.status(200).json({ success: true, errors: [], result: { video_id: id } });
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { video_id: id } });
   } catch (error: any) {
     console.log(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
@@ -186,7 +202,9 @@ export const getVideoTagsController = async (
   try {
     const { video_id } = req.params;
     const tags = await getVideoTags(video_id);
-    return res.status(200).json({ success: boolean, errors: [], result: { tags } });
+    return res
+      .status(200)
+      .json({ success: boolean, errors: [], result: { tags } });
   } catch (error: any) {
     console.log(error);
     return res.status(error?.http_code ? error.http_code : 500).json({

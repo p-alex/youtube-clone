@@ -1,39 +1,36 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
 import {
   AiFillLike,
   AiFillDislike,
   AiOutlineLike,
   AiOutlineDislike,
-} from 'react-icons/ai';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
+} from "react-icons/ai";
+import { dateConverter } from "../../utils/dateConverter";
+import { IComment } from "../videoComments/VideoComments";
 import {
   Body,
   Button,
   ButtonsContainer,
   Container,
   CreatedAt,
+  EditCommentForm,
   Header,
   ProfilePicture,
   Text,
   Username,
-} from './style';
+} from "./style";
 
-const Comment = () => {
-  const profile_picture = useSelector(
-    (state: RootState) => state.auth.user?.profile_picture
-  );
+const Comment = ({ comment }: { comment: IComment }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
   return (
     <Container>
-      <Link href={'#'}>
+      <Link href={"#"}>
         <a>
           <ProfilePicture>
             <Image
-              src={
-                profile_picture ? profile_picture : '/images/default-profile-picture.jpg'
-              }
+              src={comment.profile_picture}
               width={40}
               height={40}
               alt=""
@@ -43,25 +40,29 @@ const Comment = () => {
       </Link>
       <Body>
         <Header>
-          <Link href={'#'}>
+          <Link href={"#"}>
             <a>
-              <Username>Jordbær</Username>
+              <Username>{comment.username}</Username>
             </a>
           </Link>
-          <CreatedAt>1 hour ago</CreatedAt>
+          <CreatedAt>
+            {dateConverter(new Date(comment.created_at).getTime())}
+          </CreatedAt>
         </Header>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla eius quae
-          aspernatur, in esse blanditiis similique laudantium temporibus cum quasi, aut
-          necessitatibus sapiente doloremque id, facere reprehenderit impedit quidem
-          fugit?
-        </Text>
+        {!isEditMode && <Text>{comment.text}</Text>}
+        {isEditMode && <EditCommentForm></EditCommentForm>}
         <ButtonsContainer>
           <Button>
-            <AiOutlineLike /> <span>200</span>
+            {comment.is_liked ? <AiFillLike /> : <AiOutlineLike />}{" "}
+            <span>{comment.total_likes}</span>
           </Button>
           <Button>
-            <AiOutlineDislike /> <span>22134</span>
+            {comment.is_liked === false ? (
+              <AiFillDislike />
+            ) : (
+              <AiOutlineDislike />
+            )}{" "}
+            <span>{comment.total_dislikes}</span>
           </Button>
           <Button>Reply</Button>
         </ButtonsContainer>
