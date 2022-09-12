@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import useDisableScroll from "../../hooks/useDisableScroll";
-import { PrimaryButton } from "../../ui/PrimaryBtn";
+import { Button } from "../../ui/Button";
 import {
   ConfirmBackdrop,
   ConfirmButtons,
@@ -34,8 +34,12 @@ const ConfirmationModal = ({
       <ConfirmContainer>
         <Message>{modalMessage}</Message>
         <ConfirmButtons>
-          <PrimaryButton onClick={toggleModal}>Cancel</PrimaryButton>
-          <PrimaryButton onClick={func}>{btnName}</PrimaryButton>
+          <Button variant="normal" onClick={toggleModal}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={func}>
+            {btnName}
+          </Button>
         </ConfirmButtons>
       </ConfirmContainer>
     </ConfirmDelete>

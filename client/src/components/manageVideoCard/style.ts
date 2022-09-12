@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const VideoCard = styled.div`
   border-radius: 5px;
@@ -44,7 +44,7 @@ export const VideoDetailItem = styled.div`
   gap: 10px;
   border-radius: 5px;
   padding: 5px 10px;
-  background-color: ${(props) => props.theme.btnBg};
+  border: solid 2px ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.textColor};
   svg {
     font-size: 1.2rem;

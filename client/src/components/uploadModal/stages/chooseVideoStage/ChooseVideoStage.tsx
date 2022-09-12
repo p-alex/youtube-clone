@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../app/store';
-import { PrimaryButton } from '../../../../ui/PrimaryBtn';
-import { UploadVideoData } from '../../UploadModal';
-import { Container, HiddenFileInput } from './style';
+import React, { ChangeEvent, useRef } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../app/store";
+import { Button } from "../../../../ui/Button";
+import { UploadVideoData } from "../../UploadModal";
+import { Container, HiddenFileInput } from "./style";
 
 const ChooseVideoStage = ({
   setUploadData,
@@ -12,7 +12,9 @@ const ChooseVideoStage = ({
   lastFocusableElement,
 }: {
   setUploadData: React.Dispatch<React.SetStateAction<UploadVideoData>>;
-  handleChangeStage: (stage: 'choose' | 'details' | 'uploading' | 'result') => void;
+  handleChangeStage: (
+    stage: "choose" | "details" | "uploading" | "result"
+  ) => void;
   setVideoFile: React.Dispatch<React.SetStateAction<File | null>>;
   lastFocusableElement: React.MutableRefObject<any>;
 }) => {
@@ -36,7 +38,7 @@ const ChooseVideoStage = ({
       mimetype: video.type,
     }));
 
-    handleChangeStage('details');
+    handleChangeStage("details");
   };
 
   const handleClickHiddenInput = () => {
@@ -45,16 +47,17 @@ const ChooseVideoStage = ({
 
   return (
     <Container>
-      <PrimaryButton
+      <Button
+        variant="primary"
         onClick={handleClickHiddenInput}
         ref={lastFocusableElement}
         autoFocus={true}
       >
         Select video
-      </PrimaryButton>
+      </Button>
       <HiddenFileInput
         ref={hiddenInput}
-        type={'file'}
+        type={"file"}
         accept=".mp4, .flv, .mov, .m4v"
         onChange={handleChooseFile}
       />

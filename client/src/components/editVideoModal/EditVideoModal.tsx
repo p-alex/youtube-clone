@@ -1,17 +1,20 @@
-import Image from 'next/image';
-import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { editVideo, resetVideoToEdit } from '../../app/features/manageVideo';
-import { RootState } from '../../app/store';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
-import useDisableScroll from '../../hooks/useDisableScroll';
-import { IVideo } from '../../pages/manage/videos';
-import { Input } from '../../ui/Input';
-import { PrimaryButton } from '../../ui/PrimaryBtn';
-import { Textarea } from '../../ui/Textarea';
-import { imageOptimizer } from '../../utils/imageOptimizer';
-import { convertToTagList } from '../uploadModal/UploadModal';
-import { MdClose } from 'react-icons/md';
+import Image from "next/image";
+import React, { ChangeEvent, useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  editVideo,
+  IVideo,
+  resetVideoToEdit,
+} from "../../app/features/manageVideo";
+import { RootState } from "../../app/store";
+import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
+import useDisableScroll from "../../hooks/useDisableScroll";
+import { Input } from "../../ui/Input";
+import { Button } from "../../ui/Button";
+import { Textarea } from "../../ui/Textarea";
+import { imageOptimizer } from "../../utils/imageOptimizer";
+import { convertToTagList } from "../uploadModal/UploadModal";
+import { MdClose } from "react-icons/md";
 import {
   Backdrop,
   CloseBtn,
@@ -23,8 +26,8 @@ import {
   Tag,
   TagContainer,
   ThumbnailContainer,
-} from './style';
-import { motion } from 'framer-motion';
+} from "./style";
+import { motion } from "framer-motion";
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -60,9 +63,9 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
   });
 
   const [updateVideo, { isLoading: isUpdateVideoLoading }] = useAxiosWithRetry(
-    'api/videos',
+    "api/videos",
     {
-      method: 'PATCH',
+      method: "PATCH",
       accessToken: auth.accessToken!,
       body: {
         video_id: video.video_id,
@@ -70,7 +73,9 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         description,
         thumbnail_data: thumbnailData,
         tag_list:
-          newTagList !== currentTagList && newTagList.length >= 4 ? newTagList : null,
+          newTagList !== currentTagList && newTagList.length >= 4
+            ? newTagList
+            : null,
       },
     }
   );
@@ -81,7 +86,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
       if (tags.result) {
         setCurrentTagList(tags.result.tags);
         setNewTagList(tags.result.tags);
-        tagsInputRef.current!.value = tags.result.tags.join(', ');
+        tagsInputRef.current!.value = tags.result.tags.join(", ");
       }
     } catch (error) {
       console.log(error);
@@ -106,7 +111,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             : thumbnailData.current_thumbnail_url,
         })
       );
-      setResult({ success: response.success, error: '' });
+      setResult({ success: response.success, error: "" });
     } catch (error: any) {
       setResult({ success: false, error: error.message });
     }
@@ -133,23 +138,27 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         as={motion.div}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ type: 'just' }}
+        transition={{ type: "just" }}
         exit={{ opacity: 0 }}
       ></Backdrop>
       <FormContainer
         as={motion.form}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: 'just' }}
+        transition={{ type: "just" }}
         exit={{ y: -50, opacity: 0 }}
       >
         <CloseBtn onClick={() => dispatch(resetVideoToEdit())}>
           <MdClose />
         </CloseBtn>
         <ThumbnailContainer>
-          <PrimaryButton onClick={() => hiddenInput.current.click()} type="button">
+          <Button
+            variant="normal"
+            onClick={() => hiddenInput.current.click()}
+            type="button"
+          >
             Change thumbnail
-          </PrimaryButton>
+          </Button>
           <HiddenInput
             type="file"
             accept=".jpg, .png"
@@ -169,9 +178,10 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             objectFit="contain"
           />
           {video.thumbnail_url &&
-            typeof thumbnailData.new_thumbnail_base64 === 'string' &&
+            typeof thumbnailData.new_thumbnail_base64 === "string" &&
             video.thumbnail_url !== thumbnailData.new_thumbnail_base64 && (
-              <PrimaryButton
+              <Button
+                variant="normal"
                 onClick={() =>
                   setThumbnailData((prevState) => ({
                     ...prevState,
@@ -181,12 +191,12 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
                 type="button"
               >
                 Reset
-              </PrimaryButton>
+              </Button>
             )}
         </ThumbnailContainer>
-        {typeof result?.success === 'boolean' ? (
+        {typeof result?.success === "boolean" ? (
           <ResultMessage isSuccess={result.success}>
-            {result.success ? 'Video edited successfully!' : result.error}
+            {result.success ? "Video edited successfully!" : result.error}
           </ResultMessage>
         ) : null}
         <InputLabel htmlFor="title">Title</InputLabel>
@@ -222,13 +232,14 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             })}
         </TagContainer>
 
-        <PrimaryButton
+        <Button
+          variant="primary"
           type="submit"
           onClick={handleUpdateVideo}
           disabled={isUpdateVideoLoading}
         >
-          {isUpdateVideoLoading ? 'Loading' : 'Edit'}
-        </PrimaryButton>
+          {isUpdateVideoLoading ? "Loading" : "Edit"}
+        </Button>
       </FormContainer>
     </Container>
   );

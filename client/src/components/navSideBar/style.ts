@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING } from '../../layout/style';
+import styled from "styled-components";
+import { CONTAINER_HORIZONTAL_PADDING } from "../../layout/style";
 
 export const NavSideBar_Wrapper = styled.div`
   position: fixed;
@@ -59,29 +59,6 @@ export const NavSideBar_ButtonList = styled.ul`
 `;
 
 export const NavSideBar_ButtonItem = styled.li``;
-
-export const NavSideBar_ButtonLink = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 20px;
-  color: ${(props) => props.theme.textColor};
-  &:hover {
-    background-color: ${(props) => props.theme.btnHoverBg};
-  }
-`;
-
-export const NavSideBar_Button = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 20px;
-  color: ${(props) => props.theme.textColor};
-  width: 100%;
-  &:hover {
-    background-color: ${(props) => props.theme.btnHoverBg};
-  }
-`;
 
 export const LoginContainer = styled.div`
   width: 100%;

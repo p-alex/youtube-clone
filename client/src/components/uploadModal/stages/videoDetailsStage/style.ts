@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
@@ -51,7 +51,7 @@ export const TagContainer = styled.div`
 `;
 
 export const Tag = styled.p`
-  background-color: ${(props) => props.theme.btnBg};
+  background-color: ${(props) => props.theme.normalBtn.bg};
   color: ${(props) => props.theme.textColor};
   padding: 5px 15px;
   border-radius: 500px;

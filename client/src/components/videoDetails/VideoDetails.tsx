@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { VideoInfo } from "../../app/features/videoSlice";
 import { RootState } from "../../app/store";
 import useAuth from "../../hooks/useAuth";
+import { SubscribeButton } from "../../ui/SubscribeButton";
 import {
   Description,
   Details,
@@ -11,7 +12,6 @@ import {
   DetailsHeader,
   ProfilePicture,
   SubCount,
-  SubscribeBtn,
   Username,
   UsernameAndSubsContainer,
 } from "./style";
@@ -40,7 +40,9 @@ const VideoDetails = ({ video }: { video: VideoInfo }) => {
             <Username>{video.username}</Username>
             <SubCount>{video.total_subscribers} subscribers</SubCount>
           </UsernameAndSubsContainer>
-          {isAuth && <SubscribeBtn>Subscribe</SubscribeBtn>}
+          {isAuth && (
+            <SubscribeButton variant={"sub"}>Subscribe</SubscribeButton>
+          )}
         </DetailsHeader>
         <Description>{video.description}</Description>
       </Details>

@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../layout/style';
+import styled from "styled-components";
+import {
+  CONTAINER_HORIZONTAL_PADDING,
+  MOBILE_BREAK_POINT,
+} from "../../layout/style";
 
 export const DetailsContainer = styled.div`
   display: flex;
@@ -36,13 +39,6 @@ export const Username = styled.a`
 `;
 export const SubCount = styled.small`
   color: ${(props) => props.theme.textMutedColor};
-`;
-export const SubscribeBtn = styled.button`
-  padding: 10px 16px;
-  text-transform: uppercase;
-  color: white;
-  background-color: ${(props) => props.theme.subscribeBtn.subBg};
-  border-radius: 2px;
 `;
 export const Description = styled.p`
   color: ${(props) => props.theme.textColor};

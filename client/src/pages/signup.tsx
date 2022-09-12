@@ -1,11 +1,12 @@
-import Link from 'next/link';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Logo from '../components/logo/Logo';
-import Layout from '../layout/Layout';
-import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../layout/style';
-import router from 'next/router';
-import useAxios from '../hooks/useAxios';
+import Link from "next/link";
+import React, { useState } from "react";
+import styled from "styled-components";
+import Logo from "../components/logo/Logo";
+import Layout from "../layout/Layout";
+import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from "../layout/style";
+import router from "next/router";
+import useAxios from "../hooks/useAxios";
+import { Button } from "../ui/Button";
 
 const Wrapper = styled.div`
   position: relative;
@@ -72,20 +73,6 @@ const FormInput = styled.input`
   margin-bottom: 20px;
 `;
 
-const FormSubmit = styled.button`
-  display: block;
-  width: 100%;
-  align-items: center;
-  padding: 10px;
-  background-color: ${(props) => props.theme.accentColor};
-  color: #111;
-  border: none;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-top: 20px;
-  border-radius: 2px;
-`;
-
 const SignInParagraph = styled.p`
   color: ${(props) => props.theme.textColor};
   margin-top: 15px;
@@ -100,21 +87,21 @@ const ErrorMessage = styled.p`
 `;
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [registerUser, { isLoading, errors }] = useAxios<{ user_id: string }>(
-    'api/users',
-    { method: 'POST', body: { email, username, password, confirmPassword } }
+    "api/users",
+    { method: "POST", body: { email, username, password, confirmPassword } }
   );
 
   const handleResetForm = () => {
-    setEmail('');
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
+    setEmail("");
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -123,7 +110,7 @@ const SignUp = () => {
       const response = await registerUser();
       if (response.success) {
         handleResetForm();
-        router.push('/signin');
+        router.push("/signin");
       }
     }
   };
@@ -138,7 +125,9 @@ const SignUp = () => {
           </LogoAndTitle>
           {errors &&
             errors.map((error) => {
-              return <ErrorMessage key={error.message}>{error.message}</ErrorMessage>;
+              return (
+                <ErrorMessage key={error.message}>{error.message}</ErrorMessage>
+              );
             })}
           <FormLabel htmlFor="email">Email</FormLabel>
           <FormInput
@@ -156,28 +145,29 @@ const SignUp = () => {
           />
           <FormLabel htmlFor="password">Password</FormLabel>
           <FormInput
-            type={'password'}
+            type={"password"}
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
           <FormInput
-            type={'password'}
+            type={"password"}
             id="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <FormSubmit
+          <Button
+            variant="primary"
             type="submit"
             disabled={!email || !username || !password || !confirmPassword}
           >
-            {isLoading ? 'Loading' : 'Sign Up'}
-          </FormSubmit>
+            {isLoading ? "Loading" : "Sign Up"}
+          </Button>
           <SignInParagraph>
-            Already have an account?{' '}
-            <Link href={'/signin'}>
-              <a>{isLoading ? 'Loading' : 'Sign up'}</a>
+            Already have an account?{" "}
+            <Link href={"/signin"}>
+              <a>{isLoading ? "Loading" : "Sign up"}</a>
             </Link>
           </SignInParagraph>
         </Form>

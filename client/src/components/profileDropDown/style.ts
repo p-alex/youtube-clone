@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { NAV_BAR_HEIGHT } from '../../layout/style';
+import styled from "styled-components";
+import { NAV_BAR_HEIGHT } from "../../layout/style";
 
 export const Container = styled.div`
   position: absolute;
@@ -47,26 +47,3 @@ export const ButtonList = styled.ul`
 `;
 
 export const ButtonItem = styled.li``;
-
-export const ButtonLink = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 20px;
-  color: ${(props) => props.theme.textColor};
-  &:hover {
-    background-color: ${(props) => props.theme.btnHoverBg};
-  }
-`;
-
-export const Button = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 20px;
-  color: ${(props) => props.theme.textColor};
-  width: 100%;
-  &:hover {
-    background-color: ${(props) => props.theme.btnHoverBg};
-  }
-`;

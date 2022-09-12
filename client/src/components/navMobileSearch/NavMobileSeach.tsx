@@ -1,12 +1,13 @@
-import React from 'react';
+import React from "react";
 import {
   CloseSearchBtn,
   Container,
   NavMobileSearch,
   NavMobileSearchBtn,
   NavMobileSearchForm,
-} from './style';
-import { MdArrowBack, MdSearch } from 'react-icons/md';
+} from "./style";
+import { MdArrowBack, MdSearch } from "react-icons/md";
+import { Button } from "../../ui/Button";
 
 const NavMobileSeach = ({
   handleToggleMobileSearch,
@@ -20,9 +21,9 @@ const NavMobileSeach = ({
       </CloseSearchBtn>
       <NavMobileSearchForm>
         <NavMobileSearch placeholder="Search" autoFocus />
-        <NavMobileSearchBtn>
+        <Button variant="normal">
           <MdSearch />
-        </NavMobileSearchBtn>
+        </Button>
       </NavMobileSearchForm>
     </Container>
   );

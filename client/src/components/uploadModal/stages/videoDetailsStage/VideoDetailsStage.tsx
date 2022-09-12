@@ -1,12 +1,15 @@
-import Image from 'next/image';
-import React, { ChangeEvent, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { disableKeyBinds, enableKeyBinds } from '../../../../app/features/videoSlice';
-import { Input } from '../../../../ui/Input';
-import { PrimaryButton } from '../../../../ui/PrimaryBtn';
-import { Textarea } from '../../../../ui/Textarea';
-import { imageOptimizer } from '../../../../utils/imageOptimizer';
-import { convertToTagList, UploadVideoData } from '../../UploadModal';
+import Image from "next/image";
+import React, { ChangeEvent, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import {
+  disableKeyBinds,
+  enableKeyBinds,
+} from "../../../../app/features/videoSlice";
+import { Input } from "../../../../ui/Input";
+import { Button } from "../../../../ui/Button";
+import { Textarea } from "../../../../ui/Textarea";
+import { imageOptimizer } from "../../../../utils/imageOptimizer";
+import { convertToTagList, UploadVideoData } from "../../UploadModal";
 import {
   Container,
   FormContainer,
@@ -15,7 +18,7 @@ import {
   Tag,
   TagContainer,
   ThumbnailContainer,
-} from './style';
+} from "./style";
 
 const VideoDetailsStage = ({
   uploadData,
@@ -38,7 +41,10 @@ const VideoDetailsStage = ({
     file.readAsDataURL(image);
     file.onload = async () => {
       const optimizedImageUrl = await imageOptimizer(file.result);
-      setUploadData((prevState) => ({ ...prevState, thumbnail_url: optimizedImageUrl }));
+      setUploadData((prevState) => ({
+        ...prevState,
+        thumbnail_url: optimizedImageUrl,
+      }));
     };
   };
 
@@ -55,9 +61,13 @@ const VideoDetailsStage = ({
         <ThumbnailContainer>
           {!uploadData.thumbnail_url && (
             <>
-              <PrimaryButton onClick={() => hiddenInput.current.click()} type="button">
+              <Button
+                variant="normal"
+                onClick={() => hiddenInput.current.click()}
+                type="button"
+              >
                 Choose thumbnail
-              </PrimaryButton>
+              </Button>
               <HiddenInput
                 type="file"
                 accept=".jpg, .png"
@@ -76,14 +86,18 @@ const VideoDetailsStage = ({
                 alt=""
                 objectFit="contain"
               />
-              <PrimaryButton
+              <Button
+                variant="normal"
                 onClick={() =>
-                  setUploadData((prevState) => ({ ...prevState, thumbnail_url: '' }))
+                  setUploadData((prevState) => ({
+                    ...prevState,
+                    thumbnail_url: "",
+                  }))
                 }
                 type="button"
               >
                 Reset
-              </PrimaryButton>
+              </Button>
             </>
           )}
         </ThumbnailContainer>
@@ -93,7 +107,10 @@ const VideoDetailsStage = ({
           placeholder="Write a title"
           value={uploadData.title}
           onChange={(e) =>
-            setUploadData((prevState) => ({ ...prevState, title: e.target.value }))
+            setUploadData((prevState) => ({
+              ...prevState,
+              title: e.target.value,
+            }))
           }
           required
           maxLength={100}
@@ -105,7 +122,10 @@ const VideoDetailsStage = ({
           placeholder="Write a description"
           value={uploadData.description}
           onChange={(e) =>
-            setUploadData((prevState) => ({ ...prevState, description: e.target.value }))
+            setUploadData((prevState) => ({
+              ...prevState,
+              description: e.target.value,
+            }))
           }
           maxLength={1000}
         ></Textarea>
@@ -131,9 +151,9 @@ const VideoDetailsStage = ({
             })}
         </TagContainer>
 
-        <PrimaryButton type="submit" ref={lastFocusableElement}>
+        <Button variant="primary" type="submit" ref={lastFocusableElement}>
           Upload
-        </PrimaryButton>
+        </Button>
       </FormContainer>
     </Container>
   );

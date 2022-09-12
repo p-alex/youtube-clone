@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import {
   NavAddVideoBtn,
   NavBtnContainer,
@@ -10,20 +10,21 @@ import {
   NavSearchForm,
   NavToggleAndLogoContainer,
   NavToggleSideBar,
-} from './style';
-import { BiMenu } from 'react-icons/bi';
-import { MdOutlineVideoCall, MdSearch } from 'react-icons/md';
-import Image from 'next/image';
-import Logo from '../logo/Logo';
-import NavSideBar from '../navSideBar/NavSideBar';
-import { AnimatePresence } from 'framer-motion';
-import NavMobileSearch from '../navMobileSearch/NavMobileSeach';
-import SignInButton from '../../ui/SignInButton';
-import useAuth from '../../hooks/useAuth';
-import UploadModal from '../uploadModal/UploadModal';
-import { useDispatch } from 'react-redux';
-import { disableKeyBinds, enableKeyBinds } from '../../app/features/videoSlice';
-import { ProfileDropDown } from '../profileDropDown/ProfileDropDown';
+} from "./style";
+import { BiMenu } from "react-icons/bi";
+import { MdOutlineVideoCall, MdSearch } from "react-icons/md";
+import Image from "next/image";
+import Logo from "../logo/Logo";
+import NavSideBar from "../navSideBar/NavSideBar";
+import { AnimatePresence } from "framer-motion";
+import NavMobileSearch from "../navMobileSearch/NavMobileSeach";
+import SignInButton from "../../ui/SignInButton";
+import useAuth from "../../hooks/useAuth";
+import UploadModal from "../uploadModal/UploadModal";
+import { useDispatch } from "react-redux";
+import { disableKeyBinds, enableKeyBinds } from "../../app/features/videoSlice";
+import { ProfileDropDown } from "../profileDropDown/ProfileDropDown";
+import { Button } from "../../ui/Button";
 
 const NavBar = () => {
   const { isAuth, user } = useAuth();
@@ -76,9 +77,9 @@ const NavBar = () => {
             onFocus={() => dispatch(disableKeyBinds())}
             onBlur={() => dispatch(enableKeyBinds())}
           />
-          <NavSearchBtn>
+          <Button variant={"normal"}>
             <MdSearch />
-          </NavSearchBtn>
+          </Button>
         </NavSearchForm>
 
         <NavBtnContainer>
@@ -100,10 +101,16 @@ const NavBar = () => {
               </NavAddVideoBtn>
               <NavProfileBtn
                 aria-label="Go to profile"
-                onClick={() => setIsProfileDropDownActive((prevState) => !prevState)}
+                onClick={() =>
+                  setIsProfileDropDownActive((prevState) => !prevState)
+                }
               >
                 <Image
-                  src={user ? user.profile_picture : '/images/default-profile-picture'}
+                  src={
+                    user
+                      ? user.profile_picture
+                      : "/images/default-profile-picture"
+                  }
                   width={32}
                   height={32}
                   alt=""
@@ -119,7 +126,9 @@ const NavBar = () => {
         </NavBtnContainer>
       </NavContainer>
       <AnimatePresence>
-        {isSideBarActive && <NavSideBar handleToggleSideBar={handleToggleSideBar} />}
+        {isSideBarActive && (
+          <NavSideBar handleToggleSideBar={handleToggleSideBar} />
+        )}
         {isUploadModalActive && (
           <UploadModal handleToggleUploadModal={handleToggleUploadModal} />
         )}

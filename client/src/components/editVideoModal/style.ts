@@ -43,7 +43,7 @@ export const FormContainer = styled.form`
   top: 20px;
   max-width: 800px;
   height: 95vh;
-  max-height: 700px;
+  max-height: 800px;
   margin: auto;
   z-index: 502;
   padding: 20px;
@@ -88,7 +88,7 @@ export const TagContainer = styled.div`
 `;
 
 export const Tag = styled.p`
-  background-color: ${(props) => props.theme.btnBg};
+  background-color: ${(props) => props.theme.normalBtn.bg};
   color: ${(props) => props.theme.textColor};
   padding: 5px 15px;
   border-radius: 500px;

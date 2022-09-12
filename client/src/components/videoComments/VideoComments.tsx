@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
 import { useRouter } from "next/router";
+import { Button } from "../../ui/Button";
 
 export interface IComment {
   comment_id: string;
@@ -115,14 +116,20 @@ const VideoComments = ({ video }: { video: VideoInfo }) => {
               onFocus={() => dispatch(disableKeyBinds())}
               onBlur={() => dispatch(enableKeyBinds())}
             />
-            <CommentBtn>Comment</CommentBtn>
+            <Button variant="primary">Comment</Button>
           </AddCommentForm>
         </FormContainer>
       )}
 
       <CommentsList>
         {comments.map((comment, index) => {
-          return <Comment key={index} comment={comment} />;
+          return (
+            <Comment
+              key={index}
+              comment={comment}
+              setCommentToEdit={setCommentToEdit}
+            />
+          );
         })}
       </CommentsList>
     </Container>

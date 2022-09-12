@@ -7,6 +7,7 @@ import {
 } from "../../../app/features/manageVideo";
 import { RootState } from "../../../app/store";
 import useAxiosWithRetry from "../../../hooks/useAxiosWithRetry";
+import { Button } from "../../../ui/Button";
 import { VideoFunctionButton, VideoFunctions } from "./style";
 
 const ManageVideoCardFunctions = ({ video }: { video: IVideo }) => {
@@ -30,14 +31,18 @@ const ManageVideoCardFunctions = ({ video }: { video: IVideo }) => {
 
   return (
     <VideoFunctions>
-      <VideoFunctionButton onClick={() => dispatch(selectVideoToEdit(video))}>
+      <Button
+        variant="normal"
+        onClick={() => dispatch(selectVideoToEdit(video))}
+      >
         Edit
-      </VideoFunctionButton>
-      <VideoFunctionButton
+      </Button>
+      <Button
+        variant="danger"
         onClick={() => dispatch(selectVideoToDelete(video.video_id))}
       >
         Delete
-      </VideoFunctionButton>
+      </Button>
     </VideoFunctions>
   );
 };

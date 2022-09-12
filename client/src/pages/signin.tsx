@@ -1,12 +1,13 @@
-import Link from 'next/link';
-import router from 'next/router';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import { IUser, setUser } from '../app/features/authSlice';
-import Logo from '../components/logo/Logo';
-import useAxios from '../hooks/useAxios';
-import Layout from '../layout/Layout';
+import Link from "next/link";
+import router from "next/router";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
+import { IUser, setUser } from "../app/features/authSlice";
+import Logo from "../components/logo/Logo";
+import useAxios from "../hooks/useAxios";
+import Layout from "../layout/Layout";
+import { Button } from "../ui/Button";
 
 const Wrapper = styled.div`
   position: relative;
@@ -63,20 +64,6 @@ const FormInput = styled.input`
   margin-bottom: 20px;
 `;
 
-const FormSubmit = styled.button`
-  display: block;
-  width: 100%;
-  align-items: center;
-  padding: 10px;
-  background-color: ${(props) => props.theme.accentColor};
-  color: #111;
-  border: none;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-top: 20px;
-  border-radius: 2px;
-`;
-
 const SignUpParagraph = styled.p`
   color: ${(props) => props.theme.textColor};
   margin-top: 20px;
@@ -92,21 +79,23 @@ const ErrorMessage = styled.p`
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [loginUser, { isLoading, errors }] = useAxios<{
     user: IUser;
     accessToken: string;
-  } | null>('api/auth', { method: 'POST', body: { email, password } });
+  } | null>("api/auth", { method: "POST", body: { email, password } });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email && password) {
       const { success, result } = await loginUser();
       if (success && result) {
-        dispatch(setUser({ user: result.user, accessToken: result.accessToken }));
-        router.push('/');
+        dispatch(
+          setUser({ user: result.user, accessToken: result.accessToken })
+        );
+        router.push("/");
       }
     }
   };
@@ -121,7 +110,9 @@ const SignIn = () => {
           </LogoAndTitle>
           {errors &&
             errors.map((error) => {
-              return <ErrorMessage key={error.message}>{error.message}</ErrorMessage>;
+              return (
+                <ErrorMessage key={error.message}>{error.message}</ErrorMessage>
+              );
             })}
           <FormLabel htmlFor="email">Email</FormLabel>
           <FormInput
@@ -132,15 +123,17 @@ const SignIn = () => {
           />
           <FormLabel htmlFor="password">Password</FormLabel>
           <FormInput
-            type={'password'}
+            type={"password"}
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <FormSubmit type="submit">{isLoading ? 'Loading' : 'Sign in'}</FormSubmit>
+          <Button variant="primary" type="submit">
+            {isLoading ? "Loading" : "Sign in"}
+          </Button>
           <SignUpParagraph>
-            Don&apos;t have an account?{' '}
-            <Link href={'/signup'}>
+            Don&apos;t have an account?{" "}
+            <Link href={"/signup"}>
               <a>Sign up</a>
             </Link>
           </SignUpParagraph>
