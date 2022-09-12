@@ -1,7 +1,5 @@
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
@@ -11,12 +9,12 @@ import {
   setUserVideos,
 } from "../../app/features/manageVideo";
 import { RootState } from "../../app/store";
+import ConfirmationModal from "../../components/confirmationModal/ConfirmationModal";
 import EditVideoModal from "../../components/editVideoModal/EditVideoModal";
 import ManageVideoCard from "../../components/manageVideoCard/ManageVideoCard";
 import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
 import Layout from "../../layout/Layout";
 import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from "../../layout/style";
-import { PrimaryButton } from "../../ui/PrimaryBtn";
 
 const Container = styled.div`
   position: relative;
@@ -36,45 +34,6 @@ const VideoCards = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 10px;
-`;
-
-const ConfirmDelete = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ConfirmBackdrop = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: 1001;
-`;
-
-const ConfirmContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 1002;
-  background-color: ${(props) => props.theme.uiBg};
-  padding: 20px;
-  border-radius: 5px;
-`;
-
-const ConfirmButtons = styled.div`
-  display: flex;
-  gap: 20px;
 `;
 
 const Manage = () => {
@@ -123,28 +82,12 @@ const Manage = () => {
     <Layout>
       <AnimatePresence>
         {videoToDelete && (
-          <ConfirmDelete
-            as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ type: "just" }}
-            exit={{ opacity: 0 }}
-          >
-            <ConfirmBackdrop
-              onClick={() => dispatch(resetVideoToDelete())}
-            ></ConfirmBackdrop>
-            <ConfirmContainer>
-              <Title>Are you sure?</Title>
-              <ConfirmButtons>
-                <PrimaryButton onClick={() => dispatch(resetVideoToDelete())}>
-                  Cancel
-                </PrimaryButton>
-                <PrimaryButton onClick={handleDeleteVideo}>
-                  Delete
-                </PrimaryButton>
-              </ConfirmButtons>
-            </ConfirmContainer>
-          </ConfirmDelete>
+          <ConfirmationModal
+            toggleModal={() => dispatch(resetVideoToDelete())}
+            func={handleDeleteVideo}
+            btnName={"Delete"}
+            modalMessage="Are you sure?"
+          />
         )}
       </AnimatePresence>
       <AnimatePresence>

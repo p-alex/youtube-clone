@@ -1,10 +1,9 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import { IVideo } from '../../pages/manage/videos';
-import { dateConverter } from '../../utils/dateConverter';
-import ManageVideoCardFunctions from './manageVideoCardFunctions/ManageVideoCardFunctions';
-import { MdThumbUp, MdThumbDown } from 'react-icons/md';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { dateConverter } from "../../utils/dateConverter";
+import ManageVideoCardFunctions from "./manageVideoCardFunctions/ManageVideoCardFunctions";
+import { MdThumbUp, MdThumbDown } from "react-icons/md";
 import {
   VideoCard,
   VideoDetailItem,
@@ -13,8 +12,9 @@ import {
   VideoDuration,
   VideoImage,
   VideoTitle,
-} from './style';
-import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
+} from "./style";
+import { videoDurationFormatter } from "../../utils/videoDurationFormatter";
+import { IVideo } from "../../app/features/manageVideo";
 
 const ManageVideoCard = ({ video }: { video: IVideo }) => {
   return (
@@ -22,8 +22,15 @@ const ManageVideoCard = ({ video }: { video: IVideo }) => {
       <Link href={`/videos/${video.video_id}`}>
         <a>
           <VideoImage>
-            <Image src={video.thumbnail_url} width={700} height={393.75} alt="" />
-            <VideoDuration>{videoDurationFormatter(video.duration)}</VideoDuration>
+            <Image
+              src={video.thumbnail_url}
+              width={700}
+              height={393.75}
+              alt=""
+            />
+            <VideoDuration>
+              {videoDurationFormatter(video.duration)}
+            </VideoDuration>
           </VideoImage>
         </a>
       </Link>
