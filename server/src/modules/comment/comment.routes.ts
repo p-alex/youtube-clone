@@ -19,7 +19,7 @@ import {
 const router = express.Router();
 
 router.get(
-  "/api/comments/:video_id/:page",
+  "/api/comments/:videoId/:page",
   requireAuth,
   validateResource(getCommentsSchema),
   getCommentsController

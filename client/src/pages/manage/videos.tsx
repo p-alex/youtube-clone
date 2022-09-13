@@ -86,7 +86,6 @@ const Manage = () => {
             toggleModal={() => dispatch(resetVideoToDelete())}
             func={handleDeleteVideo}
             btnName={"Delete"}
-            modalMessage="Are you sure_?"
           />
         )}
       </AnimatePresence>

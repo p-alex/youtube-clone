@@ -7,6 +7,7 @@ export const Button = styled.button<{
   align-items: center;
   justify-content: center;
   font-weight: 700;
+  width: max-content;
   background-color: ${(props) =>
     props.variant === "primary"
       ? props.theme.primaryBtn.bg

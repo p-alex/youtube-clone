@@ -163,7 +163,10 @@ const VideoPage = () => {
                 )}
               </AnimatePresence>
               {!isWindowWidthUnder && video.video_id && (
-                <VideoComments video={video} />
+                <VideoComments
+                  video={video}
+                  totalComments={video.total_comments}
+                />
               )}
             </VideoDetailsContainer>
             {isTheatreMode && (

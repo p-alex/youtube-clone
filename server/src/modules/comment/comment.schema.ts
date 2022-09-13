@@ -1,30 +1,30 @@
-import { number, object, string, TypeOf, z } from "zod";
+import { object, string, TypeOf, z } from "zod";
 
 export const getCommentsSchema = object({
   params: object({
-    video_id: string({}),
+    videoId: string({}),
     page: string({}),
   }),
 });
 
 export const addCommentSchema = object({
   body: object({
-    video_id: string({ required_error: "Video id is required" }),
+    videoId: string({ required_error: "Video id is required" }),
     text: string({ required_error: "Text is required" }).min(1).max(1000),
   }),
 });
 
 export const updateCommentSchema = object({
   body: object({
-    comment_id: string({ required_error: "Comment id is required" }),
+    commentId: string({ required_error: "Comment id is required" }),
     text: string({ required_error: "Text is required" }).min(1).max(1000),
   }),
 });
 
 export const deleteCommentSchema = object({
   body: object({
-    comment_id: string({ required_error: "Comment id is required" }),
-    video_id: string({ required_error: "Video id is required" }),
+    commentId: string({ required_error: "Comment id is required" }),
+    videoId: string({ required_error: "Video id is required" }),
   }),
 });
 

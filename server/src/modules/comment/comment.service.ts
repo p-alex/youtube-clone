@@ -45,10 +45,10 @@ export const updateComment = async (
   text: string
 ) => {
   const response = await db.query(
-    "UPDATE comments SET text = $1 WHERE comment_id = $2 AND user_id = $3 RETURNING *",
+    "UPDATE comments SET text = $1 WHERE comment_id = $2 AND user_id = $3 RETURNING comment_id",
     [text, comment_id, user_id]
   );
-  const data: Comment = response.rows[0];
+  const data: { comment_id: string } = response.rows[0];
   return data;
 };
 

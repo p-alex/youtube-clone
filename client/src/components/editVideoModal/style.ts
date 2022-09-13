@@ -5,6 +5,9 @@ export const Container = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
   z-index: 500;
@@ -40,10 +43,8 @@ export const HiddenInput = styled.input`
 export const FormContainer = styled.form`
   position: relative;
   overflow: none;
-  top: 20px;
-  max-width: 800px;
-  height: 95vh;
-  max-height: 800px;
+  max-width: 900px;
+  max-height: 90vh;
   margin: auto;
   z-index: 502;
   padding: 20px;

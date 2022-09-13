@@ -39,6 +39,8 @@ export const Message = styled.h2`
   margin-bottom: 20px;
   max-width: 250px;
   text-align: center;
+  font-weight: 400;
+  font-size: 1.3rem;
 `;
 
 export const ConfirmButtons = styled.div`

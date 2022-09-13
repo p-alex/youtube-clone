@@ -19,7 +19,7 @@ const ConfirmationModal = ({
   toggleModal: () => void;
   func: () => void;
   btnName: string;
-  modalMessage: string;
+  modalMessage?: string;
 }) => {
   useDisableScroll();
   return (
@@ -32,7 +32,7 @@ const ConfirmationModal = ({
     >
       <ConfirmBackdrop onClick={toggleModal}></ConfirmBackdrop>
       <ConfirmContainer>
-        <Message>{modalMessage}</Message>
+        <Message>{modalMessage ? modalMessage : "Are you sure?"}</Message>
         <ConfirmButtons>
           <Button variant="normal" onClick={toggleModal}>
             Cancel

@@ -18,11 +18,11 @@ export const getCommentsController = async (
   req: Request<GetCommentsInput>,
   res: Response
 ) => {
-  const { video_id, page } = req.params;
+  const { videoId, page } = req.params;
   // @ts-ignore
   const { user_id } = req.user;
   try {
-    const comments = await getComments(video_id, user_id, page);
+    const comments = await getComments(videoId, user_id, page);
     return res
       .status(200)
       .json({ success: true, errors: [], result: { comments } });
@@ -40,11 +40,11 @@ export const addCommentController = async (
   req: Request<{}, {}, AddCommentInput>,
   res: Response
 ) => {
-  const { video_id, text } = req.body;
+  const { videoId, text } = req.body;
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const comment_id = await addComment(video_id, user_id, text);
+    const comment_id = await addComment(videoId, user_id, text);
     return res
       .status(201)
       .json({ success: true, errors: [], result: { comment_id } });
@@ -62,14 +62,14 @@ export const updateCommentController = async (
   req: Request<{}, {}, UpdateCommentInput>,
   res: Response
 ) => {
-  const { comment_id, text } = req.body;
+  const { commentId, text } = req.body;
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const comment = await updateComment(comment_id, user_id, text);
+    const { comment_id } = await updateComment(commentId, user_id, text);
     return res
       .status(200)
-      .json({ success: true, errors: [], result: { comment } });
+      .json({ success: true, errors: [], result: { comment_id } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -84,14 +84,14 @@ export const deleteCommentController = async (
   req: Request<{}, {}, DeleteCommentInput>,
   res: Response
 ) => {
-  const { comment_id, video_id } = req.body;
+  const { commentId, videoId } = req.body;
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const commentId = await deleteComment(comment_id, video_id, user_id);
+    const comment_id = await deleteComment(commentId, videoId, user_id);
     return res
       .status(200)
-      .json({ success: true, errors: [], result: { comment_id: commentId } });
+      .json({ success: true, errors: [], result: { comment_id } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
