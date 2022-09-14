@@ -111,7 +111,7 @@ const VideoComments = ({
           user_id: user!.user_id,
           username: user!.username,
           profile_picture: user!.profile_picture,
-          created_at: new Date(),
+          created_at: Date.now(),
         };
         dispatch(addComment({ comment: newComment }));
       }
