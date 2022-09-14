@@ -54,6 +54,7 @@ export const getVideo = async (video_id: string, user_id: string) => {
     video_id,
     user_id,
   ]);
+  console.log(response.rows[0]);
   const data: {
     video_id: string;
     user_id: string;

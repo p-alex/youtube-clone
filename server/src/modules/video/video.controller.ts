@@ -62,8 +62,6 @@ export const getVideoController = async (req: Request, res: Response) => {
   const { user_id } = req.user;
   try {
     const videoData = await getVideo(video_id, user_id);
-    // const likeStatus = await getVideoLikeStatus(video_id, user_id);
-    // const video = { ...videoData, ...likeStatus };
     return res
       .status(200)
       .json({ success: true, errors: [], result: { video: videoData } });
