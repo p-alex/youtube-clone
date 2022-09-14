@@ -34,8 +34,8 @@ type ActionType = z.infer<typeof ActionType>;
 
 export const likeOrDislikeCommentSchema = object({
   body: object({
-    action_type: ActionType,
-    comment_id: string({ required_error: "Comment id is required" }),
+    actionType: ActionType,
+    commentId: string({ required_error: "Comment id is required" }),
   }),
 });
 

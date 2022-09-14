@@ -13,6 +13,7 @@ import {
   deleteComment,
   editComment,
   IComment,
+  likeOrDislikeComment,
   resetCommentIds,
   setCommentToDelete,
   setCommentToEdit,
@@ -53,6 +54,28 @@ const Comment = ({ comment }: { comment: IComment }) => {
 
   const editBtnRef = useRef<HTMLButtonElement>(null);
   const deleteBtnRef = useRef<HTMLButtonElement>(null);
+  const firstFocusableElement = useRef<HTMLTextAreaElement>(null);
+  const lastFocusableElement = useRef<HTMLButtonElement>(null);
+
+  const [editedCommentText, setEditedCommentText] = useState(comment.text);
+  const [actionType, setActionType] = useState<"like" | "dislike" | null>(null);
+
+  const [likeOrDislikeRequest] = useAxiosWithRetry<null>("api/comments/likes", {
+    method: "POST",
+    accessToken,
+    body: { actionType, commentId: comment.comment_id },
+  });
+
+  const [editCommentRequest, { isLoading: isEditCommentLoading }] =
+    useAxiosWithRetry<{ comment_id: string }>("api/comments", {
+      method: "PATCH",
+      accessToken,
+      body: {
+        commentId: comment.comment_id,
+        videoId: query.video_id,
+        text: editedCommentText,
+      },
+    });
 
   const [deleteCommentRequest, { isLoading: isDeleteLoading }] =
     useAxiosWithRetry<{
@@ -66,6 +89,15 @@ const Comment = ({ comment }: { comment: IComment }) => {
       accessToken,
     });
 
+  const handleSetCommentToEdit = () => {
+    dispatch(setCommentToEdit({ commentId: comment.comment_id }));
+  };
+
+  const handleToggleEditModeOff = () => {
+    dispatch(resetCommentIds());
+    editBtnRef.current?.focus();
+  };
+
   const handleSetCommentToDelete = () => {
     dispatch(setCommentToDelete({ comment_id: comment.comment_id }));
   };
@@ -75,38 +107,24 @@ const Comment = ({ comment }: { comment: IComment }) => {
     deleteBtnRef.current?.focus();
   };
 
-  const handleDeleteComment = async () => {
+  const handleLikeOrDislike = async () => {
     try {
-      const response = await deleteCommentRequest();
-      if (response.success && response.result) {
-        dispatch(deleteComment({ comment_id: response.result.comment_id }));
+      const response = await likeOrDislikeRequest();
+      if (response.success) {
+        dispatch(
+          likeOrDislikeComment({ comment_id: comment.comment_id, actionType })
+        );
       }
+      setActionType(null);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [editedCommentText, setEditedCommentText] = useState(comment.text);
-
-  const [editCommentRequest, { isLoading: isEditCommentLoading }] =
-    useAxiosWithRetry<{ comment_id: string }>("api/comments", {
-      method: "PATCH",
-      accessToken,
-      body: {
-        commentId: comment.comment_id,
-        videoId: query.video_id,
-        text: editedCommentText,
-      },
-    });
-
-  const handleSetCommentToEdit = () => {
-    dispatch(setCommentToEdit({ commentId: comment.comment_id }));
-  };
-
-  const handleToggleEditModeOff = () => {
-    dispatch(resetCommentIds());
-    editBtnRef.current?.focus();
-  };
+  useEffect(() => {
+    if (actionType === null) return;
+    handleLikeOrDislike();
+  }, [actionType]);
 
   const handleEditComment = async () => {
     if (comment.text === editedCommentText) return;
@@ -125,8 +143,16 @@ const Comment = ({ comment }: { comment: IComment }) => {
     }
   };
 
-  const firstFocusableElement = useRef<HTMLTextAreaElement>(null);
-  const lastFocusableElement = useRef<HTMLButtonElement>(null);
+  const handleDeleteComment = async () => {
+    try {
+      const response = await deleteCommentRequest();
+      if (response.success && response.result) {
+        dispatch(deleteComment({ comment_id: response.result.comment_id }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container>
@@ -164,12 +190,12 @@ const Comment = ({ comment }: { comment: IComment }) => {
             </Header>
             <Text>{comment.text}</Text>
             <ButtonsContainer>
-              <CommentButton>
-                {comment.is_liked ? <AiFillLike /> : <AiOutlineLike />}
+              <CommentButton onClick={() => setActionType("like")}>
+                {comment.like_status ? <AiFillLike /> : <AiOutlineLike />}
                 <span>{comment.total_likes}</span>
               </CommentButton>
-              <CommentButton>
-                {comment.is_liked === false ? (
+              <CommentButton onClick={() => setActionType("dislike")}>
+                {comment.like_status === false ? (
                   <AiFillDislike />
                 ) : (
                   <AiOutlineDislike />
@@ -177,7 +203,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
                 <span>{comment.total_dislikes}</span>
               </CommentButton>
               <CommentButton>Reply</CommentButton>
-              {comment.user_id === user!.user_id && (
+              {comment.user_id === user?.user_id && (
                 <>
                   <CommentButton
                     onClick={handleSetCommentToEdit}

@@ -5,7 +5,7 @@ export interface IComment {
   text: string;
   total_likes: number;
   total_dislikes: number;
-  is_liked: boolean | null;
+  like_status: boolean | null;
   user_id: string;
   username: string;
   profile_picture: string;
@@ -58,6 +58,48 @@ export const commentsSectionSlice = createSlice({
       state.newCommentText = "";
       state.totalComments = state.totalComments + 1;
     },
+    likeOrDislikeComment: (
+      state,
+      action: PayloadAction<{
+        comment_id: string;
+        actionType: "like" | "dislike" | null;
+      }>
+    ) => {
+      state.comments = state.comments.map((comment) => {
+        if (comment.comment_id === action.payload.comment_id) {
+          const like_status = comment.like_status;
+          const action_type = action.payload.actionType;
+          if (action_type === "like" && like_status === false) {
+            comment.like_status = true;
+            comment.total_likes += 1;
+            comment.total_dislikes -= 1;
+            return comment;
+          } else if (action_type === "dislike" && like_status === true) {
+            comment.like_status = false;
+            comment.total_likes -= 1;
+            comment.total_dislikes += 1;
+            return comment;
+          } else if (action_type === "like" && like_status === true) {
+            comment.like_status = null;
+            comment.total_likes -= 1;
+            return comment;
+          } else if (action_type === "dislike" && like_status === false) {
+            comment.like_status = null;
+            comment.total_dislikes -= 1;
+            return comment;
+          } else if (action_type === "like" && like_status === null) {
+            comment.like_status = true;
+            comment.total_likes += 1;
+            return comment;
+          } else if (action_type === "dislike" && like_status === null) {
+            comment.like_status = false;
+            comment.total_dislikes += 1;
+            return comment;
+          }
+        }
+        return comment;
+      });
+    },
     editComment: (
       state,
       action: PayloadAction<{ commentId: string; newText: string }>
@@ -101,6 +143,7 @@ export const {
   setCommentToEdit,
   setCommentToDelete,
   addComment,
+  likeOrDislikeComment,
   editComment,
   deleteComment,
   increaseCommentsSectionPage,

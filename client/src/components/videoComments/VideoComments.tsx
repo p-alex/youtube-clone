@@ -107,7 +107,7 @@ const VideoComments = ({
           text: newCommentText,
           total_likes: 0,
           total_dislikes: 0,
-          is_liked: null,
+          like_status: null,
           user_id: user!.user_id,
           username: user!.username,
           profile_picture: user!.profile_picture,

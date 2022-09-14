@@ -106,12 +106,12 @@ export const likeOrDislikeCommentController = async (
   req: Request<{}, {}, LikeOrDislikeCommentInput>,
   res: Response
 ) => {
-  const { action_type, comment_id } = req.body;
+  const { actionType, commentId } = req.body;
   //@ts-ignore
   const { user_id } = req.user;
 
   try {
-    await likeOrDislikeComment(action_type, comment_id, user_id);
+    await likeOrDislikeComment(actionType, commentId, user_id);
     return res.status(200).json({ success: true, errors: [], result: null });
   } catch (error: any) {
     console.log(error);
