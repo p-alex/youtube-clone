@@ -105,7 +105,7 @@ export const commentsSectionSlice = createSlice({
       action: PayloadAction<{ commentId: string; newText: string }>
     ) => {
       state.comments = state.comments.map((comment) => {
-        if ((comment.comment_id = action.payload.commentId)) {
+        if (comment.comment_id === action.payload.commentId) {
           comment.text = action.payload.newText;
           return comment;
         }

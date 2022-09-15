@@ -60,6 +60,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
   const [editedCommentText, setEditedCommentText] = useState(comment.text);
   const [actionType, setActionType] = useState<"like" | "dislike" | null>(null);
 
+  // =============== REQUESTS ===============
   const [likeOrDislikeRequest] = useAxiosWithRetry<null>("api/comments/likes", {
     method: "POST",
     accessToken,
@@ -89,32 +90,30 @@ const Comment = ({ comment }: { comment: IComment }) => {
       accessToken,
     });
 
-  const handleSetCommentToEdit = () => {
+  // =============== TOGGLES ===============
+  const handleSetCommentToEdit = () =>
     dispatch(setCommentToEdit({ commentId: comment.comment_id }));
-  };
 
   const handleToggleEditModeOff = () => {
     dispatch(resetCommentIds());
-    editBtnRef.current?.focus();
+    setTimeout(() => {
+      editBtnRef.current?.focus();
+    }, 2);
   };
 
-  const handleSetCommentToDelete = () => {
+  const handleSetCommentToDelete = () =>
     dispatch(setCommentToDelete({ comment_id: comment.comment_id }));
-  };
 
-  const handleToggleDeleteModeOff = () => {
-    dispatch(resetCommentIds());
-    deleteBtnRef.current?.focus();
-  };
+  const handleToggleDeleteModeOff = () => dispatch(resetCommentIds());
 
+  // =============== HANDLERS ===============
   const handleLikeOrDislike = async () => {
     try {
       const response = await likeOrDislikeRequest();
-      if (response.success) {
+      if (response.success)
         dispatch(
           likeOrDislikeComment({ comment_id: comment.comment_id, actionType })
         );
-      }
       setActionType(null);
     } catch (error) {
       console.log(error);
@@ -137,6 +136,9 @@ const Comment = ({ comment }: { comment: IComment }) => {
             newText: editedCommentText,
           })
         );
+        setTimeout(() => {
+          editBtnRef.current?.focus();
+        }, 2);
       }
     } catch (error) {
       console.log(error);
@@ -146,9 +148,8 @@ const Comment = ({ comment }: { comment: IComment }) => {
   const handleDeleteComment = async () => {
     try {
       const response = await deleteCommentRequest();
-      if (response.success && response.result) {
+      if (response.success && response.result)
         dispatch(deleteComment({ comment_id: response.result.comment_id }));
-      }
     } catch (error) {
       console.log(error);
     }
@@ -161,6 +162,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
           toggleModal={handleToggleDeleteModeOff}
           btnName={"Delete"}
           func={handleDeleteComment}
+          redirectOnCancelTo={deleteBtnRef}
         />
       )}
       <Link href={"#"}>
@@ -190,11 +192,17 @@ const Comment = ({ comment }: { comment: IComment }) => {
             </Header>
             <Text>{comment.text}</Text>
             <ButtonsContainer>
-              <CommentButton onClick={() => setActionType("like")}>
+              <CommentButton
+                onClick={() => setActionType("like")}
+                title={"Like comment"}
+              >
                 {comment.like_status ? <AiFillLike /> : <AiOutlineLike />}
                 <span>{comment.total_likes}</span>
               </CommentButton>
-              <CommentButton onClick={() => setActionType("dislike")}>
+              <CommentButton
+                onClick={() => setActionType("dislike")}
+                title={"Dislike comment"}
+              >
                 {comment.like_status === false ? (
                   <AiFillDislike />
                 ) : (

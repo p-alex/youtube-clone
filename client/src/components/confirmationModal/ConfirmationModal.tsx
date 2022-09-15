@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useRef } from "react";
 import useDisableScroll from "../../hooks/useDisableScroll";
 import { Button } from "../../ui/Button";
+import FocusTrapRedirectFocus from "../focusTrap";
 import {
   ConfirmBackdrop,
   ConfirmButtons,
@@ -15,13 +16,24 @@ const ConfirmationModal = ({
   func,
   btnName,
   modalMessage,
+  redirectOnCancelTo,
 }: {
   toggleModal: () => void;
   func: () => void;
   btnName: string;
   modalMessage?: string;
+  redirectOnCancelTo: React.RefObject<HTMLButtonElement>;
 }) => {
   useDisableScroll();
+
+  const handleCloseModal = () => {
+    toggleModal();
+    redirectOnCancelTo.current?.focus();
+  };
+
+  const firstFocusableElement = useRef<HTMLButtonElement>(null);
+  const lastFocusableElement = useRef<HTMLButtonElement>(null);
+
   return (
     <ConfirmDelete
       as={motion.div}
@@ -30,18 +42,25 @@ const ConfirmationModal = ({
       transition={{ type: "just" }}
       exit={{ opacity: 0 }}
     >
-      <ConfirmBackdrop onClick={toggleModal}></ConfirmBackdrop>
+      <FocusTrapRedirectFocus element={lastFocusableElement} />
+      <ConfirmBackdrop onClick={handleCloseModal}></ConfirmBackdrop>
       <ConfirmContainer>
         <Message>{modalMessage ? modalMessage : "Are you sure?"}</Message>
         <ConfirmButtons>
-          <Button variant="normal" onClick={toggleModal}>
+          <Button
+            variant="normal"
+            onClick={handleCloseModal}
+            ref={firstFocusableElement}
+            autoFocus={true}
+          >
             Cancel
           </Button>
-          <Button variant="danger" onClick={func}>
+          <Button variant="danger" onClick={func} ref={lastFocusableElement}>
             {btnName}
           </Button>
         </ConfirmButtons>
       </ConfirmContainer>
+      <FocusTrapRedirectFocus element={firstFocusableElement} />
     </ConfirmDelete>
   );
 };
