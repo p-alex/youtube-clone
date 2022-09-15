@@ -54,7 +54,6 @@ export const getVideo = async (video_id: string, user_id: string) => {
     video_id,
     user_id,
   ]);
-  console.log(response.rows[0]);
   const data: {
     video_id: string;
     user_id: string;
@@ -67,6 +66,8 @@ export const getVideo = async (video_id: string, user_id: string) => {
     duration: number;
     total_likes: number;
     total_dislikes: number;
+    total_comments: number;
+    like_status: boolean | null;
     created_at: string;
   } = response.rows[0];
   return data;

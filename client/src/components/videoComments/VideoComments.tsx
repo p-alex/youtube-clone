@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { MdSort } from "react-icons/md";
 import Image from "next/image";
 import Comment from "../comment/Comment";
@@ -55,11 +55,9 @@ const VideoComments = ({
 
   const { isAuth } = useAuth();
 
-  const {
-    comments,
-    page,
-    totalComments: tComments,
-  } = useSelector((state: RootState) => state.commentsSection);
+  const { comments, page } = useSelector(
+    (state: RootState) => state.commentsSection
+  );
 
   const [getComments, { isLoading: isGetCommentsLoading }] = useAxiosWithRetry<{
     comments: IComment[];
@@ -124,7 +122,7 @@ const VideoComments = ({
     <Container>
       <Header>
         <CommentsCountParagraph>
-          {tComments} {tComments === 1 ? "comment" : "comments"}
+          {totalComments} {totalComments === 1 ? "comment" : "comments"}
         </CommentsCountParagraph>
         <SortBtn isActive={true}>
           <MdSort />

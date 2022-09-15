@@ -25,8 +25,8 @@ import {
   VideoInfo,
 } from "../../app/features/videoSlice";
 import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
-import { IComment } from "../videoComments/VideoComments";
 import { RootState } from "../../app/store";
+import { IComment, setComments } from "../../app/features/commentsSectionSlice";
 
 const VideoCommentsMobile = ({
   video,
@@ -36,13 +36,14 @@ const VideoCommentsMobile = ({
   handleToggleMobileComments: () => void;
 }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+
+  const { comments, page, totalComments } = useSelector(
+    (state: RootState) => state.commentsSection
+  );
+
   const dispatch = useDispatch();
 
   const effectRan = useRef(false);
-
-  const [comments, setComments] = useState<IComment[]>([]);
-  const [commentToEdit, setCommentToEdit] = useState<string>("");
-  const [page, setPage] = useState<number>(0);
 
   const [canMove, setCanMove] = useState(false);
   const [initialPos, setInitialPos] = useState(0);
@@ -92,7 +93,9 @@ const VideoCommentsMobile = ({
     try {
       const response = await getComments();
       if (response.result) {
-        setComments(response.result.comments);
+        dispatch(
+          setComments({ comments: response.result.comments, totalComments })
+        );
       }
     } catch (error) {
       console.log(error);

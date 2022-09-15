@@ -194,14 +194,22 @@ const Comment = ({ comment }: { comment: IComment }) => {
             <ButtonsContainer>
               <CommentButton
                 onClick={() => setActionType("like")}
-                title={"Like comment"}
+                title={
+                  comment.like_status
+                    ? "Remove like from comment"
+                    : "Like comment"
+                }
               >
                 {comment.like_status ? <AiFillLike /> : <AiOutlineLike />}
                 <span>{comment.total_likes}</span>
               </CommentButton>
               <CommentButton
                 onClick={() => setActionType("dislike")}
-                title={"Dislike comment"}
+                title={
+                  comment.like_status === false
+                    ? "Remove dislike from comment"
+                    : "Dislike comment"
+                }
               >
                 {comment.like_status === false ? (
                   <AiFillDislike />
@@ -238,6 +246,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
               ref={firstFocusableElement}
               onChange={(e) => setEditedCommentText(e.target.value)}
               placeholder="Edit your comment"
+              defaultValue={editedCommentText}
               autoFocus={true}
               onFocus={() => dispatch(disableKeyBinds())}
               onBlur={() => dispatch(enableKeyBinds())}

@@ -43,12 +43,6 @@ export const Header = styled.div`
   gap: 5px;
 `;
 
-export const ManageButtonsContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-  flex: 1;
-`;
-
 export const Username = styled.p`
   color: ${(props) => props.theme.textColor};
 `;
@@ -61,6 +55,12 @@ export const Text = styled.p`
   line-height: 20px;
 `;
 
+export const ButtonsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
 export const EditCommentForm = styled.form`
   position: relative;
   width: 100%;
@@ -69,11 +69,6 @@ export const EditCommentForm = styled.form`
 export const EditCommentButtons = styled.div`
   display: flex;
   gap: 20px;
-`;
-
-export const ButtonsContainer = styled.div`
-  display: flex;
-  gap: 10px;
 `;
 
 export const CommentButton = styled.button`
@@ -95,6 +90,6 @@ export const CommentButton = styled.button`
     color: ${(props) => props.theme.textMutedColor};
   }
   & svg {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 `;
