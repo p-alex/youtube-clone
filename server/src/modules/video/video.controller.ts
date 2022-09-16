@@ -60,10 +60,8 @@ export const getVideoController = async (req: Request, res: Response) => {
   const { video_id } = req.params;
   // @ts-ignore
   const { user_id } = req.user;
-  console.log(user_id);
   try {
     const video = await getVideo(video_id, user_id);
-    console.log(video);
     return res
       .status(200)
       .json({ success: true, errors: [], result: { video } });
