@@ -57,11 +57,11 @@ export const getUserVideosController = async (req: Request, res: Response) => {
 };
 
 export const getVideoController = async (req: Request, res: Response) => {
-  const { video_id } = req.params;
+  const { videoId } = req.params;
   // @ts-ignore
   const { user_id } = req.user;
   try {
-    const video = await getVideo(video_id, user_id);
+    const video = await getVideo(videoId, user_id);
     return res
       .status(200)
       .json({ success: true, errors: [], result: { video } });
@@ -96,17 +96,18 @@ export const uploadVideoController = async (
 
     // Upload thumbnail to cloudinary
     const uploadThumbnailResponse = await uploadThumbnail(
-      videoData.thumbnail_url
+      videoData.thumbnailUrl
     );
 
     // // Save secure urls in videoData
-    videoData.video_url = uploadVideoResponse.secure_url;
-    videoData.thumbnail_url = uploadThumbnailResponse.secure_url;
+    videoData.videoUrl = uploadVideoResponse.secure_url;
+    videoData.thumbnailUrl = uploadThumbnailResponse.secure_url;
 
     // // Save video to database
     const video_id = await saveVideoToDB(videoData);
 
     // Delete uploaded video from local files
+    console.log(video.path);
     await unlinkFile(video.path);
 
     return res.status(201).json({
@@ -155,11 +156,11 @@ export const deleteVideoController = async (
   req: Request<{}, {}, DeleteVideoInput>,
   res: Response
 ) => {
-  const { video_id } = req.body;
+  const { videoId } = req.body;
   // @ts-ignore
   const { user_id } = req.user;
   try {
-    const id = await deleteVideo(video_id, user_id);
+    const id = await deleteVideo(videoId, user_id);
     return res
       .status(200)
       .json({ success: true, errors: [], result: { video_id: id } });
@@ -177,11 +178,11 @@ export const likeOrDislikeVideoController = async (
   req: Request<{}, {}, LikeOrDislikeVideoInput>,
   res: Response
 ) => {
-  const { action_type, video_id } = req.body;
+  const { actionType, videoId } = req.body;
   // @ts-ignore
   const { user_id } = req.user;
   try {
-    await likeOrDislikeVideo(action_type, video_id, user_id);
+    await likeOrDislikeVideo(actionType, videoId, user_id);
     return res.status(200).json({ success: true, errors: [], result: null });
   } catch (error: any) {
     console.log(error);
@@ -198,8 +199,8 @@ export const getVideoTagsController = async (
   res: Response
 ) => {
   try {
-    const { video_id } = req.params;
-    const tags = await getVideoTags(video_id);
+    const { videoId } = req.params;
+    const tags = await getVideoTags(videoId);
     return res
       .status(200)
       .json({ success: boolean, errors: [], result: { tags } });

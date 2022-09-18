@@ -94,26 +94,26 @@ export const uploadVideo = async ({ path }: { path: string }) => {
 
 export const saveVideoToDB = async (details: UploadVideoInput) => {
   const {
-    user_id,
+    userId,
     title,
     description,
     duration,
     mimetype,
-    thumbnail_url,
-    video_url,
-    tag_list,
+    thumbnailUrl,
+    videoUrl,
+    tagList,
   } = details;
   const response = await db.query(
     "SELECT * FROM create_video($1, $2, $3, $4, $5, $6, $7, $8)",
     [
-      user_id,
+      userId,
       title,
       description,
       duration,
       mimetype,
-      thumbnail_url,
-      video_url,
-      tag_list,
+      thumbnailUrl,
+      videoUrl,
+      tagList,
     ]
   );
   console.log(response);
@@ -144,21 +144,21 @@ export const changeVideoThumbnail = async (
 
 export const updateVideo = async (
   videoData: {
-    video_id: string;
+    videoId: string;
     title: string;
     description: string;
-    thumbnail_data: {
-      current_thumbnail_url: string;
-      new_thumbnail_base64: string | null;
+    thumbnailData: {
+      currentThumbnailUrl: string;
+      newThumbnailBase64: string | null;
     };
-    tag_list: string[] | null;
+    tagList: string[] | null;
   },
   user_id: string
 ): Promise<string | null> => {
   const video: QueryResult<{ video_id: string; user_id: string }> =
     await db.query(
       "SELECT video_id, user_id FROM videos WHERE video_id = $1 AND user_id = $2",
-      [videoData.video_id, user_id]
+      [videoData.videoId, user_id]
     );
 
   if (video.rows[0].user_id !== user_id)
@@ -166,24 +166,24 @@ export const updateVideo = async (
 
   let new_thumbnail_url: string | null = null;
 
-  if (videoData.thumbnail_data?.new_thumbnail_base64 !== null) {
+  if (videoData.thumbnailData?.newThumbnailBase64 !== null) {
     new_thumbnail_url = await changeVideoThumbnail(
-      videoData.thumbnail_data.current_thumbnail_url,
-      videoData.thumbnail_data.new_thumbnail_base64
+      videoData.thumbnailData.currentThumbnailUrl,
+      videoData.thumbnailData.newThumbnailBase64
     );
   }
 
   const response = await db.query(
     "SELECT * FROM update_video ($1,$2,$3,$4,$5,$6)",
     [
-      videoData.video_id,
+      videoData.videoId,
       user_id,
       videoData.title,
       videoData.description,
       new_thumbnail_url
         ? new_thumbnail_url
-        : videoData.thumbnail_data.current_thumbnail_url,
-      videoData.tag_list,
+        : videoData.thumbnailData.currentThumbnailUrl,
+      videoData.tagList,
     ]
   );
 

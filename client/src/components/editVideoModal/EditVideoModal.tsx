@@ -43,11 +43,11 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
   const [title, setTitle] = useState(video.title);
   const [description, setDescription] = useState(video.description);
   const [thumbnailData, setThumbnailData] = useState<{
-    current_thumbnail_url: string;
-    new_thumbnail_base64: string | null;
+    currentThumbnailUrl: string;
+    newThumbnailBase64: string | null;
   }>({
-    current_thumbnail_url: video.thumbnail_url,
-    new_thumbnail_base64: null,
+    currentThumbnailUrl: video.thumbnail_url,
+    newThumbnailBase64: null,
   });
   const [currentTagList, setCurrentTagList] = useState<string[]>([]);
   const [newTagList, setNewTagList] = useState<string[]>([]);
@@ -68,11 +68,11 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
       method: "PATCH",
       accessToken: auth.accessToken!,
       body: {
-        video_id: video.video_id,
+        videoId: video.video_id,
         title,
         description,
-        thumbnail_data: thumbnailData,
-        tag_list:
+        thumbnailData: thumbnailData,
+        tagList:
           newTagList !== currentTagList && newTagList.length >= 4
             ? newTagList
             : null,
@@ -106,9 +106,9 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         editVideo({
           video_id: video.video_id,
           title,
-          thumbnail_url: thumbnailData.new_thumbnail_base64
-            ? thumbnailData.new_thumbnail_base64
-            : thumbnailData.current_thumbnail_url,
+          thumbnail_url: thumbnailData.newThumbnailBase64
+            ? thumbnailData.newThumbnailBase64
+            : thumbnailData.currentThumbnailUrl,
         })
       );
       setResult({ success: response.success, error: "" });
@@ -168,9 +168,9 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           ></HiddenInput>
           <Image
             src={
-              thumbnailData.new_thumbnail_base64
-                ? thumbnailData.new_thumbnail_base64
-                : thumbnailData.current_thumbnail_url
+              thumbnailData.newThumbnailBase64
+                ? thumbnailData.newThumbnailBase64
+                : thumbnailData.currentThumbnailUrl
             }
             width={500}
             height={281.25}
@@ -178,8 +178,8 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             objectFit="contain"
           />
           {video.thumbnail_url &&
-            typeof thumbnailData.new_thumbnail_base64 === "string" &&
-            video.thumbnail_url !== thumbnailData.new_thumbnail_base64 && (
+            typeof thumbnailData.newThumbnailBase64 === "string" &&
+            video.thumbnail_url !== thumbnailData.newThumbnailBase64 && (
               <Button
                 variant="normal"
                 onClick={() =>

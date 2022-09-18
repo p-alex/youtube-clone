@@ -43,7 +43,7 @@ const VideoDetailsStage = ({
       const optimizedImageUrl = await imageOptimizer(file.result);
       setUploadData((prevState) => ({
         ...prevState,
-        thumbnail_url: optimizedImageUrl,
+        thumbnailUrl: optimizedImageUrl,
       }));
     };
   };
@@ -59,7 +59,7 @@ const VideoDetailsStage = ({
     <Container>
       <FormContainer onSubmit={handleUploadVideo}>
         <ThumbnailContainer>
-          {!uploadData.thumbnail_url && (
+          {!uploadData.thumbnailUrl && (
             <>
               <Button
                 variant="normal"
@@ -77,10 +77,10 @@ const VideoDetailsStage = ({
               ></HiddenInput>
             </>
           )}
-          {uploadData.thumbnail_url && (
+          {uploadData.thumbnailUrl && (
             <>
               <Image
-                src={uploadData.thumbnail_url}
+                src={uploadData.thumbnailUrl}
                 width={500}
                 height={281.25}
                 alt=""
@@ -91,7 +91,7 @@ const VideoDetailsStage = ({
                 onClick={() =>
                   setUploadData((prevState) => ({
                     ...prevState,
-                    thumbnail_url: "",
+                    thumbnailUrl: "",
                   }))
                 }
                 type="button"
@@ -137,7 +137,7 @@ const VideoDetailsStage = ({
           onChange={(e) =>
             setUploadData((prevState) => ({
               ...prevState,
-              tag_list: convertToTagList(e.target.value),
+              tagList: convertToTagList(e.target.value),
             }))
           }
           required
@@ -145,8 +145,8 @@ const VideoDetailsStage = ({
         />
 
         <TagContainer>
-          {uploadData.tag_list.length > 0 &&
-            uploadData.tag_list.map((tag, index) => {
+          {uploadData.tagList.length > 0 &&
+            uploadData.tagList.map((tag, index) => {
               return <Tag key={tag + index}>{tag}</Tag>;
             })}
         </TagContainer>
