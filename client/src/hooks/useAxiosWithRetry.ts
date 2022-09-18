@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { useState } from 'react';
-import { BASE_URL } from '../utils/baseURL';
-import useRefreshToken from './useRefreshToken';
+import axios from "axios";
+import { useState } from "react";
+import { BASE_URL } from "../utils/baseURL";
+import useRefreshToken from "./useRefreshToken";
 
 type Errors = {
   message: string;
@@ -14,7 +14,7 @@ export interface DefaultResponse<Data> {
 }
 
 interface UseAxiosOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: any;
   accessToken: string;
 }
@@ -35,9 +35,9 @@ const useAxiosWithRetry = <Data>(
       setIsLoading(true);
 
       const response = await axios(`${BASE_URL}/${url}`, {
-        method: !options?.method ? 'GET' : options.method,
+        method: !options?.method ? "GET" : options.method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         data: options?.body,
@@ -58,7 +58,7 @@ const useAxiosWithRetry = <Data>(
         result: null,
       };
 
-      return { statusCode: error.code as number, data };
+      return { statusCode: error.response.status, data };
     } finally {
       setIsLoading(false);
     }
@@ -79,11 +79,13 @@ const useAxiosWithRetry = <Data>(
     if (!options.accessToken)
       return {
         success: false,
-        errors: [{ message: 'No access token' }],
+        errors: [{ message: "No access token" }],
         result: null,
       } as DefaultResponse<null>;
 
     const response = await request(options.accessToken);
+
+    console.log(response);
 
     if (response.statusCode === 403) {
       const retryResponse = await retryRequest();
