@@ -73,16 +73,6 @@ export const getVideo = async (video_id: string, user_id: string) => {
   return data;
 };
 
-export const getVideoLikeStatus = async (video_id: string, user_id: string) => {
-  const response = await db.query(
-    "SELECT is_liked FROM video_likes WHERE video_id = $1 AND user_id = $2",
-    [video_id, user_id]
-  );
-  const data: { is_liked: boolean } = response.rows[0];
-  if (data === undefined) return { like_status: null };
-  return { like_status: data.is_liked };
-};
-
 export const uploadVideo = async ({ path }: { path: string }) => {
   const response = await cloudinary.uploader.upload(path, {
     resource_type: "video",

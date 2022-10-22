@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   AiOutlineLike,
   AiOutlineDislike,
   AiFillLike,
   AiFillDislike,
-} from 'react-icons/ai';
+} from "react-icons/ai";
 import {
   Header,
   RatioBar,
@@ -14,34 +14,34 @@ import {
   ReactContainer,
   Stats,
   Title,
-} from './style';
-import useAuth from '../../hooks/useAuth';
-import { dislikeVideo, likeVideo, VideoInfo } from '../../app/features/videoSlice';
-import { dateConverter } from '../../utils/dateConverter';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
+} from "./style";
+import useAuth from "../../hooks/useAuth";
+import {
+  dislikeVideo,
+  likeVideo,
+  VideoInfo,
+} from "../../app/features/videoSlice";
+import { dateConverter } from "../../utils/dateConverter";
+import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 const VideoHeader = ({ video }: { video: VideoInfo }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const dispatch = useDispatch();
   const { isAuth } = useAuth();
 
-  const [actionType, setActionType] = useState<'like' | 'dislike' | null>(null);
+  const [actionType, setActionType] = useState<"like" | "dislike" | null>(null);
 
-  const [likeOrDislike, { isLoading, errors }] = useAxiosWithRetry<null>(
-    'api/videos/likes',
-    {
-      body: { action_type: actionType, video_id: video.video_id },
-      method: 'POST',
-      accessToken: accessToken!,
-    }
-  );
+  const [likeOrDislike, { isLoading, errors }] = useAxiosWithRetry<
+    { actionType: "like" | "dislike" | null; videoId: string },
+    {}
+  >("api/videos/likes", "POST");
 
   const handleLikeOrDislike = async () => {
-    if (actionType === 'like') dispatch(likeVideo());
-    if (actionType === 'dislike') dispatch(dislikeVideo());
-    await likeOrDislike();
+    if (actionType === "like") dispatch(likeVideo());
+    if (actionType === "dislike") dispatch(dislikeVideo());
+    await likeOrDislike({ actionType: actionType, videoId: video.video_id });
     setActionType(null);
   };
 
@@ -63,20 +63,28 @@ const VideoHeader = ({ video }: { video: VideoInfo }) => {
           <ReactBtnContainer>
             <ReactBtn
               disabled={!isAuth || isLoading}
-              onClick={() => setActionType('like')}
+              onClick={() => setActionType("like")}
             >
-              {video.like_status ? <AiFillLike /> : <AiOutlineLike />} {video.total_likes}
+              {video.like_status ? <AiFillLike /> : <AiOutlineLike />}{" "}
+              {video.total_likes}
             </ReactBtn>
             <ReactBtn
               disabled={!isAuth || isLoading}
-              onClick={() => setActionType('dislike')}
+              onClick={() => setActionType("dislike")}
             >
-              {video.like_status === false ? <AiFillDislike /> : <AiOutlineDislike />}{' '}
+              {video.like_status === false ? (
+                <AiFillDislike />
+              ) : (
+                <AiOutlineDislike />
+              )}{" "}
               {video.total_dislikes}
             </ReactBtn>
           </ReactBtnContainer>
           <RatioBar
-            width={(video.total_likes / (video.total_dislikes + video.total_likes)) * 100}
+            width={
+              (video.total_likes / (video.total_dislikes + video.total_likes)) *
+              100
+            }
           ></RatioBar>
         </ReactAndRatioContainer>
       </ReactContainer>

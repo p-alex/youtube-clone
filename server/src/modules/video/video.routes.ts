@@ -1,9 +1,9 @@
-import express from 'express';
-import multer from 'multer';
-import { getUserFormAccessToken } from '../../middleware/getUserFromAccessToken';
-import { parseVideoData } from '../../middleware/parseVideoData';
-import { requireAuth } from '../../middleware/requireAuth';
-import validateResource from '../../middleware/validateResource';
+import express from "express";
+import multer from "multer";
+import { getUserFormAccessToken } from "../../middleware/getUserFromAccessToken";
+import { parseVideoData } from "../../middleware/parseVideoData";
+import { requireAuth } from "../../middleware/requireAuth";
+import validateResource from "../../middleware/validateResource";
 import {
   deleteVideoController,
   getUserVideosController,
@@ -13,7 +13,7 @@ import {
   likeOrDislikeVideoController,
   updateVideoController,
   uploadVideoController,
-} from './video.controller';
+} from "./video.controller";
 import {
   deleteVideoSchema,
   getVideoSchema,
@@ -21,55 +21,55 @@ import {
   likeOrDislikeVideoSchema,
   updateVideoSchema,
   uploadVideoSchema,
-} from './video.schema';
+} from "./video.schema";
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
 
-router.get('/api/videos', requireAuth, getVideosController);
+router.get("/api/videos", requireAuth, getVideosController);
 
-router.get('/api/videos/manage', requireAuth, getUserVideosController);
+router.get("/api/videos/manage", requireAuth, getUserVideosController);
 
 router.get(
-  '/api/videos/:video_id',
+  "/api/videos/:videoId",
   requireAuth,
   validateResource(getVideoSchema),
   getVideoController
 );
 
 router.post(
-  '/api/videos',
+  "/api/videos",
   requireAuth,
-  upload.single('video_file'),
+  upload.single("videoFile"),
   parseVideoData,
   validateResource(uploadVideoSchema),
   uploadVideoController
 );
 
 router.patch(
-  '/api/videos',
+  "/api/videos",
   requireAuth,
   validateResource(updateVideoSchema),
   updateVideoController
 );
 
 router.delete(
-  '/api/videos',
+  "/api/videos",
   requireAuth,
   validateResource(deleteVideoSchema),
   deleteVideoController
 );
 
 router.post(
-  '/api/videos/likes',
+  "/api/videos/likes",
   requireAuth,
   validateResource(likeOrDislikeVideoSchema),
   likeOrDislikeVideoController
 );
 
 router.get(
-  '/api/videos/:video_id/tags',
+  "/api/videos/:videoId/tags",
   requireAuth,
   validateResource(getVideoTagsSchema),
   getVideoTagsController

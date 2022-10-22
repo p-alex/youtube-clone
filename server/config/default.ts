@@ -15,4 +15,5 @@ export default {
   refresh_token_secret: '',
   access_token_expire: '',
   refresh_token_expire: '',
+  jwt_sign_algorithm: '',
 };

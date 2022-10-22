@@ -83,6 +83,9 @@ const videoSlice = createSlice({
     enableKeyBinds: (state) => {
       state.canUseVideoKeyBinds = true;
     },
+    resetVideo: (state) => {
+      state.videoInfo = initialState.videoInfo;
+    },
   },
 });
 
@@ -92,6 +95,7 @@ export const {
   enableKeyBinds,
   likeVideo,
   dislikeVideo,
+  resetVideo,
 } = videoSlice.actions;
 
 export default videoSlice.reducer;

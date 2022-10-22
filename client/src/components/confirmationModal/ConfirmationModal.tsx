@@ -1,67 +1,67 @@
-import { motion } from "framer-motion";
-import React, { useRef } from "react";
-import useDisableScroll from "../../hooks/useDisableScroll";
-import { Button } from "../../ui/Button";
-import FocusTrapRedirectFocus from "../focusTrap";
+import React, { useRef } from 'react';
+import useDisableScroll from '../../hooks/useDisableScroll';
+import { Button } from '../../ui/Button';
+import FocusTrapRedirectFocus from '../focusTrap';
 import {
-  ConfirmBackdrop,
-  ConfirmButtons,
-  ConfirmContainer,
-  ConfirmDelete,
-  Message,
-} from "./style";
+  ConfirmationModalBackdrop,
+  ConfirmationModalButtons,
+  ConfirmationModalContainer,
+  ConfirmationModalMessage,
+  ConfirmationModalTitle,
+  ConfirmationModalWrapper,
+} from './ConfirmationModal.styles';
 
 const ConfirmationModal = ({
-  toggleModal,
+  title,
+  message,
+  toggle,
   func,
+  isLoading,
+  redirectToElementOnClose,
   btnName,
-  modalMessage,
-  redirectOnCancelTo,
 }: {
-  toggleModal: () => void;
+  title: string;
+  message: string;
+  toggle: () => void;
   func: () => void;
+  isLoading: boolean;
+  redirectToElementOnClose?: React.RefObject<HTMLButtonElement>;
   btnName: string;
-  modalMessage?: string;
-  redirectOnCancelTo: React.RefObject<HTMLButtonElement>;
 }) => {
   useDisableScroll();
-
-  const handleCloseModal = () => {
-    toggleModal();
-    redirectOnCancelTo.current?.focus();
-  };
 
   const firstFocusableElement = useRef<HTMLButtonElement>(null);
   const lastFocusableElement = useRef<HTMLButtonElement>(null);
 
+  const handleToggle = () => {
+    if (redirectToElementOnClose === undefined) return toggle();
+    toggle();
+    redirectToElementOnClose.current?.focus();
+  };
+
   return (
-    <ConfirmDelete
-      as={motion.div}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ type: "just" }}
-      exit={{ opacity: 0 }}
-    >
+    <ConfirmationModalWrapper>
       <FocusTrapRedirectFocus element={lastFocusableElement} />
-      <ConfirmBackdrop onClick={handleCloseModal}></ConfirmBackdrop>
-      <ConfirmContainer>
-        <Message>{modalMessage ? modalMessage : "Are you sure?"}</Message>
-        <ConfirmButtons>
+      <ConfirmationModalBackdrop onClick={handleToggle} />
+      <ConfirmationModalContainer>
+        <ConfirmationModalTitle>{title}</ConfirmationModalTitle>
+        <ConfirmationModalMessage>{message}</ConfirmationModalMessage>
+        <ConfirmationModalButtons>
           <Button
             variant="normal"
-            onClick={handleCloseModal}
+            onClick={handleToggle}
+            autoFocus
             ref={firstFocusableElement}
-            autoFocus={true}
           >
             Cancel
           </Button>
           <Button variant="danger" onClick={func} ref={lastFocusableElement}>
-            {btnName}
+            Delete
           </Button>
-        </ConfirmButtons>
-      </ConfirmContainer>
+        </ConfirmationModalButtons>
+      </ConfirmationModalContainer>
       <FocusTrapRedirectFocus element={firstFocusableElement} />
-    </ConfirmDelete>
+    </ConfirmationModalWrapper>
   );
 };
 

@@ -1,12 +1,13 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
-import Videos from '../components/videos/Videos';
-import Layout from '../layout/Layout';
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import Videos from "../components/videos/Videos";
+import Layout from "../layout/Layout";
 
 const Home: NextPage = () => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+
   return (
     <Layout>
       <Head>

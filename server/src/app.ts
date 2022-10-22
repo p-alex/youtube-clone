@@ -1,6 +1,6 @@
-import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
+import express from 'express';
 import config from 'config';
 import cors from 'cors';
 import log from './utils/logger';
@@ -20,7 +20,7 @@ app.use(
 
 app.use(
   express.json({
-    limit: '1gb',
+    limit: '101mb',
   })
 );
 

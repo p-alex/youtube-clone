@@ -9,7 +9,7 @@ export function signJwt(
   const secret = config.get<string>(secretName);
   return jwt.sign(object, secret, {
     ...(options && options),
-    algorithm: 'HS256',
+    algorithm: config.get('jwt_sign_algorithm'),
   });
 }
 

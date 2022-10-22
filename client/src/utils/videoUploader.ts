@@ -2,6 +2,7 @@ import axios from "axios";
 import { UploadVideoData } from "../components/uploadModal/UploadModal";
 import { DefaultResponse } from "../hooks/useAxios";
 import { BASE_URL } from "./baseURL";
+import { removeEmptyLinesFromString } from "./removeEmptyLinesFromString";
 
 export const videoUploader = async (
   videoFile: File,
@@ -13,7 +14,7 @@ export const videoUploader = async (
   formData.append("videoFile", videoFile!);
   formData.append("userId", body.userId);
   formData.append("title", body.title);
-  formData.append("description", body.description);
+  formData.append("description", removeEmptyLinesFromString(body.description));
   formData.append("duration", JSON.stringify(body.duration));
   formData.append("mimetype", body.mimetype);
   formData.append("thumbnailUrl", body.thumbnailUrl!);

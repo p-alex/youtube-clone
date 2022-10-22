@@ -1,18 +1,19 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   AddReplyInput,
   DeleteReplyInput,
+  DislikeReplyInput,
   GetRepliesInput,
-  LikeOrDislikeReplyInput,
+  LikeReplyInput,
   UpdateReplyInput,
-} from "./reply.schema";
+} from './reply.schema';
 import {
   addReply,
   deleteReply,
   getReplies,
   likeOrDislikeReply,
   updateReply,
-} from "./reply.service";
+} from './reply.service';
 
 export const getRepliesController = async (
   req: Request<GetRepliesInput>,
@@ -23,9 +24,7 @@ export const getRepliesController = async (
   const { user_id } = req.user;
   try {
     const replies = await getReplies(commentId, user_id, page);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { replies } });
+    return res.status(200).json({ success: true, errors: [], result: { replies } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -44,10 +43,8 @@ export const addReplyController = async (
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const reply_id = await addReply(commentId, user_id, text);
-    return res
-      .status(201)
-      .json({ success: true, errors: [], result: { reply_id } });
+    const reply = await addReply(commentId, user_id, text);
+    return res.status(201).json({ success: true, errors: [], result: { reply } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -66,10 +63,12 @@ export const updateReplyController = async (
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const { reply_id } = await updateReply(replyId, user_id, text);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { replyId } });
+    const response = await updateReply(replyId, user_id, text);
+    return res.status(200).json({
+      success: true,
+      errors: [],
+      result: { reply_id: response.reply_id, text: response.text },
+    });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -89,9 +88,7 @@ export const deleteReplyController = async (
   const { user_id } = req.user;
   try {
     const reply_id = await deleteReply(replyId, commentId, user_id);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { reply_id } });
+    return res.status(200).json({ success: true, errors: [], result: { reply_id } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -102,16 +99,40 @@ export const deleteReplyController = async (
   }
 };
 
-export const likeOrDislikeReplyController = async (
-  req: Request<{}, {}, LikeOrDislikeReplyInput>,
+export const likeReplyController = async (
+  req: Request<LikeReplyInput>,
   res: Response
 ) => {
-  const { actionType, replyId } = req.body;
-  //@ts-ignore
-  const { user_id } = req.user;
   try {
-    await likeOrDislikeReply(actionType, replyId, user_id);
-    return res.status(200).json({ success: true, errors: [], result: null });
+    const { replyId } = req.params;
+    //@ts-ignore
+    const { user_id } = req.user;
+    const updatedReplyInfo = await likeOrDislikeReply('like', replyId, user_id);
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { updatedReplyInfo } });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
+  }
+};
+
+export const dislikeReplyController = async (
+  req: Request<DislikeReplyInput>,
+  res: Response
+) => {
+  try {
+    const { replyId } = req.params;
+    //@ts-ignore
+    const { user_id } = req.user;
+    const updatedReplyInfo = await likeOrDislikeReply('dislike', replyId, user_id);
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { updatedReplyInfo } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({

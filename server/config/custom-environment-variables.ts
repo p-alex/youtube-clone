@@ -13,4 +13,5 @@ export default {
   refresh_token_secret: 'REFRESH_TOKEN_SECRET',
   access_token_expire: 'ACCESS_TOKEN_EXPIRE',
   refresh_token_expire: 'REFRESH_TOKEN_EXPIRE',
+  jwt_sign_algorithm: 'JWT_SIGN_ALGORITHM',
 };

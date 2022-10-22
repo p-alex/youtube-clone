@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
-  user: IUser | null;
+  user: {
+    user_id: string;
+    username: string;
+    email: string;
+    profile_picture: string;
+  };
   accessToken: string;
 }
 
@@ -13,7 +18,12 @@ export interface IUser {
 }
 
 const initialState: IInitialState = {
-  user: null,
+  user: {
+    user_id: "",
+    username: "",
+    email: "",
+    profile_picture: "",
+  },
   accessToken: "",
 };
 
@@ -29,7 +39,12 @@ export const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
     },
     resetUser: (state) => {
-      state.user = null;
+      state.user = {
+        user_id: "",
+        username: "",
+        email: "",
+        profile_picture: "",
+      };
       state.accessToken = "";
     },
   },

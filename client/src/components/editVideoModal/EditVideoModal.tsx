@@ -28,6 +28,7 @@ import {
   ThumbnailContainer,
 } from "./style";
 import { motion } from "framer-motion";
+import { removeEmptyLinesFromString } from "../../utils/removeEmptyLinesFromString";
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -56,33 +57,28 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
 
   const tagsInputRef = useRef<HTMLInputElement>(null);
 
-  const [getTags, { isLoading: isGetTagsLoading }] = useAxiosWithRetry<{
-    tags: string[];
-  }>(`api/videos/${video.video_id}/tags`, {
-    accessToken: auth.accessToken!,
-  });
+  const [getTags, { isLoading: isGetTagsLoading }] = useAxiosWithRetry<
+    {},
+    { tags: string[] }
+  >(`api/videos/${video.video_id}/tags`, "GET");
 
-  const [updateVideo, { isLoading: isUpdateVideoLoading }] = useAxiosWithRetry(
-    "api/videos",
+  const [updateVideo, { isLoading: isUpdateVideoLoading }] = useAxiosWithRetry<
     {
-      method: "PATCH",
-      accessToken: auth.accessToken!,
-      body: {
-        videoId: video.video_id,
-        title,
-        description,
-        thumbnailData: thumbnailData,
-        tagList:
-          newTagList !== currentTagList && newTagList.length >= 4
-            ? newTagList
-            : null,
-      },
-    }
-  );
+      videoId: string;
+      title: string;
+      description: string;
+      thumbnailData: {
+        currentThumbnailUrl: string;
+        newThumbnailBase64: string | null;
+      };
+      tagList: string[] | null;
+    },
+    {}
+  >("api/videos", "PATCH");
 
   const handleGetTags = async () => {
     try {
-      const tags = await getTags();
+      const tags = await getTags({ tags: newTagList });
       if (tags.result) {
         setCurrentTagList(tags.result.tags);
         setNewTagList(tags.result.tags);
@@ -100,7 +96,16 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
 
   const handleUpdateVideo = async () => {
     try {
-      const response = await updateVideo();
+      const response = await updateVideo({
+        videoId: video.video_id,
+        title,
+        description: removeEmptyLinesFromString(description),
+        thumbnailData: thumbnailData,
+        tagList:
+          newTagList !== currentTagList && newTagList.length >= 4
+            ? newTagList
+            : null,
+      });
       if (!response.result) return;
       dispatch(
         editVideo({

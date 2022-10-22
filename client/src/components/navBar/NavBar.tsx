@@ -6,7 +6,6 @@ import {
   NavMobileSearchBtn,
   NavProfileBtn,
   NavSearch,
-  NavSearchBtn,
   NavSearchForm,
   NavToggleAndLogoContainer,
   NavToggleSideBar,

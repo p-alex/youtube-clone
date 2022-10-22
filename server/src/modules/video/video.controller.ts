@@ -10,7 +10,6 @@ import {
   deleteVideo,
   getUserVideos,
   getVideo,
-  getVideoLikeStatus,
   getVideos,
   getVideoTags,
   likeOrDislikeVideo,
@@ -107,7 +106,6 @@ export const uploadVideoController = async (
     const video_id = await saveVideoToDB(videoData);
 
     // Delete uploaded video from local files
-    console.log(video.path);
     await unlinkFile(video.path);
 
     return res.status(201).json({

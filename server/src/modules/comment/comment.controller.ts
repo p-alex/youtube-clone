@@ -1,18 +1,19 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   AddCommentInput,
   DeleteCommentInput,
+  DislikeCommentInput,
   GetCommentsInput,
-  LikeOrDislikeCommentInput,
+  LikeCommentInput,
   UpdateCommentInput,
-} from "./comment.schema";
+} from './comment.schema';
 import {
   addComment,
   deleteComment,
   getComments,
   likeOrDislikeComment,
   updateComment,
-} from "./comment.service";
+} from './comment.service';
 
 export const getCommentsController = async (
   req: Request<GetCommentsInput>,
@@ -23,9 +24,7 @@ export const getCommentsController = async (
   const { user_id } = req.user;
   try {
     const comments = await getComments(videoId, user_id, page);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { comments } });
+    return res.status(200).json({ success: true, errors: [], result: { comments } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -44,10 +43,8 @@ export const addCommentController = async (
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const comment_id = await addComment(videoId, user_id, text);
-    return res
-      .status(201)
-      .json({ success: true, errors: [], result: { comment_id } });
+    const comment = await addComment(videoId, user_id, text);
+    return res.status(201).json({ success: true, errors: [], result: { comment } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -67,9 +64,7 @@ export const updateCommentController = async (
   const { user_id } = req.user;
   try {
     const { comment_id } = await updateComment(commentId, user_id, text);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { comment_id } });
+    return res.status(200).json({ success: true, errors: [], result: { comment_id } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -89,9 +84,7 @@ export const deleteCommentController = async (
   const { user_id } = req.user;
   try {
     const comment_id = await deleteComment(commentId, videoId, user_id);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { comment_id } });
+    return res.status(200).json({ success: true, errors: [], result: { comment_id } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
@@ -102,16 +95,40 @@ export const deleteCommentController = async (
   }
 };
 
-export const likeOrDislikeCommentController = async (
-  req: Request<{}, {}, LikeOrDislikeCommentInput>,
+export const likeCommentController = async (
+  req: Request<LikeCommentInput>,
   res: Response
 ) => {
-  const { actionType, commentId } = req.body;
+  const { commentId } = req.params;
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    await likeOrDislikeComment(actionType, commentId, user_id);
-    return res.status(200).json({ success: true, errors: [], result: null });
+    const updatedCommentInfo = await likeOrDislikeComment('like', commentId, user_id);
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { updatedCommentInfo } });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
+  }
+};
+
+export const dislikeCommentController = async (
+  req: Request<DislikeCommentInput>,
+  res: Response
+) => {
+  const { commentId } = req.params;
+  //@ts-ignore
+  const { user_id } = req.user;
+  try {
+    const updatedCommentInfo = await likeOrDislikeComment('dislike', commentId, user_id);
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { updatedCommentInfo } });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({

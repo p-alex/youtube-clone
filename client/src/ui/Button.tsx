@@ -32,4 +32,7 @@ export const Button = styled.button<{
         ? props.theme.dangerBtn.bgHover
         : props.theme.normalBtn.bgHover};
   }
+  &:disabled {
+    opacity: 0.5;
+  }
 `;

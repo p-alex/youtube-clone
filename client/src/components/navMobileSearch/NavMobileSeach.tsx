@@ -3,7 +3,6 @@ import {
   CloseSearchBtn,
   Container,
   NavMobileSearch,
-  NavMobileSearchBtn,
   NavMobileSearchForm,
 } from "./style";
 import { MdArrowBack, MdSearch } from "react-icons/md";

@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, NAV_MOBILE_BREAK_POINT } from '../../layout/style';
+import styled from "styled-components";
+import {
+  CONTAINER_HORIZONTAL_PADDING,
+  NAV_MOBILE_BREAK_POINT,
+} from "../../layout/style";
 
 export const NavContainer = styled.nav`
   position: fixed;
@@ -50,19 +53,6 @@ export const NavSearch = styled.input`
   font-size: 1rem;
   width: 70%;
   max-width: 600px;
-`;
-
-export const NavSearchBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  background-color: ${(props) => props.theme.btnBg};
-  border: solid 1px ${(props) => props.theme.borderColor};
-  color: ${(props) => props.theme.textColor};
-  &:hover {
-    background-color: ${(props) => props.theme.btnHoverBg};
-  }
 `;
 
 export const NavBtnContainer = styled.div`

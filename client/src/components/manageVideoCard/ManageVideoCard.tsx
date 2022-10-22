@@ -16,7 +16,13 @@ import {
 import { videoDurationFormatter } from "../../utils/videoDurationFormatter";
 import { IVideo } from "../../app/features/manageVideo";
 
-const ManageVideoCard = ({ video }: { video: IVideo }) => {
+const ManageVideoCard = ({
+  video,
+  deleteBtnRef,
+}: {
+  video: IVideo;
+  deleteBtnRef: React.RefObject<HTMLButtonElement>;
+}) => {
   return (
     <VideoCard key={video.video_id}>
       <Link href={`/videos/${video.video_id}`}>
@@ -51,7 +57,7 @@ const ManageVideoCard = ({ video }: { video: IVideo }) => {
           </VideoDetailItem>
         </VideoDetailItems>
       </VideoDetails>
-      <ManageVideoCardFunctions video={video} />
+      <ManageVideoCardFunctions video={video} deleteBtnRef={deleteBtnRef} />
     </VideoCard>
   );
 };

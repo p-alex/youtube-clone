@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
 import { BASE_URL } from "../utils/baseURL";
 import useRefreshToken from "./useRefreshToken";
 
-type Errors = {
+export type Errors = {
   message: string;
 }[];
 
@@ -13,34 +15,29 @@ export interface DefaultResponse<Data> {
   result: Data | null;
 }
 
-interface UseAxiosOptions {
-  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  body?: any;
-  accessToken: string;
-}
-
-const useAxiosWithRetry = <Data>(
+function useAxiosWithRetry<Body, Data>(
   url: string,
-  options: UseAxiosOptions
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
 ): [
-  () => Promise<DefaultResponse<Data | null>>,
+  (body: Body) => Promise<DefaultResponse<Data | null>>,
   { isLoading: boolean; errors: Errors | null }
-] => {
+] {
+  const { accessToken } = useSelector((state: RootState) => state.auth);
   const refreshToken = useRefreshToken();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Errors | null>(null);
 
-  const request = async (accessToken: string) => {
+  const request = async (accessToken: string, body: Body | undefined) => {
     try {
       setIsLoading(true);
 
       const response = await axios(`${BASE_URL}/${url}`, {
-        method: !options?.method ? "GET" : options.method,
+        method: !method ? "GET" : method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        data: options?.body,
+        data: body,
         withCredentials: true,
       });
 
@@ -57,45 +54,35 @@ const useAxiosWithRetry = <Data>(
         errors: [{ message: error.message }],
         result: null,
       };
-
-      return { statusCode: error.response.status, data };
+      return { statusCode: error?.response?.status, data };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const retryRequest = async () => {
+  const retryRequest = async (body: Body | undefined) => {
     const { success, errors, result } = await refreshToken();
 
     if (success && result) {
-      const response = await request(result.accessToken);
-      return response.data;
+      const { data } = await request(result.accessToken, body);
+      return data;
     }
 
     return { success, errors, result } as DefaultResponse<null>;
   };
 
-  const apiRequest = async () => {
-    if (!options.accessToken)
-      return {
-        success: false,
-        errors: [{ message: "No access token" }],
-        result: null,
-      } as DefaultResponse<null>;
+  const apiRequest = async (body: Body | undefined) => {
+    const { statusCode, data } = await request(accessToken, body);
 
-    const response = await request(options.accessToken);
-
-    console.log(response);
-
-    if (response.statusCode === 403) {
-      const retryResponse = await retryRequest();
+    if (statusCode === 403) {
+      const retryResponse = await retryRequest(body);
       return retryResponse;
     }
 
-    return response.data;
+    return data;
   };
 
   return [apiRequest, { isLoading, errors }];
-};
+}
 
 export default useAxiosWithRetry;

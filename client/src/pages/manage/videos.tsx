@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
@@ -9,7 +9,7 @@ import {
   setUserVideos,
 } from "../../app/features/manageVideo";
 import { RootState } from "../../app/store";
-import ConfirmationModal from "../../components/confirmationModal/ConfirmationModal";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import EditVideoModal from "../../components/editVideoModal/EditVideoModal";
 import ManageVideoCard from "../../components/manageVideoCard/ManageVideoCard";
 import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
@@ -43,35 +43,29 @@ const Manage = () => {
   );
   const dispatch = useDispatch();
 
-  const [getUserVideos, { isLoading }] = useAxiosWithRetry<{
-    videos: IVideo[];
-  }>("api/videos/manage", {
-    accessToken: auth.accessToken!,
-  });
+  const deleteBtnRef = useRef<HTMLButtonElement>(null);
 
-  const [deleteVideo, { isLoading: isDeleteLoading }] = useAxiosWithRetry(
-    "api/videos",
-    {
-      body: { video_id: videoToDelete },
-      method: "DELETE",
-      accessToken: auth.accessToken!,
-    }
-  );
+  const [getUserVideos, { isLoading }] = useAxiosWithRetry<
+    {},
+    { videos: IVideo[] }
+  >("api/videos/manage", "GET");
+
+  const [deleteVideo, { isLoading: isDeleteLoading }] = useAxiosWithRetry<
+    { videoId: string },
+    {}
+  >("api/videos", "DELETE");
 
   const handleGetUserVideos = async () => {
-    const response = await getUserVideos();
+    const response = await getUserVideos({});
     if (response.result === null) return;
     dispatch(setUserVideos(response.result.videos));
   };
 
   const handleDeleteVideo = async () => {
+    const { success } = await deleteVideo({ videoId: videoToDelete! });
+    if (!success) return;
     dispatch(removeVideo({ video_id: videoToDelete! }));
     dispatch(resetVideoToDelete());
-    try {
-      await deleteVideo();
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   useEffect(() => {
@@ -83,9 +77,13 @@ const Manage = () => {
       <AnimatePresence>
         {videoToDelete && (
           <ConfirmationModal
-            toggleModal={() => dispatch(resetVideoToDelete())}
+            title={"Delete video"}
+            message={"Delete video permanently?"}
+            toggle={() => dispatch(resetVideoToDelete())}
             func={handleDeleteVideo}
             btnName={"Delete"}
+            redirectToElementOnClose={deleteBtnRef}
+            isLoading={isDeleteLoading}
           />
         )}
       </AnimatePresence>
@@ -96,7 +94,13 @@ const Manage = () => {
         <Title>Manage your videos</Title>
         <VideoCards>
           {videos.map((video) => {
-            return <ManageVideoCard key={video.video_id} video={video} />;
+            return (
+              <ManageVideoCard
+                key={video.video_id}
+                video={video}
+                deleteBtnRef={deleteBtnRef}
+              />
+            );
           })}
         </VideoCards>
       </Container>

@@ -1,13 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-const useWindowSize = ({
-  width,
-  initialValue,
-}: {
-  width: number;
-  initialValue: boolean;
-}) => {
-  const [isWindowWidthUnder, setIsWindowWidthUnder] = useState(initialValue);
+const useWindowSize = ({ width }: { width: number }) => {
+  const [isWindowWidthUnder, setIsWindowWidthUnder] = useState(false);
   const [count, setCount] = useState(0);
 
   const handleCheckWindowSize = () => {
@@ -23,8 +17,8 @@ const useWindowSize = ({
       setIsWindowWidthUnder(window.innerWidth <= width);
       setCount((prevState) => prevState++);
     }
-    window.addEventListener('resize', handleCheckWindowSize);
-    return () => window.removeEventListener('resize', handleCheckWindowSize);
+    window.addEventListener("resize", handleCheckWindowSize);
+    return () => window.removeEventListener("resize", handleCheckWindowSize);
   }, []);
 
   return isWindowWidthUnder;

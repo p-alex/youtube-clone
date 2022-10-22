@@ -10,7 +10,6 @@ export const DetailsContainer = styled.div`
   padding: 20px 0;
   align-items: flex-start;
   border-bottom: solid 1px ${(props) => props.theme.borderColor};
-  height: 200px;
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     padding: 20px ${CONTAINER_HORIZONTAL_PADDING}px;
   }
@@ -44,4 +43,5 @@ export const Description = styled.p`
   color: ${(props) => props.theme.textColor};
   line-height: 20px;
   max-width: 600px;
+  white-space: pre-line;
 `;
