@@ -1,13 +1,17 @@
-import Link from "next/link";
-import router from "next/router";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import { IUser, setUser } from "../app/features/authSlice";
-import Logo from "../components/logo/Logo";
-import useAxios from "../hooks/useAxios";
-import Layout from "../layout/Layout";
-import { Button } from "../ui/Button";
+import Link from 'next/link';
+import router from 'next/router';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { string } from 'zod';
+import { IUser, setUser } from '../app/features/authSlice';
+import Logo from '../components/logo/Logo';
+import useAxios from '../hooks/useAxios';
+import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifyForm';
+import useZodForm from '../hooks/useZodVerifyForm';
+import Layout from '../layout/Layout';
+import { loginSchema, LoginSchemaType } from '../schemas/login.schema';
+import { Button } from '../ui/Button';
 
 const Wrapper = styled.div`
   position: relative;
@@ -48,7 +52,7 @@ const FormTitle = styled.h1`
 const FormLabel = styled.label`
   display: block;
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 `;
 
 const FormInput = styled.input`
@@ -61,7 +65,6 @@ const FormInput = styled.input`
   padding: 8px;
   font-size: 1rem;
   width: 100%;
-  margin-bottom: 20px;
 `;
 
 const SignUpParagraph = styled.p`
@@ -72,31 +75,37 @@ const SignUpParagraph = styled.p`
   }
 `;
 
-const ErrorMessage = styled.p`
+const ErrorMessage = styled.small`
   color: red;
   margin-bottom: 15px;
 `;
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<ZodVerifyFormErrors<LoginSchemaType>>({});
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [loginUser, { isLoading, errors }] = useAxios<{
-    user: IUser;
-    accessToken: string;
-  } | null>("api/auth", { method: "POST", body: { email, password } });
+  const [loginUser, { isLoading: isLoginUserLoading, errors: loginUserErrors }] =
+    useAxios<
+      { email: string; password: string },
+      {
+        user: IUser;
+        accessToken: string;
+      } | null
+    >('api/auth', 'POST');
+
+  const verifyForm = useZodVerifyForm(loginSchema, { email, password });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) {
-      const { success, result } = await loginUser();
-      if (success && result) {
-        dispatch(
-          setUser({ user: result.user, accessToken: result.accessToken })
-        );
-        router.push("/");
-      }
+    setErrors({});
+    const { isValid, errors } = verifyForm();
+    if (!isValid) return setErrors(errors);
+    const { success, result } = await loginUser({ email, password });
+    if (success && result) {
+      dispatch(setUser({ user: result.user, accessToken: result.accessToken }));
+      router.push('/');
     }
   };
 
@@ -106,35 +115,41 @@ const SignIn = () => {
         <Form onSubmit={handleSubmit}>
           <LogoAndTitle>
             <Logo />
-            <FormTitle>Sign In</FormTitle>
+            <FormTitle>Login</FormTitle>
           </LogoAndTitle>
-          {errors &&
-            errors.map((error) => {
-              return (
-                <ErrorMessage key={error.message}>{error.message}</ErrorMessage>
-              );
+          {loginUserErrors &&
+            loginUserErrors.map((error) => {
+              return <ErrorMessage key={error.message}>{error.message}</ErrorMessage>;
             })}
-          <FormLabel htmlFor="email">Email</FormLabel>
-          <FormInput
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <FormInput
-            type={"password"}
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button variant="primary" type="submit">
-            {isLoading ? "Loading" : "Sign in"}
+          <FormLabel htmlFor="email">
+            Email
+            <FormInput
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoginUserLoading}
+            />
+            <ErrorMessage>{errors.email && errors.email}</ErrorMessage>
+          </FormLabel>
+          <FormLabel htmlFor="password">
+            Password
+            <FormInput
+              type={'password'}
+              id="password"
+              value={password}
+              disabled={isLoginUserLoading}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <ErrorMessage>{errors.password && errors.password}</ErrorMessage>
+          </FormLabel>
+          <Button variant="primary" type="submit" disabled={isLoginUserLoading}>
+            Login
           </Button>
           <SignUpParagraph>
-            Don&apos;t have an account?{" "}
-            <Link href={"/signup"}>
-              <a>Sign up</a>
+            Don&apos;t have an account?{' '}
+            <Link href={'/signup'}>
+              <a>Create an account</a>
             </Link>
           </SignUpParagraph>
         </Form>
