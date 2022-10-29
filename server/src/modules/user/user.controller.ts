@@ -1,8 +1,14 @@
+import config from 'config';
 import { Request, Response } from 'express';
 import db from '../../db';
 import { RegisterUserInput } from './user.scheme';
 import { registerUser } from './user.service';
 import argon2 from 'argon2';
+import { sendEmail } from '../../../nodemailer/sendEmail';
+import { verifyEmailTemplate } from '../../../nodemailer/templates';
+import { signJwt } from '../../utils/jwt';
+
+import { createRandomCode } from '../../utils/createRandomCode';
 
 export const registerUserController = async (
   req: Request<{}, {}, RegisterUserInput>,
@@ -36,16 +42,20 @@ export const registerUserController = async (
 
     const hashedPassword = await argon2.hash(password);
 
-    const user = await registerUser({ email, username, password: hashedPassword });
+    const response = await registerUser({
+      email,
+      username,
+      password: hashedPassword,
+    });
 
-    if (!user) throw new Error();
+    if (!response.verification_code) throw new Error();
+
+    await sendEmail(verifyEmailTemplate(response.verification_code));
 
     return res.status(201).json({
       success: true,
       errors: [],
-      result: {
-        user_id: user.user_id,
-      },
+      result: null,
     });
   } catch (error: any) {
     console.log(error);

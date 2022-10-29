@@ -1,9 +1,14 @@
 import jwt from 'jsonwebtoken';
 import config from 'config';
 
+type Secrets =
+  | 'access_token_secret'
+  | 'refresh_token_secret'
+  | 'verify_email_token_secret';
+
 export function signJwt(
   object: Object,
-  secretName: 'access_token_secret' | 'refresh_token_secret',
+  secretName: Secrets,
   options?: jwt.SignOptions | undefined
 ) {
   const secret = config.get<string>(secretName);
@@ -13,10 +18,7 @@ export function signJwt(
   });
 }
 
-export function verifyJwt<T>(
-  token: string,
-  secretName: 'access_token_secret' | 'refresh_token_secret'
-): T | null {
+export function verifyJwt<T>(token: string, secretName: Secrets): T | null {
   try {
     const secret = config.get<string>(secretName);
     const decoded = jwt.verify(token, secret) as T;

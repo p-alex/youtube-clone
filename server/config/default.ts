@@ -16,4 +16,7 @@ export default {
   access_token_expire: '',
   refresh_token_expire: '',
   jwt_sign_algorithm: '',
+  smtp_user: '',
+  smtp_pass: '',
+  verify_email_token_secret: '',
 };

@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import db from '../../db';
-import { LoginUserInput, LogoutUserInput } from './auth.schema';
+import { LoginUserInput, LogoutUserInput, VerifyEmailInput } from './auth.schema';
 import { signAccessToken, signRefreshToken } from './auth.service';
 import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 import { verifyJwt } from '../../utils/jwt';
+import config from 'config';
 
 export const loginUserController = async (
   req: Request<{}, {}, LoginUserInput>,
@@ -196,10 +197,10 @@ export const logoutUserController = async (
   res: Response
 ) => {
   const token = req.cookies.rtoken;
-  const { user_id } = req.body;
+  const { userId } = req.body;
 
   if (!token) {
-    await db.query('DELETE FROM sessions WHERE user_id = $1', [user_id]);
+    await db.query('DELETE FROM sessions WHERE user_id = $1', [userId]);
 
     res.cookie('rtoken', '', {
       httpOnly: true,
@@ -247,4 +248,35 @@ export const logoutUserController = async (
       .status(500)
       .json({ success: false, errors: [{ message: error.message }], result: null });
   }
+};
+
+export const verifyEmailController = async (
+  req: Request<{}, {}, VerifyEmailInput>,
+  res: Response
+) => {
+  const response: QueryResult<{ verification_code: string }> = await db.query(
+    'SELECT verification_code FROM users WHERE user_id = $1, verification_code = $2',
+    [req.body.code]
+  );
+
+  if (!response.rows[0])
+    return res
+      .status(400)
+      .json({ success: false, errors: [{ message: 'Invalid code' }], result: null });
+
+  const code = response.rows[0].verification_code;
+
+  const isCodeValid = response.rows[0].verification_code === code;
+
+  if (!isCodeValid)
+    return res
+      .status(400)
+      .json({ success: false, errors: [{ message: 'Invalid code' }], result: null });
+
+  await db.query(
+    'UPDATE users SET is_verified = true, verification_code = null WHERE verification_code = $1',
+    [code]
+  );
+
+  return res.status(200).json({ success: true, errors: [], result: null });
 };

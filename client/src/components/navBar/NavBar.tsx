@@ -1,33 +1,35 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 import {
   NavAddVideoBtn,
   NavBtnContainer,
   NavContainer,
   NavMobileSearchBtn,
   NavProfileBtn,
-  NavSearch,
-  NavSearchForm,
   NavToggleAndLogoContainer,
   NavToggleSideBar,
-} from "./style";
-import { BiMenu } from "react-icons/bi";
-import { MdOutlineVideoCall, MdSearch } from "react-icons/md";
-import Image from "next/image";
-import Logo from "../logo/Logo";
-import NavSideBar from "../navSideBar/NavSideBar";
-import { AnimatePresence } from "framer-motion";
-import NavMobileSearch from "../navMobileSearch/NavMobileSeach";
-import SignInButton from "../../ui/SignInButton";
-import useAuth from "../../hooks/useAuth";
-import UploadModal from "../uploadModal/UploadModal";
-import { useDispatch } from "react-redux";
-import { disableKeyBinds, enableKeyBinds } from "../../app/features/videoSlice";
-import { ProfileDropDown } from "../profileDropDown/ProfileDropDown";
-import { Button } from "../../ui/Button";
+} from './style';
+import { BiMenu } from 'react-icons/bi';
+import { MdOutlineVideoCall, MdSearch } from 'react-icons/md';
+import Image from 'next/image';
+import Logo from '../logo/Logo';
+import NavSideBar from '../navSideBar/NavSideBar';
+import { AnimatePresence } from 'framer-motion';
+import MobileSearchBar from '../SearchBar/MobileSearchBar/MobileSearchBar';
+import SignInButton from '../../ui/SignInButton';
+import useAuth from '../../hooks/useAuth';
+import UploadModal from '../uploadModal/UploadModal';
+import { ProfileDropDown } from '../profileDropDown/ProfileDropDown';
+import SearchBar from '../SearchBar/SearchBar';
 
 const NavBar = () => {
   const { isAuth, user } = useAuth();
-  const dispatch = useDispatch();
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSetSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   const [isSideBarActive, setIsSideBarActive] = useState(false);
 
   const [isProfileDropDownActive, setIsProfileDropDownActive] = useState(false);
@@ -36,12 +38,12 @@ const NavBar = () => {
 
   const [isUploadModalActive, setIsUploadModalActive] = useState(false);
 
-  const uploadModalToggleRef = useRef<any>();
-  const modelToggleRef = useRef<any>();
+  const uploadModalToggleRef = useRef<HTMLButtonElement>(null);
+  const navToggleRef = useRef<HTMLButtonElement>(null);
 
   const handleToggleSideBar = () => {
     setIsSideBarActive((prevState) => !prevState);
-    modelToggleRef.current?.focus();
+    navToggleRef.current?.focus();
   };
 
   const handleToggleMobileSearch = () => {
@@ -56,13 +58,17 @@ const NavBar = () => {
   return (
     <>
       {isMobileSearchActive && (
-        <NavMobileSearch handleToggleMobileSearch={handleToggleMobileSearch} />
+        <MobileSearchBar
+          handleToggleMobileSearch={handleToggleMobileSearch}
+          searchQuery={searchQuery}
+          setSearchQuery={handleSetSearchQuery}
+        />
       )}
       <NavContainer>
         <NavToggleAndLogoContainer>
           <NavToggleSideBar
             onClick={handleToggleSideBar}
-            ref={modelToggleRef}
+            ref={navToggleRef}
             aria-label="Toggle side bar"
           >
             <BiMenu />
@@ -70,16 +76,7 @@ const NavBar = () => {
           <Logo />
         </NavToggleAndLogoContainer>
 
-        <NavSearchForm>
-          <NavSearch
-            placeholder="Search"
-            onFocus={() => dispatch(disableKeyBinds())}
-            onBlur={() => dispatch(enableKeyBinds())}
-          />
-          <Button variant={"normal"}>
-            <MdSearch />
-          </Button>
-        </NavSearchForm>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={handleSetSearchQuery} />
 
         <NavBtnContainer>
           <NavMobileSearchBtn
@@ -100,16 +97,10 @@ const NavBar = () => {
               </NavAddVideoBtn>
               <NavProfileBtn
                 aria-label="Go to profile"
-                onClick={() =>
-                  setIsProfileDropDownActive((prevState) => !prevState)
-                }
+                onClick={() => setIsProfileDropDownActive((prevState) => !prevState)}
               >
                 <Image
-                  src={
-                    user
-                      ? user.profile_picture
-                      : "/images/default-profile-picture"
-                  }
+                  src={user ? user.profile_picture : '/images/default-profile-picture'}
                   width={32}
                   height={32}
                   alt=""
@@ -125,9 +116,7 @@ const NavBar = () => {
         </NavBtnContainer>
       </NavContainer>
       <AnimatePresence>
-        {isSideBarActive && (
-          <NavSideBar handleToggleSideBar={handleToggleSideBar} />
-        )}
+        {isSideBarActive && <NavSideBar handleToggleSideBar={handleToggleSideBar} />}
         {isUploadModalActive && (
           <UploadModal handleToggleUploadModal={handleToggleUploadModal} />
         )}

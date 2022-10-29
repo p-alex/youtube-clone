@@ -160,7 +160,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
                 </CommentButton>
               )}
             </CommentButtons>
-            {comment.comment_id === toReplyTo && (
+            {toReplyTo === comment.comment_id && (
               <CommentFormContainer>
                 <CommentForm
                   value={newReplyText}

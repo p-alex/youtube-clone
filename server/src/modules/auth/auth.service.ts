@@ -1,5 +1,5 @@
 import db from '../../db';
-import { signJwt, verifyJwt } from '../../utils/jwt';
+import { signJwt } from '../../utils/jwt';
 import config from 'config';
 
 interface User {

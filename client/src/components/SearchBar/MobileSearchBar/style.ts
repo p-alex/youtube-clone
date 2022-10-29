@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   CONTAINER_HORIZONTAL_PADDING,
   NAV_BAR_HEIGHT,
   NAV_MOBILE_BREAK_POINT,
-} from "../../layout/style";
+} from '../../../layout/style';
 
 export const Container = styled.div`
   display: none;
@@ -35,14 +35,14 @@ export const CloseSearchBtn = styled.button`
   justify-content: center;
 `;
 
-export const NavMobileSearchForm = styled.form`
+export const MobileSearchForm = styled.form`
   position: relative;
   display: flex;
   justify-content: center;
   flex: 1;
 `;
 
-export const NavMobileSearch = styled.input`
+export const MobileSearch = styled.input`
   border: solid 1px ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.inputBg};

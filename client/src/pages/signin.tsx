@@ -2,83 +2,23 @@ import Link from 'next/link';
 import router from 'next/router';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import { string } from 'zod';
 import { IUser, setUser } from '../app/features/authSlice';
 import Logo from '../components/logo/Logo';
 import useAxios from '../hooks/useAxios';
 import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifyForm';
-import useZodForm from '../hooks/useZodVerifyForm';
 import Layout from '../layout/Layout';
 import { loginSchema, LoginSchemaType } from '../schemas/login.schema';
 import { Button } from '../ui/Button';
-
-const Wrapper = styled.div`
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Form = styled.form`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 350px;
-  display: block;
-  border: solid 1px ${(props) => props.theme.borderColor};
-  padding: 30px;
-  border-radius: 5px;
-  background-color: ${(props) => props.theme.uiBg};
-`;
-
-const LogoAndTitle = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-`;
-
-const FormTitle = styled.h1`
-  color: ${(props) => props.theme.textColor};
-  margin-bottom: 40px;
-  font-size: 1.3rem;
-  width: max-content;
-`;
-
-const FormLabel = styled.label`
-  display: block;
-  color: ${(props) => props.theme.textColor};
-  margin-bottom: 15px;
-`;
-
-const FormInput = styled.input`
-  display: block;
-  border: solid red 1px;
-  width: 100%;
-  border: solid 1px ${(props) => props.theme.borderColor};
-  color: ${(props) => props.theme.textColor};
-  background-color: ${(props) => props.theme.inputBg};
-  padding: 8px;
-  font-size: 1rem;
-  width: 100%;
-`;
-
-const SignUpParagraph = styled.p`
-  color: ${(props) => props.theme.textColor};
-  margin-top: 20px;
-  & a {
-    color: ${(props) => props.theme.accentColor};
-  }
-`;
-
-const ErrorMessage = styled.small`
-  color: red;
-  margin-bottom: 15px;
-`;
+import {
+  Form,
+  FormAlternativeParagraph,
+  FormErrorMessage,
+  FormInput,
+  FormLabel,
+  FormLogoAndTitle,
+  FormTitle,
+  FormWrapper,
+} from '../ui/Form';
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -111,16 +51,20 @@ const SignIn = () => {
 
   return (
     <Layout>
-      <Wrapper>
+      <FormWrapper>
         <Form onSubmit={handleSubmit}>
-          <LogoAndTitle>
+          <FormLogoAndTitle>
             <Logo />
             <FormTitle>Login</FormTitle>
-          </LogoAndTitle>
+          </FormLogoAndTitle>
+
           {loginUserErrors &&
             loginUserErrors.map((error) => {
-              return <ErrorMessage key={error.message}>{error.message}</ErrorMessage>;
+              return (
+                <FormErrorMessage key={error.message}>{error.message}</FormErrorMessage>
+              );
             })}
+
           <FormLabel htmlFor="email">
             Email
             <FormInput
@@ -130,8 +74,9 @@ const SignIn = () => {
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoginUserLoading}
             />
-            <ErrorMessage>{errors.email && errors.email}</ErrorMessage>
+            <FormErrorMessage>{errors.email && errors.email}</FormErrorMessage>
           </FormLabel>
+
           <FormLabel htmlFor="password">
             Password
             <FormInput
@@ -141,19 +86,21 @@ const SignIn = () => {
               disabled={isLoginUserLoading}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <ErrorMessage>{errors.password && errors.password}</ErrorMessage>
+            <FormErrorMessage>{errors.password && errors.password}</FormErrorMessage>
           </FormLabel>
+
           <Button variant="primary" type="submit" disabled={isLoginUserLoading}>
             Login
           </Button>
-          <SignUpParagraph>
+
+          <FormAlternativeParagraph>
             Don&apos;t have an account?{' '}
             <Link href={'/signup'}>
               <a>Create an account</a>
             </Link>
-          </SignUpParagraph>
+          </FormAlternativeParagraph>
         </Form>
-      </Wrapper>
+      </FormWrapper>
     </Layout>
   );
 };

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../app/features/authSlice';
 import { BASE_URL } from '../utils/baseURL';
-import { DefaultResponse } from './useAxios';
+import { DefaultResponse } from './useAxiosWithRetry';
 
 const useRefreshToken = () => {
   const dispatch = useDispatch();

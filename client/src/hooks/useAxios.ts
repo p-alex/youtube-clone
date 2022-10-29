@@ -20,32 +20,29 @@ const useAxios = <Body, Data>(
   { isLoading: boolean; errors: Errors | null }
 ] => {
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Errors | null>(null);
+  const [errors, setErrors] = useState<{ message: string }[]>([]);
   const request = async (body: Body) => {
-    setErrors(null);
     setIsLoading(true);
     try {
       const response = await axios(`${BASE_URL}/${url}`, {
-        method: method ? 'GET' : method,
+        method: !method ? 'GET' : method,
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
         data: body,
       });
 
       const data: DefaultResponse<Data | null> = response.data;
 
-      if (!data.success) {
-        setErrors(data.errors);
-      }
-
       return data;
     } catch (error: any) {
       const data: DefaultResponse<Data | null> = {
         success: false,
-        errors: [{ message: error.message }],
+        errors: [{ message: error?.response?.data?.errors }],
         result: null,
       };
+      setErrors(error?.response?.data?.errors);
       return data;
     } finally {
       setIsLoading(false);

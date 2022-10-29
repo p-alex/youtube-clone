@@ -13,12 +13,20 @@ export const loginUserSchema = object({
 
 export const logoutUserSchema = object({
   body: object({
-    user_id: string({
+    userId: string({
       required_error: 'user_id is required',
     }),
+  }),
+});
+
+export const verifyEmailSchema = object({
+  body: object({
+    code: string({ required_error: 'Code is required' }),
   }),
 });
 
 export type LoginUserInput = TypeOf<typeof loginUserSchema>['body'];
 
 export type LogoutUserInput = TypeOf<typeof logoutUserSchema>['body'];
+
+export type VerifyEmailInput = TypeOf<typeof verifyEmailSchema>['body'];
