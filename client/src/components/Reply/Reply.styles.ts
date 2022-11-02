@@ -42,11 +42,16 @@ export const ReplyUsername = styled.div`
   }
 `;
 
-export const ReplyText = styled.p`
+export const ReplyText = styled.p<{ showMoreText: boolean | null }>`
   color: ${(props) => props.theme.textColor};
   white-space: pre-line;
   word-wrap: break-word;
   line-height: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${(props) =>
+    props.showMoreText === true ? '0' : props.showMoreText === false ? '4' : '0'};
+  overflow: hidden;
 `;
 
 export const ReplyDate = styled.small`

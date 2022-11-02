@@ -12,6 +12,8 @@ export const Thumbnail = styled.img`
   height: 0;
   padding-bottom: 56.25%;
   cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 export const Body = styled.div`
@@ -28,14 +30,18 @@ export const ProfilePicture = styled.img`
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
   color: ${(props) => props.theme.textMutedColor};
 `;
 
-export const Title = styled.h3`
+export const Title = styled.p`
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   cursor: pointer;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 1.2rem;
 `;
 
 export const Username = styled.p``;

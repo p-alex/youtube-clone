@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState, useEffect } from 'react';
 import {
   IReply,
   ReplySectionContext,
@@ -31,10 +31,13 @@ import CommentDropDown from '../../ui/CommentDropDown';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
+import { ReadMoreToggleBtn } from '../Comment/Comment.styles';
 
 const Reply = ({ reply }: { reply: IReply }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const { toReplyTo, toEdit, toDelete } = useContext(ReplySectionContext);
+  const [showMoreText, setShowMoreText] = useState<boolean | null>(null);
+  const handleToggleShowMoreText = () => setShowMoreText((prevState) => !prevState);
 
   const {
     newReplyText,
@@ -58,6 +61,17 @@ const Reply = ({ reply }: { reply: IReply }) => {
   } = useReply(reply);
 
   const replyBtn = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const replyText = document.getElementById(
+      `replyText-${reply.reply_id}`
+    ) as HTMLParagraphElement;
+    const maxLines = 4;
+    const lineHeight = 20;
+    if (replyText.offsetHeight > maxLines * lineHeight) {
+      setShowMoreText(false);
+    }
+  }, []);
 
   return (
     <ReplyContainer>
@@ -106,7 +120,14 @@ const Reply = ({ reply }: { reply: IReply }) => {
                 />
               )}
             </ReplyHeader>
-            <ReplyText>{reply.text}</ReplyText>
+            <ReplyText showMoreText={showMoreText} id={`replyText-${reply.reply_id}`}>
+              {reply.text}
+            </ReplyText>
+            {typeof showMoreText === 'boolean' && (
+              <ReadMoreToggleBtn onClick={handleToggleShowMoreText}>
+                {showMoreText ? 'Show less' : 'Read more'}
+              </ReadMoreToggleBtn>
+            )}
             <ReplyButtons>
               <ReplyButton
                 onClick={handleLikeReply}
