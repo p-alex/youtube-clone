@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Layout from '../../layout/Layout';
 import SuggestionCard from '../../components/suggestionCard/SuggestionCard';
-import VideoDetails from '../../components/videoDetails/VideoDetails';
 import VideoHeader from '../../components/videoHeader/VideoHeader';
 import Head from 'next/head';
 import { videos } from '../../utils/videosList';
@@ -26,7 +25,7 @@ import VideoDescription from '../../components/videoDescription/VideoDescription
 
 const VideoPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
-  const video = useSelector((state: RootState) => state.video.videoInfo);
+  const video: VideoInfo = useSelector((state: RootState) => state.video.videoInfo);
   const dispatch = useDispatch();
   const [videoPlayerType, setVideoPlayerType] = useState<'desktop' | 'mobile' | ''>('');
   const [isTheatreMode, setIsTheatreMode] = useState(false);

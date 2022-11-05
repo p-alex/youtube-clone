@@ -12,14 +12,15 @@ import {
 import CommentForm from '../../components/Comment/CommentForm/CommentForm';
 import { ReplySectionProvider } from '../../context/ReplySectionContext/ReplySectionProvider';
 import { RootState } from '../../app/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
-import { VideoInfo } from '../../app/features/videoSlice';
+import { addToTotalComments, VideoInfo } from '../../app/features/videoSlice';
 import Spinner from '../../ui/Spinner';
 import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
 
 const CommentSection = ({ video }: { video: VideoInfo }) => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
 
   const { comments, page, limit, dispatchCommentSection } =
     useContext(CommentSectionContext);
@@ -70,6 +71,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
       payload: { comment: newComment },
     });
     setNewCommentText('');
+    dispatch(addToTotalComments());
   };
 
   const [loadMoreComment, { isLoading: isLoadMoreCommentsLoading }] = useAxiosWithRetry<

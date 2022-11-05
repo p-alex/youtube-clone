@@ -1,6 +1,11 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addToTotalComments,
+  subtractFromTotalComments,
+} from '../app/features/videoSlice';
 import { RootState } from '../app/store';
+import { CommentSectionContext } from '../context/CommentSectionContext/CommentSectionProvider';
 import {
   IReply,
   ReplySectionContext,
@@ -10,6 +15,10 @@ import useAxiosWithRetry from './useAxiosWithRetry';
 
 const useReply = (reply: IReply) => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
+
+  const { dispatchCommentSection } = useContext(CommentSectionContext);
+
   const [newReplyText, setNewReplyText] = useState('');
   const [editedReplyText, setEditedReplyText] = useState(reply.text);
 
@@ -103,7 +112,12 @@ const useReply = (reply: IReply) => {
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     dispatchReplySection({ type: 'RESET_IDS' });
+    dispatchCommentSection({
+      type: 'ADD_TO_TOTAL_REPLIES',
+      payload: { commentId: reply.comment_id },
+    });
     setNewReplyText('');
+    dispatch(addToTotalComments());
   };
 
   const handleLikeReply = async () => {
@@ -145,6 +159,11 @@ const useReply = (reply: IReply) => {
     if (!success || !result) return;
     dispatchReplySection({ type: 'DELETE_REPLY' });
     dispatchReplySection({ type: 'RESET_IDS' });
+    dispatchCommentSection({
+      type: 'SUBTRACT_FROM_TOTAL_REPLIES',
+      payload: { commentId: reply.comment_id },
+    });
+    dispatch(subtractFromTotalComments());
   };
 
   return {

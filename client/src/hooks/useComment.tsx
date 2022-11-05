@@ -1,5 +1,9 @@
 import { ChangeEvent, useContext, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addToTotalComments,
+  subtractFromTotalComments,
+} from '../app/features/videoSlice';
 import { RootState } from '../app/store';
 import {
   CommentSectionContext,
@@ -14,6 +18,7 @@ import useAxiosWithRetry from './useAxiosWithRetry';
 
 const useComment = (comment: IComment) => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
   const { dispatchReplySection } = useContext(ReplySectionContext);
   const [newReplyText, setNewReplyText] = useState('');
   const [editedCommentText, setEditedCommentText] = useState(comment.text);
@@ -147,6 +152,7 @@ const useComment = (comment: IComment) => {
     dispatchCommentSection({
       type: 'DELETE_COMMENT',
     });
+    dispatch(subtractFromTotalComments());
   };
 
   const handleAddReply = async () => {
@@ -163,7 +169,12 @@ const useComment = (comment: IComment) => {
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     setNewReplyText('');
+    dispatchCommentSection({
+      type: 'ADD_TO_TOTAL_REPLIES',
+      payload: { commentId: comment.comment_id },
+    });
     dispatchCommentSection({ type: 'RESET_IDS' });
+    dispatch(addToTotalComments());
   };
 
   return {

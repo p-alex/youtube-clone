@@ -5,6 +5,28 @@ export const reducer = (state: InitialState, action: CommentSectionActions) => {
   switch (action.type) {
     case 'SET_COMMENTS':
       return { ...state, comments: [...action.payload.comments] };
+    case 'ADD_TO_TOTAL_REPLIES':
+      return {
+        ...state,
+        comments: state.comments.map((comment) => {
+          if (comment.comment_id === action.payload.commentId) {
+            comment.total_replies += 1;
+            return comment;
+          }
+          return comment;
+        }),
+      };
+    case 'SUBTRACT_FROM_TOTAL_REPLIES':
+      return {
+        ...state,
+        comments: state.comments.map((comment) => {
+          if (comment.comment_id === action.payload.commentId) {
+            comment.total_replies -= 1;
+            return comment;
+          }
+          return comment;
+        }),
+      };
     case 'NEXT_PAGE':
       return { ...state, page: state.page + 1 };
     case 'LOAD_MORE_COMMENTS':

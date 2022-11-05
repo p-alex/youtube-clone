@@ -5,6 +5,16 @@ type SetComments = {
   payload: { comments: IComment[] };
 };
 
+type AddToTotalReplies = {
+  type: 'ADD_TO_TOTAL_REPLIES';
+  payload: { commentId: string };
+};
+
+type SubtractFromTotalReplies = {
+  type: 'SUBTRACT_FROM_TOTAL_REPLIES';
+  payload: { commentId: string };
+};
+
 type NextPage = {
   type: 'NEXT_PAGE';
 };
@@ -75,6 +85,8 @@ type ResetIds = {
 
 export type CommentSectionActions =
   | SetComments
+  | AddToTotalReplies
+  | SubtractFromTotalReplies
   | NextPage
   | LoadMoreComments
   | AddComment

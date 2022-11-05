@@ -67,6 +67,12 @@ const videoSlice = createSlice({
     setVideo: (state, action: PayloadAction<VideoInfo>) => {
       state.videoInfo = action.payload;
     },
+    addToTotalComments: (state) => {
+      state.videoInfo.total_comments += 1;
+    },
+    subtractFromTotalComments: (state) => {
+      state.videoInfo.total_comments -= 1;
+    },
     likeVideo: (state) => {
       if (state.videoInfo.like_status === true) {
         state.videoInfo.like_status = null;
@@ -107,6 +113,8 @@ const videoSlice = createSlice({
 
 export const {
   setVideo,
+  addToTotalComments,
+  subtractFromTotalComments,
   disableKeyBinds,
   enableKeyBinds,
   likeVideo,

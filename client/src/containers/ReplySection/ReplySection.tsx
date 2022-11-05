@@ -75,7 +75,7 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
       )}
       {isGetRepliesLoading && <Spinner />}
       <ReplySectionContainer>
-        {showReplies ? (
+        {showReplies && replies.length > 0 ? (
           <>
             {replies.map((reply) => {
               return <Reply key={reply.reply_id} reply={reply} />;
