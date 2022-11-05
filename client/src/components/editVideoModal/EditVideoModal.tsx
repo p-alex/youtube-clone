@@ -1,20 +1,16 @@
-import Image from "next/image";
-import React, { ChangeEvent, useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  editVideo,
-  IVideo,
-  resetVideoToEdit,
-} from "../../app/features/manageVideo";
-import { RootState } from "../../app/store";
-import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
-import useDisableScroll from "../../hooks/useDisableScroll";
-import { Input } from "../../ui/Input";
-import { Button } from "../../ui/Button";
-import { Textarea } from "../../ui/Textarea";
-import { imageOptimizer } from "../../utils/imageOptimizer";
-import { convertToTagList } from "../uploadModal/UploadModal";
-import { MdClose } from "react-icons/md";
+import Image from 'next/image';
+import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { editVideo, IVideo, resetVideoToEdit } from '../../app/features/manageVideo';
+import { RootState } from '../../app/store';
+import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useDisableScroll from '../../hooks/useDisableScroll';
+import { Input } from '../../ui/Input';
+import { Button } from '../../ui/Button';
+import { Textarea } from '../../ui/Textarea';
+import { imageOptimizer } from '../../utils/imageOptimizer';
+import { convertToTagList } from '../uploadModal/UploadModal';
+import { MdClose } from 'react-icons/md';
 import {
   Backdrop,
   CloseBtn,
@@ -26,9 +22,9 @@ import {
   Tag,
   TagContainer,
   ThumbnailContainer,
-} from "./style";
-import { motion } from "framer-motion";
-import { removeEmptyLinesFromString } from "../../utils/removeEmptyLinesFromString";
+} from './style';
+import { motion } from 'framer-motion';
+import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -60,7 +56,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
   const [getTags, { isLoading: isGetTagsLoading }] = useAxiosWithRetry<
     {},
     { tags: string[] }
-  >(`api/videos/${video.video_id}/tags`, "GET");
+  >(`api/videos/${video.video_id}/tags`, 'GET');
 
   const [updateVideo, { isLoading: isUpdateVideoLoading }] = useAxiosWithRetry<
     {
@@ -74,7 +70,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
       tagList: string[] | null;
     },
     {}
-  >("api/videos", "PATCH");
+  >('api/videos', 'PATCH');
 
   const handleGetTags = async () => {
     try {
@@ -82,7 +78,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
       if (tags.result) {
         setCurrentTagList(tags.result.tags);
         setNewTagList(tags.result.tags);
-        tagsInputRef.current!.value = tags.result.tags.join(", ");
+        tagsInputRef.current!.value = tags.result.tags.join(', ');
       }
     } catch (error) {
       console.log(error);
@@ -102,9 +98,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         description: removeEmptyLinesFromString(description),
         thumbnailData: thumbnailData,
         tagList:
-          newTagList !== currentTagList && newTagList.length >= 4
-            ? newTagList
-            : null,
+          newTagList !== currentTagList && newTagList.length >= 4 ? newTagList : null,
       });
       if (!response.result) return;
       dispatch(
@@ -116,7 +110,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             : thumbnailData.currentThumbnailUrl,
         })
       );
-      setResult({ success: response.success, error: "" });
+      setResult({ success: response.success, error: '' });
     } catch (error: any) {
       setResult({ success: false, error: error.message });
     }
@@ -131,7 +125,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
       const optimizedImageUrl = await imageOptimizer(file.result);
       setThumbnailData((prevState) => ({
         ...prevState,
-        new_thumbnail_base64: optimizedImageUrl,
+        newThumbnailBase64: optimizedImageUrl,
       }));
     };
   };
@@ -143,27 +137,20 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         as={motion.div}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ type: "just" }}
+        transition={{ type: 'just' }}
         exit={{ opacity: 0 }}
       ></Backdrop>
       <FormContainer
         as={motion.form}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "just" }}
+        transition={{ type: 'just' }}
         exit={{ y: -50, opacity: 0 }}
       >
         <CloseBtn onClick={() => dispatch(resetVideoToEdit())}>
           <MdClose />
         </CloseBtn>
         <ThumbnailContainer>
-          <Button
-            variant="normal"
-            onClick={() => hiddenInput.current.click()}
-            type="button"
-          >
-            Change thumbnail
-          </Button>
           <HiddenInput
             type="file"
             accept=".jpg, .png"
@@ -182,15 +169,22 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             alt=""
             objectFit="contain"
           />
+          <Button
+            variant="normal"
+            onClick={() => hiddenInput.current.click()}
+            type="button"
+          >
+            Change thumbnail
+          </Button>
           {video.thumbnail_url &&
-            typeof thumbnailData.newThumbnailBase64 === "string" &&
+            typeof thumbnailData.newThumbnailBase64 === 'string' &&
             video.thumbnail_url !== thumbnailData.newThumbnailBase64 && (
               <Button
                 variant="normal"
                 onClick={() =>
                   setThumbnailData((prevState) => ({
                     ...prevState,
-                    new_thumbnail_base64: null,
+                    newThumbnailBase64: null,
                   }))
                 }
                 type="button"
@@ -199,9 +193,9 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
               </Button>
             )}
         </ThumbnailContainer>
-        {typeof result?.success === "boolean" ? (
+        {typeof result?.success === 'boolean' ? (
           <ResultMessage isSuccess={result.success}>
-            {result.success ? "Video edited successfully!" : result.error}
+            {result.success ? 'Video edited successfully!' : result.error}
           </ResultMessage>
         ) : null}
         <InputLabel htmlFor="title">Title</InputLabel>
@@ -243,7 +237,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           onClick={handleUpdateVideo}
           disabled={isUpdateVideoLoading}
         >
-          {isUpdateVideoLoading ? "Loading" : "Edit"}
+          {isUpdateVideoLoading ? 'Loading' : 'Edit'}
         </Button>
       </FormContainer>
     </Container>

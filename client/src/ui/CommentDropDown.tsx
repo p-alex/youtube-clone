@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineMore } from 'react-icons/ai';
 import { MdDeleteOutline, MdEdit } from 'react-icons/md';
+import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 const CommentDropDownWrapper = styled.div`
   position: relative;
@@ -12,7 +13,8 @@ const CommentDropDownContainer = styled.div`
   position: absolute;
   top: 30px;
   right: 0;
-  background-color: ${(props) => props.theme.uiBg};
+  background-color: ${(props) => props.theme.uiSecondaryBg};
+  border-radius: ${BORDER_RADIUS_ROUND}px;
   padding: 10px 0;
 `;
 

@@ -1,26 +1,24 @@
-import styled from "styled-components";
-const subscribeBtn = {
-  bg: "#fe0001",
-  bgHover: "#ff3434",
-  textColor: "#fff",
-  unsubBg: "#313131",
-  unsubBgHover: "#3b3a3b",
-  unsubTextColor: "#a1aba7",
-};
-export const SubscribeButton = styled.button<{ variant: "sub" | "unsub" }>`
-  padding: 10px 16px;
+import styled from 'styled-components';
+import { BORDER_RADIUS_ROUNDER } from '../layout/style';
+export const SubscribeButton = styled.button<{ variant: 'subed' | 'normal' }>`
+  padding: 8px 16px;
   text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.85rem;
+  height: 35px;
   color: ${(props) =>
-    props.variant === "sub"
-      ? subscribeBtn.textColor
-      : subscribeBtn.unsubTextColor};
+    props.variant === 'subed'
+      ? props.theme.subscribeBtn.subedTextColor
+      : props.theme.subscribeBtn.textColor};
   background-color: ${(props) =>
-    props.variant === "sub" ? subscribeBtn.bg : subscribeBtn.unsubBg};
-  border-radius: 2px;
+    props.variant === 'subed'
+      ? props.theme.subscribeBtn.subedBg
+      : props.theme.subscribeBtn.bg};
+  border-radius: ${BORDER_RADIUS_ROUNDER}px;
   &:hover {
     background-color: ${(props) =>
-      props.variant === "sub"
-        ? subscribeBtn.bgHover
-        : subscribeBtn.unsubBgHover};
+      props.variant === 'subed'
+        ? props.theme.subscribeBtn.subedBgHover
+        : props.theme.subscribeBtn.bgHover};
   }
 `;

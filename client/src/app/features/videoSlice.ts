@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface VideoInfo {
   video_id: string;
@@ -18,6 +18,22 @@ export interface VideoInfo {
   created_at: string;
 }
 
+export interface IVideoSmall {
+  video_id: string;
+  user_id: string;
+  username: string;
+  profile_picture: string;
+  thumbnail_url: string;
+  title: string;
+  views: number;
+  created_at: string;
+}
+
+export interface IVideoSmallWithInfo extends IVideoSmall {
+  description: string;
+  duration: number;
+}
+
 interface InitialState {
   canUseVideoKeyBinds: boolean;
   videoInfo: VideoInfo;
@@ -26,26 +42,26 @@ interface InitialState {
 const initialState: InitialState = {
   canUseVideoKeyBinds: true,
   videoInfo: {
-    video_id: "",
-    user_id: "",
-    username: "",
-    profile_picture: "",
+    video_id: '',
+    user_id: '',
+    username: '',
+    profile_picture: '',
     total_subscribers: 0,
-    video_url: "",
-    title: "",
-    description: "",
-    views: "",
+    video_url: '',
+    title: '',
+    description: '',
+    views: '',
     total_likes: 0,
     total_dislikes: 0,
     total_comments: 0,
     duration: 0,
     like_status: null,
-    created_at: "",
+    created_at: '',
   },
 };
 
 const videoSlice = createSlice({
-  name: "video",
+  name: 'video',
   initialState,
   reducers: {
     setVideo: (state, action: PayloadAction<VideoInfo>) => {

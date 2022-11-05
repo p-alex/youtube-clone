@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 export const Textarea = styled.textarea`
   position: relative;
@@ -11,4 +12,5 @@ export const Textarea = styled.textarea`
   resize: vertical;
   font-size: 1rem;
   min-height: 100px;
+  border-radius: ${BORDER_RADIUS_ROUND}px;
 `;

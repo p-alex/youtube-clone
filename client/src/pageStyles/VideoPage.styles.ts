@@ -1,17 +1,13 @@
-import styled from "styled-components";
-import {
-  CONTAINER_HORIZONTAL_PADDING,
-  MOBILE_BREAK_POINT,
-  NAV_BAR_HEIGHT,
-} from "../layout/style";
+import styled from 'styled-components';
+import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../layout/style';
 
 export const VideoPageContainer = styled.main`
   position: relative;
   display: flex;
-  margin: ${NAV_BAR_HEIGHT}px auto;
   gap: 20px;
-  max-width: 1850px;
-  padding: 20px ${CONTAINER_HORIZONTAL_PADDING}px;
+  max-width: 1750px;
+  margin: auto;
+  padding: 0 ${CONTAINER_HORIZONTAL_PADDING}px;
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     flex-direction: column;
     padding: 0px;
@@ -42,9 +38,9 @@ export const VideoDetailsContainer = styled.div`
 `;
 
 export const SuggestionsColumn = styled.aside<{ isTheatreMode: boolean }>`
-  width: 371px;
+  width: 550px;
   grid-area: suggestions;
-  margin-top: ${(props) => (props.isTheatreMode ? "20px" : "0")};
+  margin-top: ${(props) => (props.isTheatreMode ? '20px' : '0')};
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

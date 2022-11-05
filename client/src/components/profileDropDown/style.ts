@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { NAV_BAR_HEIGHT } from "../../layout/style";
+import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND, NAV_BAR_HEIGHT } from '../../layout/style';
 
 export const Container = styled.div`
   position: absolute;
@@ -8,6 +8,8 @@ export const Container = styled.div`
   width: 250px;
   background-color: ${(props) => props.theme.uiBg};
   border: solid 1px ${(props) => props.theme.borderColor};
+  border-radius: ${BORDER_RADIUS_ROUND}px;
+  overflow: hidden;
 `;
 
 export const Header = styled.div`

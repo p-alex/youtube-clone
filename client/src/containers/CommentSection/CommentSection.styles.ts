@@ -9,6 +9,12 @@ export const CommentSectionContainer = styled.div`
   }
 `;
 
+export const TotalComments = styled.div`
+  color: ${(props) => props.theme.textColor};
+  margin-bottom: 15px;
+  font-size: 1rem;
+`;
+
 export const CommentLoadMoreBtn = styled.button`
   color: ${(props) => props.theme.accentColor};
   font-weight: 700;

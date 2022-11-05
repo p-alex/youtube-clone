@@ -1,19 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
-import Layout from "../../layout/Layout";
-import SuggestionCard from "../../components/suggestionCard/SuggestionCard";
-import VideoDetails from "../../components/videoDetails/VideoDetails";
-import VideoHeader from "../../components/videoHeader/VideoHeader";
-import Head from "next/head";
-import { videos } from "../../utils/videosList";
-import { useRouter } from "next/router";
-import { resetVideo, setVideo, VideoInfo } from "../../app/features/videoSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import useMobileSize from "../../hooks/useMobileSize";
-import VideoPlayer from "../../components/videoPlayer/VideoPlayer";
-import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
-import CommentSection from "../../containers/CommentSection/CommentSection";
-import { CommentSectionProvider } from "../../context/CommentSectionContext/CommentSectionProvider";
+import React, { useEffect, useRef, useState } from 'react';
+import Layout from '../../layout/Layout';
+import SuggestionCard from '../../components/suggestionCard/SuggestionCard';
+import VideoDetails from '../../components/videoDetails/VideoDetails';
+import VideoHeader from '../../components/videoHeader/VideoHeader';
+import Head from 'next/head';
+import { videos } from '../../utils/videosList';
+import { useRouter } from 'next/router';
+import { resetVideo, setVideo, VideoInfo } from '../../app/features/videoSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import useMobileSize from '../../hooks/useMobileSize';
+import VideoPlayer from '../../components/videoPlayer/VideoPlayer';
+import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import CommentSection from '../../containers/CommentSection/CommentSection';
+import { CommentSectionProvider } from '../../context/CommentSectionContext/CommentSectionProvider';
 import {
   SuggestionsColumn,
   VideoColumn,
@@ -21,25 +21,23 @@ import {
   VideoDetailsContainer,
   VideoDetailsWrapper,
   VideoPageContainer,
-} from "../../pageStyles/VideoPage.styles";
+} from '../../pageStyles/VideoPage.styles';
+import VideoDescription from '../../components/videoDescription/VideoDescription';
 
 const VideoPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
   const video = useSelector((state: RootState) => state.video.videoInfo);
   const dispatch = useDispatch();
-  const [videoPlayerType, setVideoPlayerType] = useState<
-    "desktop" | "mobile" | ""
-  >("");
+  const [videoPlayerType, setVideoPlayerType] = useState<'desktop' | 'mobile' | ''>('');
   const [isTheatreMode, setIsTheatreMode] = useState(false);
   const isMobileSize = useMobileSize();
   const videoId = useRouter().query.videoId;
 
   const effectRan = useRef(false);
 
-  const [getVideo, { isLoading, errors }] = useAxiosWithRetry<
-    {},
-    { video: VideoInfo }
-  >(`api/videos/${videoId}`);
+  const [getVideo, { isLoading, errors }] = useAxiosWithRetry<{}, { video: VideoInfo }>(
+    `api/videos/${videoId}`
+  );
 
   const handleGetVideo = async () => {
     const response = await getVideo({});
@@ -59,9 +57,9 @@ const VideoPage = () => {
   useEffect(() => {
     setIsTheatreMode(false);
     if (isMobileSize && !videoPlayerType) {
-      setVideoPlayerType("mobile");
+      setVideoPlayerType('mobile');
     } else if (!isMobileSize && !videoPlayerType) {
-      setVideoPlayerType("desktop");
+      setVideoPlayerType('desktop');
     }
   }, [isMobileSize]);
 
@@ -82,7 +80,7 @@ const VideoPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {video.video_id === videoId && (
-        <VideoPageContainer className={isTheatreMode ? "theatre-mode" : ""}>
+        <VideoPageContainer className={isTheatreMode ? 'theatre-mode' : ''}>
           <VideoColumn>
             <VideoContainer>
               <VideoPlayer
@@ -95,7 +93,7 @@ const VideoPage = () => {
             <VideoDetailsWrapper>
               <VideoDetailsContainer>
                 <VideoHeader video={video} />
-                <VideoDetails video={video} />
+                <VideoDescription video={video} />
                 <CommentSectionProvider>
                   {video && <CommentSection video={video} />}
                 </CommentSectionProvider>

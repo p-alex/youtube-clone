@@ -53,7 +53,6 @@ export const CommentText = styled.p<{ showMoreText: boolean | null }>`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: ${(props) =>
     props.showMoreText === true ? '0' : props.showMoreText === false ? '4' : '0'};
-  max-height: ${(props) => (props.showMoreText === false ? '120px' : 'none')};
   overflow: hidden;
 `;
 

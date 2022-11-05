@@ -1,25 +1,26 @@
-import { AnimatePresence } from "framer-motion";
-import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import { AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import {
   IVideo,
   removeVideo,
   resetVideoToDelete,
   setUserVideos,
-} from "../../app/features/manageVideo";
-import { RootState } from "../../app/store";
-import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
-import EditVideoModal from "../../components/editVideoModal/EditVideoModal";
-import ManageVideoCard from "../../components/manageVideoCard/ManageVideoCard";
-import useAxiosWithRetry from "../../hooks/useAxiosWithRetry";
-import Layout from "../../layout/Layout";
-import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from "../../layout/style";
+} from '../../app/features/manageVideo';
+import { RootState } from '../../app/store';
+import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
+import EditVideoModal from '../../components/editVideoModal/EditVideoModal';
+import ManageVideoCard from '../../components/manageVideoCard/ManageVideoCard';
+import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import Layout from '../../layout/Layout';
+import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../../layout/style';
 
 const Container = styled.div`
   position: relative;
   margin: calc(${NAV_BAR_HEIGHT}px + 20px) auto;
   max-width: 1200px;
+
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     margin: calc(${NAV_BAR_HEIGHT}px + 20px) 10px;
   }
@@ -32,8 +33,15 @@ const Title = styled.h2`
 
 const VideoCards = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 `;
 
 const Manage = () => {
@@ -45,15 +53,15 @@ const Manage = () => {
 
   const deleteBtnRef = useRef<HTMLButtonElement>(null);
 
-  const [getUserVideos, { isLoading }] = useAxiosWithRetry<
-    {},
-    { videos: IVideo[] }
-  >("api/videos/manage", "GET");
+  const [getUserVideos, { isLoading }] = useAxiosWithRetry<{}, { videos: IVideo[] }>(
+    'api/videos/manage',
+    'GET'
+  );
 
   const [deleteVideo, { isLoading: isDeleteLoading }] = useAxiosWithRetry<
     { videoId: string },
     {}
-  >("api/videos", "DELETE");
+  >('api/videos', 'DELETE');
 
   const handleGetUserVideos = async () => {
     const response = await getUserVideos({});
@@ -77,11 +85,11 @@ const Manage = () => {
       <AnimatePresence>
         {videoToDelete && (
           <ConfirmationModal
-            title={"Delete video"}
-            message={"Delete video permanently?"}
+            title={'Delete video'}
+            message={'Delete video permanently?'}
             toggle={() => dispatch(resetVideoToDelete())}
             func={handleDeleteVideo}
-            btnName={"Delete"}
+            btnName={'Delete'}
             redirectToElementOnClose={deleteBtnRef}
             isLoading={isDeleteLoading}
           />

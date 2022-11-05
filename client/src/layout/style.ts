@@ -1,5 +1,8 @@
-export const NAV_BAR_HEIGHT = 55;
+export const NAV_BAR_HEIGHT = 65;
 export const COMMENTS_BREAK_POINT = 600;
 export const NAV_MOBILE_BREAK_POINT = 647;
-export const MOBILE_BREAK_POINT = 980;
+export const MOBILE_BREAK_POINT = 1050;
 export const CONTAINER_HORIZONTAL_PADDING = 20;
+
+export const BORDER_RADIUS_ROUND = 10;
+export const BORDER_RADIUS_ROUNDER = 500;

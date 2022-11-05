@@ -6,17 +6,7 @@ import Layout from '../layout/Layout';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
-
-export interface IVideoSmall {
-  video_id: string;
-  user_id: string;
-  username: string;
-  profile_picture: string;
-  thumbnail_url: string;
-  title: string;
-  views: number;
-  created_at: string;
-}
+import { IVideoSmall } from '../app/features/videoSlice';
 
 const Home: NextPage = () => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);

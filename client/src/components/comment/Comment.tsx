@@ -139,15 +139,15 @@ const Comment = ({ comment }: { comment: IComment }) => {
                 onClick={handleLikeComment}
                 disabled={isLikeCommentLoading || isDislikeCommentLoading}
               >
-                {comment.total_likes}{' '}
                 {comment.like_status ? <AiFillLike /> : <AiOutlineLike />}
+                {comment.total_likes}
               </CommentButton>
               <CommentButton
                 onClick={handleDislikeComment}
                 disabled={isLikeCommentLoading || isDislikeCommentLoading}
               >
-                {comment.total_dislikes}{' '}
                 {comment.like_status === false ? <AiFillDislike /> : <AiOutlineDislike />}
+                {comment.total_dislikes}
               </CommentButton>
 
               {comment.user_id !== user.user_id && (

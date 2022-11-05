@@ -255,7 +255,7 @@ export const verifyEmailController = async (
   res: Response
 ) => {
   const response: QueryResult<{ verification_code: string }> = await db.query(
-    'SELECT verification_code FROM users WHERE user_id = $1, verification_code = $2',
+    'SELECT verification_code FROM users WHERE verification_code = $1',
     [req.body.code]
   );
 

@@ -2,8 +2,7 @@ import React from 'react';
 import { MdSearch } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { disableKeyBinds, enableKeyBinds } from '../../app/features/videoSlice';
-import { Button } from '../../ui/Button';
-import { Search, SearchForm } from './SearchBar.styles';
+import { Search, SearchBtn, SearchForm } from './SearchBar.styles';
 import router from 'next/router';
 
 const SearchBar = ({
@@ -29,9 +28,9 @@ const SearchBar = ({
         onFocus={() => dispatch(disableKeyBinds())}
         onBlur={() => dispatch(enableKeyBinds())}
       />
-      <Button variant={'normal'} onClick={handleSearch}>
+      <SearchBtn onClick={handleSearch}>
         <MdSearch />
-      </Button>
+      </SearchBtn>
     </SearchForm>
   );
 };

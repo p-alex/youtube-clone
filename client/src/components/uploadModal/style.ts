@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const Container = styled.div`
   position: fixed;
@@ -33,6 +34,8 @@ export const Modal = styled.div`
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  border: solid 1px ${(props) => props.theme.borderColor};
+  border-radius: ${BORDER_RADIUS_ROUND}px;
   &::-webkit-scrollbar {
     display: none;
   }

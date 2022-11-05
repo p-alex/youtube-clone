@@ -1,9 +1,10 @@
-import "styled-components";
+import 'styled-components';
 
-declare module "styled-components" {
+declare module 'styled-components' {
   export interface DefaultTheme {
     siteBg: string;
     uiBg: string;
+    uiSecondaryBg: string;
     textColor: string;
     textMutedColor: string;
     borderColor: string;
@@ -27,6 +28,14 @@ declare module "styled-components" {
     };
     listButton: {
       bgHover: string;
+    };
+    subscribeBtn: {
+      bg: string;
+      bgHover: string;
+      textColor: string;
+      subedBg: string;
+      subedBgHover: string;
+      subedTextColor: string;
     };
   }
 }

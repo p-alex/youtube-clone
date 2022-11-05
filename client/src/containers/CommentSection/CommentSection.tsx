@@ -4,7 +4,11 @@ import {
   IComment,
 } from '../../context/CommentSectionContext/CommentSectionProvider';
 import Comment from '../../components/Comment/Comment';
-import { CommentLoadMoreBtn, CommentSectionContainer } from './CommentSection.styles';
+import {
+  CommentLoadMoreBtn,
+  CommentSectionContainer,
+  TotalComments,
+} from './CommentSection.styles';
 import CommentForm from '../../components/Comment/CommentForm/CommentForm';
 import { ReplySectionProvider } from '../../context/ReplySectionContext/ReplySectionProvider';
 import { RootState } from '../../app/store';
@@ -90,6 +94,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
 
   return (
     <CommentSectionContainer>
+      <TotalComments>{video.total_comments} comments</TotalComments>
       <CommentForm
         value={newCommentText}
         setValue={changeNewCommentText}

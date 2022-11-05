@@ -16,7 +16,7 @@ const VideoPlayer = ({
   const [videoPlayerType, setVideoPlayerType] = useState<'mobile' | 'desktop'>('desktop');
 
   useEffect(() => {
-    if (window.innerWidth <= 980) setVideoPlayerType('mobile');
+    if (window.innerWidth <= 414) setVideoPlayerType('mobile');
   }, []);
 
   return (

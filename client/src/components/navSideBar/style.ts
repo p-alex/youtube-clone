@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { CONTAINER_HORIZONTAL_PADDING } from "../../layout/style";
+import styled from 'styled-components';
+import { CONTAINER_HORIZONTAL_PADDING, NAV_BAR_HEIGHT } from '../../layout/style';
 
 export const NavSideBar_Wrapper = styled.div`
   position: fixed;
@@ -33,7 +33,8 @@ export const NavSideBar_Header = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 17px ${CONTAINER_HORIZONTAL_PADDING}px;
+  height: ${NAV_BAR_HEIGHT}px;
+  padding: 20px;
 `;
 
 export const NavSideBar_CloseBtn = styled.button`

@@ -1,11 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 export const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
   }
 
   body {
@@ -39,5 +40,19 @@ export const GlobalStyle = createGlobalStyle`
 
   input:disabled {
     opacity: 0.3;
+  }
+
+  img {
+    border-radius: ${BORDER_RADIUS_ROUND}px;
+  }
+
+  h1 {
+    font-size: 1.55rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+  }
+  h3 {
+    font-size: 1.15rem;
   }
 `;

@@ -11,7 +11,7 @@ import {
   Title,
   Username,
 } from './style';
-import { IVideoSmall } from '../../app/features/videosSlice';
+import { IVideoSmall } from '../../app/features/videoSlice';
 
 const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
   return (

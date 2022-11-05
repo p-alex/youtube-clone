@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { MOBILE_BREAK_POINT } from "../../layout/style";
+import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../../layout/style';
 
 export const Container = styled.div`
   position: fixed;
@@ -19,15 +19,13 @@ export const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 501;
 `;
 
 export const ThumbnailContainer = styled.div`
   position: relative;
   width: 100%;
-  background-color: ${(props) => props.theme.inputBg};
-  border: dashed 3px ${(props) => props.theme.borderColor};
   display: flex;
   gap: 20px;
   flex-direction: column;
@@ -42,13 +40,17 @@ export const HiddenInput = styled.input`
 
 export const FormContainer = styled.form`
   position: relative;
-  overflow: none;
   max-width: 900px;
   max-height: 90vh;
   margin: auto;
   z-index: 502;
   padding: 20px;
   overflow-y: scroll;
+  border: solid 1px ${(props) => props.theme.borderColor};
+  border-radius: ${BORDER_RADIUS_ROUND}px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   background-color: ${(props) => props.theme.uiBg};
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
@@ -97,6 +99,6 @@ export const Tag = styled.p`
 
 export const ResultMessage = styled.p<{ isSuccess: boolean }>`
   font-weight: 700;
-  color: ${(props) => (props.isSuccess ? "#95C623" : "red")};
+  color: ${(props) => (props.isSuccess ? '#95C623' : 'red')};
   margin-top: 20px;
 `;

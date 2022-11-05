@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const VideoCard = styled.div`
   border-radius: 5px;
@@ -29,6 +29,10 @@ export const VideoDetails = styled.div`
 
 export const VideoTitle = styled.h3`
   color: ${(props) => props.theme.textColor};
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 `;
 
 export const VideoDetailItems = styled.div`
@@ -43,10 +47,10 @@ export const VideoDetailItem = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 5px;
-  padding: 5px 10px;
-  border: solid 2px ${(props) => props.theme.borderColor};
+  padding: 5px;
   color: ${(props) => props.theme.textColor};
+  font-size: 0.85rem;
   svg {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 `;

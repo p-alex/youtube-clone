@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const VideoFunctions = styled.div`
   display: flex;
   gap: 10px;
-  margin-top: 30px;
+  margin-top: 15px;
 `;
 
 export const VideoFunctionButton = styled.button`

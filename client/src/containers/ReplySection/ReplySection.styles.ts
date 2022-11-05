@@ -22,7 +22,7 @@ export const ReplyToggleBtn = styled.button`
 `;
 
 export const ReplySectionContainer = styled.div`
-  margin-top: 20px;
+  margin-top: 12px;
 `;
 
 export const ReplyLoadMoreBtn = styled.button`

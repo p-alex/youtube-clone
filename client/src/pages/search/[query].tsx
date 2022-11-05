@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import Videos from '../../components/videos/Videos';
 import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
 import Layout from '../../layout/Layout';
 import router from 'next/router';
-import { IVideoSmall } from '..';
+import { IVideoSmallWithInfo } from '../../app/features/videoSlice';
+import VideoCardWithInfo from '../../components/videoCardWithInfo/VideoCardWithInfo';
 
 const SearchPage = () => {
   const query = router.query.query;
-  const [videos, setVideos] = useState<IVideoSmall[]>([]);
+  const [videos, setVideos] = useState<IVideoSmallWithInfo[]>([]);
 
   const [searchVideos, { isLoading, errors }] = useAxiosWithRetry<
     {},
-    { searchResults: IVideoSmall[] }
+    { searchResults: IVideoSmallWithInfo[] }
   >(`api/videos/search/${query}`);
 
   const handleSearchVideos = async () => {
@@ -22,13 +22,14 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    console.log(query);
     handleSearchVideos();
   }, [query]);
 
   return (
     <Layout>
-      <Videos videos={videos} />
+      {videos.map((video) => {
+        return <VideoCardWithInfo key={video.video_id} video={video} />;
+      })}
     </Layout>
   );
 };

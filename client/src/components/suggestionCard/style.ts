@@ -4,7 +4,7 @@ import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../layout/s
 export const Container = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   max-width: 550px;
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     margin-bottom: 20px;

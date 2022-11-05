@@ -1,7 +1,7 @@
 import React from 'react';
+import { IVideoSmall } from '../../app/features/videoSlice';
 import VideoCard from '../videoCard/VideoCard';
 import { Container, VideoItem, VideoList } from './style';
-import { IVideoSmall } from '../../pages';
 
 const Videos = ({ videos }: { videos: IVideoSmall[] }) => {
   return (

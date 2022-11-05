@@ -12,8 +12,6 @@ export const Thumbnail = styled.img`
   height: 0;
   padding-bottom: 56.25%;
   cursor: pointer;
-  border-radius: 10px;
-  overflow: hidden;
 `;
 
 export const Body = styled.div`
@@ -35,13 +33,14 @@ export const Details = styled.div`
 
 export const Title = styled.p`
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   cursor: pointer;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
   font-size: 1.2rem;
+  font-weight: 600;
 `;
 
 export const Username = styled.p``;

@@ -14,7 +14,7 @@ interface IReply {
 }
 
 export const getReplies = async (comment_id: string, user_id: string, page: string) => {
-  const limit = 10;
+  const limit = 6;
   const response = await db.query(
     'SELECT r.reply_id, r.comment_id, r.text, r.total_likes, r.total_dislikes, CASE WHEN rl.user_id = $1 AND rl.like_status IS TRUE THEN TRUE WHEN rl.user_id = $1 AND rl.like_status IS FALSE THEN FALSE ELSE NULL END like_status, u.user_id, u.username, u.profile_picture, r.created_at FROM replies AS r LEFT JOIN users AS u ON u.user_id = r.user_id LEFT JOIN reply_likes AS rl ON rl.reply_id = r.reply_id AND rl.user_id = $1 WHERE r.comment_id = $2 ORDER BY r.created_at LIMIT $3 OFFSET $4',
     [user_id, comment_id, limit, limit * parseInt(page)]

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
@@ -12,8 +12,6 @@ export const Container = styled.div`
 export const ThumbnailContainer = styled.div`
   position: relative;
   width: 100%;
-  background-color: ${(props) => props.theme.inputBg};
-  border: dashed 3px ${(props) => props.theme.borderColor};
   display: flex;
   gap: 20px;
   flex-direction: column;
@@ -34,7 +32,6 @@ export const FormContainer = styled.form`
 export const InputLabel = styled.label`
   display: block;
   color: ${(props) => props.theme.textColor};
-  margin-top: 20px;
   margin-bottom: 10px;
 `;
 

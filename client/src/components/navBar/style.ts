@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   CONTAINER_HORIZONTAL_PADDING,
+  NAV_BAR_HEIGHT,
   NAV_MOBILE_BREAK_POINT,
-} from "../../layout/style";
+} from '../../layout/style';
 
 export const NavContainer = styled.nav`
   position: fixed;
@@ -12,7 +13,7 @@ export const NavContainer = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
-  height: 55px;
+  height: ${NAV_BAR_HEIGHT}px;
   background-color: ${(props) => props.theme.uiBg};
   z-index: 80;
   padding: 10px ${CONTAINER_HORIZONTAL_PADDING}px;
