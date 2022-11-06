@@ -97,14 +97,16 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
   return (
     <CommentSectionContainer>
       <TotalComments>{video.total_comments} comments</TotalComments>
-      <CommentForm
-        value={newCommentText}
-        setValue={changeNewCommentText}
-        func={handleAddComment}
-        isLoading={isAddCommentLoading}
-        btnName="comment"
-        placeholder="Write a comment..."
-      />
+      {user.user_id && (
+        <CommentForm
+          value={newCommentText}
+          setValue={changeNewCommentText}
+          func={handleAddComment}
+          isLoading={isAddCommentLoading}
+          btnName="comment"
+          placeholder="Write a comment..."
+        />
+      )}
       <br />
       {comments.map((comment) => {
         return (

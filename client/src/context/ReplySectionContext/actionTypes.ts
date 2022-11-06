@@ -1,3 +1,4 @@
+import { LikeStatusType } from '../../app/features/videoSlice';
 import { IReply } from './ReplySectionProvider';
 
 type SetReplies = {
@@ -24,7 +25,7 @@ type LikeReply = {
   payload: {
     updatedReplyInfo: {
       reply_id: string;
-      like_status: boolean | null;
+      like_status: LikeStatusType;
       total_likes: number;
       total_dislikes: number;
     };
@@ -36,7 +37,7 @@ type DislikeReply = {
   payload: {
     updatedReplyInfo: {
       reply_id: string;
-      like_status: boolean | null;
+      like_status: LikeStatusType;
       total_likes: number;
       total_dislikes: number;
     };

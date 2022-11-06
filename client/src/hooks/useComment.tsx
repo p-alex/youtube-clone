@@ -1,7 +1,9 @@
+import Router from 'next/router';
 import { ChangeEvent, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addToTotalComments,
+  LikeStatusType,
   subtractFromTotalComments,
 } from '../app/features/videoSlice';
 import { RootState } from '../app/store';
@@ -40,6 +42,7 @@ const useComment = (comment: IComment) => {
   };
 
   const handleSetToReplyTo = () => {
+    if (!user?.user_id) return Router.push('/signin');
     setNewReplyText('');
     dispatchCommentSection({
       type: 'SET_TO_REPLY_TO',
@@ -77,7 +80,7 @@ const useComment = (comment: IComment) => {
     {
       updatedCommentInfo: {
         comment_id: string;
-        like_status: boolean | null;
+        like_status: LikeStatusType;
         total_likes: number;
         total_dislikes: number;
       };
@@ -89,7 +92,7 @@ const useComment = (comment: IComment) => {
     {
       updatedCommentInfo: {
         comment_id: string;
-        like_status: boolean | null;
+        like_status: LikeStatusType;
         total_likes: number;
         total_dislikes: number;
       };
@@ -107,6 +110,7 @@ const useComment = (comment: IComment) => {
   >('api/comments', 'DELETE');
 
   const handleLikeComment = async () => {
+    if (!user?.user_id) return Router.push('/signin');
     const { success, result } = await likeComment(undefined);
     if (!success || !result) return;
     dispatchCommentSection({
@@ -119,6 +123,7 @@ const useComment = (comment: IComment) => {
   };
 
   const handleDislikeComment = async () => {
+    if (!user?.user_id) return Router.push('/signin');
     const { success, result } = await dislikeComment(undefined);
     if (!success || !result) return;
     dispatchCommentSection({

@@ -102,7 +102,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
   const token = req.cookies.rtoken;
 
   if (!token)
-    return res.status(403).json({
+    return res.status(400).json({
       success: false,
       errors: [{ message: 'There is no rtoken cookie' }],
       result: null,

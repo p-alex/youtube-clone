@@ -19,6 +19,9 @@ export const Body = styled.div`
   align-items: flex-start;
   gap: 15px;
   padding: 10px 0;
+  @media (max-width: 550px) {
+    padding: 10px 20px;
+  }
 `;
 
 export const ProfilePicture = styled.img`

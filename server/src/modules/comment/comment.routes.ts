@@ -22,7 +22,6 @@ const router = express.Router();
 
 router.get(
   '/api/comments/:videoId/:page',
-  requireAuth,
   validateResource(getCommentsSchema),
   getCommentsController
 );

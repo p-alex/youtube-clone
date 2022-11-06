@@ -56,9 +56,11 @@ export const getUserVideosController = async (req: Request, res: Response) => {
 export const getVideoController = async (req: Request, res: Response) => {
   const { videoId } = req.params;
   // @ts-ignore
-  const { user_id } = req.user;
+  const user = req.user;
+  const userId = user?.user_id;
+  const isLoggedIn = user?.user_id === true;
   try {
-    const video = await getVideo(videoId, user_id);
+    const video = await getVideo(videoId, userId, isLoggedIn);
     return res.status(200).json({ success: true, errors: [], result: { video } });
   } catch (error: any) {
     console.log(error);
@@ -172,8 +174,8 @@ export const likeOrDislikeVideoController = async (
   // @ts-ignore
   const { user_id } = req.user;
   try {
-    await likeOrDislikeVideo(actionType, videoId, user_id);
-    return res.status(200).json({ success: true, errors: [], result: null });
+    const updatedData = await likeOrDislikeVideo(actionType, videoId, user_id);
+    return res.status(200).json({ success: true, errors: [], result: updatedData });
   } catch (error: any) {
     console.log(error);
     return res.status(error?.http_code ? error.http_code : 500).json({

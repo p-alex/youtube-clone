@@ -1,6 +1,6 @@
-import { createContext, ReactNode, useReducer } from "react";
-import { CommentSectionActions } from "./actionTypes";
-import { reducer } from "./reducer";
+import { createContext, ReactNode, useReducer } from 'react';
+import { CommentSectionActions } from './actionTypes';
+import { reducer } from './reducer';
 
 export interface IComment {
   comment_id: string;
@@ -12,7 +12,7 @@ export interface IComment {
   total_replies: number;
   total_likes: number;
   total_dislikes: number;
-  like_status: boolean | null;
+  like_status: 'like' | 'dislike' | 'none';
   created_at: string | number;
 }
 
@@ -29,9 +29,9 @@ const initialState: InitialState = {
   comments: [],
   page: 0,
   limit: 12,
-  toReplyTo: "",
-  toEdit: "",
-  toDelete: "",
+  toReplyTo: '',
+  toEdit: '',
+  toDelete: '',
 };
 
 const CommentSectionContext = createContext<{
@@ -46,19 +46,15 @@ const CommentSectionContext = createContext<{
   comments: [],
   page: 0,
   limit: 12,
-  toReplyTo: "",
-  toEdit: "",
-  toDelete: "",
+  toReplyTo: '',
+  toEdit: '',
+  toDelete: '',
   dispatchCommentSection: () => {},
 });
 
 const CommentSectionProvider = ({ children }: { children: ReactNode }) => {
-  const [commentSectionState, dispatchCommentSection] = useReducer(
-    reducer,
-    initialState
-  );
-  const { comments, page, limit, toReplyTo, toEdit, toDelete } =
-    commentSectionState;
+  const [commentSectionState, dispatchCommentSection] = useReducer(reducer, initialState);
+  const { comments, page, limit, toReplyTo, toEdit, toDelete } = commentSectionState;
   return (
     <CommentSectionContext.Provider
       value={{

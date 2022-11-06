@@ -17,12 +17,18 @@ import {
   LikeDislikeGroup,
 } from './VideoHeader.styles';
 import useAuth from '../../hooks/useAuth';
-import { dislikeVideo, likeVideo, VideoInfo } from '../../app/features/videoSlice';
+import {
+  dislikeVideo,
+  LikeStatusType,
+  likeVideo,
+  VideoInfo,
+} from '../../app/features/videoSlice';
 import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { SubscribeButton } from '../../ui/SubscribeButton';
 import Image from 'next/image';
+import router from 'next/router';
 
 const VideoHeader = ({ video }: { video: VideoInfo }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
@@ -32,18 +38,28 @@ const VideoHeader = ({ video }: { video: VideoInfo }) => {
 
   const [likeOrDislike, { isLoading, errors }] = useAxiosWithRetry<
     { actionType: 'like' | 'dislike' | null; videoId: string },
-    {}
+    {
+      video_id: string;
+      like_status: LikeStatusType;
+      total_likes: number;
+      total_dislikes: number;
+    }
   >('api/videos/likes', 'POST');
 
   const handleLikeOrDislike = async () => {
-    if (actionType === 'like') dispatch(likeVideo());
-    if (actionType === 'dislike') dispatch(dislikeVideo());
-    await likeOrDislike({ actionType: actionType, videoId: video.video_id });
+    if (!accessToken) return router.push('/signin');
+    const response = await likeOrDislike({
+      actionType: actionType,
+      videoId: video.video_id,
+    });
+    if (!response.success || !response.result) return;
+    if (actionType === 'like') dispatch(likeVideo(response.result));
+    if (actionType === 'dislike') dispatch(dislikeVideo(response.result));
     setActionType(null);
   };
 
   useEffect(() => {
-    if (!actionType && accessToken) return;
+    if (!actionType) return;
     handleLikeOrDislike();
   }, [actionType]);
 
@@ -63,11 +79,11 @@ const VideoHeader = ({ video }: { video: VideoInfo }) => {
         </VideoHeaderUserInfo>
         <LikeDislikeGroup>
           <LikeDislikeBtn onClick={() => setActionType('like')}>
-            {video.like_status ? <AiFillLike /> : <AiOutlineLike />}
+            {video.like_status === 'like' ? <AiFillLike /> : <AiOutlineLike />}
             {video.total_likes}
           </LikeDislikeBtn>
           <LikeDislikeBtn onClick={() => setActionType('dislike')}>
-            {video.like_status === false ? <AiFillDislike /> : <AiOutlineDislike />}
+            {video.like_status === 'dislike' ? <AiFillDislike /> : <AiOutlineDislike />}
             {video.total_dislikes}
           </LikeDislikeBtn>
         </LikeDislikeGroup>

@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useReducer } from 'react';
+import { LikeStatusType } from '../../app/features/videoSlice';
 import { ReplySectionActions } from './actionTypes';
 import { reducer } from './reducer';
 
@@ -11,7 +12,7 @@ export interface IReply {
   text: string;
   total_likes: number;
   total_dislikes: number;
-  like_status: boolean | null;
+  like_status: LikeStatusType;
   created_at: string | number;
 }
 

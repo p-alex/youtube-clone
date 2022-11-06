@@ -1,9 +1,9 @@
-import axios from "axios";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import { BASE_URL } from "../utils/baseURL";
-import useRefreshToken from "./useRefreshToken";
+import axios from 'axios';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
+import { BASE_URL } from '../utils/baseURL';
+import useRefreshToken from './useRefreshToken';
 
 export type Errors = {
   message: string;
@@ -17,7 +17,7 @@ export interface DefaultResponse<Data> {
 
 function useAxiosWithRetry<Body, Data>(
   url: string,
-  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 ): [
   (body: Body) => Promise<DefaultResponse<Data | null>>,
   { isLoading: boolean; errors: Errors | null }
@@ -32,9 +32,9 @@ function useAxiosWithRetry<Body, Data>(
       setIsLoading(true);
 
       const response = await axios(`${BASE_URL}/${url}`, {
-        method: !method ? "GET" : method,
+        method: !method ? 'GET' : method,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
         data: body,

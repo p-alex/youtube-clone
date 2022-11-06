@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export type LikeStatusType = 'like' | 'dislike' | '';
+
 export interface VideoInfo {
   video_id: string;
   user_id: string;
@@ -14,7 +16,7 @@ export interface VideoInfo {
   total_dislikes: number;
   total_comments: number;
   duration: number;
-  like_status: boolean | null;
+  like_status: LikeStatusType;
   created_at: string;
 }
 
@@ -55,7 +57,7 @@ const initialState: InitialState = {
     total_dislikes: 0,
     total_comments: 0,
     duration: 0,
-    like_status: null,
+    like_status: '',
     created_at: '',
   },
 };
@@ -73,31 +75,31 @@ const videoSlice = createSlice({
     subtractFromTotalComments: (state) => {
       state.videoInfo.total_comments -= 1;
     },
-    likeVideo: (state) => {
-      if (state.videoInfo.like_status === true) {
-        state.videoInfo.like_status = null;
-        state.videoInfo.total_likes -= 1;
-      } else if (state.videoInfo.like_status === false) {
-        state.videoInfo.like_status = true;
-        state.videoInfo.total_likes += 1;
-        state.videoInfo.total_dislikes -= 1;
-      } else {
-        state.videoInfo.like_status = true;
-        state.videoInfo.total_likes += 1;
-      }
+    likeVideo: (
+      state,
+      action: PayloadAction<{
+        video_id: string;
+        like_status: LikeStatusType;
+        total_likes: number;
+        total_dislikes: number;
+      }>
+    ) => {
+      state.videoInfo.like_status = action.payload.like_status;
+      state.videoInfo.total_likes = action.payload.total_likes;
+      state.videoInfo.total_dislikes = action.payload.total_dislikes;
     },
-    dislikeVideo: (state) => {
-      if (state.videoInfo.like_status === false) {
-        state.videoInfo.like_status = null;
-        state.videoInfo.total_dislikes -= 1;
-      } else if (state.videoInfo.like_status === true) {
-        state.videoInfo.like_status = false;
-        state.videoInfo.total_likes -= 1;
-        state.videoInfo.total_dislikes += 1;
-      } else {
-        state.videoInfo.like_status = false;
-        state.videoInfo.total_dislikes += 1;
-      }
+    dislikeVideo: (
+      state,
+      action: PayloadAction<{
+        video_id: string;
+        like_status: LikeStatusType;
+        total_likes: number;
+        total_dislikes: number;
+      }>
+    ) => {
+      state.videoInfo.like_status = action.payload.like_status;
+      state.videoInfo.total_likes = action.payload.total_likes;
+      state.videoInfo.total_dislikes = action.payload.total_dislikes;
     },
     disableKeyBinds: (state) => {
       state.canUseVideoKeyBinds = false;

@@ -6,7 +6,7 @@ export const Container = styled.section`
   width: 100%;
   max-width: 1850px;
   padding: 0 ${CONTAINER_HORIZONTAL_PADDING}px;
-  @media (max-width: ${MOBILE_BREAK_POINT}px) {
+  @media (max-width: 550px) {
     padding: 0;
   }
 `;
@@ -14,7 +14,7 @@ export const Container = styled.section`
 export const VideoList = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
+  gap: 20px;
   list-style: none;
   @media (max-width: 1200px) {
     grid-template-columns: repeat(4, 1fr);

@@ -134,14 +134,18 @@ const Reply = ({ reply }: { reply: IReply }) => {
                 disabled={isLikeReplyLoading || isDislikeReplyLoading}
               >
                 {reply.total_likes}{' '}
-                {reply.like_status ? <AiFillLike /> : <AiOutlineLike />}
+                {reply.like_status === 'like' ? <AiFillLike /> : <AiOutlineLike />}
               </ReplyButton>
               <ReplyButton
                 onClick={handleDislikeReply}
                 disabled={isDislikeReplyLoading || isLikeReplyLoading}
               >
                 {reply.total_dislikes}{' '}
-                {reply.like_status === false ? <AiFillDislike /> : <AiOutlineDislike />}
+                {reply.like_status === 'dislike' ? (
+                  <AiFillDislike />
+                ) : (
+                  <AiOutlineDislike />
+                )}
               </ReplyButton>
               {reply.user_id !== user.user_id && (
                 <ReplyButton onClick={handleSetToReplyTo} ref={replyBtn}>

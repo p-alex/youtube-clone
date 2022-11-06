@@ -20,6 +20,8 @@ import useAuth from '../../hooks/useAuth';
 import UploadModal from '../uploadModal/UploadModal';
 import { ProfileDropDown } from '../profileDropDown/ProfileDropDown';
 import SearchBar from '../SearchBar/SearchBar';
+import { Button } from '../../ui/Button';
+import Link from 'next/link';
 
 const NavBar = () => {
   const { isAuth, user } = useAuth();
@@ -112,7 +114,11 @@ const NavBar = () => {
             </>
           )}
 
-          {!isAuth && <SignInButton />}
+          {!isAuth && (
+            <Link href="/signin">
+              <Button variant="primary">Sign In</Button>
+            </Link>
+          )}
         </NavBtnContainer>
       </NavContainer>
       <AnimatePresence>

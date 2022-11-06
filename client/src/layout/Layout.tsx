@@ -91,11 +91,10 @@ const Main = styled.main`
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useSelector((state: RootState) => state.theme);
-  const { isAuth } = useAuth();
   return (
     <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
       <GlobalStyle />
-      {isAuth && <NavBar />}
+      <NavBar />
       <Main>{children}</Main>
     </ThemeProvider>
   );

@@ -18,7 +18,6 @@ const Home: NextPage = () => {
   >('api/videos');
 
   const handleGetVideos = async () => {
-    if (!accessToken) return;
     const response = await getVideos({});
     if (response.success && response.result) {
       setVideos(response.result.videos);
@@ -39,7 +38,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {accessToken && videos.length > 0 && <Videos videos={videos} />}
+      {videos.length > 0 && <Videos videos={videos} />}
     </Layout>
   );
 };

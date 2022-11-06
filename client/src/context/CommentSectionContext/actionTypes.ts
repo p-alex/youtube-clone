@@ -1,3 +1,4 @@
+import { LikeStatusType } from '../../app/features/videoSlice';
 import { IComment } from './CommentSectionProvider';
 
 type SetComments = {
@@ -35,7 +36,7 @@ type LikeComment = {
     commentId: string;
     updatedCommentInfo: {
       comment_id: string;
-      like_status: boolean | null;
+      like_status: LikeStatusType;
       total_likes: number;
       total_dislikes: number;
     };
@@ -48,7 +49,7 @@ type DislikeComment = {
     commentId: string;
     updatedCommentInfo: {
       comment_id: string;
-      like_status: boolean | null;
+      like_status: LikeStatusType;
       total_likes: number;
       total_dislikes: number;
     };

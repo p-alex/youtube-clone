@@ -1,10 +1,11 @@
+import { LikeStatusType } from '../../app/features/videoSlice';
 import { IReply } from './ReplySectionProvider';
 
 export const likeOrDislikeReply = (
   replies: IReply[],
   updatedReplyInfo: {
     reply_id: string;
-    like_status: boolean | null;
+    like_status: LikeStatusType;
     total_likes: number;
     total_dislikes: number;
   }

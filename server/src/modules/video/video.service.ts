@@ -49,8 +49,16 @@ export const getUserVideos = async (user_id: string) => {
   return data;
 };
 
-export const getVideo = async (video_id: string, user_id: string) => {
-  const response = await db.query('SELECT * FROM get_video($1, $2)', [video_id, user_id]);
+export const getVideo = async (
+  video_id: string,
+  user_id: string,
+  isLoggedIn: boolean
+) => {
+  const response = await db.query('SELECT * FROM get_video($1, $2, $3)', [
+    video_id,
+    user_id,
+    isLoggedIn,
+  ]);
   const data: {
     video_id: string;
     user_id: string;
@@ -194,12 +202,18 @@ export const likeOrDislikeVideo = async (
   video_id: string,
   user_id: string
 ) => {
-  await db.query('SELECT * FROM like_or_dislike_video ($1,$2,$3)', [
+  const response = await db.query('SELECT * FROM like_or_dislike_video ($1,$2,$3)', [
     action_type,
     video_id,
     user_id,
   ]);
-  return null;
+  const data: {
+    video_id: string;
+    like_status: 'like' | 'dislike' | 'none';
+    total_likes: number;
+    total_dislikes: number;
+  } = response.rows[0];
+  return data;
 };
 
 export const getVideoTags = async (video_id: string) => {

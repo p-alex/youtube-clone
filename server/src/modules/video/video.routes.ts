@@ -1,6 +1,5 @@
 import express from 'express';
 import multer from 'multer';
-import { getUserFormAccessToken } from '../../middleware/getUserFromAccessToken';
 import { parseVideoData } from '../../middleware/parseVideoData';
 import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
@@ -29,16 +28,11 @@ const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
-router.get('/api/videos', requireAuth, getVideosController);
+router.get('/api/videos', getVideosController);
 
 router.get('/api/videos/manage', requireAuth, getUserVideosController);
 
-router.get(
-  '/api/videos/:videoId',
-  requireAuth,
-  validateResource(getVideoSchema),
-  getVideoController
-);
+router.get('/api/videos/:videoId', validateResource(getVideoSchema), getVideoController);
 
 router.post(
   '/api/videos',
@@ -79,7 +73,6 @@ router.get(
 
 router.get(
   '/api/videos/search/:query',
-  requireAuth,
   validateResource(searchVideosSchema),
   searchVideosController
 );

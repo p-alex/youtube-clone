@@ -46,7 +46,7 @@ const VideoPage = () => {
   };
 
   useEffect(() => {
-    if (effectRan.current || !auth.accessToken || !videoId) return;
+    if (effectRan.current || !videoId) return;
     handleGetVideo();
     return () => {
       effectRan.current = true;
