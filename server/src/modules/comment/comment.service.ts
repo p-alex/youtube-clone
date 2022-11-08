@@ -16,8 +16,9 @@ interface IComment {
 
 export const getComments = async (video_id: string, user_id: string, page: string) => {
   const limit = 10;
+  if (!user_id) user_id = 'ee220fdc-1dc1-4946-b5db-f9e391fc730b';
   const response = await db.query(
-    "SELECT c.comment_id, c.video_id, c.text, c.total_likes, c.total_dislikes, c.total_replies, CASE WHEN cl.user_id = $1 AND cl.like_status = 'like' THEN 'like' WHEN cl.user_id = $1 AND cl.like_status = 'dislike' THEN 'dislike' ELSE 'none' END like_status, u.user_id, u.username, u.profile_picture, c.created_at FROM comments AS c LEFT JOIN users AS u ON u.user_id = c.user_id LEFT JOIN comment_likes AS cl ON cl.comment_id = c.comment_id AND cl.user_id = $1 WHERE c.video_id = $2 ORDER BY c.created_at DESC LIMIT $3 OFFSET $4",
+    'SELECT c.comment_id, c.video_id, c.text, c.total_likes, c.total_dislikes, c.total_replies, cl.like_status, u.user_id, u.username, u.profile_picture, c.created_at FROM comments AS c LEFT JOIN users AS u ON c.user_id = u.user_id LEFT JOIN comment_likes AS cl ON cl.user_id = $1 AND cl.comment_id = c.comment_id WHERE c.video_id = $2 ORDER BY c.created_at DESC LIMIT $3 OFFSET $4',
     [user_id, video_id, limit, limit * parseInt(page)]
   );
   const data: IComment[] = response.rows;

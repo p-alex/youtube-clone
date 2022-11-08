@@ -21,17 +21,17 @@ export const registerUserController = async (
       email,
     ]);
 
-    const userWithUsername = await db.query(
-      'SELECT username FROM users WHERE username = $1',
-      [username]
-    );
-
     if (userWithEmail.rows[0])
       return res.status(400).json({
         success: false,
         errors: [{ message: 'A user with that email already exists' }],
         result: null,
       });
+
+    const userWithUsername = await db.query(
+      'SELECT username FROM users WHERE username = $1',
+      [username]
+    );
 
     if (userWithUsername.rows[0])
       return res.status(400).json({
@@ -50,7 +50,9 @@ export const registerUserController = async (
 
     if (!response.verification_code) throw new Error();
 
-    await sendEmail(verifyEmailTemplate(response.verification_code));
+    const sendEmailResponse = await sendEmail(
+      verifyEmailTemplate(response.verification_code)
+    );
 
     return res.status(201).json({
       success: true,

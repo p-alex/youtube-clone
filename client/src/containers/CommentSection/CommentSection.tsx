@@ -32,12 +32,12 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
   };
 
   const [getComments, { isLoading: isGetCommentsLoading }] = useAxiosWithRetry<
-    {},
+    { userId: string },
     { comments: IComment[] }
-  >(`api/comments/${video.video_id}/${page}`);
+  >(`api/comments/${video.video_id}/${page}`, 'POST');
 
   const handleGetComments = async () => {
-    const { success, result } = await getComments({});
+    const { success, result } = await getComments({ userId: user.user_id });
     if (!success || !result) return;
     dispatchCommentSection({
       type: 'SET_COMMENTS',

@@ -5,6 +5,9 @@ export const getCommentsSchema = object({
     videoId: string({}),
     page: string({}),
   }),
+  body: object({
+    userId: string({}),
+  }),
 });
 
 export const addCommentSchema = object({
@@ -40,7 +43,7 @@ export const dislikeCommentSchema = object({
   }),
 });
 
-export type GetCommentsInput = TypeOf<typeof getCommentsSchema>['params'];
+export type GetCommentsInput = TypeOf<typeof getCommentsSchema>;
 
 export type AddCommentInput = TypeOf<typeof addCommentSchema>['body'];
 

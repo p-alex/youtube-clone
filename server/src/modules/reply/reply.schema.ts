@@ -5,6 +5,9 @@ export const getRepliesSchema = object({
     commentId: string({}),
     page: string({}),
   }),
+  body: object({
+    userId: string({}),
+  }),
 });
 
 export const addReplySchema = object({
@@ -40,7 +43,7 @@ export const dislikeReplySchema = object({
   }),
 });
 
-export type GetRepliesInput = TypeOf<typeof getRepliesSchema>['params'];
+export type GetRepliesInput = TypeOf<typeof getRepliesSchema>;
 
 export type AddReplyInput = TypeOf<typeof addReplySchema>['body'];
 

@@ -2,12 +2,14 @@ import React, { useEffect, createContext, useRef } from 'react';
 import useAuth from '../hooks/useAuth';
 import useRefreshToken from '../hooks/useRefreshToken';
 import router from 'next/router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/store';
+import { setIsGettingUser } from '../app/features/authSlice';
 
 const RefreshContext = createContext({});
 
 const RefreshContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const dispatch = useDispatch();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const effectRan = useRef(false);
 
@@ -16,7 +18,9 @@ const RefreshContextProvider = ({ children }: { children: React.ReactNode }) => 
   const refreshToken = useRefreshToken();
 
   const handleRefresh = async () => {
+    dispatch(setIsGettingUser(true));
     const response = await refreshToken();
+    dispatch(setIsGettingUser(false));
     if (response.errors[0]?.message === 'Invalid token') return router.push('/signin');
   };
 

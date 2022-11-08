@@ -34,22 +34,28 @@ const VideoPage = () => {
 
   const effectRan = useRef(false);
 
-  const [getVideo, { isLoading, errors }] = useAxiosWithRetry<{}, { video: VideoInfo }>(
-    `api/videos/${videoId}`
-  );
+  const [getVideo, { isLoading, errors }] = useAxiosWithRetry<
+    { videoId: string; userId: string },
+    { video: VideoInfo }
+  >(`api/videos/${videoId}`, 'POST');
 
   const handleGetVideo = async () => {
-    const response = await getVideo({});
+    const response = await getVideo({
+      videoId: videoId as string,
+      userId: auth.user.user_id,
+    });
     if (response.result) {
       dispatch(setVideo(response.result.video));
     }
   };
 
   useEffect(() => {
-    if (effectRan.current || !videoId) return;
+    if (effectRan.current || !videoId || auth.isGettingUser) return;
     handleGetVideo();
     return () => {
-      effectRan.current = true;
+      if (videoId) {
+        effectRan.current = true;
+      }
     };
   }, [videoId, auth]);
 

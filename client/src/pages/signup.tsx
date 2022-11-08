@@ -107,7 +107,9 @@ const SignUp = () => {
               <FormInput
                 type="email"
                 id="email"
+                name="username"
                 value={email}
+                autoComplete="off"
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isRegisterUserLoading}
               />
@@ -118,6 +120,7 @@ const SignUp = () => {
               <FormInput
                 type="text"
                 id="username"
+                autoComplete="off"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={isRegisterUserLoading}
@@ -129,6 +132,8 @@ const SignUp = () => {
               <FormInput
                 type={'password'}
                 id="password"
+                name="new-password"
+                autoComplete="off"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isRegisterUserLoading}
@@ -140,6 +145,8 @@ const SignUp = () => {
               <FormInput
                 type={'password'}
                 id="confirmPassword"
+                name="confirm-new-password"
+                autoComplete="off"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={isRegisterUserLoading}

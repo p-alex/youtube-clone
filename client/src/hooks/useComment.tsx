@@ -85,7 +85,7 @@ const useComment = (comment: IComment) => {
         total_dislikes: number;
       };
     }
-  >(`api/comments/${comment.comment_id}/like`, 'POST');
+  >(`api/comments/react/like/${comment.comment_id}`, 'POST');
 
   const [dislikeComment, { isLoading: isDislikeCommentLoading }] = useAxiosWithRetry<
     undefined,
@@ -97,7 +97,7 @@ const useComment = (comment: IComment) => {
         total_dislikes: number;
       };
     }
-  >(`api/comments/${comment.comment_id}/dislike`, 'POST');
+  >(`api/comments/react/dislike/${comment.comment_id}`, 'POST');
 
   const [editComment, { isLoading: isEditLoading }] = useAxiosWithRetry<
     { commentId: string; text: string },

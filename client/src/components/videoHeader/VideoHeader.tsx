@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   AiOutlineLike,
   AiOutlineDislike,
@@ -16,7 +16,6 @@ import {
   LikeDislikeBtn,
   LikeDislikeGroup,
 } from './VideoHeader.styles';
-import useAuth from '../../hooks/useAuth';
 import {
   dislikeVideo,
   LikeStatusType,
@@ -34,34 +33,43 @@ const VideoHeader = ({ video }: { video: VideoInfo }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const dispatch = useDispatch();
 
-  const [actionType, setActionType] = useState<'like' | 'dislike' | null>(null);
+  const [likeVideoRequest, { isLoading: isLikeVideoLoading, errors: LikeVideoErrors }] =
+    useAxiosWithRetry<
+      {},
+      {
+        video_id: string;
+        like_status: LikeStatusType;
+        total_likes: number;
+        total_dislikes: number;
+      }
+    >(`api/videos/${video.video_id}/like`, 'POST');
 
-  const [likeOrDislike, { isLoading, errors }] = useAxiosWithRetry<
-    { actionType: 'like' | 'dislike' | null; videoId: string },
+  const [
+    dislikeVideoRequest,
+    { isLoading: isDislikeVideoLoading, errors: DislikeVideoErrors },
+  ] = useAxiosWithRetry<
+    {},
     {
       video_id: string;
       like_status: LikeStatusType;
       total_likes: number;
       total_dislikes: number;
     }
-  >('api/videos/likes', 'POST');
+  >(`api/videos/${video.video_id}/dislike`, 'POST');
 
-  const handleLikeOrDislike = async () => {
+  const handleLikeVideo = async () => {
     if (!accessToken) return router.push('/signin');
-    const response = await likeOrDislike({
-      actionType: actionType,
-      videoId: video.video_id,
-    });
+    const response = await likeVideoRequest({});
     if (!response.success || !response.result) return;
-    if (actionType === 'like') dispatch(likeVideo(response.result));
-    if (actionType === 'dislike') dispatch(dislikeVideo(response.result));
-    setActionType(null);
+    dispatch(likeVideo(response.result));
   };
 
-  useEffect(() => {
-    if (!actionType) return;
-    handleLikeOrDislike();
-  }, [actionType]);
+  const handleDislikeVideo = async () => {
+    if (!accessToken) return router.push('/signin');
+    const response = await dislikeVideoRequest({});
+    if (!response.success || !response.result) return;
+    dispatch(dislikeVideo(response.result));
+  };
 
   return (
     <VideoHeaderContainer>
@@ -78,11 +86,11 @@ const VideoHeader = ({ video }: { video: VideoInfo }) => {
           <SubscribeButton variant="normal">Subscribe</SubscribeButton>
         </VideoHeaderUserInfo>
         <LikeDislikeGroup>
-          <LikeDislikeBtn onClick={() => setActionType('like')}>
+          <LikeDislikeBtn onClick={handleLikeVideo}>
             {video.like_status === 'like' ? <AiFillLike /> : <AiOutlineLike />}
             {video.total_likes}
           </LikeDislikeBtn>
-          <LikeDislikeBtn onClick={() => setActionType('dislike')}>
+          <LikeDislikeBtn onClick={handleDislikeVideo}>
             {video.like_status === 'dislike' ? <AiFillDislike /> : <AiOutlineDislike />}
             {video.total_dislikes}
           </LikeDislikeBtn>

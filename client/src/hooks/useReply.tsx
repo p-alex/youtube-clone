@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addToTotalComments,
+  LikeStatusType,
   subtractFromTotalComments,
 } from '../app/features/videoSlice';
 import { RootState } from '../app/store';
@@ -12,6 +13,7 @@ import {
 } from '../context/ReplySectionContext/ReplySectionProvider';
 import { removeEmptyLinesFromString } from '../utils/removeEmptyLinesFromString';
 import useAxiosWithRetry from './useAxiosWithRetry';
+import router from 'next/router';
 
 const useReply = (reply: IReply) => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -33,6 +35,7 @@ const useReply = (reply: IReply) => {
   };
 
   const handleSetToReplyTo = () => {
+    if (!user.user_id) return router.push('/signin');
     dispatchReplySection({
       type: 'SET_TO_REPLY_TO',
       payload: { reply_id: reply.reply_id },
@@ -69,24 +72,24 @@ const useReply = (reply: IReply) => {
     {
       updatedReplyInfo: {
         reply_id: string;
-        like_status: boolean | null;
+        like_status: LikeStatusType;
         total_likes: number;
         total_dislikes: number;
       };
     }
-  >(`api/replies/${reply.reply_id}/like`, 'POST');
+  >(`api/replies/react/like/${reply.reply_id}`, 'POST');
 
   const [dislikeReply, { isLoading: isDislikeReplyLoading }] = useAxiosWithRetry<
     undefined,
     {
       updatedReplyInfo: {
         reply_id: string;
-        like_status: boolean | null;
+        like_status: LikeStatusType;
         total_likes: number;
         total_dislikes: number;
       };
     }
-  >(`api/replies/${reply.reply_id}/dislike`, 'POST');
+  >(`api/replies/react/dislike/${reply.reply_id}`, 'POST');
 
   const [editReply, { isLoading: isEditReplyLoading }] = useAxiosWithRetry<
     { replyId: string; text: string },
@@ -121,6 +124,7 @@ const useReply = (reply: IReply) => {
   };
 
   const handleLikeReply = async () => {
+    if (!user.user_id) return router.push('/signin');
     const { success, result } = await likeReply(undefined);
     if (!success || !result) return;
     dispatchReplySection({
@@ -130,6 +134,7 @@ const useReply = (reply: IReply) => {
   };
 
   const handleDislikeReply = async () => {
+    if (!user.user_id) return router.push('/signin');
     const { success, result } = await dislikeReply(undefined);
     if (!success || !result) return;
     dispatchReplySection({

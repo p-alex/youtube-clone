@@ -14,8 +14,11 @@ import {
 import { IComment } from '../../context/CommentSectionContext/CommentSectionProvider';
 import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
 import Spinner from '../../ui/Spinner';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 const ReplySection = ({ comment }: { comment: IComment }) => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const { replies, newReplies, page, dispatchReplySection } =
     useContext(ReplySectionContext);
 
@@ -26,12 +29,12 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
   };
 
   const [getReplies, { isLoading: isGetRepliesLoading }] = useAxiosWithRetry<
-    {},
+    { userId: string },
     { replies: IReply[] }
-  >(`api/replies/${comment.comment_id}/${page}`);
+  >(`api/replies/${comment.comment_id}/${page}`, 'POST');
 
   const handleGetReplies = async () => {
-    const { success, result } = await getReplies({});
+    const { success, result } = await getReplies({ userId: user.user_id });
     if (!success || !result) return;
     dispatchReplySection({
       type: 'SET_REPLIES',

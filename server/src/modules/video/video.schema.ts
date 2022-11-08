@@ -1,8 +1,9 @@
 import { object, TypeOf, string, array, number, nullable, z } from 'zod';
 
 export const getVideoSchema = object({
-  params: object({
+  body: object({
     videoId: string({}),
+    userId: string({}),
   }),
 });
 
@@ -50,14 +51,15 @@ export const deleteVideoSchema = object({
   }),
 });
 
-const ActionType = z.enum(['like', 'dislike']);
+export const likeVideoSchema = object({
+  params: object({
+    videoId: string({ required_error: 'Video id param is required' }),
+  }),
+});
 
-type ActionType = z.infer<typeof ActionType>;
-
-export const likeOrDislikeVideoSchema = object({
-  body: object({
-    actionType: ActionType,
-    videoId: string({ required_error: 'Video id is required' }),
+export const dislikeVideoSchema = object({
+  params: object({
+    videoId: string({ required_error: 'Video id param is required' }),
   }),
 });
 
@@ -73,7 +75,7 @@ export const searchVideosSchema = object({
   }),
 });
 
-export type GetVideoInput = TypeOf<typeof getVideoSchema>['params'];
+export type GetVideoInput = TypeOf<typeof getVideoSchema>['body'];
 
 export type UploadVideoInput = TypeOf<typeof uploadVideoSchema>['body'];
 
@@ -81,7 +83,9 @@ export type UpdateVideoInput = TypeOf<typeof updateVideoSchema>['body'];
 
 export type DeleteVideoInput = TypeOf<typeof deleteVideoSchema>['body'];
 
-export type LikeOrDislikeVideoInput = TypeOf<typeof likeOrDislikeVideoSchema>['body'];
+export type LikeVideoInput = TypeOf<typeof likeVideoSchema>['params'];
+
+export type DislikeVideoInput = TypeOf<typeof likeVideoSchema>['params'];
 
 export type GetVideoTagsInput = TypeOf<typeof getVideoTagsSchema>['params'];
 

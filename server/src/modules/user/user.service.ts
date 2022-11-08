@@ -8,7 +8,7 @@ interface RegisterInput {
 }
 
 export const registerUser = async (input: RegisterInput) => {
-  const randomVerificationCode = createRandomCode(8);
+  const randomVerificationCode = createRandomCode(6);
   const result = await db.query(
     'INSERT INTO users (email, username, password, verification_code) VALUES ($1, $2, $3, $4) RETURNING user_id, verification_code',
     [input.email, input.username, input.password, randomVerificationCode]

@@ -16,14 +16,13 @@ import {
 } from './reply.service';
 
 export const getRepliesController = async (
-  req: Request<GetRepliesInput>,
+  req: Request<GetRepliesInput['params'], {}, GetRepliesInput['body']>,
   res: Response
 ) => {
   const { commentId, page } = req.params;
-  // @ts-ignore
-  const { user_id } = req.user;
+  const { userId } = req.body;
   try {
-    const replies = await getReplies(commentId, user_id, page);
+    const replies = await getReplies(commentId, userId, page);
     return res.status(200).json({ success: true, errors: [], result: { replies } });
   } catch (error: any) {
     console.log(error);

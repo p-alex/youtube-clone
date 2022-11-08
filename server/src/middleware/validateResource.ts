@@ -11,6 +11,7 @@ const validateResource =
       });
       next();
     } catch (error: any) {
+      console.error(error.errors);
       return res.status(400).json({ errors: error.errors });
     }
   };

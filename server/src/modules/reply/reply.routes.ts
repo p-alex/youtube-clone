@@ -20,9 +20,8 @@ import {
 
 const router = express.Router();
 
-router.get(
+router.post(
   '/api/replies/:commentId/:page',
-  requireAuth,
   validateResource(getRepliesSchema),
   getRepliesController
 );
@@ -49,14 +48,14 @@ router.delete(
 );
 
 router.post(
-  '/api/replies/:replyId/like',
+  '/api/replies/react/like/:replyId',
   requireAuth,
   validateResource(likeReplySchema),
   likeReplyController
 );
 
 router.post(
-  '/api/replies/:replyId/dislike',
+  '/api/replies/react/dislike/:replyId',
   requireAuth,
   validateResource(dislikeReplySchema),
   dislikeReplyController

@@ -16,13 +16,12 @@ import {
 } from './comment.service';
 
 export const getCommentsController = async (
-  req: Request<GetCommentsInput>,
+  req: Request<GetCommentsInput['params'], {}, GetCommentsInput['body']>,
   res: Response
 ) => {
   const { videoId, page } = req.params;
+  const { userId } = req.body;
   // @ts-ignore
-  const user = req.user;
-  const userId = user?.user_id;
   try {
     const comments = await getComments(videoId, userId, page);
     return res.status(200).json({ success: true, errors: [], result: { comments } });

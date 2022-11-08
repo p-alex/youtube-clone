@@ -54,11 +54,16 @@ export const getVideo = async (
   user_id: string,
   isLoggedIn: boolean
 ) => {
-  const response = await db.query('SELECT * FROM get_video($1, $2, $3)', [
-    video_id,
-    user_id,
-    isLoggedIn,
-  ]);
+  let response;
+  if (isLoggedIn) {
+    response = await db.query('SELECT * FROM get_video_auth($1, $2)', [
+      video_id,
+      user_id,
+    ]);
+  } else {
+    response = await db.query('SELECT * FROM get_video($1)', [video_id]);
+  }
+
   const data: {
     video_id: string;
     user_id: string;

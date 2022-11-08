@@ -5,20 +5,22 @@ import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
 import {
   deleteVideoController,
+  dislikeVideoController,
   getUserVideosController,
   getVideoController,
   getVideosController,
   getVideoTagsController,
-  likeOrDislikeVideoController,
+  likeVideoController,
   searchVideosController,
   updateVideoController,
   uploadVideoController,
 } from './video.controller';
 import {
   deleteVideoSchema,
+  dislikeVideoSchema,
   getVideoSchema,
   getVideoTagsSchema,
-  likeOrDislikeVideoSchema,
+  likeVideoSchema,
   searchVideosSchema,
   updateVideoSchema,
   uploadVideoSchema,
@@ -32,7 +34,7 @@ router.get('/api/videos', getVideosController);
 
 router.get('/api/videos/manage', requireAuth, getUserVideosController);
 
-router.get('/api/videos/:videoId', validateResource(getVideoSchema), getVideoController);
+router.post('/api/videos/:videoId', validateResource(getVideoSchema), getVideoController);
 
 router.post(
   '/api/videos',
@@ -58,10 +60,17 @@ router.delete(
 );
 
 router.post(
-  '/api/videos/likes',
+  '/api/videos/:videoId/like',
   requireAuth,
-  validateResource(likeOrDislikeVideoSchema),
-  likeOrDislikeVideoController
+  validateResource(likeVideoSchema),
+  likeVideoController
+);
+
+router.post(
+  '/api/videos/:videoId/dislike',
+  requireAuth,
+  validateResource(dislikeVideoSchema),
+  dislikeVideoController
 );
 
 router.get(

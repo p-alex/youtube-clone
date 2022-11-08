@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import {
   DeleteVideoInput,
+  DislikeVideoInput,
+  GetVideoInput,
   GetVideoTagsInput,
-  LikeOrDislikeVideoInput,
+  LikeVideoInput,
   SearchVideosInput,
   UpdateVideoInput,
   UploadVideoInput,
@@ -53,12 +55,13 @@ export const getUserVideosController = async (req: Request, res: Response) => {
   }
 };
 
-export const getVideoController = async (req: Request, res: Response) => {
-  const { videoId } = req.params;
+export const getVideoController = async (
+  req: Request<{}, {}, GetVideoInput>,
+  res: Response
+) => {
   // @ts-ignore
-  const user = req.user;
-  const userId = user?.user_id;
-  const isLoggedIn = user?.user_id === true;
+  const { videoId, userId } = req.body;
+  const isLoggedIn = userId !== '';
   try {
     const video = await getVideo(videoId, userId, isLoggedIn);
     return res.status(200).json({ success: true, errors: [], result: { video } });
@@ -166,15 +169,35 @@ export const deleteVideoController = async (
   }
 };
 
-export const likeOrDislikeVideoController = async (
-  req: Request<{}, {}, LikeOrDislikeVideoInput>,
+export const likeVideoController = async (
+  req: Request<LikeVideoInput>,
   res: Response
 ) => {
-  const { actionType, videoId } = req.body;
+  const { videoId } = req.params;
   // @ts-ignore
   const { user_id } = req.user;
   try {
-    const updatedData = await likeOrDislikeVideo(actionType, videoId, user_id);
+    const updatedData = await likeOrDislikeVideo('like', videoId, user_id);
+    return res.status(200).json({ success: true, errors: [], result: updatedData });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(error?.http_code ? error.http_code : 500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
+  }
+};
+
+export const dislikeVideoController = async (
+  req: Request<DislikeVideoInput>,
+  res: Response
+) => {
+  const { videoId } = req.params;
+  // @ts-ignore
+  const { user_id } = req.user;
+  try {
+    const updatedData = await likeOrDislikeVideo('dislike', videoId, user_id);
     return res.status(200).json({ success: true, errors: [], result: updatedData });
   } catch (error: any) {
     console.log(error);

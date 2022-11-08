@@ -20,7 +20,7 @@ import {
 
 const router = express.Router();
 
-router.get(
+router.post(
   '/api/comments/:videoId/:page',
   validateResource(getCommentsSchema),
   getCommentsController
@@ -48,14 +48,14 @@ router.delete(
 );
 
 router.post(
-  '/api/comments/:commentId/like',
+  '/api/comments/react/like/:commentId',
   requireAuth,
   validateResource(likeCommentSchema),
   likeCommentController
 );
 
 router.post(
-  '/api/comments/:commentId/dislike',
+  '/api/comments/react/dislike/:commentId',
   requireAuth,
   validateResource(dislikeCommentSchema),
   dislikeCommentController

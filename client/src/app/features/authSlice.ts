@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IInitialState {
   user: {
@@ -8,6 +8,7 @@ interface IInitialState {
     profile_picture: string;
   };
   accessToken: string;
+  isGettingUser: boolean;
 }
 
 export interface IUser {
@@ -19,37 +20,38 @@ export interface IUser {
 
 const initialState: IInitialState = {
   user: {
-    user_id: "",
-    username: "",
-    email: "",
-    profile_picture: "",
+    user_id: '',
+    username: '',
+    email: '',
+    profile_picture: '',
   },
-  accessToken: "",
+  accessToken: '',
+  isGettingUser: true,
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
-    setUser: (
-      state,
-      action: PayloadAction<{ user: IUser; accessToken: string }>
-    ) => {
+    setUser: (state, action: PayloadAction<{ user: IUser; accessToken: string }>) => {
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
     },
     resetUser: (state) => {
       state.user = {
-        user_id: "",
-        username: "",
-        email: "",
-        profile_picture: "",
+        user_id: '',
+        username: '',
+        email: '',
+        profile_picture: '',
       };
-      state.accessToken = "";
+      state.accessToken = '';
+    },
+    setIsGettingUser: (state, action: PayloadAction<boolean>) => {
+      state.isGettingUser = action.payload;
     },
   },
 });
 
-export const { setUser, resetUser } = authSlice.actions;
+export const { setUser, resetUser, setIsGettingUser } = authSlice.actions;
 
 export default authSlice.reducer;
