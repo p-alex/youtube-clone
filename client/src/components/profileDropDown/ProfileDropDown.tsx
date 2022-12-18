@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { CgProfile } from 'react-icons/cg';

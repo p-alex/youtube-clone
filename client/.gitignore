@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 public/videos
+getGoogleUrl.ts
 
 # testing
 /coverage

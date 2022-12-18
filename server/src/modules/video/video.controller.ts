@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import {
   DeleteVideoInput,
   DislikeVideoInput,
+  GetSuggestedVideosInput,
   GetVideoInput,
   GetVideoTagsInput,
   LikeVideoInput,
@@ -11,6 +12,7 @@ import {
 } from './video.schema';
 import {
   deleteVideo,
+  getSuggestedVideos,
   getUserVideos,
   getVideo,
   getVideos,
@@ -68,6 +70,26 @@ export const getVideoController = async (
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
+  }
+};
+
+export const getSuggestedVideosController = async (
+  req: Request<{}, {}, GetSuggestedVideosInput>,
+  res: Response
+) => {
+  try {
+    const { videoId, title, description, page } = req.body;
+    const videos = await getSuggestedVideos(videoId, title, description, page);
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { suggestedVideos: videos } });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
       result: null,

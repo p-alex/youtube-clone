@@ -1,4 +1,3 @@
-import config from 'config';
 import { Request, Response } from 'express';
 import db from '../../db';
 import { RegisterUserInput } from './user.scheme';
@@ -6,9 +5,6 @@ import { registerUser } from './user.service';
 import argon2 from 'argon2';
 import { sendEmail } from '../../../nodemailer/sendEmail';
 import { verifyEmailTemplate } from '../../../nodemailer/templates';
-import { signJwt } from '../../utils/jwt';
-
-import { createRandomCode } from '../../utils/createRandomCode';
 
 export const registerUserController = async (
   req: Request<{}, {}, RegisterUserInput>,

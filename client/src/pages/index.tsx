@@ -25,6 +25,7 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
+    console.log(window.navigator);
     !videos.length && handleGetVideos();
   }, [accessToken]);
 

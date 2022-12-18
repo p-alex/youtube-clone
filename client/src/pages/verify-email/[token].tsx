@@ -8,20 +8,20 @@ import Spinner from '../../ui/Spinner';
 
 const VerifyEmailContainer = styled.div`
   background-color: ${(props) => props.theme.uiBg};
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme?.textColor};
   padding: 15px;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 15px;
   & a {
-    color: ${(props) => props.theme.primaryBtn.textColor};
+    color: ${(props) => props.theme.primaryBtn?.textColor};
     font-weight: 700;
   }
 `;
 
 const ResultMessage = styled.p`
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme?.textColor};
 `;
 
 const VerifyEmail = () => {
@@ -50,7 +50,7 @@ const VerifyEmail = () => {
       {isLoading && <Spinner />}
       {isSuccess && <ResultMessage>Email verified successfully!</ResultMessage>}
       {isSuccess && <Link href={'/login'}>Login</Link>}
-      {errors && <ResultMessage>{errors[0].message}</ResultMessage>}
+      {errors && <ResultMessage>{errors[0]?.message}</ResultMessage>}
     </VerifyEmailContainer>
   );
 };

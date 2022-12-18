@@ -230,7 +230,6 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
               return <Tag key={tag + index}>{tag}</Tag>;
             })}
         </TagContainer>
-
         <Button
           variant="primary"
           type="submit"

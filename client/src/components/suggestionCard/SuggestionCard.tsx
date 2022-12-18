@@ -12,13 +12,14 @@ import {
   Username,
 } from './style';
 import { IVideoSmall } from '../../app/features/videoSlice';
+import { dateConverter } from '../../utils/dateConverter';
 
 const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
   return (
     <Container>
       <Body>
         <ThumbnailContainer>
-          <Link href={'/video/1'}>
+          <Link href={`/videos/${video.video_id}`}>
             <a>
               <Thumbnail
                 as={Image}
@@ -38,7 +39,7 @@ const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
           </Link>
           <Username>{video.username}</Username>
           <Stats>
-            {video.views} views • {video.created_at}
+            {video.views} views • {dateConverter(new Date(video.created_at).getTime())}
           </Stats>
         </Details>
       </Body>

@@ -6,6 +6,7 @@ import validateResource from '../../middleware/validateResource';
 import {
   deleteVideoController,
   dislikeVideoController,
+  getSuggestedVideosController,
   getUserVideosController,
   getVideoController,
   getVideosController,
@@ -18,6 +19,7 @@ import {
 import {
   deleteVideoSchema,
   dislikeVideoSchema,
+  getSuggestedVideosSchema,
   getVideoSchema,
   getVideoTagsSchema,
   likeVideoSchema,
@@ -33,6 +35,12 @@ const router = express.Router();
 router.get('/api/videos', getVideosController);
 
 router.get('/api/videos/manage', requireAuth, getUserVideosController);
+
+router.post(
+  '/api/videos/suggested',
+  validateResource(getSuggestedVideosSchema),
+  getSuggestedVideosController
+);
 
 router.post('/api/videos/:videoId', validateResource(getVideoSchema), getVideoController);
 

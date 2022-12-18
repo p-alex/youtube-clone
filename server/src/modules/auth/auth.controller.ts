@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import db from '../../db';
 import { LoginUserInput, LogoutUserInput, VerifyEmailInput } from './auth.schema';
-import { signAccessToken, signRefreshToken } from './auth.service';
+import { createSession, signAccessToken, signRefreshToken } from './auth.service';
 import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 import { verifyJwt } from '../../utils/jwt';
-import config from 'config';
+import log from '../../utils/logger';
 
 export const loginUserController = async (
   req: Request<{}, {}, LoginUserInput>,
@@ -54,6 +54,8 @@ export const loginUserController = async (
         result: null,
       });
 
+    const session = await createSession(user.user_id);
+
     // Sign access token
     const accessToken = signAccessToken({
       user_id: user.user_id,
@@ -61,7 +63,7 @@ export const loginUserController = async (
       username: user.username,
     });
     // Sign refresh token
-    const refreshToken = await signRefreshToken(user.user_id);
+    const refreshToken = await signRefreshToken(session);
     // Send tokens
 
     if (!refreshToken) throw new Error('Something went wrong...');
@@ -141,10 +143,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
         result: null,
       });
 
-    const newRefreshToken = await signRefreshToken(
-      currentSession.user_id,
-      currentSession.session_id
-    );
+    const newRefreshToken = await signRefreshToken(currentSession);
 
     if (!newRefreshToken) throw new Error('Something went wrong...');
 

@@ -12,7 +12,7 @@ export interface IComment {
   total_replies: number;
   total_likes: number;
   total_dislikes: number;
-  like_status: 'like' | 'dislike' | 'none';
+  like_status: 'like' | 'dislike' | '';
   created_at: string | number;
 }
 

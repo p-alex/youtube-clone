@@ -75,6 +75,15 @@ export const searchVideosSchema = object({
   }),
 });
 
+export const getSuggestedVideosSchema = object({
+  body: object({
+    videoId: string({ required_error: 'Please provide video id' }),
+    title: string({ required_error: 'Please provide video title' }),
+    description: string({ required_error: 'Please provide video description' }),
+    page: number({ required_error: 'Please provide page param' }),
+  }),
+});
+
 export type GetVideoInput = TypeOf<typeof getVideoSchema>['body'];
 
 export type UploadVideoInput = TypeOf<typeof uploadVideoSchema>['body'];
@@ -90,3 +99,5 @@ export type DislikeVideoInput = TypeOf<typeof likeVideoSchema>['params'];
 export type GetVideoTagsInput = TypeOf<typeof getVideoTagsSchema>['params'];
 
 export type SearchVideosInput = TypeOf<typeof searchVideosSchema>['params'];
+
+export type GetSuggestedVideosInput = TypeOf<typeof getSuggestedVideosSchema>['body'];

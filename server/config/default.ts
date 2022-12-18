@@ -19,4 +19,8 @@ export default {
   smtp_user: '',
   smtp_pass: '',
   verify_email_token_secret: '',
+  google_client_id: '',
+  google_client_secret: '',
+  google_oauth_redirect_uri: '',
+  secure_password_generator_length: '',
 };

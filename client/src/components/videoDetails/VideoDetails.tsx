@@ -1,10 +1,10 @@
-import Image from "next/image";
-import React from "react";
-import { useSelector } from "react-redux";
-import { VideoInfo } from "../../app/features/videoSlice";
-import { RootState } from "../../app/store";
-import useAuth from "../../hooks/useAuth";
-import { SubscribeButton } from "../../ui/SubscribeButton";
+import Image from 'next/image';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { VideoInfo } from '../../app/features/videoSlice';
+import { RootState } from '../../app/store';
+import useAuth from '../../hooks/useAuth';
+import { SubscribeButton } from '../../ui/SubscribeButton';
 import {
   Description,
   Details,
@@ -14,7 +14,7 @@ import {
   SubCount,
   Username,
   UsernameAndSubsContainer,
-} from "./style";
+} from './style';
 
 const VideoDetails = ({ video }: { video: VideoInfo }) => {
   const profile_picture = useSelector(
@@ -25,11 +25,7 @@ const VideoDetails = ({ video }: { video: VideoInfo }) => {
     <DetailsContainer>
       <ProfilePicture
         as={Image}
-        src={
-          profile_picture
-            ? profile_picture
-            : "/images/default-profile-picture.jpg"
-        }
+        src={profile_picture ? profile_picture : '/images/default-profile-picture.jpg'}
         width={48}
         height={48}
         alt=""
@@ -40,9 +36,7 @@ const VideoDetails = ({ video }: { video: VideoInfo }) => {
             <Username>{video.username}</Username>
             <SubCount>{video.total_subscribers} subscribers</SubCount>
           </UsernameAndSubsContainer>
-          {isAuth && (
-            <SubscribeButton variant={"sub"}>Subscribe</SubscribeButton>
-          )}
+          {isAuth && <SubscribeButton variant={'normal'}>Subscribe</SubscribeButton>}
         </DetailsHeader>
         <Description>{video.description}</Description>
       </Details>

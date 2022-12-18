@@ -3,6 +3,7 @@ import { cloudinary } from '../../cloudinary';
 import db from '../../db';
 import { getImagePublicId, getVideoPublicId } from '../../utils/getPublicId';
 import { UploadVideoInput } from './video.schema';
+import uglifyJS from 'uglify-js';
 
 export interface IVideo {
   video_id: string;
@@ -107,7 +108,6 @@ export const saveVideoToDB = async (details: UploadVideoInput) => {
     'SELECT * FROM create_video($1, $2, $3, $4, $5, $6, $7, $8)',
     [userId, title, description, duration, mimetype, thumbnailUrl, videoUrl, tagList]
   );
-  console.log(response);
   const video_id: string = response.rows[0];
   return video_id;
 };
@@ -236,6 +236,23 @@ export const getVideoTags = async (video_id: string) => {
 
 export const searchVideos = async (query: string) => {
   const response = await db.query('SELECT * FROM search_video($1)', [query]);
+  const data: IVideoSmall[] = response.rows;
+  return data;
+};
+
+export const getSuggestedVideos = async (
+  videoId: string,
+  title: string,
+  description: string,
+  page: number
+) => {
+  const LIMIT = 20;
+  const minifiedDescription = uglifyJS.minify(description).code;
+  console.log(minifiedDescription);
+  const response = await db.query(
+    'SELECT * FROM get_suggested_videos($1, $2, $3, $4, $5)',
+    [videoId, title, minifiedDescription, page, LIMIT]
+  );
   const data: IVideoSmall[] = response.rows;
   return data;
 };

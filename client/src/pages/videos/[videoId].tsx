@@ -5,7 +5,12 @@ import VideoHeader from '../../components/videoHeader/VideoHeader';
 import Head from 'next/head';
 import { videos } from '../../utils/videosList';
 import { useRouter } from 'next/router';
-import { resetVideo, setVideo, VideoInfo } from '../../app/features/videoSlice';
+import {
+  IVideoSmall,
+  resetVideo,
+  setVideo,
+  VideoInfo,
+} from '../../app/features/videoSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import useMobileSize from '../../hooks/useMobileSize';
@@ -14,7 +19,6 @@ import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
 import CommentSection from '../../containers/CommentSection/CommentSection';
 import { CommentSectionProvider } from '../../context/CommentSectionContext/CommentSectionProvider';
 import {
-  SuggestionsColumn,
   VideoColumn,
   VideoContainer,
   VideoDetailsContainer,
@@ -22,11 +26,12 @@ import {
   VideoPageContainer,
 } from '../../pageStyles/VideoPage.styles';
 import VideoDescription from '../../components/videoDescription/VideoDescription';
+import SuggestionsSideBar from '../../components/SuggestionsSideBar/SuggestionsSideBar';
 
 const VideoPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
-  const video: VideoInfo = useSelector((state: RootState) => state.video.videoInfo);
   const dispatch = useDispatch();
+  const video: VideoInfo = useSelector((state: RootState) => state.video.videoInfo);
   const [videoPlayerType, setVideoPlayerType] = useState<'desktop' | 'mobile' | ''>('');
   const [isTheatreMode, setIsTheatreMode] = useState(false);
   const isMobileSize = useMobileSize();
@@ -50,7 +55,7 @@ const VideoPage = () => {
   };
 
   useEffect(() => {
-    if (effectRan.current || !videoId || auth.isGettingUser) return;
+    if (!videoId || auth.isGettingUser) return;
     handleGetVideo();
     return () => {
       if (videoId) {
@@ -103,21 +108,13 @@ const VideoPage = () => {
                   {video && <CommentSection video={video} />}
                 </CommentSectionProvider>
               </VideoDetailsContainer>
-              {isTheatreMode && (
-                <SuggestionsColumn isTheatreMode={isTheatreMode}>
-                  {videos.map((video, index) => {
-                    return <SuggestionCard key={index} video={video} />;
-                  })}
-                </SuggestionsColumn>
+              {isTheatreMode && video.user_id && (
+                <SuggestionsSideBar video={video} isTheatreMode={isTheatreMode} />
               )}
             </VideoDetailsWrapper>
           </VideoColumn>
-          {!isTheatreMode && (
-            <SuggestionsColumn isTheatreMode={false}>
-              {videos.map((video, index) => {
-                return <SuggestionCard key={index} video={video} />;
-              })}
-            </SuggestionsColumn>
+          {!isTheatreMode && video.user_id && (
+            <SuggestionsSideBar video={video} isTheatreMode={isTheatreMode} />
           )}
         </VideoPageContainer>
       )}

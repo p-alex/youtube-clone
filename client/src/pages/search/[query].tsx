@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
 import Layout from '../../layout/Layout';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { IVideoSmallWithInfo } from '../../app/features/videoSlice';
 import VideoCardWithInfo from '../../components/videoCardWithInfo/VideoCardWithInfo';
 
 const SearchPage = () => {
+  const router = useRouter();
   const query = router.query.query;
   const [videos, setVideos] = useState<IVideoSmallWithInfo[]>([]);
 

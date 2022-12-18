@@ -11,8 +11,8 @@ import {
   Title,
   Username,
 } from './style';
-import { IVideoSmall } from '../../app/features/videosSlice';
 import { dateConverter } from '../../utils/dateConverter';
+import { IVideoSmall } from '../../app/features/videoSlice';
 
 const VideoCard = ({ video }: { video: IVideoSmall }) => {
   return (
