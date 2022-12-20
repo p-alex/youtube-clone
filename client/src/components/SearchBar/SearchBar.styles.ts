@@ -16,7 +16,7 @@ export const Search = styled.input`
   border: solid 1px ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.inputBg};
-  padding: 8px 16px;
+  padding: 8px 20px;
   font-size: 1rem;
   width: 70%;
   max-width: 600px;

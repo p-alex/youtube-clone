@@ -51,6 +51,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   h2 {
     font-size: 1.35rem;
+    line-height: 25px;
   }
   h3 {
     font-size: 1.15rem;

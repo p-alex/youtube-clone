@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import { MOBILE_BREAK_POINT } from "../../../layout/style";
+import styled from 'styled-components';
 
 export const VideoContainer = styled.div<{
   showCursor: boolean;
@@ -10,10 +9,10 @@ export const VideoContainer = styled.div<{
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: ${(props) => (props.isTheatreMode ? "100vh" : "100%")};
-  max-height: ${(props) => (props.isTheatreMode ? "82vh" : "none")};
+  height: ${(props) => (props.isTheatreMode ? '100vh' : '100%')};
+  max-height: ${(props) => (props.isTheatreMode ? '82vh' : 'none')};
   margin: auto;
-  cursor: ${(props) => (props.showCursor ? "initial" : "none")};
+  cursor: ${(props) => (props.showCursor ? 'initial' : 'none')};
   user-select: none;
   background-color: black;
 `;

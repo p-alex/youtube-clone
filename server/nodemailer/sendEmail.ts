@@ -11,17 +11,20 @@ type Template = {
 
 export const sendEmail = async (template: Template) => {
   const testAccount = await nodemailer.createTestAccount();
-
   let transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
-    secure: false, // true for 465, false for other ports
+    secure: process.env.NODE_ENV === 'production' ? true : false, // true for 465, false for other ports
     auth: {
-      user: testAccount.user, // config.get('smtp_user'), // generated ethereal user
-      pass: testAccount.pass, // config.get('smtp_pass'), // generated ethereal password
+      user:
+        process.env.NODE_ENV === 'production'
+          ? config.get('smtp_user')
+          : testAccount.user,
+      pass:
+        process.env.NODE_ENV === 'production'
+          ? config.get('smtp_pass')
+          : testAccount.pass,
     },
   });
-  let info = await transporter.sendMail(template);
-  console.log(info.response);
-  console.log(nodemailer.getTestMessageUrl(info));
+  await transporter.sendMail(template);
 };

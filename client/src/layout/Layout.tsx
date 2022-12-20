@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components';
 import { RootState } from '../app/store';
 import NavBar from '../components/navBar/NavBar';
-import useAuth from '../hooks/useAuth';
 import { GlobalStyle } from '../styles/global';
 import { NAV_BAR_HEIGHT } from './style';
 

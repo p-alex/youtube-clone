@@ -6,6 +6,21 @@ export const Container = styled.div`
   margin-bottom: 10px;
 `;
 
+export const ThumbnailContainer = styled.div`
+  position: relative;
+`;
+
+export const Duration = styled.p`
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  font-size: 0.85rem;
+`;
+
 export const Thumbnail = styled.img`
   width: 100%;
   background-color: ${(props) => props.theme.textMutedColor};
@@ -43,7 +58,7 @@ export const Title = styled.p`
   -webkit-line-clamp: 2;
   overflow: hidden;
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 400;
 `;
 
 export const Username = styled.p``;

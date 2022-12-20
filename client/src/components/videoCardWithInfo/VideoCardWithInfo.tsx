@@ -1,36 +1,63 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 import { IVideoSmallWithInfo } from '../../app/features/videoSlice';
+import { dateConverter } from '../../utils/dateConverter';
+import ProfileImage from '../../ui/ProfileImage';
 import {
-  VideoCardWithInfoBody,
-  VideoCardWithInfoContainer,
-  VideoCardWithInfoDescription,
-  VideoCardWithInfoHeader,
-  VideoCardWithInfoTitle,
-  VideoCardWithInfoViewsAndUsername,
+  VideoCardWithInfo_Container,
+  VideoCardWithInfo__Body,
+  VideoCardWithInfo__Description,
+  VideoCardWithInfo__Duration,
+  VideoCardWithInfo__ThumbnailContainer,
+  VideoCardWithInfo__Title,
+  VideoCardWithInfo__UserContainer,
+  VideoCardWithInfo__Username,
+  VideoCardWithInfo__ViewsAndDate,
 } from './VideoCardWithInfo.styles';
+import Link from 'next/link';
+import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
 
 const VideoCardWithInfo = ({ video }: { video: IVideoSmallWithInfo }) => {
   return (
     <Link href={`/videos/${video.video_id}`}>
       <a>
-        <VideoCardWithInfoContainer>
-          <Image src={video.thumbnail_url} width="360" height="202.5" alt={video.title} />
-          <VideoCardWithInfoBody>
-            <VideoCardWithInfoHeader>
-              <VideoCardWithInfoTitle>{video.title}</VideoCardWithInfoTitle>
-              <VideoCardWithInfoViewsAndUsername>
-                {video.views} views •{' '}
-                <Image src={video.profile_picture} width="20" height={'20'} alt="" />{' '}
-                {video.username}
-              </VideoCardWithInfoViewsAndUsername>
-            </VideoCardWithInfoHeader>
-            <VideoCardWithInfoDescription>
+        <VideoCardWithInfo_Container>
+          <VideoCardWithInfo__ThumbnailContainer>
+            <Image
+              src={video.thumbnail_url}
+              width={600}
+              height={352.5}
+              objectFit={'cover'}
+              alt=""
+            />
+            <VideoCardWithInfo__Duration>
+              {videoDurationFormatter(video.duration)}
+            </VideoCardWithInfo__Duration>
+          </VideoCardWithInfo__ThumbnailContainer>
+
+          <VideoCardWithInfo__Body>
+            <VideoCardWithInfo__Title>{video.title}</VideoCardWithInfo__Title>
+            <VideoCardWithInfo__ViewsAndDate>
+              {video.views} views • {dateConverter(new Date(video.created_at).getTime())}
+            </VideoCardWithInfo__ViewsAndDate>
+
+            <VideoCardWithInfo__UserContainer>
+              <ProfileImage
+                imageUrl={video.profile_picture}
+                width={24}
+                height={24}
+                userId={video.user_id}
+              />
+              <VideoCardWithInfo__Username>
+                <Link href="#">{video.username}</Link>
+              </VideoCardWithInfo__Username>
+            </VideoCardWithInfo__UserContainer>
+
+            <VideoCardWithInfo__Description>
               {video.description}
-            </VideoCardWithInfoDescription>
-          </VideoCardWithInfoBody>
-        </VideoCardWithInfoContainer>
+            </VideoCardWithInfo__Description>
+          </VideoCardWithInfo__Body>
+        </VideoCardWithInfo_Container>
       </a>
     </Link>
   );

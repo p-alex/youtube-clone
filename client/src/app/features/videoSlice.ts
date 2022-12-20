@@ -28,6 +28,7 @@ export interface IVideoSmall {
   thumbnail_url: string;
   title: string;
   views: number;
+  duration: number;
   created_at: string;
 }
 

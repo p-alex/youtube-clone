@@ -113,20 +113,15 @@ export const uploadVideoController = async (
         result: null,
       });
 
-    // Upload video to cloudinary
     const uploadVideoResponse = await uploadVideo({ path: video.path });
 
-    // Upload thumbnail to cloudinary
     const uploadThumbnailResponse = await uploadThumbnail(videoData.thumbnailUrl);
 
-    // // Save secure urls in videoData
     videoData.videoUrl = uploadVideoResponse.secure_url;
     videoData.thumbnailUrl = uploadThumbnailResponse.secure_url;
 
-    // // Save video to database
     const video_id = await saveVideoToDB(videoData);
 
-    // Delete uploaded video from local files
     await unlinkFile(video.path);
 
     return res.status(201).json({

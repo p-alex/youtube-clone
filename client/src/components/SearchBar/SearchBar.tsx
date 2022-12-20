@@ -27,6 +27,7 @@ const SearchBar = ({
         onChange={setSearchQuery}
         onFocus={() => dispatch(disableKeyBinds())}
         onBlur={() => dispatch(enableKeyBinds())}
+        autoComplete="true"
       />
       <SearchBtn onClick={handleSearch}>
         <MdSearch />

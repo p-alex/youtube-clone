@@ -12,12 +12,24 @@ export const Container = styled.div`
 `;
 
 export const ThumbnailContainer = styled.div`
+  position: relative;
   width: 180px;
   height: 101px;
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     width: 100%;
     height: auto;
   }
+`;
+
+export const Duration = styled.p`
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  font-size: 0.9rem;
+  padding: 3px 5px;
+  border-radius: 5px;
+  color: white;
+  background-color: black;
 `;
 
 export const Thumbnail = styled.img`

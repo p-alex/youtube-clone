@@ -15,15 +15,6 @@ const VideoPlayer = ({
 }) => {
   const [videoPlayerType, setVideoPlayerType] = useState<'mobile' | 'desktop'>('desktop');
 
-  // useEffect(() => {
-  //   //@ts-ignore
-  //   if (window.navigator.userAgentData.mobile) {
-  //     setVideoPlayerType('mobile');
-  //   } else {
-  //     setVideoPlayerType('desktop');
-  //   }
-  // }, []);
-
   return (
     <>
       {videoPlayerType === 'desktop' && (

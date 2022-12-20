@@ -4,6 +4,13 @@ import Layout from '../../layout/Layout';
 import { useRouter } from 'next/router';
 import { IVideoSmallWithInfo } from '../../app/features/videoSlice';
 import VideoCardWithInfo from '../../components/videoCardWithInfo/VideoCardWithInfo';
+import styled from 'styled-components';
+
+const SearchPageContainer = styled.div`
+  position: relative;
+  max-width: 1080px;
+  margin: auto;
+`;
 
 const SearchPage = () => {
   const router = useRouter();
@@ -28,9 +35,11 @@ const SearchPage = () => {
 
   return (
     <Layout>
-      {videos.map((video) => {
-        return <VideoCardWithInfo key={video.video_id} video={video} />;
-      })}
+      <SearchPageContainer>
+        {videos.map((video) => {
+          return <VideoCardWithInfo key={video.video_id} video={video} />;
+        })}
+      </SearchPageContainer>
     </Layout>
   );
 };

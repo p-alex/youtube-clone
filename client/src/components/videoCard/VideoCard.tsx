@@ -5,20 +5,32 @@ import {
   Body,
   Container,
   Details,
+  Duration,
   ProfilePicture,
   Stats,
   Thumbnail,
+  ThumbnailContainer,
   Title,
   Username,
 } from './style';
 import { dateConverter } from '../../utils/dateConverter';
 import { IVideoSmall } from '../../app/features/videoSlice';
+import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
 
 const VideoCard = ({ video }: { video: IVideoSmall }) => {
   return (
     <Container>
       <Link href={`/videos/${video.video_id}`}>
-        <Thumbnail as={Image} src={video.thumbnail_url} alt="" width={700} height={393} />
+        <ThumbnailContainer>
+          <Thumbnail
+            as={Image}
+            src={video.thumbnail_url}
+            alt=""
+            width={700}
+            height={393}
+          />
+          <Duration>{videoDurationFormatter(video.duration)}</Duration>
+        </ThumbnailContainer>
       </Link>
       <Body>
         <ProfilePicture src={video.profile_picture} width={36} height={36} />
