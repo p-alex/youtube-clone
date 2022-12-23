@@ -22,4 +22,12 @@ export const registerUserSchema = object({
   }),
 });
 
+export const getProfileInfoSchema = object({
+  params: object({
+    username: string({ required_error: 'Please provide the username param' }),
+  }),
+});
+
 export type RegisterUserInput = TypeOf<typeof registerUserSchema>['body'];
+
+export type GetProfileInfoInput = TypeOf<typeof getProfileInfoSchema>['params'];

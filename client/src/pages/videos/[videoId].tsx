@@ -1,16 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Layout from '../../layout/Layout';
-import SuggestionCard from '../../components/suggestionCard/SuggestionCard';
 import VideoHeader from '../../components/videoHeader/VideoHeader';
 import Head from 'next/head';
-import { videos } from '../../utils/videosList';
 import { useRouter } from 'next/router';
-import {
-  IVideoSmall,
-  resetVideo,
-  setVideo,
-  VideoInfo,
-} from '../../app/features/videoSlice';
+import { resetVideo, setVideo, VideoInfo } from '../../app/features/videoSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import useMobileSize from '../../hooks/useMobileSize';

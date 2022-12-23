@@ -7,6 +7,21 @@ export const getVideoSchema = object({
   }),
 });
 
+export const getUserVideosPrivateSchema = object({
+  params: object({
+    sortBy: z.enum(['recent', 'popular']),
+    page: string({ required_error: 'Please provide page param' }),
+  }),
+});
+
+export const getUserVideosSchema = object({
+  params: object({
+    userId: string({ required_error: 'Please provide userId param' }),
+    sortBy: z.enum(['recent', 'popular']),
+    page: string({ required_error: 'Please provide page param' }),
+  }),
+});
+
 export const uploadVideoSchema = object({
   body: object({
     userId: string({ required_error: 'User id is required' }),
@@ -85,6 +100,12 @@ export const getSuggestedVideosSchema = object({
 });
 
 export type GetVideoInput = TypeOf<typeof getVideoSchema>['body'];
+
+export type GetUserVideosPrivateInput = TypeOf<
+  typeof getUserVideosPrivateSchema
+>['params'];
+
+export type GetUserVideosInput = TypeOf<typeof getUserVideosSchema>['params'];
 
 export type UploadVideoInput = TypeOf<typeof uploadVideoSchema>['body'];
 

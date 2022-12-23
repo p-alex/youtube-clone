@@ -2,7 +2,7 @@ import { QueryResult } from 'pg';
 import { cloudinary } from '../../cloudinary';
 import db from '../../db';
 import { getImagePublicId, getVideoPublicId } from '../../utils/getPublicId';
-import { UploadVideoInput } from './video.schema';
+import { GetUserVideosInput, UploadVideoInput } from './video.schema';
 import uglifyJS from 'uglify-js';
 
 export interface IVideo {
@@ -41,11 +41,22 @@ export const getVideos = async () => {
   return data;
 };
 
-export const getUserVideos = async (user_id: string) => {
-  const response = await db.query(
-    'SELECT * FROM videos WHERE user_id = $1 ORDER BY created_at DESC',
-    [user_id]
-  );
+export const getUserVideos = async (
+  user_id: string,
+  sortBy: GetUserVideosInput['sortBy'],
+  page: string
+) => {
+  const LIMIT = 16;
+  const OFFSET = LIMIT * parseInt(page);
+  const recentQuery =
+    'SELECT * FROM videos WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3';
+  const popularQuery =
+    'SELECT * FROM videos WHERE user_id = $1 ORDER BY views DESC LIMIT $2 OFFSET $3';
+  const response = await db.query(sortBy === 'recent' ? recentQuery : popularQuery, [
+    user_id,
+    LIMIT,
+    OFFSET,
+  ]);
   const data: IVideo[] = response.rows;
   return data;
 };

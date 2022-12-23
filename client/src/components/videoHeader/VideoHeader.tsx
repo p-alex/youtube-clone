@@ -28,6 +28,7 @@ import { RootState } from '../../app/store';
 import { SubscribeButton } from '../../ui/SubscribeButton';
 import Image from 'next/image';
 import router from 'next/router';
+import ProfileImage from '../../ui/ProfileImage';
 
 const VideoHeader = ({ video }: { video: VideoInfo }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
@@ -76,7 +77,12 @@ const VideoHeader = ({ video }: { video: VideoInfo }) => {
       <VideoHeaderTitle>{video.title}</VideoHeaderTitle>
       <VideoHeaderBtnsRow>
         <VideoHeaderUserInfo>
-          <Image src={video.profile_picture} width="40" height="40" alt="" />
+          <ProfileImage
+            imageUrl={video.profile_picture}
+            width={40}
+            height={40}
+            username={video.username}
+          />
           <VideoHeaderColumnContainer>
             <VideoHeaderUsername>{video.username}</VideoHeaderUsername>
             <VideoHeaderSubscribers>

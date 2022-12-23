@@ -17,8 +17,17 @@ export const registerUser = async (input: RegisterInput) => {
   return data;
 };
 
-export const getUsers = async () => {
-  const result = await db.query('SELECT * FROM users', []);
-  const users = result.rows;
-  return users;
+export const getProfileInfo = async (username: string) => {
+  const result = await db.query(
+    'SELECT user_id, username, profile_picture, total_subscribers, created_at FROM users WHERE username = $1',
+    [username]
+  );
+  const data: {
+    user_id: string;
+    username: string;
+    profile_picture: string;
+    total_subscribers: number;
+    created_at: string;
+  } = result.rows[0];
+  return data;
 };

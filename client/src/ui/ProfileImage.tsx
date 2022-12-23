@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
 
 const ProfileImageContainer = styled.div<{ width: number; height: number }>`
   position: relative;
@@ -10,13 +10,13 @@ const ProfileImageContainer = styled.div<{ width: number; height: number }>`
 `;
 
 const ProfileImage = ({
-  userId,
+  username,
   imageUrl,
   width,
   height,
   elemRef,
 }: {
-  userId: string;
+  username: string;
   imageUrl: string;
   width: number;
   height: number;
@@ -24,14 +24,14 @@ const ProfileImage = ({
 }) => {
   return (
     <ProfileImageContainer width={width} height={height}>
-      <Link href={"#"}>
+      <Link href={'/profile/' + username}>
         <a ref={elemRef}>
           <Image
             src={imageUrl}
             width={width}
             height={height}
             alt=""
-            style={{ borderRadius: "50%" }}
+            style={{ borderRadius: '50%' }}
           />
         </a>
       </Link>

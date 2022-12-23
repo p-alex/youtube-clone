@@ -3,6 +3,8 @@ import {
   DeleteVideoInput,
   DislikeVideoInput,
   GetSuggestedVideosInput,
+  GetUserVideosInput,
+  GetUserVideosPrivateInput,
   GetVideoInput,
   GetVideoTagsInput,
   LikeVideoInput,
@@ -27,6 +29,7 @@ import {
 import fs from 'fs';
 import util from 'util';
 import { boolean } from 'zod';
+import log from '../../utils/logger';
 const unlinkFile = util.promisify(fs.unlink);
 
 export const getVideosController = async (req: Request, res: Response) => {
@@ -42,13 +45,36 @@ export const getVideosController = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserVideosController = async (req: Request, res: Response) => {
+export const getUserVideosPrivateController = async (
+  req: Request<GetUserVideosPrivateInput>,
+  res: Response
+) => {
   try {
     // @ts-ignore
     const { user_id } = req.user;
-    const videos = await getUserVideos(user_id);
+    const { sortBy, page } = req.params;
+    const videos = await getUserVideos(user_id, sortBy, page);
     return res.status(200).json({ success: true, errors: [], result: { videos } });
   } catch (error: any) {
+    log.error(error.message);
+    return res.status(500).json({
+      success: false,
+      errors: [{ message: error.message }],
+      result: null,
+    });
+  }
+};
+
+export const getUserVideosController = async (
+  req: Request<GetUserVideosInput>,
+  res: Response
+) => {
+  try {
+    const { userId, sortBy, page } = req.params;
+    const videos = await getUserVideos(userId, sortBy, page);
+    return res.status(200).json({ success: true, errors: [], result: { videos } });
+  } catch (error: any) {
+    log.error(error.message);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -68,7 +94,7 @@ export const getVideoController = async (
     const video = await getVideo(videoId, userId, isLoggedIn);
     return res.status(200).json({ success: true, errors: [], result: { video } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -88,7 +114,7 @@ export const getSuggestedVideosController = async (
       .status(200)
       .json({ success: true, errors: [], result: { suggestedVideos: videos } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -130,7 +156,7 @@ export const uploadVideoController = async (
       result: { video_id },
     });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -157,7 +183,7 @@ export const updateVideoController = async (
       result: [{ video_id }],
     });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -177,7 +203,7 @@ export const deleteVideoController = async (
     const id = await deleteVideo(videoId, user_id);
     return res.status(200).json({ success: true, errors: [], result: { video_id: id } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -197,7 +223,7 @@ export const likeVideoController = async (
     const updatedData = await likeOrDislikeVideo('like', videoId, user_id);
     return res.status(200).json({ success: true, errors: [], result: updatedData });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -217,7 +243,7 @@ export const dislikeVideoController = async (
     const updatedData = await likeOrDislikeVideo('dislike', videoId, user_id);
     return res.status(200).json({ success: true, errors: [], result: updatedData });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -235,7 +261,7 @@ export const getVideoTagsController = async (
     const tags = await getVideoTags(videoId);
     return res.status(200).json({ success: boolean, errors: [], result: { tags } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(error?.http_code ? error.http_code : 500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -253,7 +279,7 @@ export const searchVideosController = async (
     const searchResults = await searchVideos(query);
     res.status(200).json({ success: true, errors: [], result: { searchResults } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],

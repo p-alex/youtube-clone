@@ -8,6 +8,7 @@ import {
   dislikeVideoController,
   getSuggestedVideosController,
   getUserVideosController,
+  getUserVideosPrivateController,
   getVideoController,
   getVideosController,
   getVideoTagsController,
@@ -20,6 +21,8 @@ import {
   deleteVideoSchema,
   dislikeVideoSchema,
   getSuggestedVideosSchema,
+  getUserVideosPrivateSchema,
+  getUserVideosSchema,
   getVideoSchema,
   getVideoTagsSchema,
   likeVideoSchema,
@@ -34,7 +37,18 @@ const router = express.Router();
 
 router.get('/api/videos', getVideosController);
 
-router.get('/api/videos/manage', requireAuth, getUserVideosController);
+router.get(
+  '/api/videos/manage/:sortBy/:page',
+  requireAuth,
+  validateResource(getUserVideosPrivateSchema),
+  getUserVideosPrivateController
+);
+
+router.get(
+  '/api/videos/user/:userId/:sortBy/:page',
+  validateResource(getUserVideosSchema),
+  getUserVideosController
+);
 
 router.post(
   '/api/videos/suggested',

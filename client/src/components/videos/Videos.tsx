@@ -10,7 +10,7 @@ const Videos = ({ videos }: { videos: IVideoSmall[] }) => {
         {videos.map((video, index) => {
           return (
             <VideoItem key={index}>
-              <VideoCard video={video} />
+              <VideoCard video={video} withProfilePicture={true} />
             </VideoItem>
           );
         })}

@@ -62,7 +62,7 @@ export const ProfileDropDown = () => {
       </Header>
       <ButtonList>
         <ButtonItem>
-          <Link href={'#'}>
+          <Link href={`/profile/${user.username}`}>
             <a>
               <ListButton>
                 <CgProfile /> Your channel

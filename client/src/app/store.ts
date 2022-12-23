@@ -4,6 +4,7 @@ import videoReducer from './features/videoSlice';
 import authReducer from './features/authSlice';
 import manageVideosReducer from './features/manageVideo';
 import suggestionsReducer from './features/suggestionsSlice';
+import profileReducer from './features/profileSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     video: videoReducer,
     suggestions: suggestionsReducer,
     manageVideos: manageVideosReducer,
+    profile: profileReducer,
   },
 });
 

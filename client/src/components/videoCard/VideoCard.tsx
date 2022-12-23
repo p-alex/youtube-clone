@@ -17,7 +17,13 @@ import { dateConverter } from '../../utils/dateConverter';
 import { IVideoSmall } from '../../app/features/videoSlice';
 import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
 
-const VideoCard = ({ video }: { video: IVideoSmall }) => {
+const VideoCard = ({
+  video,
+  withProfilePicture,
+}: {
+  video: IVideoSmall;
+  withProfilePicture: boolean;
+}) => {
   return (
     <Container>
       <Link href={`/videos/${video.video_id}`}>
@@ -33,7 +39,9 @@ const VideoCard = ({ video }: { video: IVideoSmall }) => {
         </ThumbnailContainer>
       </Link>
       <Body>
-        <ProfilePicture src={video.profile_picture} width={36} height={36} />
+        {withProfilePicture && (
+          <ProfilePicture src={video.profile_picture} width={36} height={36} />
+        )}
         <Details>
           <Link href={`/videos/${video.video_id}`}>
             <Title>{video.title}</Title>

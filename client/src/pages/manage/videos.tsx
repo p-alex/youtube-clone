@@ -54,7 +54,7 @@ const Manage = () => {
   const deleteBtnRef = useRef<HTMLButtonElement>(null);
 
   const [getUserVideos, { isLoading }] = useAxiosWithRetry<{}, { videos: IVideo[] }>(
-    'api/videos/manage',
+    'api/videos/manage/recent',
     'GET'
   );
 
