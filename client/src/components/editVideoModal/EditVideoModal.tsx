@@ -7,7 +7,6 @@ import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
 import useDisableScroll from '../../hooks/useDisableScroll';
 import { Input } from '../../ui/Input';
 import { Button } from '../../ui/Button';
-import { Textarea } from '../../ui/Textarea';
 import { imageOptimizer } from '../../utils/imageOptimizer';
 import { convertToTagList } from '../uploadModal/UploadModal';
 import { MdClose } from 'react-icons/md';
@@ -22,12 +21,15 @@ import {
   Tag,
   TagContainer,
   ThumbnailContainer,
-} from './style';
+} from './EditVideoModal.styles';
 import { motion } from 'framer-motion';
 import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
+import AutoResizingTextarea from '../../ui/AutoResizeTextarea';
+import FocusTrapRedirectFocus from '../focusTrap';
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);
+  const { lastFocusedElement } = useSelector((state: RootState) => state.manageVideos);
   const dispatch = useDispatch();
 
   useDisableScroll();
@@ -74,11 +76,12 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
 
   const handleGetTags = async () => {
     try {
-      const tags = await getTags({ tags: newTagList });
-      if (tags.result) {
-        setCurrentTagList(tags.result.tags);
-        setNewTagList(tags.result.tags);
-        tagsInputRef.current!.value = tags.result.tags.join(', ');
+      const response = await getTags({ tags: newTagList });
+      if (response.result) {
+        setCurrentTagList(response.result.tags);
+        setNewTagList(response.result.tags);
+        console.log(response.result.tags);
+        tagsInputRef.current!.value = response.result.tags.join(', ');
       }
     } catch (error) {
       console.log(error);
@@ -130,8 +133,17 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     };
   };
 
+  const handleCloseModal = () => {
+    dispatch(resetVideoToEdit());
+    document.getElementById(lastFocusedElement!)?.focus();
+  };
+
+  const firstFocusableElement = useRef<HTMLButtonElement>(null);
+  const lastFocusableElement = useRef<HTMLButtonElement>(null);
+
   return (
     <Container>
+      <FocusTrapRedirectFocus element={lastFocusableElement} />
       <Backdrop
         onClick={() => dispatch(resetVideoToEdit())}
         as={motion.div}
@@ -147,7 +159,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         transition={{ type: 'just' }}
         exit={{ y: -50, opacity: 0 }}
       >
-        <CloseBtn onClick={() => dispatch(resetVideoToEdit())}>
+        <CloseBtn onClick={handleCloseModal} ref={firstFocusableElement} autoFocus>
           <MdClose />
         </CloseBtn>
         <ThumbnailContainer>
@@ -208,13 +220,13 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           maxLength={100}
         />
         <InputLabel htmlFor="description">Description</InputLabel>
-        <Textarea
-          id="description"
+        <AutoResizingTextarea
           placeholder="Write a description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          maxLength={1000}
-        ></Textarea>
+          maxLength={1500}
+          id="description"
+        />
         <InputLabel htmlFor="tags">Tags</InputLabel>
         <Input
           id="tags"
@@ -235,10 +247,12 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           type="submit"
           onClick={handleUpdateVideo}
           disabled={isUpdateVideoLoading}
+          ref={lastFocusableElement}
         >
           {isUpdateVideoLoading ? 'Loading' : 'Edit'}
         </Button>
       </FormContainer>
+      <FocusTrapRedirectFocus element={firstFocusableElement} />
     </Container>
   );
 };

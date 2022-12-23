@@ -17,7 +17,7 @@ const ConfirmationModal = ({
   toggle,
   func,
   isLoading,
-  redirectToElementOnClose,
+  redirectToElementIdOnClose,
   btnName,
 }: {
   title: string;
@@ -25,7 +25,7 @@ const ConfirmationModal = ({
   toggle: () => void;
   func: () => void;
   isLoading: boolean;
-  redirectToElementOnClose?: React.RefObject<HTMLButtonElement>;
+  redirectToElementIdOnClose: string;
   btnName: string;
 }) => {
   useDisableScroll();
@@ -34,9 +34,9 @@ const ConfirmationModal = ({
   const lastFocusableElement = useRef<HTMLButtonElement>(null);
 
   const handleToggle = () => {
-    if (redirectToElementOnClose === undefined) return toggle();
+    if (redirectToElementIdOnClose === undefined) return toggle();
     toggle();
-    redirectToElementOnClose.current?.focus();
+    document.getElementById(redirectToElementIdOnClose)?.focus();
   };
 
   return (

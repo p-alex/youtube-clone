@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
+import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 const TextareaContainer = styled.div`
   position: relative;
@@ -25,6 +26,9 @@ const Textarea = styled.textarea`
   &::-webkit-scrollbar {
     display: none;
   }
+  background-color: ${(props) => props.theme.uiSecondaryBg};
+  padding: 10px;
+  border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
 
 const TextareaLine = styled.div<{ active: boolean }>`
@@ -32,6 +36,7 @@ const TextareaLine = styled.div<{ active: boolean }>`
   width: 100%;
   height: 2px;
   background-color: ${(props) => (props.active ? 'white' : props.theme.borderColor)};
+  opacity: 0;
 `;
 
 const AutoResizingTextarea = ({
@@ -41,6 +46,8 @@ const AutoResizingTextarea = ({
   onFocus,
   onBlur,
   autoFocus,
+  maxLength,
+  id,
 }: {
   value: string;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement> | undefined;
@@ -48,6 +55,8 @@ const AutoResizingTextarea = ({
   onFocus?: () => void;
   onBlur?: () => void;
   autoFocus?: boolean;
+  maxLength?: number;
+  id?: string;
 }) => {
   const [active, setActive] = useState(false);
 
@@ -55,7 +64,7 @@ const AutoResizingTextarea = ({
 
   const handleResize = () => {
     const textarea = document.getElementById(
-      uniqueTextareaId.current
+      !id ? uniqueTextareaId.current : id
     ) as HTMLTextAreaElement;
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
@@ -77,7 +86,7 @@ const AutoResizingTextarea = ({
   return (
     <TextareaContainer>
       <Textarea
-        id={uniqueTextareaId.current}
+        id={!id ? uniqueTextareaId.current : id}
         rows={1}
         placeholder={placeholder}
         value={value}
@@ -86,7 +95,7 @@ const AutoResizingTextarea = ({
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         autoFocus={autoFocus}
-        maxLength={1500}
+        maxLength={maxLength}
       />
       <TextareaLine active={active} />
     </TextareaContainer>

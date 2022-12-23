@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface IVideo {
   video_id: string;
@@ -19,32 +19,40 @@ interface InitialState {
   videos: IVideo[];
   videoToEdit: IVideo | null;
   videoToDelete: string | null;
+  lastFocusedElement: string | null;
 }
 
 const initialState: InitialState = {
   videos: [],
   videoToEdit: null,
   videoToDelete: null,
+  lastFocusedElement: null,
 };
 
 export const manageVideosSlice = createSlice({
-  name: "manageVideos",
+  name: 'manageVideos',
   initialState,
   reducers: {
     setUserVideos: (state, action: PayloadAction<IVideo[]>) => {
       state.videos = action.payload;
     },
-    selectVideoToEdit: (state, action: PayloadAction<IVideo>) => {
-      state.videoToEdit = action.payload;
+    selectVideoToEdit: (state, action: PayloadAction<{ video: IVideo }>) => {
+      state.videoToEdit = action.payload.video;
     },
-    selectVideoToDelete: (state, action: PayloadAction<string>) => {
-      state.videoToDelete = action.payload;
+    selectVideoToDelete: (state, action: PayloadAction<{ videoId: string }>) => {
+      state.videoToDelete = action.payload.videoId;
     },
     resetVideoToEdit: (state) => {
       state.videoToEdit = null;
     },
     resetVideoToDelete: (state) => {
       state.videoToDelete = null;
+    },
+    setLastFocusedManageVideoBtnId: (
+      state,
+      action: PayloadAction<{ lastFocusedElementId: string }>
+    ) => {
+      state.lastFocusedElement = action.payload.lastFocusedElementId;
     },
     editVideo: (
       state,
@@ -75,6 +83,7 @@ export const {
   setUserVideos,
   selectVideoToEdit,
   selectVideoToDelete,
+  setLastFocusedManageVideoBtnId,
   resetVideoToEdit,
   resetVideoToDelete,
   editVideo,

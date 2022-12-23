@@ -20,7 +20,6 @@ const Container = styled.div`
   position: relative;
   margin: calc(${NAV_BAR_HEIGHT}px + 20px) auto;
   max-width: 1200px;
-
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     margin: calc(${NAV_BAR_HEIGHT}px + 20px) 10px;
   }
@@ -46,15 +45,13 @@ const VideoCards = styled.div`
 
 const Manage = () => {
   const auth = useSelector((state: RootState) => state.auth);
-  const { videos, videoToEdit, videoToDelete } = useSelector(
+  const { videos, videoToEdit, videoToDelete, lastFocusedElement } = useSelector(
     (state: RootState) => state.manageVideos
   );
   const dispatch = useDispatch();
 
-  const deleteBtnRef = useRef<HTMLButtonElement>(null);
-
   const [getUserVideos, { isLoading }] = useAxiosWithRetry<{}, { videos: IVideo[] }>(
-    'api/videos/manage/recent',
+    'api/videos/manage/recent/0',
     'GET'
   );
 
@@ -90,7 +87,7 @@ const Manage = () => {
             toggle={() => dispatch(resetVideoToDelete())}
             func={handleDeleteVideo}
             btnName={'Delete'}
-            redirectToElementOnClose={deleteBtnRef}
+            redirectToElementIdOnClose={lastFocusedElement!}
             isLoading={isDeleteLoading}
           />
         )}
@@ -102,13 +99,7 @@ const Manage = () => {
         <Title>Manage your videos</Title>
         <VideoCards>
           {videos.map((video) => {
-            return (
-              <ManageVideoCard
-                key={video.video_id}
-                video={video}
-                deleteBtnRef={deleteBtnRef}
-              />
-            );
+            return <ManageVideoCard key={video.video_id} video={video} />;
           })}
         </VideoCards>
       </Container>

@@ -49,7 +49,7 @@ export const updateVideoSchema = object({
   body: object({
     videoId: string({ required_error: 'Video id required' }),
     title: string({}).min(1).max(100),
-    description: string({}).max(1000),
+    description: string({}).max(1500),
     thumbnailData: object({
       currentThumbnailUrl: string({
         required_error: 'Current thumbnail url is required',

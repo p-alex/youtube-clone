@@ -1,35 +1,37 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   IVideo,
   selectVideoToDelete,
   selectVideoToEdit,
-} from "../../../app/features/manageVideo";
-import { Button } from "../../../ui/Button";
-import { VideoFunctions } from "./style";
+  setLastFocusedManageVideoBtnId,
+} from '../../../app/features/manageVideo';
+import { Button } from '../../../ui/Button';
+import { VideoFunctions } from './style';
+import { v4 } from 'uuid';
 
-const ManageVideoCardFunctions = ({
-  video,
-  deleteBtnRef,
-}: {
-  video: IVideo;
-  deleteBtnRef: React.RefObject<HTMLButtonElement>;
-}) => {
+const ManageVideoCardFunctions = ({ video }: { video: IVideo }) => {
   const dispatch = useDispatch();
+
+  const EDIT_BTN_ID = useRef<string>(v4()).current;
+  const DELETE_BTN_ID = useRef<string>(v4()).current;
+
+  const handleSelectVideoToEdit = () => {
+    dispatch(setLastFocusedManageVideoBtnId({ lastFocusedElementId: EDIT_BTN_ID }));
+    dispatch(selectVideoToEdit({ video }));
+  };
+
+  const handleSelectVideoToDelete = () => {
+    dispatch(setLastFocusedManageVideoBtnId({ lastFocusedElementId: DELETE_BTN_ID }));
+    dispatch(selectVideoToDelete({ videoId: video.video_id }));
+  };
 
   return (
     <VideoFunctions>
-      <Button
-        variant="normal"
-        onClick={() => dispatch(selectVideoToEdit(video))}
-      >
+      <Button variant="normal" onClick={handleSelectVideoToEdit} id={EDIT_BTN_ID}>
         Edit
       </Button>
-      <Button
-        variant="danger"
-        onClick={() => dispatch(selectVideoToDelete(video.video_id))}
-        ref={deleteBtnRef}
-      >
+      <Button variant="danger" onClick={handleSelectVideoToDelete} id={DELETE_BTN_ID}>
         Delete
       </Button>
     </VideoFunctions>

@@ -4,6 +4,7 @@ import db from '../../db';
 import { getImagePublicId, getVideoPublicId } from '../../utils/getPublicId';
 import { GetUserVideosInput, UploadVideoInput } from './video.schema';
 import uglifyJS from 'uglify-js';
+import log from '../../utils/logger';
 
 export interface IVideo {
   video_id: string;
@@ -234,14 +235,11 @@ export const likeOrDislikeVideo = async (
 
 export const getVideoTags = async (video_id: string) => {
   const response = await db.query(
-    'SELECT t.name FROM videos_tags AS vt JOIN tags AS t ON vt.tag_id = t.tag_id WHERE vt.video_id = $1',
+    'SELECT ARRAY(SELECT t.name FROM videos_tags AS vt JOIN tags AS t ON vt.tag_id = t.tag_id WHERE vt.video_id = $1) as tags',
     [video_id]
   );
-  const data: { name: string }[] = response.rows;
-  const tags: string[] = [];
-  data.forEach((tag) => {
-    tags.push(tag.name);
-  });
+  log.info(response.rows[0]);
+  const tags = response.rows[0].tags as string[];
   return tags;
 };
 
