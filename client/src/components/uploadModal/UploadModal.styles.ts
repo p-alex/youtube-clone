@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
-export const Container = styled.div`
+export const UploadModal__Container = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@ export const Container = styled.div`
   z-index: 200;
 `;
 
-export const Backdrop = styled.div`
+export const UploadModal__Backdrop = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -23,7 +23,7 @@ export const Backdrop = styled.div`
   z-index: 201;
 `;
 
-export const Modal = styled.div`
+export const UploadModal__Modal = styled.div`
   position: relative;
   width: 800px;
   height: 95vh;
@@ -41,7 +41,7 @@ export const Modal = styled.div`
   }
 `;
 
-export const Header = styled.div`
+export const UploadModal__Header = styled.div`
   position: relative;
   width: 100%;
   height: 60px;
@@ -52,11 +52,11 @@ export const Header = styled.div`
   padding: 20px;
 `;
 
-export const Title = styled.h2`
+export const UploadModal__Title = styled.h2`
   color: ${(props) => props.theme.textColor};
 `;
 
-export const CloseBtn = styled.button`
+export const UploadModal__CloseBtn = styled.button`
   color: ${(props) => props.theme.textColor};
   display: flex;
   align-items: center;

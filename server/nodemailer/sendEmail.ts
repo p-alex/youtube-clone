@@ -26,5 +26,7 @@ export const sendEmail = async (template: Template) => {
           : testAccount.pass,
     },
   });
-  await transporter.sendMail(template);
+  let info = await transporter.sendMail(template);
+  process.env.NODE_ENV === 'development' &&
+    console.log(nodemailer.getTestMessageUrl(info));
 };

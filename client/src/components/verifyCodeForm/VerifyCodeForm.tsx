@@ -6,8 +6,6 @@ import { Button } from '../../ui/Button';
 import {
   Form,
   FormErrorMessage,
-  FormInput,
-  FormLabel,
   FormLogoAndTitle,
   FormMessage,
   FormTitle,
@@ -16,6 +14,7 @@ import {
 import { VerifyCodeSchemaType } from '../../schemas/verifyCode.schema';
 import Logo from '../logo/Logo';
 import Link from 'next/link';
+import InputGroup from '../../ui/InputGroup';
 
 const VerifyCodeForm = ({
   title,
@@ -52,6 +51,7 @@ const VerifyCodeForm = ({
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    setInputErrors({});
     const { isValid, errors } = verifyForm();
     if (!isValid) return setInputErrors(errors);
     handleVerifyEmail();
@@ -71,28 +71,23 @@ const VerifyCodeForm = ({
         )}
         {isSuccess && <FormMessage>{successMessage}</FormMessage>}
 
+        {errors &&
+          errors.map((error) => {
+            return (
+              <FormErrorMessage key={error.message}>{error.message}</FormErrorMessage>
+            );
+          })}
+
         {!isSuccess && (
           <>
-            <FormLabel htmlFor="code">
-              Code
-              <FormInput
-                type="text"
-                id="code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder={'Paste the code here'}
-                disabled={isLoading}
-              />
-              <FormErrorMessage>{inputErrors.code && inputErrors.code}</FormErrorMessage>
-              {errors &&
-                errors.map((error) => {
-                  return (
-                    <FormErrorMessage key={error.message}>
-                      {error.message}
-                    </FormErrorMessage>
-                  );
-                })}
-            </FormLabel>
+            <InputGroup
+              type="text"
+              label="code"
+              value={code}
+              setValue={(e) => setCode(e.target.value)}
+              disabled={isLoading}
+              error={inputErrors.code && inputErrors.code}
+            />
 
             <Button variant="primary" type="submit" disabled={isLoading}>
               Verify

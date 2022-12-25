@@ -261,7 +261,7 @@ export const verifyEmailController = async (
   if (!response.rows[0])
     return res
       .status(400)
-      .json({ success: false, errors: [{ message: 'Invalid code' }], result: null });
+      .json({ success: false, errors: [{ message: 'Incorrect code' }], result: null });
 
   const code = response.rows[0].verification_code;
 

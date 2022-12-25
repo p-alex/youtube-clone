@@ -16,6 +16,7 @@ const lightTheme = {
   inputBg: '#fefeff',
   hrColor: 'silver',
   accentColor: '#3ea6ff',
+  errorColor: '#ff3434',
   primaryBtn: {
     bg: '#3ea6ff',
     bgHover: '#5db4ff',
@@ -54,6 +55,7 @@ const darkTheme = {
   inputBg: '#121213',
   hrColor: '#333',
   accentColor: '#3ea6ff',
+  errorColor: '#ff3434',
   primaryBtn: {
     bg: '#3ea6ff',
     bgHover: '#5db4ff',

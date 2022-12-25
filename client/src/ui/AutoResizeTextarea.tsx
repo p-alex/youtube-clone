@@ -1,28 +1,52 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { v4 } from 'uuid';
 import { BORDER_RADIUS_ROUND } from '../layout/style';
 
-const TextareaContainer = styled.div`
-  position: relative;
-  width: 100%;
+interface IAutoResizeTextarea {
+  label: string;
+  error: string | undefined;
+  value: string;
+  setValue: React.ChangeEventHandler<HTMLTextAreaElement> | undefined;
+  placeholder?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  autoFocus?: boolean;
+  maxLength?: number;
+  hideLabel?: boolean;
+}
+
+const AutoResizeTextarea__Container = styled.div`
+  color: ${(props) => props.theme.textColor};
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 20px;
 `;
 
-const Textarea = styled.textarea`
+const AutoResizeTextArea__Label = styled.label`
+  font-weight: 700;
+  text-transform: capitalize;
+`;
+
+const AutoResizeTextarea__Error = styled.p`
+  font-weight: 700;
+  color: ${(props) => props.theme.errorColor};
+  font-size: 0.85rem;
+`;
+
+const AutoResizeTextarea__Textarea = styled.textarea<{ isError: boolean }>`
   position: relative;
   width: 100%;
   background-color: transparent;
-  outline: none;
   resize: none;
   font-size: 1rem;
   padding: 3px;
-  outline: none;
-  border: none;
+  border: ${(props) =>
+    props.isError ? `solid ${props.theme.errorColor} 1px` : `solid transparent 1px`};
   color: ${(props) => props.theme.textColor};
   white-space: pre-line;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -31,41 +55,20 @@ const Textarea = styled.textarea`
   border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
 
-const TextareaLine = styled.div<{ active: boolean }>`
-  position: relative;
-  width: 100%;
-  height: 2px;
-  background-color: ${(props) => (props.active ? 'white' : props.theme.borderColor)};
-  opacity: 0;
-`;
-
 const AutoResizingTextarea = ({
+  label,
+  error,
   value,
-  onChange,
+  setValue,
   placeholder,
   onFocus,
   onBlur,
   autoFocus,
   maxLength,
-  id,
-}: {
-  value: string;
-  onChange: React.ChangeEventHandler<HTMLTextAreaElement> | undefined;
-  placeholder?: string;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  autoFocus?: boolean;
-  maxLength?: number;
-  id?: string;
-}) => {
-  const [active, setActive] = useState(false);
-
-  const uniqueTextareaId = useRef(v4());
-
+  hideLabel,
+}: IAutoResizeTextarea) => {
   const handleResize = () => {
-    const textarea = document.getElementById(
-      !id ? uniqueTextareaId.current : id
-    ) as HTMLTextAreaElement;
+    const textarea = document.getElementById(formatedId) as HTMLTextAreaElement;
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
@@ -76,29 +79,36 @@ const AutoResizingTextarea = ({
 
   const handleOnFocus = () => {
     if (onFocus) onFocus();
-    setActive(true);
   };
 
   const handleOnBlur = () => {
     if (onBlur) onBlur();
-    setActive(false);
   };
+
+  const formatedId = label.replaceAll(' ', '-').toLowerCase();
   return (
-    <TextareaContainer>
-      <Textarea
-        id={!id ? uniqueTextareaId.current : id}
+    <AutoResizeTextarea__Container>
+      {!hideLabel && (
+        <AutoResizeTextArea__Label htmlFor={formatedId}>
+          {label}
+        </AutoResizeTextArea__Label>
+      )}
+      <AutoResizeTextarea__Textarea
+        id={formatedId}
+        name={formatedId}
         rows={1}
         placeholder={placeholder}
         value={value}
-        onChange={onChange}
+        onChange={setValue}
         onInput={handleResize}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         autoFocus={autoFocus}
         maxLength={maxLength}
+        isError={error !== undefined}
       />
-      <TextareaLine active={active} />
-    </TextareaContainer>
+      {error && <AutoResizeTextarea__Error>{error}</AutoResizeTextarea__Error>}
+    </AutoResizeTextarea__Container>
   );
 };
 

@@ -11,6 +11,7 @@ declare module 'styled-components' {
     inputBg: string;
     hrColor: string;
     accentColor: string;
+    errorColor: string;
     primaryBtn: {
       bg: string;
       bgHover: string;

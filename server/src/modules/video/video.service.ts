@@ -238,7 +238,6 @@ export const getVideoTags = async (video_id: string) => {
     'SELECT ARRAY(SELECT t.name FROM videos_tags AS vt JOIN tags AS t ON vt.tag_id = t.tag_id WHERE vt.video_id = $1) as tags',
     [video_id]
   );
-  log.info(response.rows[0]);
   const tags = response.rows[0].tags as string[];
   return tags;
 };

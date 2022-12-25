@@ -5,7 +5,7 @@ import { editVideo, IVideo, resetVideoToEdit } from '../../app/features/manageVi
 import { RootState } from '../../app/store';
 import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
 import useDisableScroll from '../../hooks/useDisableScroll';
-import { Input } from '../../ui/Input';
+import InputGroup from '../../ui/InputGroup';
 import { Button } from '../../ui/Button';
 import { imageOptimizer } from '../../utils/imageOptimizer';
 import { convertToTagList } from '../uploadModal/UploadModal';
@@ -48,12 +48,12 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     currentThumbnailUrl: video.thumbnail_url,
     newThumbnailBase64: null,
   });
+
   const [currentTagList, setCurrentTagList] = useState<string[]>([]);
   const [newTagList, setNewTagList] = useState<string[]>([]);
+  const [tagsText, setTagsText] = useState('');
 
   const hiddenInput = useRef<any>();
-
-  const tagsInputRef = useRef<HTMLInputElement>(null);
 
   const [getTags, { isLoading: isGetTagsLoading }] = useAxiosWithRetry<
     {},
@@ -80,8 +80,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
       if (response.result) {
         setCurrentTagList(response.result.tags);
         setNewTagList(response.result.tags);
-        console.log(response.result.tags);
-        tagsInputRef.current!.value = response.result.tags.join(', ');
+        setTagsText(response.result.tags.join(', '));
       }
     } catch (error) {
       console.log(error);
@@ -132,6 +131,22 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
       }));
     };
   };
+
+  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const handleChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
+  };
+
+  const handleChangeTagList = (event: ChangeEvent<HTMLInputElement>) => {
+    setTagsText(event.target.value);
+  };
+
+  useEffect(() => {
+    setNewTagList(convertToTagList(tagsText));
+  }, [tagsText]);
 
   const handleCloseModal = () => {
     dispatch(resetVideoToEdit());
@@ -210,31 +225,29 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             {result.success ? 'Video edited successfully!' : result.error}
           </ResultMessage>
         ) : null}
-        <InputLabel htmlFor="title">Title</InputLabel>
-        <Input
-          id="title"
+        <InputGroup
+          type={'text'}
+          label="title"
           placeholder="Write a title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          maxLength={100}
+          setValue={handleChangeTitle}
+          error={''}
         />
-        <InputLabel htmlFor="description">Description</InputLabel>
         <AutoResizingTextarea
+          label={'description'}
           placeholder="Write a description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          setValue={handleChangeDescription}
           maxLength={1500}
-          id="description"
+          error={''}
         />
-        <InputLabel htmlFor="tags">Tags</InputLabel>
-        <Input
-          id="tags"
-          ref={tagsInputRef}
+        <InputGroup
+          type={'text'}
+          label={'tags'}
           placeholder="E.g. tag1, tag2, tag3 (minimum 4 tags)"
-          onChange={(e) => setNewTagList(convertToTagList(e.target.value))}
-          required
-          maxLength={60}
+          value={tagsText}
+          setValue={handleChangeTagList}
+          error={''}
         />
         <TagContainer>
           {newTagList.length > 0 &&

@@ -13,14 +13,13 @@ import {
   Form,
   FormAlternativeParagraph,
   FormErrorMessage,
-  FormInput,
-  FormLabel,
   FormLogoAndTitle,
   FormMessage,
   FormTitle,
   FormWrapper,
 } from '../ui/Form';
 import VerifyCodeForm from '../components/verifyCodeForm/VerifyCodeForm';
+import InputGroup from '../ui/InputGroup';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -102,62 +101,47 @@ const SignUp = () => {
                   <FormErrorMessage key={error.message}>{error.message}</FormErrorMessage>
                 );
               })}
-            <FormLabel htmlFor="email">
-              Email
-              <FormInput
-                type="email"
-                id="email"
-                name="username"
-                value={email}
-                autoComplete="off"
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isRegisterUserLoading}
-              />
-              <FormErrorMessage>{errors.email && errors.email}</FormErrorMessage>
-            </FormLabel>
-            <FormLabel htmlFor="username">
-              Username
-              <FormInput
-                type="text"
-                id="username"
-                autoComplete="off"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                disabled={isRegisterUserLoading}
-              />
-              <FormErrorMessage>{errors.username && errors.username}</FormErrorMessage>
-            </FormLabel>
-            <FormLabel htmlFor="password">
-              Password
-              <FormInput
-                type={'password'}
-                id="password"
-                name="new-password"
-                autoComplete="off"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={isRegisterUserLoading}
-              />
-              <FormErrorMessage>{errors.password && errors.password}</FormErrorMessage>
-            </FormLabel>
-            <FormLabel htmlFor="confirmPassword">
-              Confirm Password
-              <FormInput
-                type={'password'}
-                id="confirmPassword"
-                name="confirm-new-password"
-                autoComplete="off"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={isRegisterUserLoading}
-              />
-              <FormErrorMessage>
-                {errors.confirmPassword && errors.confirmPassword}
-              </FormErrorMessage>
-            </FormLabel>
+
+            <InputGroup
+              type="text"
+              label="email"
+              value={email}
+              setValue={(e) => setEmail(e.target.value)}
+              disabled={isRegisterUserLoading}
+              error={errors.email && errors.email}
+            />
+
+            <InputGroup
+              type="text"
+              label="username"
+              value={username}
+              setValue={(e) => setUsername(e.target.value)}
+              disabled={isRegisterUserLoading}
+              error={errors.username && errors.username}
+            />
+
+            <InputGroup
+              type="password"
+              label="password"
+              value={password}
+              setValue={(e) => setPassword(e.target.value)}
+              disabled={isRegisterUserLoading}
+              error={errors.password && errors.password}
+            />
+
+            <InputGroup
+              type="password"
+              label="Confirm Password"
+              value={confirmPassword}
+              setValue={(e) => setConfirmPassword(e.target.value)}
+              disabled={isRegisterUserLoading}
+              error={errors.confirmPassword && errors.confirmPassword}
+            />
+
             <Button variant="primary" type="submit" disabled={isRegisterUserLoading}>
               Create account
             </Button>
+
             <FormAlternativeParagraph>
               Already have an account?{' '}
               <Link href={'/signin'}>

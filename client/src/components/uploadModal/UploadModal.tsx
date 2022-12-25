@@ -1,19 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Backdrop, CloseBtn, Container, Header, Title, Modal } from "./style";
-import { MdClose } from "react-icons/md";
-import ChooseVideoStage from "./stages/chooseVideoStage/ChooseVideoStage";
-import VideoDetailsStage from "./stages/videoDetailsStage/VideoDetailsStage";
-import UploadVideoStage from "./stages/uploadVideoStage/UploadVideoStage";
-import useDisableScroll from "../../hooks/useDisableScroll";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import UploadResultStage from "./stages/uploadResultStage/UploadResultStage";
-import FocusTrapRedirectFocus from "../focusTrap";
-import { motion } from "framer-motion";
-import useRefreshToken from "../../hooks/useRefreshToken";
-import { resetUser } from "../../app/features/authSlice";
-import router from "next/router";
-import { videoUploader } from "../../utils/videoUploader";
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  UploadModal__Container,
+  UploadModal__Backdrop,
+  UploadModal__Modal,
+  UploadModal__Header,
+  UploadModal__Title,
+  UploadModal__CloseBtn,
+} from './UploadModal.styles';
+import { MdClose } from 'react-icons/md';
+import ChooseVideoStage from './stages/chooseVideoStage/ChooseVideoStage';
+import VideoDetailsStage from './stages/videoDetailsStage/VideoDetailsStage';
+import UploadVideoStage from './stages/uploadVideoStage/UploadVideoStage';
+import useDisableScroll from '../../hooks/useDisableScroll';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import UploadResultStage from './stages/uploadResultStage/UploadResultStage';
+import FocusTrapRedirectFocus from '../focusTrap';
+import { motion } from 'framer-motion';
+import useRefreshToken from '../../hooks/useRefreshToken';
+import { resetUser } from '../../app/features/authSlice';
+import router from 'next/router';
+import { videoUploader } from '../../utils/videoUploader';
 
 export interface UploadVideoData {
   userId: string;
@@ -42,18 +49,18 @@ const UploadModal = ({
   useDisableScroll();
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const [stage, setStage] = useState<
-    "choose" | "details" | "uploading" | "result"
-  >("choose");
+  const [stage, setStage] = useState<'choose' | 'details' | 'uploading' | 'result'>(
+    'choose'
+  );
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [uploadData, setUploadData] = useState<UploadVideoData>({
     userId: user!.user_id,
     thumbnailUrl: null,
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     tagList: [],
     duration: 0,
-    mimetype: "",
+    mimetype: '',
   });
   const refreshToken = useRefreshToken();
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -75,12 +82,12 @@ const UploadModal = ({
     const { result } = await refreshToken();
     if (!result) {
       dispatch(resetUser());
-      router.push("/signin");
+      router.push('/signin');
       return;
     }
     const accessToken = result.accessToken;
     setIsLoading(true);
-    handleChangeStage("uploading");
+    handleChangeStage('uploading');
     try {
       const uploadResponse = await videoUploader(
         videoFile,
@@ -89,25 +96,24 @@ const UploadModal = ({
         setUploadProgress
       );
       if (!uploadResponse.success)
-        throw new Error("Something went wrong... Please try again later");
-      setResult({ success: true, message: "Video uploaded successfully!" });
-      handleChangeStage("result");
+        throw new Error('Something went wrong... Please try again later');
+      setResult({ success: true, message: 'Video uploaded successfully!' });
+      handleChangeStage('result');
     } catch (error: any) {
       setIsLoading(false);
       setResult({ success: false, message: error.message });
-      handleChangeStage("result");
+      handleChangeStage('result');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleChangeStage = (
-    stage: "choose" | "details" | "uploading" | "result"
-  ) => setStage(stage);
+  const handleChangeStage = (stage: 'choose' | 'details' | 'uploading' | 'result') =>
+    setStage(stage);
 
   const handleSetDuration = () => {
-    const video = document.createElement("video");
-    video.addEventListener("loadedmetadata", (event) => {
+    const video = document.createElement('video');
+    video.addEventListener('loadedmetadata', (event) => {
       setUploadData((prevState) => ({
         ...prevState,
         duration: video.duration,
@@ -127,34 +133,34 @@ const UploadModal = ({
   }, [videoFile]);
 
   return (
-    <Container>
-      <Backdrop
+    <UploadModal__Container>
+      <UploadModal__Backdrop
         onClick={!isLoading ? handleToggleUploadModal : () => {}}
         as={motion.div}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ type: "just" }}
+        transition={{ type: 'just' }}
         exit={{ opacity: 0 }}
       />
-      <Modal
+      <UploadModal__Modal
         as={motion.div}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "just" }}
+        transition={{ type: 'just' }}
         exit={{ y: -50, opacity: 0 }}
       >
         <FocusTrapRedirectFocus element={lastFocusableElement} />
-        <Header>
-          <Title>Upload video</Title>
-          <CloseBtn
+        <UploadModal__Header>
+          <UploadModal__Title>Upload video</UploadModal__Title>
+          <UploadModal__CloseBtn
             onClick={!isLoading ? handleToggleUploadModal : () => {}}
             ref={firstFocusableElement}
             aria-label="Close upload model"
           >
             <MdClose />
-          </CloseBtn>
-        </Header>
-        {stage === "choose" && (
+          </UploadModal__CloseBtn>
+        </UploadModal__Header>
+        {stage === 'choose' && (
           <ChooseVideoStage
             setUploadData={setUploadData}
             handleChangeStage={handleChangeStage}
@@ -162,31 +168,29 @@ const UploadModal = ({
             lastFocusableElement={lastFocusableElement}
           />
         )}
-        {stage === "details" && (
+        {stage === 'details' && (
           <VideoDetailsStage
             uploadData={uploadData}
             setUploadData={setUploadData}
-            handleUploadVideo={(event: React.FormEvent) =>
-              handleUploadVideo(event)
-            }
+            handleUploadVideo={(event: React.FormEvent) => handleUploadVideo(event)}
             lastFocusableElement={lastFocusableElement}
           />
         )}
-        {stage === "uploading" && (
+        {stage === 'uploading' && (
           <UploadVideoStage
             uploadProgress={uploadProgress}
             lastFocusableElement={lastFocusableElement}
           />
         )}
-        {stage === "result" && (
+        {stage === 'result' && (
           <UploadResultStage
             result={result!}
             lastFocusableElement={lastFocusableElement}
           />
         )}
         <FocusTrapRedirectFocus element={firstFocusableElement} />
-      </Modal>
-    </Container>
+      </UploadModal__Modal>
+    </UploadModal__Container>
   );
 };
 export default UploadModal;

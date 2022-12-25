@@ -1,24 +1,20 @@
-import Image from "next/image";
-import React, { ChangeEvent, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import {
-  disableKeyBinds,
-  enableKeyBinds,
-} from "../../../../app/features/videoSlice";
-import { Input } from "../../../../ui/Input";
-import { Button } from "../../../../ui/Button";
-import { Textarea } from "../../../../ui/Textarea";
-import { imageOptimizer } from "../../../../utils/imageOptimizer";
-import { convertToTagList, UploadVideoData } from "../../UploadModal";
+import Image from 'next/image';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { disableKeyBinds, enableKeyBinds } from '../../../../app/features/videoSlice';
+import AutoResizingTextarea from '../../../../ui/AutoResizeTextarea';
+import { Button } from '../../../../ui/Button';
+import InputGroup from '../../../../ui/InputGroup';
+import { imageOptimizer } from '../../../../utils/imageOptimizer';
+import { convertToTagList, UploadVideoData } from '../../UploadModal';
 import {
   Container,
   FormContainer,
   HiddenInput,
-  InputLabel,
   Tag,
   TagContainer,
   ThumbnailContainer,
-} from "./style";
+} from './style';
 
 const VideoDetailsStage = ({
   uploadData,
@@ -34,6 +30,8 @@ const VideoDetailsStage = ({
   const dispatch = useDispatch();
   const hiddenInput = useRef<any>();
 
+  const [tagsText, setTagsText] = useState('');
+
   const handleChooseThumbnail = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     const image = event.target.files[0];
@@ -47,6 +45,18 @@ const VideoDetailsStage = ({
       }));
     };
   };
+
+  const handleConvertIntoTagsList = () => {
+    setUploadData((prevState) => ({
+      ...prevState,
+      tagList: convertToTagList(tagsText),
+    }));
+  };
+
+  useEffect(() => {
+    if (!tagsText) return;
+    handleConvertIntoTagsList();
+  }, [tagsText]);
 
   useEffect(() => {
     dispatch(disableKeyBinds());
@@ -91,7 +101,7 @@ const VideoDetailsStage = ({
                 onClick={() =>
                   setUploadData((prevState) => ({
                     ...prevState,
-                    thumbnailUrl: "",
+                    thumbnailUrl: '',
                   }))
                 }
                 type="button"
@@ -101,47 +111,44 @@ const VideoDetailsStage = ({
             </>
           )}
         </ThumbnailContainer>
-        <InputLabel htmlFor="title">Title</InputLabel>
-        <Input
-          id="title"
-          placeholder="Write a title"
+
+        <InputGroup
+          type="text"
+          label="title"
+          placeholder="Write a title..."
           value={uploadData.title}
-          onChange={(e) =>
+          setValue={(e) =>
             setUploadData((prevState) => ({
               ...prevState,
               title: e.target.value,
             }))
           }
-          required
-          maxLength={100}
+          error={undefined}
+          // maxLength={100}
         />
 
-        <InputLabel htmlFor="description">Description</InputLabel>
-        <Textarea
-          id="description"
-          placeholder="Write a description"
+        <AutoResizingTextarea
+          label="description"
+          placeholder="Write a description..."
           value={uploadData.description}
-          onChange={(e) =>
+          setValue={(e) =>
             setUploadData((prevState) => ({
               ...prevState,
               description: e.target.value,
             }))
           }
-          maxLength={1000}
-        ></Textarea>
+          error={undefined}
+          maxLength={1500}
+        />
 
-        <InputLabel htmlFor="tags">Tags</InputLabel>
-        <Input
-          id="tags"
-          placeholder="E.g. tag1, tag2, tag3 (minimum 4 tags)"
-          onChange={(e) =>
-            setUploadData((prevState) => ({
-              ...prevState,
-              tagList: convertToTagList(e.target.value),
-            }))
-          }
-          required
-          maxLength={60}
+        <InputGroup
+          type="text"
+          label="tags"
+          placeholder="E.g. tag1, tag2, tag3"
+          value={tagsText}
+          setValue={(event) => setTagsText(event.target.value)}
+          // maxLength={60}
+          error={undefined}
         />
 
         <TagContainer>

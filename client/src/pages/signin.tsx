@@ -13,15 +13,15 @@ import {
   Form,
   FormAlternativeParagraph,
   FormErrorMessage,
-  FormInput,
-  FormLabel,
   FormLogoAndTitle,
   FormTitle,
   FormWrapper,
 } from '../ui/Form';
+import InputGroup from '../ui/InputGroup';
 
 const SignIn = () => {
   const dispatch = useDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errors, setErrors] = useState<ZodVerifyFormErrors<LoginSchemaType>>({});
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -44,6 +44,7 @@ const SignIn = () => {
     if (!isValid) return setErrors(errors);
     const { success, result } = await loginUser({ email, password });
     if (success && result) {
+      setIsLoggedIn(true);
       dispatch(setUser({ user: result.user, accessToken: result.accessToken }));
       router.push('/');
     }
@@ -65,31 +66,29 @@ const SignIn = () => {
               );
             })}
 
-          <FormLabel htmlFor="email">
-            Email
-            <FormInput
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoginUserLoading}
-            />
-            <FormErrorMessage>{errors.email && errors.email}</FormErrorMessage>
-          </FormLabel>
+          <InputGroup
+            type="text"
+            label="email"
+            value={email}
+            setValue={(e) => setEmail(e.target.value)}
+            disabled={isLoginUserLoading || isLoggedIn}
+            error={errors.email && errors.email}
+          />
 
-          <FormLabel htmlFor="password">
-            Password
-            <FormInput
-              type={'password'}
-              id="password"
-              value={password}
-              disabled={isLoginUserLoading}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormErrorMessage>{errors.password && errors.password}</FormErrorMessage>
-          </FormLabel>
+          <InputGroup
+            type="password"
+            label="password"
+            value={password}
+            setValue={(e) => setPassword(e.target.value)}
+            disabled={isLoginUserLoading || isLoggedIn}
+            error={errors.password && errors.password}
+          />
 
-          <Button variant="primary" type="submit" disabled={isLoginUserLoading}>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={isLoginUserLoading || isLoggedIn}
+          >
             Login
           </Button>
 

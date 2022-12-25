@@ -23,6 +23,7 @@ const useAxios = <Body, Data>(
   const [errors, setErrors] = useState<{ message: string }[]>([]);
   const request = async (body: Body) => {
     setIsLoading(true);
+    setErrors([]);
     try {
       const response = await axios(`${BASE_URL}/${url}`, {
         method: !method ? 'GET' : method,

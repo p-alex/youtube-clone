@@ -67,12 +67,15 @@ const CommentForm = ({
       </CommentFormProfilePicture>
       <CommentFormBody>
         <AutoResizingTextarea
+          label={'Write a comment'}
+          error={''}
           value={value}
-          onChange={setValue}
+          setValue={setValue}
           placeholder={placeholder}
           onFocus={() => dispatch(disableKeyBinds())}
           onBlur={() => dispatch(enableKeyBinds())}
           autoFocus={autoFocus}
+          hideLabel
         />
         <CommentFormButtons>
           {toggle && (

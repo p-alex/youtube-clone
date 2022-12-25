@@ -5,6 +5,7 @@ import { getProfileInfo, registerUser } from './user.service';
 import argon2 from 'argon2';
 import { sendEmail } from '../../../nodemailer/sendEmail';
 import { verifyEmailTemplate } from '../../../nodemailer/templates';
+import { createRandomCode } from '../../utils/createRandomCode';
 
 export const registerUserController = async (
   req: Request<{}, {}, RegisterUserInput>,
@@ -46,9 +47,7 @@ export const registerUserController = async (
 
     if (!response.verification_code) throw new Error();
 
-    const sendEmailResponse = await sendEmail(
-      verifyEmailTemplate(response.verification_code)
-    );
+    await sendEmail(verifyEmailTemplate(response.verification_code));
 
     return res.status(201).json({
       success: true,
