@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
-import { BASE_URL } from '../utils/baseURL';
-import useRefreshToken from './useRefreshToken';
+import { RootState } from '../../app/store';
+import { BASE_URL } from '../../utils/baseURL';
+import useRefreshToken from '../authHooks/useRefreshToken';
 
 export type Errors = {
   message: string;

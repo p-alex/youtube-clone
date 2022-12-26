@@ -6,9 +6,9 @@ import { useRouter } from 'next/router';
 import { resetVideo, setVideo, VideoInfo } from '../../app/features/videoSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import useMobileSize from '../../hooks/useMobileSize';
+import useMobileSize from '../../hooks/screenSizeHooks/useMobileSize';
 import VideoPlayer from '../../components/videoPlayer/VideoPlayer';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import CommentSection from '../../containers/CommentSection/CommentSection';
 import { CommentSectionProvider } from '../../context/CommentSectionContext/CommentSectionProvider';
 import {

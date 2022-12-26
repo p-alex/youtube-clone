@@ -16,7 +16,7 @@ import {
   NavSideBar_Wrapper,
 } from './style';
 import SignInButton from '../../ui/SignInButton';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/authHooks/useAuth';
 import useDisableScroll from '../../hooks/useDisableScroll';
 import FocusTrapRedirectFocus from '../focusTrap';
 import { ListButton } from '../../ui/ListButton';

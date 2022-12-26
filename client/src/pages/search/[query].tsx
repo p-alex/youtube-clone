@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../../layout/Layout';
 import { useRouter } from 'next/router';
 import { IVideoSmallWithInfo } from '../../app/features/videoSlice';

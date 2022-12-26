@@ -4,15 +4,15 @@ import {
   addToTotalComments,
   LikeStatusType,
   subtractFromTotalComments,
-} from '../app/features/videoSlice';
-import { RootState } from '../app/store';
-import { CommentSectionContext } from '../context/CommentSectionContext/CommentSectionProvider';
+} from '../../app/features/videoSlice';
+import { RootState } from '../../app/store';
+import { CommentSectionContext } from '../../context/CommentSectionContext/CommentSectionProvider';
 import {
   IReply,
   ReplySectionContext,
-} from '../context/ReplySectionContext/ReplySectionProvider';
-import { removeEmptyLinesFromString } from '../utils/removeEmptyLinesFromString';
-import useAxiosWithRetry from './useAxiosWithRetry';
+} from '../../context/ReplySectionContext/ReplySectionProvider';
+import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
+import useAxiosWithRetry from '../requestHooks/useAxiosWithRetry';
 import router from 'next/router';
 
 const useReply = (reply: IReply) => {

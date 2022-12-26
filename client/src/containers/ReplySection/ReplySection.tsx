@@ -12,7 +12,7 @@ import {
   ReplySectionContext,
 } from '../../context/ReplySectionContext/ReplySectionProvider';
 import { IComment } from '../../context/CommentSectionContext/CommentSectionProvider';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import Spinner from '../../ui/Spinner';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';

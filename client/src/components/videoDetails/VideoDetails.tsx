@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { VideoInfo } from '../../app/features/videoSlice';
 import { RootState } from '../../app/store';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/authHooks/useAuth';
 import { SubscribeButton } from '../../ui/SubscribeButton';
 import {
   Description,

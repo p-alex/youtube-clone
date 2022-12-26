@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useAxios from '../../hooks/useAxios';
+import useAxios from '../../hooks/requestHooks/useAxios';
 import Layout from '../../layout/Layout';
 import {
   ProfilePage__Banner,

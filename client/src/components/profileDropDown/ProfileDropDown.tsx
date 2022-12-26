@@ -16,7 +16,7 @@ import {
 import { toggleTheme } from '../../app/features/themeSlice';
 import { resetUser } from '../../app/features/authSlice';
 import router from 'next/router';
-import useAxios from '../../hooks/useAxios';
+import useAxios from '../../hooks/requestHooks/useAxios';
 import { motion } from 'framer-motion';
 import { ListButton } from '../../ui/ListButton';
 

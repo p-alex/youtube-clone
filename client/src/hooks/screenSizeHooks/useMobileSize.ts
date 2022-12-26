@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MOBILE_BREAK_POINT } from '../layout/style';
+import { MOBILE_BREAK_POINT } from '../../layout/style';
 
 const useMobileSize = () => {
   const [isMobileSize, setIsMobileSize] = useState(false);

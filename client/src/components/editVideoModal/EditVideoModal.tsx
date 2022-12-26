@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editVideo, IVideo, resetVideoToEdit } from '../../app/features/manageVideo';
 import { RootState } from '../../app/store';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import useDisableScroll from '../../hooks/useDisableScroll';
 import InputGroup from '../../ui/InputGroup';
 import { Button } from '../../ui/Button';

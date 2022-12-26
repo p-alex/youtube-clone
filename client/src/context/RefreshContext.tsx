@@ -1,6 +1,6 @@
 import React, { useEffect, createContext, useRef } from 'react';
-import useAuth from '../hooks/useAuth';
-import useRefreshToken from '../hooks/useRefreshToken';
+import useAuth from '../hooks/authHooks/useAuth';
+import useRefreshToken from '../hooks/authHooks/useRefreshToken';
 import router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/store';

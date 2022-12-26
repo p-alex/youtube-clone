@@ -5,7 +5,7 @@ import {
   IReply,
   ReplySectionContext,
 } from '../../context/ReplySectionContext/ReplySectionProvider';
-import useReply from '../../hooks/useReply';
+import useReply from '../../hooks/commentSectionHooks/useReply';
 import { dateConverter } from '../../utils/dateConverter';
 import {
   ReplyBody,

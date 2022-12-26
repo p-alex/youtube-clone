@@ -22,7 +22,7 @@ import {
   likeVideo,
   VideoInfo,
 } from '../../app/features/videoSlice';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { SubscribeButton } from '../../ui/SubscribeButton';

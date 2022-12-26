@@ -6,7 +6,7 @@ import {
   CommentSectionContext,
   IComment,
 } from '../../context/CommentSectionContext/CommentSectionProvider';
-import useComment from '../../hooks/useComment';
+import useComment from '../../hooks/commentSectionHooks/useComment';
 import { dateConverter } from '../../utils/dateConverter';
 import {
   CommentBody,

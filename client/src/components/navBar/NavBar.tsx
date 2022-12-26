@@ -15,7 +15,7 @@ import Logo from '../logo/Logo';
 import NavSideBar from '../navSideBar/NavSideBar';
 import { AnimatePresence } from 'framer-motion';
 import MobileSearchBar from '../SearchBar/MobileSearchBar/MobileSearchBar';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/authHooks/useAuth';
 import UploadModal from '../uploadModal/UploadModal';
 import { ProfileDropDown } from '../profileDropDown/ProfileDropDown';
 import SearchBar from '../SearchBar/SearchBar';

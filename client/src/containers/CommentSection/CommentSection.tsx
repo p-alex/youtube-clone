@@ -13,7 +13,7 @@ import CommentForm from '../../components/Comment/CommentForm/CommentForm';
 import { ReplySectionProvider } from '../../context/ReplySectionContext/ReplySectionProvider';
 import { RootState } from '../../app/store';
 import { useDispatch, useSelector } from 'react-redux';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import { addToTotalComments, VideoInfo } from '../../app/features/videoSlice';
 import Spinner from '../../ui/Spinner';
 import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';

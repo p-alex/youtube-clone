@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { UploadVideoData } from '../components/uploadModal/UploadModal';
-import { DefaultResponse } from '../hooks/useAxiosWithRetry';
+import { DefaultResponse } from '../hooks/requestHooks/useAxiosWithRetry';
+import { UploadVideoData } from '../hooks/useUploadModal';
 import { BASE_URL } from './baseURL';
 import { removeEmptyLinesFromString } from './removeEmptyLinesFromString';
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSuggestions } from '../../app/features/suggestionsSlice';
 import { IVideoSmall, VideoInfo } from '../../app/features/videoSlice';
 import { RootState } from '../../app/store';
-import useAxios from '../../hooks/useAxios';
+import useAxios from '../../hooks/requestHooks/useAxios';
 import SuggestionCard from '../suggestionCard/SuggestionCard';
 import {
   SuggestionsContainer,

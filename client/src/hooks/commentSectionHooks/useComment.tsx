@@ -5,18 +5,18 @@ import {
   addToTotalComments,
   LikeStatusType,
   subtractFromTotalComments,
-} from '../app/features/videoSlice';
-import { RootState } from '../app/store';
+} from '../../app/features/videoSlice';
+import { RootState } from '../../app/store';
 import {
   CommentSectionContext,
   IComment,
-} from '../context/CommentSectionContext/CommentSectionProvider';
+} from '../../context/CommentSectionContext/CommentSectionProvider';
 import {
   IReply,
   ReplySectionContext,
-} from '../context/ReplySectionContext/ReplySectionProvider';
-import { removeEmptyLinesFromString } from '../utils/removeEmptyLinesFromString';
-import useAxiosWithRetry from './useAxiosWithRetry';
+} from '../../context/ReplySectionContext/ReplySectionProvider';
+import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
+import useAxiosWithRetry from '../requestHooks/useAxiosWithRetry';
 
 const useComment = (comment: IComment) => {
   const user = useSelector((state: RootState) => state.auth.user);

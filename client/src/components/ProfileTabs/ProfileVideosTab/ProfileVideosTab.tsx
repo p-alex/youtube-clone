@@ -8,7 +8,7 @@ import {
 } from '../../../app/features/profileSlice';
 import { IVideoSmall } from '../../../app/features/videoSlice';
 import { RootState } from '../../../app/store';
-import useAxios from '../../../hooks/useAxios';
+import useAxios from '../../../hooks/requestHooks/useAxios';
 import { Button } from '../../../ui/Button';
 import Spinner from '../../../ui/Spinner';
 import VideoCard from '../../videoCard/VideoCard';

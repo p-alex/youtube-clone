@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../app/features/authSlice';
 import Logo from '../components/logo/Logo';
-import useAxios from '../hooks/useAxios';
+import useAxios from '../hooks/requestHooks/useAxios';
 import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifySchema';
 import Layout from '../layout/Layout';
 import { loginSchema, LoginSchemaType } from '../schemas/login.schema';

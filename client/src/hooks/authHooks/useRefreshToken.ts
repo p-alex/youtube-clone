@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { IUser, setUser } from '../app/features/authSlice';
-import { BASE_URL } from '../utils/baseURL';
-import { DefaultResponse } from './useAxiosWithRetry';
+import { IUser, setUser } from '../../app/features/authSlice';
+import { BASE_URL } from '../../utils/baseURL';
+import { DefaultResponse } from '../requestHooks/useAxiosWithRetry';
 
 const useRefreshToken = () => {
   const dispatch = useDispatch();

@@ -12,7 +12,7 @@ import { RootState } from '../../app/store';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 import EditVideoModal from '../../components/editVideoModal/EditVideoModal';
 import ManageVideoCard from '../../components/manageVideoCard/ManageVideoCard';
-import useAxiosWithRetry from '../../hooks/useAxiosWithRetry';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../../layout/Layout';
 import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../../layout/style';
 

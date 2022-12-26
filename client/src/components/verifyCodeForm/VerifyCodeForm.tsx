@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useAxios from '../../hooks/useAxios';
+import useAxios from '../../hooks/requestHooks/useAxios';
 import useZodVerifyForm from '../../hooks/useZodVerifySchema';
 import { verifyCodeSchema } from '../../schemas/verifyCode.schema';
 import { Button } from '../../ui/Button';
