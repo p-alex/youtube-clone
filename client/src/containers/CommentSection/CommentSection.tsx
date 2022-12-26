@@ -49,7 +49,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
     handleGetComments();
   }, []);
 
-  const [addComment, { isLoading: isAddCommentLoading }] = useAxiosWithRetry<
+  const [addComment, { isLoading: isAddCommentLoading, errors }] = useAxiosWithRetry<
     { videoId: string; text: string },
     { comment: IComment }
   >('api/comments', 'POST');
@@ -105,6 +105,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
           isLoading={isAddCommentLoading}
           btnName="comment"
           placeholder="Write a comment..."
+          error={errors && errors[0].message}
         />
       )}
       <br />

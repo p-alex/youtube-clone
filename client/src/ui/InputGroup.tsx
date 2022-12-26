@@ -42,7 +42,7 @@ interface Props {
   placeholder?: string;
   value: string;
   setValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  error: string | undefined;
+  error?: string | undefined;
   onFocus?: () => void;
   onBlur?: () => void;
   disabled?: boolean;

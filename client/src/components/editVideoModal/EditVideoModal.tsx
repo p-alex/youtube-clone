@@ -16,7 +16,6 @@ import {
   Container,
   FormContainer,
   HiddenInput,
-  InputLabel,
   ResultMessage,
   Tag,
   TagContainer,
@@ -26,6 +25,9 @@ import { motion } from 'framer-motion';
 import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
 import AutoResizingTextarea from '../../ui/AutoResizeTextarea';
 import FocusTrapRedirectFocus from '../focusTrap';
+import useZodVerifySchema from '../../hooks/useZodVerifySchema';
+import { verifyCodeSchema } from '../../schemas/verifyCode.schema';
+import { editVideoSchema } from '../../schemas/editVideoModal.schema';
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -92,8 +94,12 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     handleGetTags();
   }, [auth]);
 
+  const { verify, fieldErrors } = useZodVerifySchema(editVideoSchema, { title });
+
   const handleUpdateVideo = async () => {
     try {
+      const isValid = verify();
+      if (!isValid) return;
       const response = await updateVideo({
         videoId: video.video_id,
         title,
@@ -231,7 +237,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           placeholder="Write a title"
           value={title}
           setValue={handleChangeTitle}
-          error={''}
+          error={fieldErrors.title && fieldErrors.title[0]}
         />
         <AutoResizingTextarea
           label={'description'}
@@ -239,7 +245,6 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           value={description}
           setValue={handleChangeDescription}
           maxLength={1500}
-          error={''}
         />
         <InputGroup
           type={'text'}
@@ -247,7 +252,6 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           placeholder="E.g. tag1, tag2, tag3 (minimum 4 tags)"
           value={tagsText}
           setValue={handleChangeTagList}
-          error={''}
         />
         <TagContainer>
           {newTagList.length > 0 &&

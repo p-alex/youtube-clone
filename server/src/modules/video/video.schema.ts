@@ -30,7 +30,7 @@ export const uploadVideoSchema = object({
     })
       .min(1)
       .max(100),
-    description: string({}).max(1000, 'Description must be max 1000 characters'),
+    description: string({}).max(1500, 'Description must be max 1500 characters'),
     duration: number({
       required_error: 'Duration is required',
     }),
@@ -41,7 +41,7 @@ export const uploadVideoSchema = object({
       required_error: 'Thumbnail is required',
     }),
     videoUrl: string({ required_error: 'Video_url is required' }).max(0),
-    tagList: array(string({})).min(4),
+    tagList: array(string({})),
   }),
 });
 

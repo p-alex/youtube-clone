@@ -14,7 +14,7 @@ const UploadVideoStage = ({
         <Status tabIndex={0} ref={lastFocusableElement}>
           {uploadProgress !== 100 ? 'Uploading...' : 'Processing...'}
         </Status>
-        <Progress>{uploadProgress}%</Progress>
+        <Progress>{uploadProgress.toFixed(2)}%</Progress>
       </UploadingContainer>
     </Container>
   );

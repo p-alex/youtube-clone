@@ -4,7 +4,7 @@ import Logo from '../components/logo/Logo';
 import Layout from '../layout/Layout';
 import useAxios from '../hooks/useAxios';
 import { Button } from '../ui/Button';
-import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifyForm';
+import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifySchema';
 import {
   CreateAccountSchemType,
   createAccountSchema,
@@ -27,8 +27,6 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [errors, setErrors] = useState<ZodVerifyFormErrors<CreateAccountSchemType>>({});
-
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [registerUser, { isLoading: isRegisterUserLoading, errors: registerUserErrors }] =
@@ -42,7 +40,7 @@ const SignUp = () => {
       null
     >('api/users', 'POST');
 
-  const verifyForm = useZodVerifyForm(createAccountSchema, {
+  const { verify, fieldErrors } = useZodVerifyForm(createAccountSchema, {
     email,
     username,
     password,
@@ -58,18 +56,12 @@ const SignUp = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({});
-    const { isValid, errors } = verifyForm();
-    if (!isValid) return setErrors(errors);
-    try {
-      const response = await registerUser({ email, username, password, confirmPassword });
-      if (!response.success) return;
-      handleResetForm();
-      setIsSuccess(true);
-    } catch (error) {
-    } finally {
-      setErrors({});
-    }
+    const isValid = verify();
+    if (!isValid) return;
+    const response = await registerUser({ email, username, password, confirmPassword });
+    if (!response.success) return;
+    handleResetForm();
+    setIsSuccess(true);
   };
 
   return (
@@ -108,7 +100,7 @@ const SignUp = () => {
               value={email}
               setValue={(e) => setEmail(e.target.value)}
               disabled={isRegisterUserLoading}
-              error={errors.email && errors.email}
+              error={fieldErrors?.email && fieldErrors.email[0]}
             />
 
             <InputGroup
@@ -117,7 +109,7 @@ const SignUp = () => {
               value={username}
               setValue={(e) => setUsername(e.target.value)}
               disabled={isRegisterUserLoading}
-              error={errors.username && errors.username}
+              error={fieldErrors?.username && fieldErrors.username[0]}
             />
 
             <InputGroup
@@ -126,7 +118,7 @@ const SignUp = () => {
               value={password}
               setValue={(e) => setPassword(e.target.value)}
               disabled={isRegisterUserLoading}
-              error={errors.password && errors.password}
+              error={fieldErrors?.password && fieldErrors.password[0]}
             />
 
             <InputGroup
@@ -135,7 +127,7 @@ const SignUp = () => {
               value={confirmPassword}
               setValue={(e) => setConfirmPassword(e.target.value)}
               disabled={isRegisterUserLoading}
-              error={errors.confirmPassword && errors.confirmPassword}
+              error={fieldErrors?.confirmPassword && fieldErrors.confirmPassword[0]}
             />
 
             <Button variant="primary" type="submit" disabled={isRegisterUserLoading}>

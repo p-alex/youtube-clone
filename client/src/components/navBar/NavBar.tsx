@@ -115,7 +115,7 @@ const NavBar = () => {
 
           {!isAuth && (
             <Link href="/signin">
-              <Button variant="primary">Sign In</Button>
+              <Button variant="primary">login</Button>
             </Link>
           )}
         </NavBtnContainer>

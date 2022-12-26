@@ -4,7 +4,7 @@ import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 interface IAutoResizeTextarea {
   label: string;
-  error: string | undefined;
+  error?: string | undefined;
   value: string;
   setValue: React.ChangeEventHandler<HTMLTextAreaElement> | undefined;
   placeholder?: string;

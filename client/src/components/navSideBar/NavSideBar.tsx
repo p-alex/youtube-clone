@@ -89,9 +89,9 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
             <>
               <NavSideBar_HorizontalLine />
               <LoginContainer>
-                <LoginTitle>Sign in to like videos, comment, and subscribe.</LoginTitle>
+                <LoginTitle>Login to like videos, comment, and subscribe.</LoginTitle>
                 <Link href="/signin">
-                  <Button variant="primary">Sign in</Button>
+                  <Button variant="primary">login</Button>
                 </Link>
               </LoginContainer>
               <NavSideBar_HorizontalLine />

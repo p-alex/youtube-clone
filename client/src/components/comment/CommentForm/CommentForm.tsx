@@ -26,6 +26,7 @@ const CommentForm = ({
   btnName,
   placeholder,
   withTrap,
+  error,
 }: {
   value: string;
   setValue: (event: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -37,6 +38,7 @@ const CommentForm = ({
   placeholder: string;
   autoFocus?: boolean;
   withTrap?: boolean;
+  error: string | null;
 }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
@@ -68,7 +70,7 @@ const CommentForm = ({
       <CommentFormBody>
         <AutoResizingTextarea
           label={'Write a comment'}
-          error={''}
+          error={error ? error : undefined}
           value={value}
           setValue={setValue}
           placeholder={placeholder}

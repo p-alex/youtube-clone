@@ -2,30 +2,35 @@ import Image from 'next/image';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { disableKeyBinds, enableKeyBinds } from '../../../../app/features/videoSlice';
+import { ZodVerifyFormErrors } from '../../../../hooks/useZodVerifySchema';
+import { UploadVideoSchemaType } from '../../../../schemas/uploadVideo.schema';
 import AutoResizingTextarea from '../../../../ui/AutoResizeTextarea';
 import { Button } from '../../../../ui/Button';
 import InputGroup from '../../../../ui/InputGroup';
 import { imageOptimizer } from '../../../../utils/imageOptimizer';
 import { convertToTagList, UploadVideoData } from '../../UploadModal';
 import {
-  Container,
-  FormContainer,
-  HiddenInput,
-  Tag,
-  TagContainer,
-  ThumbnailContainer,
-} from './style';
+  VideoDetailsState__Container,
+  VideoDetailsState__Error,
+  VideoDetailsState__FormContainer,
+  VideoDetailsState__HiddenInput,
+  VideoDetailsState__Tag,
+  VideoDetailsState__TagContainer,
+  VideoDetailsState__ThumbnailContainer,
+} from './VideoDetailsState.styles';
 
 const VideoDetailsStage = ({
   uploadData,
   setUploadData,
   handleUploadVideo,
   lastFocusableElement,
+  fieldErrors,
 }: {
   uploadData: UploadVideoData;
   setUploadData: React.Dispatch<React.SetStateAction<UploadVideoData>>;
   handleUploadVideo: (event: React.FormEvent) => void;
   lastFocusableElement: React.MutableRefObject<any>;
+  fieldErrors: ZodVerifyFormErrors<UploadVideoSchemaType>;
 }) => {
   const dispatch = useDispatch();
   const hiddenInput = useRef<any>();
@@ -66,9 +71,9 @@ const VideoDetailsStage = ({
   }, []);
 
   return (
-    <Container>
-      <FormContainer onSubmit={handleUploadVideo}>
-        <ThumbnailContainer>
+    <VideoDetailsState__Container>
+      <VideoDetailsState__FormContainer>
+        <VideoDetailsState__ThumbnailContainer>
           {!uploadData.thumbnailUrl && (
             <>
               <Button
@@ -78,13 +83,16 @@ const VideoDetailsStage = ({
               >
                 Choose thumbnail
               </Button>
-              <HiddenInput
+              <VideoDetailsState__HiddenInput
                 type="file"
                 accept=".jpg, .png"
                 ref={hiddenInput}
                 required
                 onChange={handleChooseThumbnail}
-              ></HiddenInput>
+              ></VideoDetailsState__HiddenInput>
+              <VideoDetailsState__Error>
+                {fieldErrors.thumbnailUrl && fieldErrors.thumbnailUrl[0]}
+              </VideoDetailsState__Error>
             </>
           )}
           {uploadData.thumbnailUrl && (
@@ -110,7 +118,7 @@ const VideoDetailsStage = ({
               </Button>
             </>
           )}
-        </ThumbnailContainer>
+        </VideoDetailsState__ThumbnailContainer>
 
         <InputGroup
           type="text"
@@ -123,8 +131,7 @@ const VideoDetailsStage = ({
               title: e.target.value,
             }))
           }
-          error={undefined}
-          // maxLength={100}
+          error={fieldErrors.title && fieldErrors.title[0]}
         />
 
         <AutoResizingTextarea
@@ -137,7 +144,7 @@ const VideoDetailsStage = ({
               description: e.target.value,
             }))
           }
-          error={undefined}
+          error={fieldErrors.description && fieldErrors.description[0]}
           maxLength={1500}
         />
 
@@ -147,22 +154,28 @@ const VideoDetailsStage = ({
           placeholder="E.g. tag1, tag2, tag3"
           value={tagsText}
           setValue={(event) => setTagsText(event.target.value)}
-          // maxLength={60}
-          error={undefined}
+          error={fieldErrors.tags && fieldErrors.tags[0]}
         />
 
-        <TagContainer>
+        <VideoDetailsState__TagContainer>
           {uploadData.tagList.length > 0 &&
             uploadData.tagList.map((tag, index) => {
-              return <Tag key={tag + index}>{tag}</Tag>;
+              return (
+                <VideoDetailsState__Tag key={tag + index}>{tag}</VideoDetailsState__Tag>
+              );
             })}
-        </TagContainer>
+        </VideoDetailsState__TagContainer>
 
-        <Button variant="primary" type="submit" ref={lastFocusableElement}>
+        <Button
+          variant="primary"
+          type="submit"
+          ref={lastFocusableElement}
+          onClick={handleUploadVideo}
+        >
           Upload
         </Button>
-      </FormContainer>
-    </Container>
+      </VideoDetailsState__FormContainer>
+    </VideoDetailsState__Container>
   );
 };
 

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../app/features/authSlice';
 import Logo from '../components/logo/Logo';
 import useAxios from '../hooks/useAxios';
-import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifyForm';
+import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifySchema';
 import Layout from '../layout/Layout';
 import { loginSchema, LoginSchemaType } from '../schemas/login.schema';
 import { Button } from '../ui/Button';
@@ -22,7 +22,6 @@ import InputGroup from '../ui/InputGroup';
 const SignIn = () => {
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [errors, setErrors] = useState<ZodVerifyFormErrors<LoginSchemaType>>({});
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -35,13 +34,12 @@ const SignIn = () => {
       } | null
     >('api/auth', 'POST');
 
-  const verifyForm = useZodVerifyForm(loginSchema, { email, password });
+  const { verify, fieldErrors } = useZodVerifyForm(loginSchema, { email, password });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({});
-    const { isValid, errors } = verifyForm();
-    if (!isValid) return setErrors(errors);
+    const isValid = verify();
+    if (!isValid) return;
     const { success, result } = await loginUser({ email, password });
     if (success && result) {
       setIsLoggedIn(true);
@@ -72,7 +70,7 @@ const SignIn = () => {
             value={email}
             setValue={(e) => setEmail(e.target.value)}
             disabled={isLoginUserLoading || isLoggedIn}
-            error={errors.email && errors.email}
+            error={fieldErrors?.email && fieldErrors.email[0]}
           />
 
           <InputGroup
@@ -81,7 +79,7 @@ const SignIn = () => {
             value={password}
             setValue={(e) => setPassword(e.target.value)}
             disabled={isLoginUserLoading || isLoggedIn}
-            error={errors.password && errors.password}
+            error={fieldErrors?.password && fieldErrors.password[0]}
           />
 
           <Button

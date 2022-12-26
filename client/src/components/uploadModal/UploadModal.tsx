@@ -21,10 +21,15 @@ import useRefreshToken from '../../hooks/useRefreshToken';
 import { resetUser } from '../../app/features/authSlice';
 import router from 'next/router';
 import { videoUploader } from '../../utils/videoUploader';
+import useZodVerifySchema from '../../hooks/useZodVerifySchema';
+import {
+  uploadVideoSchema,
+  UploadVideoSchemaType,
+} from '../../schemas/uploadVideo.schema';
 
 export interface UploadVideoData {
   userId: string;
-  thumbnailUrl: string | null;
+  thumbnailUrl: string;
   title: string;
   description: string;
   tagList: string[];
@@ -55,7 +60,7 @@ const UploadModal = ({
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [uploadData, setUploadData] = useState<UploadVideoData>({
     userId: user!.user_id,
-    thumbnailUrl: null,
+    thumbnailUrl: '',
     title: '',
     description: '',
     tagList: [],
@@ -70,15 +75,20 @@ const UploadModal = ({
   const firstFocusableElement = useRef<any>();
   const lastFocusableElement = useRef<any>();
 
+  const { verify, fieldErrors } = useZodVerifySchema<UploadVideoSchemaType>(
+    uploadVideoSchema,
+    {
+      thumbnailUrl: uploadData.thumbnailUrl,
+      title: uploadData.title,
+      description: uploadData.description,
+      tags: uploadData.tagList,
+    }
+  );
+
   const handleUploadVideo = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (
-      !uploadData.title ||
-      uploadData.tagList.length < 4 ||
-      !uploadData.thumbnailUrl ||
-      !videoFile
-    )
-      return;
+    const isValid = verify();
+    if (!isValid) return;
     const { result } = await refreshToken();
     if (!result) {
       dispatch(resetUser());
@@ -90,7 +100,7 @@ const UploadModal = ({
     handleChangeStage('uploading');
     try {
       const uploadResponse = await videoUploader(
-        videoFile,
+        videoFile!,
         uploadData,
         accessToken!,
         setUploadProgress
@@ -174,6 +184,7 @@ const UploadModal = ({
             setUploadData={setUploadData}
             handleUploadVideo={(event: React.FormEvent) => handleUploadVideo(event)}
             lastFocusableElement={lastFocusableElement}
+            fieldErrors={fieldErrors}
           />
         )}
         {stage === 'uploading' && (

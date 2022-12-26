@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useAxios from '../../hooks/useAxios';
-import useZodVerifyForm, { ZodVerifyFormErrors } from '../../hooks/useZodVerifyForm';
+import useZodVerifyForm from '../../hooks/useZodVerifySchema';
 import { verifyCodeSchema } from '../../schemas/verifyCode.schema';
 import { Button } from '../../ui/Button';
 import {
@@ -31,9 +31,6 @@ const VerifyCodeForm = ({
 }) => {
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [inputErrors, setInputErrors] = useState<
-    ZodVerifyFormErrors<VerifyCodeSchemaType>
-  >({});
 
   const [verifyEmail, { isLoading, errors }] = useAxios<{ code: string }, null>(
     `api/auth/verify-${whatToVerify}`,
@@ -47,13 +44,15 @@ const VerifyCodeForm = ({
     }
   };
 
-  const verifyForm = useZodVerifyForm<{ code: string }>(verifyCodeSchema, { code });
+  const { verify, fieldErrors } = useZodVerifyForm<VerifyCodeSchemaType>(
+    verifyCodeSchema,
+    { code }
+  );
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    setInputErrors({});
-    const { isValid, errors } = verifyForm();
-    if (!isValid) return setInputErrors(errors);
+    const isValid = verify();
+    if (!isValid) return;
     handleVerifyEmail();
   };
 
@@ -86,7 +85,7 @@ const VerifyCodeForm = ({
               value={code}
               setValue={(e) => setCode(e.target.value)}
               disabled={isLoading}
-              error={inputErrors.code && inputErrors.code}
+              error={fieldErrors.code && fieldErrors.code[0]}
             />
 
             <Button variant="primary" type="submit" disabled={isLoading}>

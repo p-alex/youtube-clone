@@ -2,19 +2,21 @@ import { z } from 'zod';
 
 export const createAccountSchema = z
   .object({
-    email: z.string({}).email(),
+    email: z.string({}).min(1, "Can't be blank").email('Invalid email'),
     username: z
       .string({
         required_error: 'Username is required',
       })
-      .min(4, 'Username must contain at least 4 character(s)')
-      .max(14, 'Username must contain at most 14 character(s)'),
+      .min(1, "Can't be blank")
+      .min(4, 'Minimum 4 characters')
+      .max(14, 'Maximum 14 characters'),
     password: z
       .string({ required_error: 'Password is required' })
-      .min(8, 'Password must contain at least 8 character(s)'),
+      .min(1, "Can't be blank")
+      .min(8, 'Minimum 8 characters'),
     confirmPassword: z
       .string({ required_error: 'Confirm password is required' })
-      .min(6, 'Confirm password must contain at least 8 character(s)'),
+      .min(1, "Can't be blank"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords must match',

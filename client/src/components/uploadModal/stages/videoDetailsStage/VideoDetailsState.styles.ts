@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const VideoDetailsState__Container = styled.div`
   position: relative;
   width: 100%;
   height: calc(100% - 60px);
@@ -9,7 +9,7 @@ export const Container = styled.div`
   height: max-content;
 `;
 
-export const ThumbnailContainer = styled.div`
+export const VideoDetailsState__ThumbnailContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
@@ -20,34 +20,34 @@ export const ThumbnailContainer = styled.div`
   padding: 20px 0;
 `;
 
-export const HiddenInput = styled.input`
+export const VideoDetailsState__HiddenInput = styled.input`
   display: none;
 `;
 
-export const FormContainer = styled.form`
+export const VideoDetailsState__FormContainer = styled.form`
   position: relative;
   width: 100%;
 `;
 
-export const InputLabel = styled.label`
+export const VideoDetailsState__InputLabel = styled.label`
   display: block;
   color: ${(props) => props.theme.textColor};
   margin-bottom: 10px;
 `;
 
-export const InputError = styled.p`
+export const VideoDetailsState__Error = styled.p`
   color: red;
   margin-top: 5px;
 `;
 
-export const TagContainer = styled.div`
+export const VideoDetailsState__TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 `;
 
-export const Tag = styled.p`
+export const VideoDetailsState__Tag = styled.p`
   background-color: ${(props) => props.theme.normalBtn.bg};
   color: ${(props) => props.theme.textColor};
   padding: 5px 15px;
