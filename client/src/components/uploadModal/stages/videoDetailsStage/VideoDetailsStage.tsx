@@ -2,13 +2,14 @@ import Image from 'next/image';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { disableKeyBinds, enableKeyBinds } from '../../../../app/features/videoSlice';
+import { UploadVideoData } from '../../../../hooks/useUploadModal';
 import { ZodVerifyFormErrors } from '../../../../hooks/useZodVerifySchema';
 import { UploadVideoSchemaType } from '../../../../schemas/uploadVideo.schema';
 import AutoResizingTextarea from '../../../../ui/AutoResizeTextarea';
 import { Button } from '../../../../ui/Button';
 import InputGroup from '../../../../ui/InputGroup';
+import { convertToTagList } from '../../../../utils/convertToTagList';
 import { imageOptimizer } from '../../../../utils/imageOptimizer';
-import { convertToTagList, UploadVideoData } from '../../UploadModal';
 import {
   VideoDetailsState__Container,
   VideoDetailsState__Error,
@@ -80,6 +81,7 @@ const VideoDetailsStage = ({
                 variant="normal"
                 onClick={() => hiddenInput.current.click()}
                 type="button"
+                autoFocus
               >
                 Choose thumbnail
               </Button>
@@ -114,7 +116,7 @@ const VideoDetailsStage = ({
                 }
                 type="button"
               >
-                Reset
+                Reset thumbnail
               </Button>
             </>
           )}

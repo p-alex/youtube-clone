@@ -11,7 +11,7 @@ const UploadVideoStage = ({
   return (
     <Container>
       <UploadingContainer>
-        <Status tabIndex={0} ref={lastFocusableElement}>
+        <Status tabIndex={0} ref={lastFocusableElement} aria-live="assertive">
           {uploadProgress !== 100 ? 'Uploading...' : 'Processing...'}
         </Status>
         <Progress>{uploadProgress.toFixed(2)}%</Progress>

@@ -1,7 +1,7 @@
-import React from 'react';
-import { UploadResult } from '../../UploadModal';
+import { useEffect } from 'react';
 import { Container, Message, ResultContainer } from './style';
 import { MdDone, MdError } from 'react-icons/md';
+import { UploadResult } from '../../../../hooks/useUploadModal';
 const UploadResultStage = ({
   result,
   lastFocusableElement,
@@ -9,11 +9,16 @@ const UploadResultStage = ({
   result: UploadResult;
   lastFocusableElement: React.MutableRefObject<any>;
 }) => {
+  useEffect(() => {
+    lastFocusableElement.current.focus();
+  }, []);
   return (
     <Container>
       <ResultContainer>
         {result.success ? <MdDone /> : <MdError />}
-        <Message ref={lastFocusableElement}>{result.message}</Message>
+        <Message ref={lastFocusableElement} tabIndex={0} aria-live="assertive">
+          {result.message}
+        </Message>
       </ResultContainer>
     </Container>
   );
