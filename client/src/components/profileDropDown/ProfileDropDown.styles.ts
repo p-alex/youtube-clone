@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND, NAV_BAR_HEIGHT } from '../../layout/style';
 
-export const Container = styled.div`
+export const ProfileDropDown__Container = styled.div`
   position: absolute;
   top: calc(${NAV_BAR_HEIGHT}px);
   right: 0px;
@@ -12,7 +12,7 @@ export const Container = styled.div`
   overflow: hidden;
 `;
 
-export const Header = styled.div`
+export const ProfileDropDown__Header = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
@@ -23,7 +23,7 @@ export const Header = styled.div`
   }
 `;
 
-export const ProfilePicture = styled.div`
+export const ProfileDropDown__ProfilePicture = styled.div`
   position: relative;
   width: 40px;
   height: 40px;
@@ -31,21 +31,21 @@ export const ProfilePicture = styled.div`
   overflow: hidden;
 `;
 
-export const Username = styled.h3`
+export const ProfileDropDown__Username = styled.h3`
   text-align: left;
   color: ${(props) => props.theme.textColor};
 `;
 
-export const NameAndManage = styled.div`
+export const ProfileDropDown__NameAndManage = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
 `;
 
-export const ButtonList = styled.ul`
+export const ProfileDropDown__ButtonList = styled.ul`
   position: relative;
   width: 100%;
   list-style: none;
 `;
 
-export const ButtonItem = styled.li``;
+export const ProfileDropDown__ButtonItem = styled.li``;

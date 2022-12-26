@@ -5,14 +5,14 @@ import { RootState } from '../../app/store';
 import { CgProfile } from 'react-icons/cg';
 import { MdDarkMode, MdLightMode, MdLogout, MdVideoSettings } from 'react-icons/md';
 import {
-  ButtonItem,
-  ButtonList,
-  Container,
-  Header,
-  NameAndManage,
-  ProfilePicture,
-  Username,
-} from './style';
+  ProfileDropDown__ButtonItem,
+  ProfileDropDown__ButtonList,
+  ProfileDropDown__Container,
+  ProfileDropDown__Header,
+  ProfileDropDown__NameAndManage,
+  ProfileDropDown__ProfilePicture,
+  ProfileDropDown__Username,
+} from './ProfileDropDown.styles';
 import { toggleTheme } from '../../app/features/themeSlice';
 import { resetUser } from '../../app/features/authSlice';
 import router from 'next/router';
@@ -39,47 +39,43 @@ export const ProfileDropDown = () => {
   };
 
   return (
-    <Container
+    <ProfileDropDown__Container
       as={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ type: 'just' }}
       exit={{ opacity: 0 }}
     >
-      <Header>
-        <ProfilePicture>
+      <ProfileDropDown__Header>
+        <ProfileDropDown__ProfilePicture>
           <Image
             src={user ? user.profile_picture : '/images/default-profile-picture.jpg'}
             width={40}
             height={40}
             alt=""
           />
-        </ProfilePicture>
-        <NameAndManage>
-          <Username>{user?.username}</Username>
+        </ProfileDropDown__ProfilePicture>
+        <ProfileDropDown__NameAndManage>
+          <ProfileDropDown__Username>{user?.username}</ProfileDropDown__Username>
           <Link href={'#'}>Manage account</Link>
-        </NameAndManage>
-      </Header>
-      <ButtonList>
-        <ButtonItem>
+        </ProfileDropDown__NameAndManage>
+      </ProfileDropDown__Header>
+      <ProfileDropDown__ButtonList>
+        <ProfileDropDown__ButtonItem>
           <Link href={`/profile/${user.username}`}>
-            <a>
-              <ListButton>
-                <CgProfile /> Your channel
-              </ListButton>
-            </a>
+            <ListButton>
+              <CgProfile /> Your channel
+            </ListButton>
           </Link>
-        </ButtonItem>
-        <ButtonItem>
+        </ProfileDropDown__ButtonItem>
+        <ProfileDropDown__ButtonItem>
           <Link href={'/manage/videos'}>
-            <a>
-              <ListButton>
-                <MdVideoSettings /> Manage videos
-              </ListButton>
-            </a>
+            <ListButton>
+              <MdVideoSettings /> Manage videos
+            </ListButton>
           </Link>
-        </ButtonItem>
-        <ButtonItem>
+        </ProfileDropDown__ButtonItem>
+        <ProfileDropDown__ButtonItem>
           <ListButton onClick={() => dispatch(toggleTheme())}>
             {theme === 'dark' ? (
               <>
@@ -91,13 +87,13 @@ export const ProfileDropDown = () => {
               </>
             )}
           </ListButton>
-        </ButtonItem>
-        <ButtonItem>
+        </ProfileDropDown__ButtonItem>
+        <ProfileDropDown__ButtonItem>
           <ListButton onClick={handleLogoutUser}>
             <MdLogout /> Logout
           </ListButton>
-        </ButtonItem>
-      </ButtonList>
-    </Container>
+        </ProfileDropDown__ButtonItem>
+      </ProfileDropDown__ButtonList>
+    </ProfileDropDown__Container>
   );
 };
