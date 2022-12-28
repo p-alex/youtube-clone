@@ -46,7 +46,7 @@ const VideoCardWithInfo = ({ video }: { video: IVideoSmallWithInfo }) => {
                 imageUrl={video.profile_picture}
                 width={24}
                 height={24}
-                userId={video.user_id}
+                username={video.username}
               />
               <VideoCardWithInfo__Username>
                 <Link href="#">{video.username}</Link>

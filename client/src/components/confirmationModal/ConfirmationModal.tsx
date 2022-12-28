@@ -25,7 +25,7 @@ const ConfirmationModal = ({
   toggle: () => void;
   func: () => void;
   isLoading: boolean;
-  redirectToElementIdOnClose: string;
+  redirectToElementIdOnClose?: string;
   btnName: string;
 }) => {
   useDisableScroll();

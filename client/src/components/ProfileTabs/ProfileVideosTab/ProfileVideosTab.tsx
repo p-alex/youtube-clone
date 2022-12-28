@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  changeSortBy,
+  changeProfileVideosSortBy,
   incrementVideosPage,
   loadMoreProfileVideos,
   setProfileVideos,
@@ -21,7 +21,9 @@ import {
 
 const ProfileVideosTab = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.profile.profileInfo!.user_id);
+  const userId = useSelector(
+    (state: RootState) => state.profile.profileBasicInfo!.user_id
+  );
   const { sortBy, videos, page, limit } = useSelector(
     (state: RootState) => state.profile.videosTab
   );
@@ -57,7 +59,7 @@ const ProfileVideosTab = () => {
   };
 
   const handleChangeSortBy = (sortBy: 'recent' | 'popular') => {
-    dispatch(changeSortBy({ sortBy }));
+    dispatch(changeProfileVideosSortBy({ sortBy }));
   };
 
   const handleIncrementPage = () => {
@@ -70,7 +72,7 @@ const ProfileVideosTab = () => {
   }, [page]);
 
   useEffect(() => {
-    handleGetProfileVideos();
+    if (videos.length === 0) handleGetProfileVideos();
   }, [sortBy]);
 
   return (

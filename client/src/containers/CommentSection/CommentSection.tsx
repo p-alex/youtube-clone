@@ -105,7 +105,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
           isLoading={isAddCommentLoading}
           btnName="comment"
           placeholder="Write a comment..."
-          error={errors && errors[0].message}
+          error={errors ? errors[0].message : undefined}
         />
       )}
       <br />

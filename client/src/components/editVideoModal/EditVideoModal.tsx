@@ -8,7 +8,6 @@ import useDisableScroll from '../../hooks/useDisableScroll';
 import InputGroup from '../../ui/InputGroup';
 import { Button } from '../../ui/Button';
 import { imageOptimizer } from '../../utils/imageOptimizer';
-import { convertToTagList } from '../uploadModal/UploadModal';
 import { MdClose } from 'react-icons/md';
 import {
   Backdrop,
@@ -28,6 +27,7 @@ import FocusTrapRedirectFocus from '../focusTrap';
 import useZodVerifySchema from '../../hooks/useZodVerifySchema';
 import { verifyCodeSchema } from '../../schemas/verifyCode.schema';
 import { editVideoSchema } from '../../schemas/editVideoModal.schema';
+import { convertToTagList } from '../../utils/convertToTagList';
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);

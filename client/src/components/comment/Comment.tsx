@@ -98,6 +98,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
           btnName="edit"
           placeholder="Edit your comment..."
           isLoading={isEditLoading}
+          error={undefined}
         />
       )}
       {toEdit !== comment.comment_id && (
@@ -176,6 +177,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
                   btnName={'reply'}
                   placeholder={'Write a reply...'}
                   autoFocus
+                  error={undefined}
                 />
               </CommentFormContainer>
             )}

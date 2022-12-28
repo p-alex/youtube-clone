@@ -95,6 +95,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
           btnName="edit"
           placeholder="Edit your comment..."
           isLoading={isEditReplyLoading}
+          error={undefined}
         />
       )}
       {toEdit !== reply.reply_id && (
@@ -164,6 +165,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
                   btnName="reply"
                   placeholder="Write a reply"
                   autoFocus
+                  error={undefined}
                 />
               </ReplyFormContainer>
             )}

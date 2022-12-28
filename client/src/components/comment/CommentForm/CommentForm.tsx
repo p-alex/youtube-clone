@@ -38,7 +38,7 @@ const CommentForm = ({
   placeholder: string;
   autoFocus?: boolean;
   withTrap?: boolean;
-  error: string | null;
+  error: string | undefined;
 }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();

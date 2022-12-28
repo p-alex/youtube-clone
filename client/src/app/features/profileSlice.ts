@@ -1,26 +1,44 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IVideoSmall } from './videoSlice';
 
-export interface IProfileInfo {
+export interface IProfileAbout {
+  description: string;
+  total_videos: number;
+  total_views: number;
+  created_at: string;
+}
+
+export interface IProfileBasicInfo {
   user_id: string;
   username: string;
   profile_picture: string;
   total_subscribers: number;
-  created_at: string;
 }
 
+const TABS = ['VIDEOS', 'ABOUT'] as const;
+
+type Tab = typeof TABS[number];
+
 export interface ProfileInitialState {
-  activeTab: 'VIDEOS' | 'ABOUT';
+  tabs: typeof TABS;
+  activeTab: Tab;
   videosTab: {
     videos: IVideoSmall[];
     sortBy: 'recent' | 'popular';
     page: number;
     limit: 16;
   };
-  profileInfo: IProfileInfo | null;
+  aboutTab: {
+    description: string;
+    total_videos: number;
+    total_views: number;
+    created_at: string;
+  };
+  profileBasicInfo: IProfileBasicInfo | null;
 }
 
 const initialState: ProfileInitialState = {
+  tabs: TABS,
   activeTab: 'VIDEOS',
   videosTab: {
     videos: [],
@@ -28,23 +46,41 @@ const initialState: ProfileInitialState = {
     page: 0,
     limit: 16,
   },
-  profileInfo: null,
+  aboutTab: {
+    description: '',
+    total_videos: 0,
+    total_views: 0,
+    created_at: '',
+  },
+  profileBasicInfo: null,
 };
 
 export const ProfileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    setProfileInfo: (state, action: PayloadAction<{ profileInfo: IProfileInfo }>) => {
-      state.profileInfo = action.payload.profileInfo;
+    setProfileBasicInfo: (
+      state,
+      action: PayloadAction<{ profileInfo: IProfileBasicInfo }>
+    ) => {
+      state.profileBasicInfo = action.payload.profileInfo;
     },
     setProfileVideos: (state, action: PayloadAction<{ videos: IVideoSmall[] }>) => {
       state.videosTab.videos = action.payload.videos;
     },
+    setProfileAbout: (state, action: PayloadAction<{ profileAbout: IProfileAbout }>) => {
+      state.aboutTab = action.payload.profileAbout;
+    },
+    changeProfileTab: (state, action: PayloadAction<{ tab: Tab }>) => {
+      state.activeTab = action.payload.tab;
+    },
     incrementVideosPage: (state) => {
       state.videosTab.page = state.videosTab.page + 1;
     },
-    changeSortBy: (state, action: PayloadAction<{ sortBy: 'recent' | 'popular' }>) => {
+    changeProfileVideosSortBy: (
+      state,
+      action: PayloadAction<{ sortBy: 'recent' | 'popular' }>
+    ) => {
       state.videosTab.sortBy = action.payload.sortBy;
       state.videosTab.page = 0;
     },
@@ -55,10 +91,12 @@ export const ProfileSlice = createSlice({
 });
 
 export const {
-  setProfileInfo,
+  setProfileBasicInfo,
   setProfileVideos,
+  setProfileAbout,
+  changeProfileTab,
   incrementVideosPage,
-  changeSortBy,
+  changeProfileVideosSortBy,
   loadMoreProfileVideos,
 } = ProfileSlice.actions;
 

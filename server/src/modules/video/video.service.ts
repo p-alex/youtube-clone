@@ -4,7 +4,6 @@ import db from '../../db';
 import { getImagePublicId, getVideoPublicId } from '../../utils/getPublicId';
 import { GetUserVideosInput, UploadVideoInput } from './video.schema';
 import uglifyJS from 'uglify-js';
-import log from '../../utils/logger';
 
 export interface IVideo {
   video_id: string;
@@ -100,7 +99,7 @@ export const uploadVideo = async ({ path }: { path: string }) => {
   const response = await cloudinary.uploader.upload(path, {
     resource_type: 'video',
     upload_preset: 'youtube-clone-videos',
-    chunk_size: 1000000,
+    chunk_size: 6000000,
   });
   return response;
 };
@@ -204,12 +203,15 @@ export const deleteVideo = async (video_id: string, user_id: string) => {
 
   if (deleteVideoResponse.result !== 'ok') throw new Error(`Could not delete video`);
 
-  await cloudinary.uploader.destroy(thumbnail_publicId);
+  const deleteThumbnailResponse = await cloudinary.uploader.destroy(thumbnail_publicId);
 
-  const deleteResponse = await db.query(
-    'DELETE FROM videos WHERE video_id = $1 AND user_id = $2 RETURNING video_id',
-    [video_id, user_id]
-  );
+  if (deleteThumbnailResponse.result !== 'ok') throw new Error(`Could not delete video`);
+
+  const deleteResponse = await db.query('SELECT * FROM delete_video($1, $2)', [
+    video_id,
+    user_id,
+  ]);
+
   const data: { video_id: string } = deleteResponse.rows[0];
   return data;
 };
