@@ -3,8 +3,8 @@ import db from '../../db';
 import { GetProfileInfoInput, RegisterUserInput } from './user.scheme';
 import { getProfileAbout, getProfileBasicInfo, registerUser } from './user.service';
 import argon2 from 'argon2';
-import { sendEmail } from '../../../nodemailer/sendEmail';
-import { verifyEmailTemplate } from '../../../nodemailer/templates';
+import { sendEmail } from '../../nodemailer/sendEmail';
+import { verifyEmailTemplate } from '../../nodemailer/templates';
 import { createRandomCode } from '../../utils/createRandomCode';
 
 export const registerUserController = async (
