@@ -53,7 +53,7 @@ export const getUserVideosPrivateController = async (
     // @ts-ignore
     const { user_id } = req.user;
     const { sortBy, page } = req.params;
-    const videos = await getUserVideos(user_id, sortBy, page);
+    const videos = await getUserVideos(user_id, sortBy, page, true);
     return res.status(200).json({ success: true, errors: [], result: { videos } });
   } catch (error: any) {
     log.error(error.message);
@@ -71,7 +71,7 @@ export const getUserVideosController = async (
 ) => {
   try {
     const { userId, sortBy, page } = req.params;
-    const videos = await getUserVideos(userId, sortBy, page);
+    const videos = await getUserVideos(userId, sortBy, page, false);
     return res.status(200).json({ success: true, errors: [], result: { videos } });
   } catch (error: any) {
     log.error(error.message);

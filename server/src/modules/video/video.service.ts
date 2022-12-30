@@ -44,14 +44,17 @@ export const getVideos = async () => {
 export const getUserVideos = async (
   user_id: string,
   sortBy: GetUserVideosInput['sortBy'],
-  page: string
+  page: string,
+  withDescription: boolean
 ) => {
   const LIMIT = 16;
   const OFFSET = LIMIT * parseInt(page);
-  const recentQuery =
-    'SELECT * FROM videos WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3';
-  const popularQuery =
-    'SELECT * FROM videos WHERE user_id = $1 ORDER BY views DESC LIMIT $2 OFFSET $3';
+  const recentQuery = `SELECT video_id, title, thumbnail_url, ${
+    withDescription ? 'description,' : ''
+  } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`;
+  const popularQuery = `SELECT video_id, title, thumbnail_url, ${
+    withDescription ? 'description,' : ''
+  } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY views DESC LIMIT $2 OFFSET $3`;
   const response = await db.query(sortBy === 'recent' ? recentQuery : popularQuery, [
     user_id,
     LIMIT,
