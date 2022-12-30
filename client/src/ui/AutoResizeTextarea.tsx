@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND } from '../layout/style';
 
@@ -37,7 +37,6 @@ const AutoResizeTextarea__Error = styled.p`
 const AutoResizeTextarea__Textarea = styled.textarea<{ isError: boolean }>`
   position: relative;
   width: 100%;
-  background-color: transparent;
   resize: none;
   font-size: 1rem;
   padding: 3px;
@@ -50,10 +49,13 @@ const AutoResizeTextarea__Textarea = styled.textarea<{ isError: boolean }>`
   &::-webkit-scrollbar {
     display: none;
   }
+  display: block;
   background-color: ${(props) => props.theme.uiSecondaryBg};
   padding: 10px;
   border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
+
+const RANDOM_TEXTAREA_ID = 'autoresizing-textarea-' + Math.floor(Math.random() * 1000);
 
 const AutoResizingTextarea = ({
   label,
@@ -85,7 +87,10 @@ const AutoResizingTextarea = ({
     if (onBlur) onBlur();
   };
 
-  const formatedId = label.replaceAll(' ', '-').toLowerCase();
+  const formatedId = hideLabel
+    ? RANDOM_TEXTAREA_ID
+    : label.replaceAll(' ', '-').toLowerCase();
+
   return (
     <AutoResizeTextarea__Container>
       {!hideLabel && (
