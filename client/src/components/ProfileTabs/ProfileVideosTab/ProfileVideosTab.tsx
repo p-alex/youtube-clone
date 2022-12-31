@@ -4,11 +4,10 @@ import {
   changeProfileVideosSortBy,
   incrementVideosPage,
   loadMoreProfileVideos,
-  setProfileVideos,
 } from '../../../app/features/profileSlice';
 import { IVideoSmall } from '../../../app/features/videoSlice';
 import { RootState } from '../../../app/store';
-import useAxios from '../../../hooks/requestHooks/useAxios';
+import { DefaultResponse } from '../../../hooks/requestHooks/useAxiosWithRetry';
 import { Button } from '../../../ui/Button';
 import Spinner from '../../../ui/Spinner';
 import VideoCard from '../../videoCard/VideoCard';
@@ -19,42 +18,30 @@ import {
   ProfileVideosTab__VideoContainer,
 } from './ProfileVideosTab.styles';
 
-const ProfileVideosTab = () => {
+interface Props {
+  getProfileVideosRequest: (body: {}) => Promise<
+    DefaultResponse<{
+      videos: IVideoSmall[];
+    } | null>
+  >;
+  isGetProfileVideosLoading: boolean;
+}
+
+const ProfileVideosTab = ({
+  getProfileVideosRequest,
+  isGetProfileVideosLoading,
+}: Props) => {
   const dispatch = useDispatch();
-  const userId = useSelector(
-    (state: RootState) => state.profile.profileBasicInfo!.user_id
-  );
-  const { sortBy, videos, page, limit } = useSelector(
+
+  const { limit, page, videos, sortBy } = useSelector(
     (state: RootState) => state.profile.videosTab
   );
+
   const [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
 
-  const [
-    getProfileVideos,
-    { isLoading: isGetProfileVideosLoading, errors: getProfileVideosErrors },
-  ] = useAxios<{}, { videos: IVideoSmall[] }>(
-    'api/videos/user/' + userId + '/' + sortBy + '/' + page
-  );
-
-  const handleGetProfileVideos = async () => {
-    const response = await getProfileVideos({});
-    if (!response.success || !response.result) return;
-    if (response.result.videos.length === limit) {
-      setShowLoadMoreBtn(true);
-    } else {
-      setShowLoadMoreBtn(false);
-    }
-    dispatch(setProfileVideos({ videos: response.result.videos }));
-  };
-
   const handleLoadMoreProfileVideos = async () => {
-    const response = await getProfileVideos({});
+    const response = await getProfileVideosRequest({});
     if (!response.success || !response.result) return;
-    if (response.result.videos.length === limit) {
-      setShowLoadMoreBtn(true);
-    } else {
-      setShowLoadMoreBtn(false);
-    }
     dispatch(loadMoreProfileVideos({ videos: response.result.videos }));
   };
 
@@ -62,7 +49,7 @@ const ProfileVideosTab = () => {
     dispatch(changeProfileVideosSortBy({ sortBy }));
   };
 
-  const handleIncrementPage = () => {
+  const handleIncrementVideosPage = () => {
     dispatch(incrementVideosPage());
   };
 
@@ -70,10 +57,6 @@ const ProfileVideosTab = () => {
     if (page === 0) return;
     handleLoadMoreProfileVideos();
   }, [page]);
-
-  useEffect(() => {
-    if (videos.length === 0) handleGetProfileVideos();
-  }, [sortBy]);
 
   return (
     <ProfileVideosTab__Container>
@@ -91,12 +74,7 @@ const ProfileVideosTab = () => {
           Popular
         </ProfileVideosTab__SortBtn>
       </ProfileVideosTab__SortBtnsContainer>
-      {isGetProfileVideosLoading && <Spinner />}
-      {!isGetProfileVideosLoading &&
-        getProfileVideosErrors !== null &&
-        getProfileVideosErrors.length > 0 && (
-          <p>{getProfileVideosErrors !== null && getProfileVideosErrors[0]?.message}</p>
-        )}
+      {isGetProfileVideosLoading && videos.length === 0 && <Spinner />}
       {!isGetProfileVideosLoading && !isGetProfileVideosLoading && (
         <ProfileVideosTab__VideoContainer>
           {videos.map((video) => {
@@ -107,7 +85,7 @@ const ProfileVideosTab = () => {
         </ProfileVideosTab__VideoContainer>
       )}
       {showLoadMoreBtn && (
-        <Button variant="normal" onClick={handleIncrementPage}>
+        <Button variant="normal" onClick={handleIncrementVideosPage}>
           Load more
         </Button>
       )}

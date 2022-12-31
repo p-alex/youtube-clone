@@ -62,7 +62,7 @@ export const ProfileDropDown = () => {
       </ProfileDropDown__Header>
       <ProfileDropDown__ButtonList>
         <ProfileDropDown__ButtonItem>
-          <Link href={`/profile/${user.username}`}>
+          <Link href={`/profile/${user.username}/videos`}>
             <ListButton>
               <CgProfile /> Your channel
             </ListButton>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from 'next/router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
@@ -73,6 +74,10 @@ function useAxiosWithRetry<Body, Data>(
 
   const apiRequest = async (body: Body | undefined) => {
     const { statusCode, data } = await request(accessToken, body);
+
+    if (statusCode === 404) {
+      router.push('/404');
+    }
 
     if (statusCode === 403) {
       const retryResponse = await retryRequest(body);

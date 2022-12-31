@@ -20,7 +20,7 @@ export const registerUser = async (input: RegisterInput) => {
 
 export const getProfileBasicInfo = async (username: string) => {
   const result = await db.query(
-    'SELECT user_id, username, profile_picture, total_subscribers FROM users WHERE username = $1',
+    'SELECT user_id, username, profile_picture, total_subscribers, description FROM users WHERE username = $1',
     [username]
   );
   const data: {
@@ -32,9 +32,9 @@ export const getProfileBasicInfo = async (username: string) => {
   return data;
 };
 
-export const getProfileAbout = async (username: string) => {
+export const getProfileStats = async (username: string) => {
   const result = await db.query(
-    'SELECT description, total_videos, total_views, created_at FROM users WHERE username = $1',
+    'SELECT total_videos, total_views, created_at FROM users WHERE username = $1',
     [username]
   );
   const data: {

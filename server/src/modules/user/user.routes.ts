@@ -1,11 +1,11 @@
 import express from 'express';
 import validateResource from '../../middleware/validateResource';
 import {
-  getProfileAboutController,
+  getProfileStatsController,
   getProfileInfoController,
   registerUserController,
 } from './user.controller';
-import { getProfileInfoSchema, registerUserSchema } from './user.scheme';
+import { getProfileInfoSchema, registerUserSchema } from './user.schema';
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.get(
 router.get(
   '/api/users/:username/about',
   validateResource(getProfileInfoSchema),
-  getProfileAboutController
+  getProfileStatsController
 );
 
 export default router;

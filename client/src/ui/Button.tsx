@@ -14,7 +14,7 @@ export const Button = styled.button<{
   width: max-content;
   background-color: ${(props) =>
     props.variant === 'primary'
-      ? props.theme.primaryBtn.bg
+      ? `${props.theme.accentColor}`
       : props.variant === 'danger'
       ? props.theme.dangerBtn.bg
       : props.theme.normalBtn.bg};
@@ -28,12 +28,13 @@ export const Button = styled.button<{
   text-transform: uppercase;
   font-weight: bold;
   &:hover {
-    background-color: ${(props) =>
+    /* background-color: ${(props) =>
       props.variant === 'primary'
         ? props.theme.primaryBtn.bgHover
         : props.variant === 'danger'
         ? props.theme.dangerBtn.bgHover
-        : props.theme.normalBtn.bgHover};
+        : props.theme.normalBtn.bgHover}; */
+    opacity: 0.8;
   }
   &:disabled {
     opacity: 0.5;

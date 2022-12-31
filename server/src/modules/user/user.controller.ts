@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import db from '../../db';
-import { GetProfileInfoInput, RegisterUserInput } from './user.scheme';
-import { getProfileAbout, getProfileBasicInfo, registerUser } from './user.service';
+import { GetProfileInfoInput, RegisterUserInput } from './user.schema';
+import { getProfileStats, getProfileBasicInfo, registerUser } from './user.service';
 import argon2 from 'argon2';
 import { sendEmail } from '../../nodemailer/sendEmail';
 import { verifyEmailTemplate } from '../../nodemailer/templates';
@@ -71,6 +71,8 @@ export const getProfileInfoController = async (
   try {
     const { username } = req.params;
     const profileInfo = await getProfileBasicInfo(username);
+    if (!profileInfo?.user_id)
+      return res.status(404).json({ success: false, errors: [], result: null });
     return res.status(200).json({
       success: true,
       errors: [],
@@ -86,13 +88,13 @@ export const getProfileInfoController = async (
   }
 };
 
-export const getProfileAboutController = async (
+export const getProfileStatsController = async (
   req: Request<GetProfileInfoInput>,
   res: Response
 ) => {
   try {
     const { username } = req.params;
-    const profileAbout = await getProfileAbout(username);
+    const profileAbout = await getProfileStats(username);
     return res.status(200).json({
       success: true,
       errors: [],

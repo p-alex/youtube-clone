@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const BigLogo = styled.a`
   display: flex;
@@ -7,17 +8,20 @@ export const BigLogo = styled.a`
   color: ${(props) => props.theme.textColor};
   font-weight: bold;
   cursor: pointer;
-  & svg {
-    font-size: 2.1rem;
-    color: #fe0001;
-  }
 `;
 
-export const LogoBackDrop = styled.div`
+export const CustomLogo = styled.div`
+  width: 35px;
+  height: 25px;
+  background-color: ${(props) => props.theme.accentColor};
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  border-radius: 50%;
-  height: 20px;
+  border-radius: 5px;
+  &::after {
+    content: '►';
+    position: relative;
+    color: ${(props) => props.theme.uiBg};
+    font-size: 0.85rem;
+  }
 `;

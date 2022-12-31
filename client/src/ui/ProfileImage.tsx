@@ -24,8 +24,8 @@ const ProfileImage = ({
 }) => {
   return (
     <ProfileImageContainer width={width} height={height}>
-      <Link href={'/profile/' + username}>
-        <a ref={elemRef}>
+      <Link href={'/profile/' + username + '/videos'}>
+        <a ref={elemRef} aria-label={`View ${username}'s channel`}>
           <Image
             src={imageUrl}
             width={width}

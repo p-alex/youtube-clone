@@ -85,7 +85,7 @@ const darkTheme = {
 };
 
 const Main = styled.main`
-  margin: ${NAV_BAR_HEIGHT + 20}px auto;
+  margin: ${NAV_BAR_HEIGHT}px auto;
   width: 100%;
   max-width: 1850px;
 `;

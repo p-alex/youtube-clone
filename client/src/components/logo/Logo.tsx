@@ -1,15 +1,12 @@
 import React from 'react';
-import { BsYoutube } from 'react-icons/bs';
 import Link from 'next/link';
-import { BigLogo, LogoBackDrop } from './style';
+import { BigLogo, CustomLogo } from './style';
 
 const Logo = () => {
   return (
     <Link href={'/'}>
       <BigLogo>
-        <LogoBackDrop>
-          <BsYoutube />
-        </LogoBackDrop>
+        <CustomLogo />
         AlexTube
       </BigLogo>
     </Link>

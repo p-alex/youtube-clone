@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MOBILE_BREAK_POINT } from '../../../layout/style';
+import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../../../layout/style';
 
 export const ProfileAboutTab__Container = styled.div`
   position: relative;
@@ -29,10 +29,9 @@ export const ProfileAboutTab__Description = styled.p`
 
 export const ProfileAboutTab__Title = styled.h2`
   position: relative;
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.textMutedColor};
   padding: 20px 0;
-  margin-bottom: 20px;
-  border-bottom: solid 1px ${(props) => props.theme.borderColor};
+  margin-bottom: 10px;
 `;
 
 export const ProfileAboutTab__List = styled.ul`
@@ -44,7 +43,13 @@ export const ProfileAboutTab__Item = styled.li`
   display: block;
   padding: 15px 0;
   font-size: 0.85rem;
-  border-bottom: solid 1px ${(props) => props.theme.borderColor};
+  background-color: ${(props) => props.theme.uiSecondaryBg};
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: ${BORDER_RADIUS_ROUND}px;
+  & span {
+    font-weight: 700;
+  }
 `;
 
 export const ProfileAboutTab__Text = styled.p`

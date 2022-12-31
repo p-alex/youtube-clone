@@ -41,7 +41,7 @@ export const ProgressBar = styled.div`
   left: 0;
   height: 100%;
   z-index: 2;
-  background-color: rgba(254, 44, 85, 1);
+  background-color: ${(props) => props.theme.accentColor};
   & p {
     color: black;
     font-size: 0.7rem;

@@ -45,15 +45,15 @@ export const getUserVideos = async (
   user_id: string,
   sortBy: GetUserVideosInput['sortBy'],
   page: string,
-  withDescription: boolean
+  isPrivateVideoRequest: boolean
 ) => {
   const LIMIT = 16;
   const OFFSET = LIMIT * parseInt(page);
   const recentQuery = `SELECT video_id, title, thumbnail_url, ${
-    withDescription ? 'description,' : ''
+    isPrivateVideoRequest ? 'description, total_likes, total_dislikes,' : ''
   } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`;
   const popularQuery = `SELECT video_id, title, thumbnail_url, ${
-    withDescription ? 'description,' : ''
+    isPrivateVideoRequest ? 'description, total_likes, total_dislikes,' : ''
   } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY views DESC LIMIT $2 OFFSET $3`;
   const response = await db.query(sortBy === 'recent' ? recentQuery : popularQuery, [
     user_id,

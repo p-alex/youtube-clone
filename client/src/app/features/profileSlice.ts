@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IVideoSmall } from './videoSlice';
 
 export interface IProfileAbout {
-  description: string;
   total_videos: number;
   total_views: number;
   created_at: string;
@@ -13,41 +12,38 @@ export interface IProfileBasicInfo {
   username: string;
   profile_picture: string;
   total_subscribers: number;
+  description: string;
 }
 
-const TABS = ['VIDEOS', 'ABOUT'] as const;
+const TABS = ['videos', 'about'];
 
 type Tab = typeof TABS[number];
 
 export interface ProfileInitialState {
-  tabs: typeof TABS;
-  activeTab: Tab;
+  tabs: string[];
+  activeTab: string;
   videosTab: {
     videos: IVideoSmall[];
     sortBy: 'recent' | 'popular';
     page: number;
     limit: 16;
+    showLoadMoreVideosBtn: boolean;
   };
-  aboutTab: {
-    description: string;
-    total_videos: number;
-    total_views: number;
-    created_at: string;
-  };
+  aboutTab: IProfileAbout;
   profileBasicInfo: IProfileBasicInfo | null;
 }
 
 const initialState: ProfileInitialState = {
   tabs: TABS,
-  activeTab: 'VIDEOS',
+  activeTab: 'videos',
   videosTab: {
     videos: [],
     sortBy: 'recent',
     page: 0,
     limit: 16,
+    showLoadMoreVideosBtn: false,
   },
   aboutTab: {
-    description: '',
     total_videos: 0,
     total_views: 0,
     created_at: '',
@@ -67,9 +63,18 @@ export const ProfileSlice = createSlice({
     },
     setProfileVideos: (state, action: PayloadAction<{ videos: IVideoSmall[] }>) => {
       state.videosTab.videos = action.payload.videos;
+      state.videosTab.showLoadMoreVideosBtn =
+        action.payload.videos.length === state.videosTab.limit;
     },
     setProfileAbout: (state, action: PayloadAction<{ profileAbout: IProfileAbout }>) => {
       state.aboutTab = action.payload.profileAbout;
+    },
+    setProfileActiveTab: (state, action: PayloadAction<{ tab: string }>) => {
+      if (state.tabs.includes(action.payload.tab)) {
+        state.activeTab = action.payload.tab;
+      } else {
+        state.activeTab = '';
+      }
     },
     changeProfileTab: (state, action: PayloadAction<{ tab: Tab }>) => {
       state.activeTab = action.payload.tab;
@@ -95,6 +100,7 @@ export const {
   setProfileVideos,
   setProfileAbout,
   changeProfileTab,
+  setProfileActiveTab,
   incrementVideosPage,
   changeProfileVideosSortBy,
   loadMoreProfileVideos,

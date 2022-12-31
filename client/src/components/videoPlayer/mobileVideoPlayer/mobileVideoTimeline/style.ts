@@ -23,7 +23,7 @@ export const Timeline = styled.div`
 
 export const ProgressBar = styled.div`
   height: 100%;
-  background-color: rgba(254, 44, 85, 1);
+  background-color: ${(props) => props.theme.accentColor};
   display: flex;
   justify-content: flex-end;
   align-items: center;

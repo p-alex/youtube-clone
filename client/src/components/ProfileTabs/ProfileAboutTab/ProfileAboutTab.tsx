@@ -20,7 +20,10 @@ const ProfileAboutTab = () => {
   const router = useRouter();
   const username = router.query.username as string;
 
-  const { description, total_videos, total_views, created_at } = useSelector(
+  const channelDesc = useSelector(
+    (state: RootState) => state.profile.profileBasicInfo?.description
+  );
+  const { total_videos, total_views, created_at } = useSelector(
     (state: RootState) => state.profile.aboutTab
   );
 
@@ -48,23 +51,25 @@ const ProfileAboutTab = () => {
     <ProfileAboutTab__Container>
       <ProfileAboutTab__Box>
         <ProfileAboutTab__Title>Description</ProfileAboutTab__Title>
-        <ProfileAboutTab__Description>{description}</ProfileAboutTab__Description>
+        <ProfileAboutTab__Description>{channelDesc}</ProfileAboutTab__Description>
       </ProfileAboutTab__Box>
-      <ProfileAboutTab__Box width={'300px'}>
-        <ProfileAboutTab__Title>Stats</ProfileAboutTab__Title>
-        <ProfileAboutTab__List>
-          <ProfileAboutTab__Item>
-            Joined {created_at && new Date(created_at).toUTCString()}
-          </ProfileAboutTab__Item>
-          <ProfileAboutTab__Item>{total_subscribers} subscribers</ProfileAboutTab__Item>
-          <ProfileAboutTab__Item>
-            {total_videos} {total_videos === 1 ? 'video' : 'videos'}
-          </ProfileAboutTab__Item>
-          <ProfileAboutTab__Item>
-            {total_views} {total_views === 1 ? 'view' : 'views'}
-          </ProfileAboutTab__Item>
-        </ProfileAboutTab__List>
-      </ProfileAboutTab__Box>
+      {channelDesc !== '' && (
+        <ProfileAboutTab__Box width={'300px'}>
+          <ProfileAboutTab__Title>Stats</ProfileAboutTab__Title>
+          <ProfileAboutTab__List>
+            <ProfileAboutTab__Item>
+              Joined{' '}
+              <span>{created_at && new Date(created_at).toLocaleDateString()}</span>
+            </ProfileAboutTab__Item>
+            <ProfileAboutTab__Item>
+              <span>{total_videos}</span> {total_videos === 1 ? 'video' : 'videos'}
+            </ProfileAboutTab__Item>
+            <ProfileAboutTab__Item>
+              <span>{total_views}</span> {total_views === 1 ? 'view' : 'views'}
+            </ProfileAboutTab__Item>
+          </ProfileAboutTab__List>
+        </ProfileAboutTab__Box>
+      )}
     </ProfileAboutTab__Container>
   );
 };
