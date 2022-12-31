@@ -48,14 +48,14 @@ const VideoPage = () => {
   };
 
   useEffect(() => {
-    if (!videoId || auth.isGettingUser) return;
+    if (!videoId || effectRan.current === true) return;
     handleGetVideo();
     return () => {
       if (videoId) {
         effectRan.current = true;
       }
     };
-  }, [videoId, auth]);
+  }, [videoId]);
 
   useEffect(() => {
     setIsTheatreMode(false);
