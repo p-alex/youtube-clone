@@ -2,7 +2,7 @@ import { object, string, TypeOf, z } from 'zod';
 
 export const getRepliesSchema = object({
   params: object({
-    commentId: string({}),
+    commentId: string({}).uuid('Invalid uuid'),
     page: string({}),
   }),
   body: object({
@@ -12,34 +12,38 @@ export const getRepliesSchema = object({
 
 export const addReplySchema = object({
   body: object({
-    commentId: string({ required_error: 'Comment id is required' }),
+    commentId: string({ required_error: 'Comment id is required' }).uuid('Invalid uuid'),
     text: string({ required_error: 'Text is required' }).min(1).max(1000),
   }),
 });
 
 export const updateReplySchema = object({
   body: object({
-    replyId: string({ required_error: 'Reply id is required' }),
+    replyId: string({ required_error: 'Reply id is required' }).uuid('Invalid uuid'),
     text: string({ required_error: 'Text is required' }).min(1).max(1000),
   }),
 });
 
 export const deleteReplySchema = object({
   body: object({
-    replyId: string({ required_error: 'Reply id is required' }),
-    commentId: string({ required_error: 'Comment id is required' }),
+    replyId: string({ required_error: 'Reply id is required' }).uuid('Invalid uuid'),
+    commentId: string({ required_error: 'Comment id is required' }).uuid('Invalid uuid'),
   }),
 });
 
 export const likeReplySchema = object({
   params: object({
-    replyId: string({ required_error: 'Reply id param is required' }),
+    replyId: string({ required_error: 'Reply id param is required' }).uuid(
+      'Invalid uuid'
+    ),
   }),
 });
 
 export const dislikeReplySchema = object({
   params: object({
-    replyId: string({ required_error: 'Reply id param is required' }),
+    replyId: string({ required_error: 'Reply id param is required' }).uuid(
+      'Invalid uuid'
+    ),
   }),
 });
 

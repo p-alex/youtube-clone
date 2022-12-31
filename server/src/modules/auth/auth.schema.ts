@@ -15,13 +15,13 @@ export const logoutUserSchema = object({
   body: object({
     userId: string({
       required_error: 'user_id is required',
-    }),
+    }).uuid('Invalid uuid'),
   }),
 });
 
 export const verifyEmailSchema = object({
   body: object({
-    code: string({ required_error: 'Code is required' }),
+    code: string({ required_error: 'Code is required' }).length(6, 'Invalid code'),
   }),
 });
 

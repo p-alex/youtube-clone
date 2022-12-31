@@ -2,7 +2,7 @@ import { object, string, TypeOf, z } from 'zod';
 
 export const getCommentsSchema = object({
   params: object({
-    videoId: string({}),
+    videoId: string({}).uuid('Invalid uuid'),
     page: string({}),
   }),
   body: object({
@@ -12,34 +12,38 @@ export const getCommentsSchema = object({
 
 export const addCommentSchema = object({
   body: object({
-    videoId: string({ required_error: 'Video id is required' }),
+    videoId: string({ required_error: 'Video id is required' }).uuid('Invalid uuid'),
     text: string({ required_error: 'Text is required' }).min(1).max(1500),
   }),
 });
 
 export const updateCommentSchema = object({
   body: object({
-    commentId: string({ required_error: 'Comment id is required' }),
+    commentId: string({ required_error: 'Comment id is required' }).uuid('Invalid uuid'),
     text: string({ required_error: 'Text is required' }).min(1).max(1500),
   }),
 });
 
 export const deleteCommentSchema = object({
   body: object({
-    commentId: string({ required_error: 'Comment id is required' }),
-    videoId: string({ required_error: 'Video id is required' }),
+    commentId: string({ required_error: 'Comment id is required' }).uuid('Invalid uuid'),
+    videoId: string({ required_error: 'Video id is required' }).uuid('Invalid uuid'),
   }),
 });
 
 export const likeCommentSchema = object({
   params: object({
-    commentId: string({ required_error: 'Comment id param is required' }),
+    commentId: string({ required_error: 'Comment id param is required' }).uuid(
+      'Invalid uuid'
+    ),
   }),
 });
 
 export const dislikeCommentSchema = object({
   params: object({
-    commentId: string({ required_error: 'Comment id param is required' }),
+    commentId: string({ required_error: 'Comment id param is required' }).uuid(
+      'Invalid uuid'
+    ),
   }),
 });
 
