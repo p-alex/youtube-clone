@@ -35,5 +35,5 @@ export const ProgressBarCircle = styled.div`
   height: 15px;
   transform: translateX(50%);
   border-radius: 50%;
-  background-color: rgba(254, 44, 85, 1);
+  background-color: ${(props) => props.theme.accentColor};
 `;

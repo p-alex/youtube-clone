@@ -1,4 +1,5 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
+import { MOBILE_BREAK_POINT } from '../../../layout/style';
 import DesktopVideoPlayer from './desktopVideoPlayer/DesktopVideoPlayer';
 import MobileVideoPlayer from './mobileVideoPlayer/MobileVideoPlayer';
 
@@ -13,19 +14,22 @@ const VideoPlayer = ({
   isTheatreMode: boolean;
   setIsTheatreMode: React.Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [videoPlayerType, setVideoPlayerType] = useState<'mobile' | 'desktop'>('desktop');
+  const [showMobileVideoPlayer, setShowMobileVideoPlayer] = useState<boolean>(true);
+
+  useEffect(() => {
+    setShowMobileVideoPlayer(window.innerWidth <= MOBILE_BREAK_POINT);
+  }, []);
 
   return (
     <>
-      {videoPlayerType === 'desktop' && (
+      {!showMobileVideoPlayer ? (
         <DesktopVideoPlayer
           src={src}
           totalDuration={totalDuration}
           isTheatreMode={isTheatreMode}
           setIsTheatreMode={setIsTheatreMode}
         />
-      )}
-      {videoPlayerType === 'mobile' && (
+      ) : (
         <MobileVideoPlayer src={src} totalDuration={totalDuration} />
       )}
     </>
