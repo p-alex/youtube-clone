@@ -26,7 +26,7 @@ export const getUserVideosSchema = object({
 
 export const uploadVideoSchema = object({
   body: object({
-    userId: string({ required_error: 'User id is required' }).uuid('Video id is invalid'),
+    userId: string({ required_error: 'User id is required' }).uuid('User id is invalid'),
     title: string({
       required_error: 'Title is required',
     })
@@ -42,9 +42,7 @@ export const uploadVideoSchema = object({
     thumbnailUrl: string({
       required_error: 'Thumbnail is required',
     }).url('Thumbnail url is invalid'),
-    videoUrl: string({ required_error: 'Video_url is required' }).url(
-      'Video url is invalid'
-    ),
+    videoUrl: string({ required_error: 'Video_url is required' }),
     tagList: array(string({})),
   }),
 });
