@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Layout from '../../layout/Layout';
-import VideoHeader from '../../components/videoHeader/VideoHeader';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { resetVideo, setVideo, VideoInfo } from '../../app/features/videoSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import useMobileSize from '../../hooks/screenSizeHooks/useMobileSize';
-import VideoPlayer from '../../components/videoPlayer/VideoPlayer';
 import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import CommentSection from '../../containers/CommentSection/CommentSection';
 import { CommentSectionProvider } from '../../context/CommentSectionContext/CommentSectionProvider';
@@ -18,8 +16,10 @@ import {
   VideoDetailsWrapper,
   VideoPageContainer,
 } from '../../pageStyles/VideoPage.styles';
-import VideoDescription from '../../components/videoDescription/VideoDescription';
 import SuggestionsSideBar from '../../components/SuggestionsSideBar/SuggestionsSideBar';
+import VideoPlayer from '../../components/VideoPageComponents/videoPlayer/VideoPlayer';
+import VideoHeader from '../../components/VideoPageComponents/videoHeader/VideoHeader';
+import VideoDescription from '../../components/VideoPageComponents/videoDescription/VideoDescription';
 
 const VideoPage = () => {
   const auth = useSelector((state: RootState) => state.auth);

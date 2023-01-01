@@ -2,28 +2,28 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  Body,
-  Container,
-  Details,
-  Duration,
-  Stats,
-  Thumbnail,
-  ThumbnailContainer,
-  Title,
-  Username,
-} from './style';
+  SuggestionCard__Body,
+  SuggestionCard__Container,
+  SuggestionCard__Details,
+  SuggestionCard__Duration,
+  SuggestionCard__Stats,
+  SuggestionCard__Thumbnail,
+  SuggestionCard__ThumbnailContainer,
+  SuggestionCard__Title,
+  SuggestionCard__Username,
+} from './SuggestionCard.styles';
 import { IVideoSmall } from '../../app/features/videoSlice';
 import { dateConverter } from '../../utils/dateConverter';
 import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
 
 const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
   return (
-    <Container>
-      <Body>
-        <ThumbnailContainer>
+    <SuggestionCard__Container>
+      <SuggestionCard__Body>
+        <SuggestionCard__ThumbnailContainer>
           <Link href={`/videos/${video.video_id}`}>
             <a>
-              <Thumbnail
+              <SuggestionCard__Thumbnail
                 as={Image}
                 src={video.thumbnail_url}
                 alt=""
@@ -32,21 +32,23 @@ const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
               />
             </a>
           </Link>
-          <Duration>{videoDurationFormatter(video.duration)}</Duration>
-        </ThumbnailContainer>
-        <Details>
+          <SuggestionCard__Duration>
+            {videoDurationFormatter(video.duration)}
+          </SuggestionCard__Duration>
+        </SuggestionCard__ThumbnailContainer>
+        <SuggestionCard__Details>
           <Link href={'/video/1'}>
             <a>
-              <Title>{video.title}</Title>
+              <SuggestionCard__Title>{video.title}</SuggestionCard__Title>
             </a>
           </Link>
-          <Username>{video.username}</Username>
-          <Stats>
+          <SuggestionCard__Username>{video.username}</SuggestionCard__Username>
+          <SuggestionCard__Stats>
             {video.views} views • {dateConverter(new Date(video.created_at).getTime())}
-          </Stats>
-        </Details>
-      </Body>
-    </Container>
+          </SuggestionCard__Stats>
+        </SuggestionCard__Details>
+      </SuggestionCard__Body>
+    </SuggestionCard__Container>
   );
 };
 

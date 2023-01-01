@@ -5,7 +5,7 @@ import { setSuggestions } from '../../app/features/suggestionsSlice';
 import { IVideoSmall, VideoInfo } from '../../app/features/videoSlice';
 import { RootState } from '../../app/store';
 import useAxios from '../../hooks/requestHooks/useAxios';
-import SuggestionCard from '../suggestionCard/SuggestionCard';
+import SuggestionCard from '../SuggestionCard/SuggestionCard';
 import {
   SuggestionsContainer,
   SuggestionsNoResults,

@@ -2,17 +2,17 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  Body,
-  Container,
-  Details,
-  Duration,
-  ProfilePicture,
-  Stats,
-  Thumbnail,
-  ThumbnailContainer,
-  Title,
-  Username,
-} from './style';
+  VideoCard__Body,
+  VideoCard__Container,
+  VideoCard__Details,
+  VideoCard__Duration,
+  VideoCard__ProfilePicture,
+  VideoCard__Stats,
+  VideoCard__Thumbnail,
+  VideoCard__ThumbnailContainer,
+  VideoCard__Title,
+  VideoCard__Username,
+} from './VideoCard.styles';
 import { dateConverter } from '../../utils/dateConverter';
 import { IVideoSmall } from '../../app/features/videoSlice';
 import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
@@ -25,34 +25,36 @@ const VideoCard = ({
   withProfilePicture: boolean;
 }) => {
   return (
-    <Container>
+    <VideoCard__Container>
       <Link href={`/videos/${video.video_id}`}>
-        <ThumbnailContainer>
-          <Thumbnail
+        <VideoCard__ThumbnailContainer>
+          <VideoCard__Thumbnail
             as={Image}
             src={video.thumbnail_url}
             alt=""
             width={700}
             height={393}
           />
-          <Duration>{videoDurationFormatter(video.duration)}</Duration>
-        </ThumbnailContainer>
+          <VideoCard__Duration>
+            {videoDurationFormatter(video.duration)}
+          </VideoCard__Duration>
+        </VideoCard__ThumbnailContainer>
       </Link>
-      <Body>
+      <VideoCard__Body>
         {withProfilePicture && (
-          <ProfilePicture src={video.profile_picture} width={36} height={36} />
+          <VideoCard__ProfilePicture src={video.profile_picture} width={36} height={36} />
         )}
-        <Details>
+        <VideoCard__Details>
           <Link href={`/videos/${video.video_id}`}>
-            <Title>{video.title}</Title>
+            <VideoCard__Title>{video.title}</VideoCard__Title>
           </Link>
-          <Username>{video.username}</Username>
-          <Stats>
+          <VideoCard__Username>{video.username}</VideoCard__Username>
+          <VideoCard__Stats>
             {video.views} views • {dateConverter(new Date(video.created_at).getTime())}
-          </Stats>
-        </Details>
-      </Body>
-    </Container>
+          </VideoCard__Stats>
+        </VideoCard__Details>
+      </VideoCard__Body>
+    </VideoCard__Container>
   );
 };
 

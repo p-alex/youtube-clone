@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BORDER_RADIUS_ROUNDER, MOBILE_BREAK_POINT } from '../../layout/style';
+import { BORDER_RADIUS_ROUNDER, MOBILE_BREAK_POINT } from '../../../layout/style';
 
 export const VideoHeaderContainer = styled.header`
   position: relative;

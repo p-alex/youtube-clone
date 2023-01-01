@@ -18,10 +18,8 @@ export const CustomLogo = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  &::after {
-    content: '►';
-    position: relative;
+  & svg {
+    width: 20px;
     color: ${(props) => props.theme.uiBg};
-    font-size: 0.85rem;
   }
 `;

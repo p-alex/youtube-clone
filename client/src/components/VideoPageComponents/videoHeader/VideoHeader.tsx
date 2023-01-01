@@ -21,14 +21,13 @@ import {
   LikeStatusType,
   likeVideo,
   VideoInfo,
-} from '../../app/features/videoSlice';
-import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
+} from '../../../app/features/videoSlice';
+import useAxiosWithRetry from '../../../hooks/requestHooks/useAxiosWithRetry';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import { SubscribeButton } from '../../ui/SubscribeButton';
-import Image from 'next/image';
+import { RootState } from '../../../app/store';
+import { SubscribeButton } from '../../../ui/SubscribeButton';
 import router from 'next/router';
-import ProfileImage from '../../ui/ProfileImage';
+import ProfileImage from '../../../ui/ProfileImage';
 
 const VideoHeader = ({ video }: { video: VideoInfo }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);

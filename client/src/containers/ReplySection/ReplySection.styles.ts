@@ -16,6 +16,7 @@ export const ReplyToggleBtn = styled.button`
   text-transform: uppercase;
   margin-top: 5px;
   font-size: 0.8rem;
+  margin-bottom: 10px;
   & svg {
     font-size: 0.8rem;
   }

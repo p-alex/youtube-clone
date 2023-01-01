@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND } from '../layout/style';
 
@@ -55,8 +55,6 @@ const AutoResizeTextarea__Textarea = styled.textarea<{ isError: boolean }>`
   border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
 
-const RANDOM_TEXTAREA_ID = 'autoresizing-textarea-' + Math.floor(Math.random() * 1000);
-
 const AutoResizingTextarea = ({
   label,
   error,
@@ -75,6 +73,10 @@ const AutoResizingTextarea = ({
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
+  const RANDOM_TEXTAREA_ID = useRef<string>(
+    'autoresizing-textarea-' + Math.floor(Math.random() * 1000)
+  );
+
   useEffect(() => {
     handleResize();
   }, [value]);
@@ -88,7 +90,7 @@ const AutoResizingTextarea = ({
   };
 
   const formatedId = hideLabel
-    ? RANDOM_TEXTAREA_ID
+    ? RANDOM_TEXTAREA_ID.current
     : label.replaceAll(' ', '-').toLowerCase();
 
   return (

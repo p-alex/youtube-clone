@@ -45,7 +45,7 @@ export const VideoCardWithInfo__Body = styled.div`
 
 export const VideoCardWithInfo__Title = styled.h3`
   color: ${(props) => props.theme.textColor};
-  font-weight: 400;
+  font-weight: 500;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;

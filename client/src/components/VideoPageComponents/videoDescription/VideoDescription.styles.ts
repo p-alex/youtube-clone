@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../../layout/style';
+import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../../../layout/style';
 
 export const VideoDescriptionContainer = styled.div<{ showMoreText: boolean | null }>`
   position: relative;

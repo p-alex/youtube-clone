@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const VideoCard__Container = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 20px;
 `;
 
-export const ThumbnailContainer = styled.div`
+export const VideoCard__ThumbnailContainer = styled.div`
   position: relative;
 `;
 
-export const Duration = styled.p`
+export const VideoCard__Duration = styled.p`
   position: absolute;
   bottom: 10px;
   right: 5px;
@@ -21,7 +21,7 @@ export const Duration = styled.p`
   font-size: 0.85rem;
 `;
 
-export const Thumbnail = styled.img`
+export const VideoCard__Thumbnail = styled.img`
   width: 100%;
   background-color: ${(props) => props.theme.textMutedColor};
   height: 0;
@@ -29,7 +29,7 @@ export const Thumbnail = styled.img`
   cursor: pointer;
 `;
 
-export const Body = styled.div`
+export const VideoCard__Body = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 15px;
@@ -39,17 +39,17 @@ export const Body = styled.div`
   }
 `;
 
-export const ProfilePicture = styled.img`
+export const VideoCard__ProfilePicture = styled.img`
   border-radius: 50%;
 `;
 
-export const Details = styled.div`
+export const VideoCard__Details = styled.div`
   display: flex;
   flex-direction: column;
   color: ${(props) => props.theme.textMutedColor};
 `;
 
-export const Title = styled.p`
+export const VideoCard__Title = styled.p`
   color: ${(props) => props.theme.textColor};
   margin-bottom: 5px;
   cursor: pointer;
@@ -58,9 +58,9 @@ export const Title = styled.p`
   -webkit-line-clamp: 2;
   overflow: hidden;
   font-size: 1.2rem;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
-export const Username = styled.p``;
+export const VideoCard__Username = styled.p``;
 
-export const Stats = styled.p``;
+export const VideoCard__Stats = styled.p``;

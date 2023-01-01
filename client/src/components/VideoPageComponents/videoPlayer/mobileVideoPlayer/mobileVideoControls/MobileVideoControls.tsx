@@ -8,7 +8,8 @@ import {
   MdFullscreenExit,
   MdReplay,
 } from 'react-icons/md';
-import { videoDurationFormatter } from '../../../../utils/videoDurationFormatter';
+import { videoDurationFormatter } from '../../../../../utils/videoDurationFormatter';
+
 import MobileVideoTimeline from '../mobileVideoTimeline/MobileVideoTimeline';
 import {
   BackDrop,

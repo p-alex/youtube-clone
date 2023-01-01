@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../layout/style';
 
-export const Container = styled.div`
+export const SuggestionCard__Container = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 10px;
@@ -11,7 +11,7 @@ export const Container = styled.div`
   }
 `;
 
-export const ThumbnailContainer = styled.div`
+export const SuggestionCard__ThumbnailContainer = styled.div`
   position: relative;
   width: 180px;
   height: 101px;
@@ -21,7 +21,7 @@ export const ThumbnailContainer = styled.div`
   }
 `;
 
-export const Duration = styled.p`
+export const SuggestionCard__Duration = styled.p`
   position: absolute;
   bottom: 3px;
   right: 3px;
@@ -32,7 +32,7 @@ export const Duration = styled.p`
   background-color: black;
 `;
 
-export const Thumbnail = styled.img`
+export const SuggestionCard__Thumbnail = styled.img`
   display: block;
   width: 100%;
   background-color: ${(props) => props.theme.textMutedColor};
@@ -43,7 +43,7 @@ export const Thumbnail = styled.img`
   min-height: 101px;
 `;
 
-export const Body = styled.div`
+export const SuggestionCard__Body = styled.div`
   display: flex;
   justify-content: flex-start;
   gap: 10px;
@@ -52,7 +52,7 @@ export const Body = styled.div`
   }
 `;
 
-export const Details = styled.div`
+export const SuggestionCard__Details = styled.div`
   display: flex;
   flex-direction: column;
   color: ${(props) => props.theme.textMutedColor};
@@ -66,19 +66,19 @@ export const Details = styled.div`
   }
 `;
 
-export const Title = styled.h3`
+export const SuggestionCard__Title = styled.h3`
   color: ${(props) => props.theme.textColor};
   margin-bottom: 5px;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 500;
   width: 180px;
 `;
 
-export const Username = styled.p`
+export const SuggestionCard__Username = styled.p`
   font-size: 0.8rem;
 `;
 
-export const Stats = styled.p`
+export const SuggestionCard__Stats = styled.p`
   font-size: 0.8rem;
 `;

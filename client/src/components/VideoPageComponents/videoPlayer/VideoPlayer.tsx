@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import DesktopVideoPlayer from './desktopVideoPlayer/DesktopVideoPlayer';
 import MobileVideoPlayer from './mobileVideoPlayer/MobileVideoPlayer';
 

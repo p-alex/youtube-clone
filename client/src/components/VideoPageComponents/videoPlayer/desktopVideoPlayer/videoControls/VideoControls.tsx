@@ -10,8 +10,8 @@ import {
   MdVolumeUp,
 } from 'react-icons/md';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../app/store';
-import { videoDurationFormatter } from '../../../../utils/videoDurationFormatter';
+import { RootState } from '../../../../../app/store';
+import { videoDurationFormatter } from '../../../../../utils/videoDurationFormatter';
 import VideoTimeline from '../videoTimeline/VideoTimeline';
 import {
   Control,

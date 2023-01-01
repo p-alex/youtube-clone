@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { VideoInfo } from '../../app/features/videoSlice';
-import { dateConverter } from '../../utils/dateConverter';
+import { VideoInfo } from '../../../app/features/videoSlice';
+import { dateConverter } from '../../../utils/dateConverter';
 
 import {
   VideoDescriptionContainer,

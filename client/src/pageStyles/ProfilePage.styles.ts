@@ -3,7 +3,7 @@ import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 export const ProfilePage__Container = styled.div`
   position: relative;
-  max-width: 1250px;
+  max-width: 1350px;
   margin: auto;
   @media (max-width: 1240px) {
     margin: 0 20px;
