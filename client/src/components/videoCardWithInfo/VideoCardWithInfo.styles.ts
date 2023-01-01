@@ -45,11 +45,13 @@ export const VideoCardWithInfo__Body = styled.div`
 
 export const VideoCardWithInfo__Title = styled.h3`
   color: ${(props) => props.theme.textColor};
-  font-weight: 500;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
+  font-size: 1.2rem;
+  line-height: 25px;
+  font-weight: 500;
 `;
 
 export const VideoCardWithInfo__ViewsAndDate = styled.small`

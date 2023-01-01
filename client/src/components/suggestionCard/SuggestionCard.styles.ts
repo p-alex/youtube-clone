@@ -70,9 +70,10 @@ export const SuggestionCard__Title = styled.h3`
   color: ${(props) => props.theme.textColor};
   margin-bottom: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
   width: 180px;
+  font-size: 1rem;
+  line-height: 22px;
+  font-weight: 500;
 `;
 
 export const SuggestionCard__Username = styled.p`

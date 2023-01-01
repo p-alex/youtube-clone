@@ -58,6 +58,7 @@ export const VideoCard__Title = styled.p`
   -webkit-line-clamp: 2;
   overflow: hidden;
   font-size: 1.2rem;
+  line-height: 25px;
   font-weight: 500;
 `;
 
