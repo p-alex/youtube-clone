@@ -48,13 +48,8 @@ const VideoPage = () => {
   };
 
   useEffect(() => {
-    if (!videoId || effectRan.current === true) return;
+    if (!videoId) return;
     handleGetVideo();
-    return () => {
-      if (videoId) {
-        effectRan.current = true;
-      }
-    };
   }, [videoId]);
 
   useEffect(() => {
