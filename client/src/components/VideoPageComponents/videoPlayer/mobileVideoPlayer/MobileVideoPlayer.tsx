@@ -10,12 +10,14 @@ const MobileVideoPlayer = ({
   totalDuration: number;
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showControls, setShowControls] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [showControls, setShowControls] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  console.log('Mobile: ', videoRef.current);
 
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current!.currentTime);

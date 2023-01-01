@@ -58,18 +58,18 @@ const DesktopVideoPlayer = ({
         controlsList="nodownload"
       />
       <VideoDesktopControls
-        videoRef={videoRef}
         videoContainerRef={videoContainerRef}
-        timeoutHideCursorAndControls={timeoutHideCursorAndControls}
-        currentTime={currentTime}
-        setCurrentTime={setCurrentTime}
-        totalDuration={totalDuration}
+        videoRef={videoRef}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
-        isTheatreMode={isTheatreMode}
-        setIsTheatreMode={setIsTheatreMode}
         showControls={showControls}
         setShowControls={setShowControls}
+        totalDuration={totalDuration}
+        currentTime={currentTime}
+        setCurrentTime={setCurrentTime}
+        timeoutHideCursorAndControls={timeoutHideCursorAndControls}
+        isTheatreMode={isTheatreMode}
+        setIsTheatreMode={setIsTheatreMode}
       />
     </VideoContainer>
   );

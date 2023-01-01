@@ -62,10 +62,10 @@ const MobileVideoControls = ({
 
   useEffect(() => {
     if (isPlaying) {
-      videoRef.current!.play();
+      videoRef.current?.play();
       handleRestartTimeout();
     } else {
-      videoRef.current!.pause();
+      videoRef.current?.pause();
       clearTimeout(timeoutHideControls);
     }
   }, [isPlaying]);
