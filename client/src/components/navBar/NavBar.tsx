@@ -1,23 +1,23 @@
 import React, { useRef, useState } from 'react';
 import {
-  NavAddVideoBtn,
-  NavBtnContainer,
-  NavContainer,
-  NavMobileSearchBtn,
-  NavProfileBtn,
-  NavToggleAndLogoContainer,
-  NavToggleSideBar,
-} from './style';
+  NavBar__AddVideoBtn,
+  NavBar__BtnContainer,
+  NavBar__Container,
+  NavBar__MobileSearchBtn,
+  NavBar__ProfileBtn,
+  NavBar__ToggleAndLogoContainer,
+  NavBar__ToggleBtn,
+} from './NavBar.styles';
 import { BiMenu } from 'react-icons/bi';
 import { MdOutlineVideoCall, MdSearch } from 'react-icons/md';
 import Image from 'next/image';
-import Logo from '../logo/Logo';
-import NavSideBar from '../navSideBar/NavSideBar';
+import Logo from '../Logo/Logo';
+import NavSideBar from '../NavSideBar/NavSideBar';
 import { AnimatePresence } from 'framer-motion';
 import MobileSearchBar from '../SearchBar/MobileSearchBar/MobileSearchBar';
 import useAuth from '../../hooks/authHooks/useAuth';
-import UploadModal from '../uploadModal/UploadModal';
-import { ProfileDropDown } from '../profileDropDown/ProfileDropDown';
+import UploadModal from '../UploadModal/UploadModal';
+import { ProfileDropDown } from '../ProfileDropDown/ProfileDropDown';
 import SearchBar from '../SearchBar/SearchBar';
 import { Button } from '../../ui/Button';
 import Link from 'next/link';
@@ -65,38 +65,38 @@ const NavBar = () => {
           setSearchQuery={handleSetSearchQuery}
         />
       )}
-      <NavContainer>
-        <NavToggleAndLogoContainer>
-          <NavToggleSideBar
+      <NavBar__Container>
+        <NavBar__ToggleAndLogoContainer>
+          <NavBar__ToggleBtn
             onClick={handleToggleSideBar}
             ref={navToggleRef}
             aria-label="Toggle side bar"
           >
             <BiMenu />
-          </NavToggleSideBar>
+          </NavBar__ToggleBtn>
           <Logo />
-        </NavToggleAndLogoContainer>
+        </NavBar__ToggleAndLogoContainer>
 
         <SearchBar searchQuery={searchQuery} setSearchQuery={handleSetSearchQuery} />
 
-        <NavBtnContainer>
-          <NavMobileSearchBtn
+        <NavBar__BtnContainer>
+          <NavBar__MobileSearchBtn
             aria-label="Search"
             onClick={() => setIsMobileSearchActive((prevState) => !prevState)}
           >
             <MdSearch />
-          </NavMobileSearchBtn>
+          </NavBar__MobileSearchBtn>
 
           {isAuth && (
             <>
-              <NavAddVideoBtn
+              <NavBar__AddVideoBtn
                 aria-label="Upload a video"
                 onClick={handleToggleUploadModal}
                 ref={uploadModalToggleRef}
               >
                 <MdOutlineVideoCall />
-              </NavAddVideoBtn>
-              <NavProfileBtn
+              </NavBar__AddVideoBtn>
+              <NavBar__ProfileBtn
                 aria-label="Go to profile"
                 onClick={() => setIsProfileDropDownActive((prevState) => !prevState)}
               >
@@ -106,7 +106,7 @@ const NavBar = () => {
                   height={32}
                   alt=""
                 />
-              </NavProfileBtn>
+              </NavBar__ProfileBtn>
               <AnimatePresence>
                 {isProfileDropDownActive && <ProfileDropDown />}
               </AnimatePresence>
@@ -118,8 +118,8 @@ const NavBar = () => {
               <Button variant="primary">login</Button>
             </Link>
           )}
-        </NavBtnContainer>
-      </NavContainer>
+        </NavBar__BtnContainer>
+      </NavBar__Container>
       <AnimatePresence>
         {isSideBarActive && <NavSideBar handleToggleSideBar={handleToggleSideBar} />}
         {isUploadModalActive && (

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const BigLogo = styled.a`
   display: flex;

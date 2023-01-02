@@ -3,13 +3,13 @@ import { VideoInfo } from '../../../app/features/videoSlice';
 import { dateConverter } from '../../../utils/dateConverter';
 
 import {
-  VideoDescriptionContainer,
-  VideoDescriptionShowMoreBtn,
-  VideoDescriptionStats,
-  VideoDescriptionText,
-} from './VideoDescription.styles';
+  VideoPageDescription__Container,
+  VideoPageDescription__ShowMoreBtn,
+  VideoPageDescription__Stats,
+  VideoPageDescription__Text,
+} from './VideoPageDescription.styles';
 
-const VideoDescription = ({ video }: { video: VideoInfo }) => {
+const VideoPageDescription = ({ video }: { video: VideoInfo }) => {
   const [showMoreText, setShowMoreText] = useState<boolean | null>(null);
   const created_at = useRef(dateConverter(new Date(video.created_at).getTime()));
   useEffect(() => {
@@ -23,7 +23,7 @@ const VideoDescription = ({ video }: { video: VideoInfo }) => {
     }
   }, []);
   return (
-    <VideoDescriptionContainer
+    <VideoPageDescription__Container
       showMoreText={showMoreText}
       onClick={
         showMoreText
@@ -33,23 +33,26 @@ const VideoDescription = ({ video }: { video: VideoInfo }) => {
           : () => {}
       }
     >
-      <VideoDescriptionStats>
+      <VideoPageDescription__Stats>
         <span>{video.views} views</span>•<span>{created_at.current}</span>
-      </VideoDescriptionStats>
-      <VideoDescriptionText showMoreText={showMoreText} id={'videoDescription'}>
+      </VideoPageDescription__Stats>
+      <VideoPageDescription__Text
+        showMoreText={showMoreText}
+        id={'VideoPageDescription__'}
+      >
         {video.description}{' '}
-      </VideoDescriptionText>
+      </VideoPageDescription__Text>
       {showMoreText !== null && (
-        <VideoDescriptionShowMoreBtn
+        <VideoPageDescription__ShowMoreBtn
           onClick={
             showMoreText ? () => setShowMoreText((prevState) => !prevState) : () => {}
           }
         >
           {showMoreText ? 'Show less' : 'Show more'}
-        </VideoDescriptionShowMoreBtn>
+        </VideoPageDescription__ShowMoreBtn>
       )}
-    </VideoDescriptionContainer>
+    </VideoPageDescription__Container>
   );
 };
 
-export default VideoDescription;
+export default VideoPageDescription;

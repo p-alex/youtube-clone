@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react';
-import MobileVideoControls from './mobileVideoControls/MobileVideoControls';
-import { Container, Video } from './style';
+import MobileVideoControls from './MobileVideoControls/MobileVideoControls';
+import {
+  MobileVideoPlayer__Container,
+  MobileVideoPlayer__Video,
+} from './MobileVideoPlayer.styles';
 
 const MobileVideoPlayer = ({
   src,
@@ -17,8 +20,6 @@ const MobileVideoPlayer = ({
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  console.log('Mobile: ', videoRef.current);
-
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current!.currentTime);
   };
@@ -28,8 +29,12 @@ const MobileVideoPlayer = ({
   };
 
   return (
-    <Container ref={videoContainerRef} hideOverflow={!showControls}>
-      <Video src={src} ref={videoRef} onTimeUpdate={handleTimeUpdate} />
+    <MobileVideoPlayer__Container ref={videoContainerRef} hideOverflow={!showControls}>
+      <MobileVideoPlayer__Video
+        src={src}
+        ref={videoRef}
+        onTimeUpdate={handleTimeUpdate}
+      />
       <MobileVideoControls
         videoContainerRef={videoContainerRef}
         videoRef={videoRef}
@@ -44,7 +49,7 @@ const MobileVideoPlayer = ({
         setCurrentTime={setCurrentTime}
         handleSetNewTime={handleSetNewTime}
       />
-    </Container>
+    </MobileVideoPlayer__Container>
   );
 };
 

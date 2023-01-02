@@ -12,7 +12,7 @@ import {
   FormWrapper,
 } from '../../ui/Form';
 import { VerifyCodeSchemaType } from '../../schemas/verifyCode.schema';
-import Logo from '../logo/Logo';
+import Logo from '../Logo/Logo';
 import Link from 'next/link';
 import InputGroup from '../../ui/InputGroup';
 

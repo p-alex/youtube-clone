@@ -10,16 +10,16 @@ import {
 } from 'react-icons/md';
 import { videoDurationFormatter } from '../../../../../utils/videoDurationFormatter';
 
-import MobileVideoTimeline from '../mobileVideoTimeline/MobileVideoTimeline';
+import MobileVideoTimeline from '../MobileVideoTimeline/MobileVideoTimeline';
 import {
-  BackDrop,
-  BigControls,
-  BottomContainer,
-  Container,
-  Control,
-  Duration,
-  PlayAndSkipControls,
-} from './style';
+  MobileVideoControls__BackDrop,
+  MobileVideoControls__BigControls,
+  MobileVideoControls__BottomContainer,
+  MobileVideoControls__Container,
+  MobileVideoControls__Control,
+  MobileVideoControls__Duration,
+  MobileVideoControls__PlayAndSkipControls,
+} from './MobileVideoControls.styles';
 
 let timeoutHideControls: NodeJS.Timeout | undefined;
 
@@ -104,31 +104,31 @@ const MobileVideoControls = ({
   }, []);
 
   return (
-    <Container showControls={showControls}>
-      <BackDrop onClick={handleToggleShowControls} />
-      <PlayAndSkipControls disableClick={!showControls}>
-        <BigControls onClick={() => handleSkip(-10)}>
+    <MobileVideoControls__Container showControls={showControls}>
+      <MobileVideoControls__BackDrop onClick={handleToggleShowControls} />
+      <MobileVideoControls__PlayAndSkipControls disableClick={!showControls}>
+        <MobileVideoControls__BigControls onClick={() => handleSkip(-10)}>
           <MdReplay10 />
-        </BigControls>
+        </MobileVideoControls__BigControls>
 
-        <BigControls onClick={handleTogglePlay}>
+        <MobileVideoControls__BigControls onClick={handleTogglePlay}>
           {isPlaying && <MdPause />}
           {!isPlaying && currentTime !== totalDuration && <MdPlayArrow />}
           {!isPlaying && currentTime === totalDuration && <MdReplay />}
-        </BigControls>
+        </MobileVideoControls__BigControls>
 
-        <BigControls onClick={() => handleSkip(10)}>
+        <MobileVideoControls__BigControls onClick={() => handleSkip(10)}>
           <MdForward10 />
-        </BigControls>
-      </PlayAndSkipControls>
-      <BottomContainer>
-        <Duration>
+        </MobileVideoControls__BigControls>
+      </MobileVideoControls__PlayAndSkipControls>
+      <MobileVideoControls__BottomContainer>
+        <MobileVideoControls__Duration>
           {videoDurationFormatter(currentTime)} / {videoDurationFormatter(totalDuration)}
-        </Duration>
-        <Control onClick={handleToggleFullscreen}>
+        </MobileVideoControls__Duration>
+        <MobileVideoControls__Control onClick={handleToggleFullscreen}>
           {isFullscreen ? <MdFullscreenExit /> : <MdFullscreen />}
-        </Control>
-      </BottomContainer>
+        </MobileVideoControls__Control>
+      </MobileVideoControls__BottomContainer>
       <MobileVideoTimeline
         videoRef={videoRef}
         isPlaying={isPlaying}
@@ -139,7 +139,7 @@ const MobileVideoControls = ({
         totalDuration={totalDuration}
         handleSetNewTime={handleSetNewTime}
       />
-    </Container>
+    </MobileVideoControls__Container>
   );
 };
 

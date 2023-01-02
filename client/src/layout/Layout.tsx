@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavBar from '../components/navBar/NavBar';
+import NavBar from '../components/NavBar/NavBar';
 import { NAV_BAR_HEIGHT } from './style';
 
 const Main = styled.main`

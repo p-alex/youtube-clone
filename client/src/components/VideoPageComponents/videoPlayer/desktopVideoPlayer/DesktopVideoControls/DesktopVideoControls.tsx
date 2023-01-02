@@ -12,15 +12,15 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../app/store';
 import { videoDurationFormatter } from '../../../../../utils/videoDurationFormatter';
-import VideoTimeline from '../videoTimeline/VideoTimeline';
+import DesktopVideoTimeline from '../DesktopVideoTimeline/DesktopVideoTimeline';
 import {
-  Control,
-  DurationContainer,
-  TheatreIcon,
-  VideoControls,
-  VolumeContainer,
-  VolumeSlider,
-} from './style';
+  DesktopVideoControls__Container,
+  DesktopVideoControls__Control,
+  DesktopVideoControls__DurationContainer,
+  DesktopVideoControls__TheatreIcon,
+  DesktopVideoControls__VolumeContainer,
+  DesktopVideoControls__VolumeSlider,
+} from './DesktopVideoControls.styles';
 
 const VideoDesktopControls = ({
   videoContainerRef,
@@ -141,8 +141,11 @@ const VideoDesktopControls = ({
   }, [canUseKeyBinds]);
 
   return (
-    <VideoControls showControls={showControls} onMouseMove={handleMouseOverVideoControls}>
-      <VideoTimeline
+    <DesktopVideoControls__Container
+      showControls={showControls}
+      onMouseMove={handleMouseOverVideoControls}
+    >
+      <DesktopVideoTimeline
         currentTime={currentTime}
         setCurrentTime={setCurrentTime}
         videoRef={videoRef}
@@ -150,7 +153,7 @@ const VideoDesktopControls = ({
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
       />
-      <Control
+      <DesktopVideoControls__Control
         type={'button'}
         onClick={handleTogglePlay}
         title={
@@ -164,14 +167,17 @@ const VideoDesktopControls = ({
         {isPlaying && <MdPause />}
         {!isPlaying && currentTime !== totalDuration && <MdPlayArrow />}
         {!isPlaying && currentTime === totalDuration && <MdReplay />}
-      </Control>
-      <VolumeContainer>
-        <Control onClick={handleToggleMute} title={isMuted ? 'Unmute' : 'Mute'}>
+      </DesktopVideoControls__Control>
+      <DesktopVideoControls__VolumeContainer>
+        <DesktopVideoControls__Control
+          onClick={handleToggleMute}
+          title={isMuted ? 'Unmute' : 'Mute'}
+        >
           {!isMuted && volumeLevel === 'high' && <MdVolumeUp />}
           {!isMuted && volumeLevel === 'low' && <MdVolumeDown />}
           {(isMuted || volumeLevel === 'muted') && <MdVolumeOff />}
-        </Control>
-        <VolumeSlider
+        </DesktopVideoControls__Control>
+        <DesktopVideoControls__VolumeSlider
           type="range"
           min="0"
           max="1"
@@ -179,21 +185,24 @@ const VideoDesktopControls = ({
           value={volume}
           onChange={handleChangeVolume}
         />
-      </VolumeContainer>
-      <DurationContainer>
+      </DesktopVideoControls__VolumeContainer>
+      <DesktopVideoControls__DurationContainer>
         {videoDurationFormatter(currentTime)} / {videoDurationFormatter(totalDuration)}
-      </DurationContainer>
-      <Control title={'Theatre mode'} onClick={handleToggleTheatreMode}>
-        <TheatreIcon className={isTheatreMode ? 'active' : ''} />
-      </Control>
-      <Control
+      </DesktopVideoControls__DurationContainer>
+      <DesktopVideoControls__Control
+        title={'Theatre mode'}
+        onClick={handleToggleTheatreMode}
+      >
+        <DesktopVideoControls__TheatreIcon className={isTheatreMode ? 'active' : ''} />
+      </DesktopVideoControls__Control>
+      <DesktopVideoControls__Control
         type={'button'}
         onClick={handleToggleFullscreen}
         title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
       >
         {isFullscreen ? <MdFullscreenExit /> : <MdFullscreen />}
-      </Control>
-    </VideoControls>
+      </DesktopVideoControls__Control>
+    </DesktopVideoControls__Container>
   );
 };
 

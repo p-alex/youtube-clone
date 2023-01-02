@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Timeline = styled.div`
+export const DesktopVideoTimeline__Timeline = styled.div`
   position: absolute;
   display: flex;
   align-items: flex-end;
@@ -17,7 +17,7 @@ export const Timeline = styled.div`
   }
 `;
 
-export const Slider = styled.div`
+export const DesktopVideoTimeline__Slider = styled.div`
   position: relative;
   height: 25%;
   width: 100%;
@@ -26,13 +26,13 @@ export const Slider = styled.div`
   &.active {
     height: 100%;
   }
-  ${Timeline}:hover & {
+  ${DesktopVideoTimeline__Timeline}:hover & {
     height: 100%;
     cursor: pointer;
   }
 `;
 
-export const ProgressBar = styled.div`
+export const DesktopVideoTimeline__ProgressBar = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
@@ -50,7 +50,7 @@ export const ProgressBar = styled.div`
   }
 `;
 
-export const PreviewBar = styled.div`
+export const DesktopVideoTimeline__PreviewBar = styled.div`
   position: absolute;
   top: 0;
   left: 0;

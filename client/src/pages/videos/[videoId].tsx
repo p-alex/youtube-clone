@@ -17,9 +17,9 @@ import {
   VideoPageContainer,
 } from '../../pageStyles/VideoPage.styles';
 import SuggestionsSideBar from '../../components/SuggestionsSideBar/SuggestionsSideBar';
-import VideoPlayer from '../../components/VideoPageComponents/videoPlayer/VideoPlayer';
-import VideoHeader from '../../components/VideoPageComponents/videoHeader/VideoHeader';
-import VideoDescription from '../../components/VideoPageComponents/videoDescription/VideoDescription';
+import VideoPlayer from '../../components/VideoPageComponents/VideoPlayer/VideoPlayer';
+import VideoPageDescription from '../../components/VideoPageComponents/VideoPageDescription/VideoPageDescription';
+import VideoPageHeader from '../../components/VideoPageComponents/VideoPageHeader/VideoPageHeader';
 
 const VideoPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -29,8 +29,6 @@ const VideoPage = () => {
   const [isTheatreMode, setIsTheatreMode] = useState(false);
   const isMobileSize = useMobileSize();
   const videoId = useRouter().query.videoId;
-
-  const effectRan = useRef(false);
 
   const [getVideo, { isLoading, errors }] = useAxiosWithRetry<
     { videoId: string; userId: string },
@@ -90,8 +88,8 @@ const VideoPage = () => {
             </VideoContainer>
             <VideoDetailsWrapper>
               <VideoDetailsContainer>
-                <VideoHeader video={video} />
-                <VideoDescription video={video} />
+                <VideoPageHeader video={video} />
+                <VideoPageDescription video={video} />
                 <CommentSectionProvider>
                   {video && <CommentSection video={video} />}
                 </CommentSectionProvider>

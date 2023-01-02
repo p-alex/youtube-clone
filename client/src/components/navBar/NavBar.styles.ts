@@ -5,7 +5,7 @@ import {
   NAV_MOBILE_BREAK_POINT,
 } from '../../layout/style';
 
-export const NavContainer = styled.nav`
+export const NavBar__Container = styled.nav`
   position: fixed;
   display: flex;
   align-items: center;
@@ -22,20 +22,20 @@ export const NavContainer = styled.nav`
   }
 `;
 
-export const NavToggleAndLogoContainer = styled.div`
+export const NavBar__ToggleAndLogoContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
 `;
 
-export const NavToggleSideBar = styled.button`
+export const NavBar__ToggleBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.textColor};
 `;
 
-export const NavSearchForm = styled.form`
+export const NavBar__SearchForm = styled.form`
   position: relative;
   display: flex;
   justify-content: center;
@@ -46,7 +46,7 @@ export const NavSearchForm = styled.form`
   }
 `;
 
-export const NavSearch = styled.input`
+export const NavBar__Search = styled.input`
   border: solid 1px ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.inputBg};
@@ -56,12 +56,12 @@ export const NavSearch = styled.input`
   max-width: 600px;
 `;
 
-export const NavBtnContainer = styled.div`
+export const NavBar__BtnContainer = styled.div`
   display: flex;
   gap: 20px;
 `;
 
-export const NavMobileSearchBtn = styled.button`
+export const NavBar__MobileSearchBtn = styled.button`
   display: none;
   color: ${(props) => props.theme.textColor};
   @media (max-width: ${NAV_MOBILE_BREAK_POINT}px) {
@@ -73,7 +73,7 @@ export const NavMobileSearchBtn = styled.button`
   }
 `;
 
-export const NavAddVideoBtn = styled.button`
+export const NavBar__AddVideoBtn = styled.button`
   color: ${(props) => props.theme.textColor};
   width: 32px;
   height: 32px;
@@ -82,21 +82,10 @@ export const NavAddVideoBtn = styled.button`
   justify-content: center;
 `;
 
-export const NavProfileBtn = styled.button`
+export const NavBar__ProfileBtn = styled.button`
   width: 32px;
   height: 32px;
   & img {
     border-radius: 50%;
   }
-`;
-
-export const LoginInBtn = styled.button`
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  gap: 10px;
-  color: ${(props) => props.theme.accentColor};
-  border: solid 2px ${(props) => props.theme.accentColor};
-  text-transform: uppercase;
-  font-weight: bold;
 `;

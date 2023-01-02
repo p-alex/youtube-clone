@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const UploadResultStage__Container = styled.div`
   position: relative;
   width: 100%;
   height: calc(100% - 60px);
@@ -10,7 +10,7 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-export const ResultContainer = styled.div`
+export const UploadResultStage__ResultContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
@@ -24,6 +24,6 @@ export const ResultContainer = styled.div`
   }
 `;
 
-export const Message = styled.h3`
+export const UploadResultStage__Message = styled.h3`
   color: ${(props) => props.theme.textColor};
 `;

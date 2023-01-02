@@ -5,9 +5,9 @@ import {
 } from '../../context/CommentSectionContext/CommentSectionProvider';
 import Comment from '../../components/Comment/Comment';
 import {
-  CommentLoadMoreBtn,
-  CommentSectionContainer,
-  TotalComments,
+  CommentSection__Container,
+  CommentSection__LoadBtn,
+  CommentSection__TotalComments,
 } from './CommentSection.styles';
 import CommentForm from '../../components/Comment/CommentForm/CommentForm';
 import { ReplySectionProvider } from '../../context/ReplySectionContext/ReplySectionProvider';
@@ -95,8 +95,10 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
   }, [page]);
 
   return (
-    <CommentSectionContainer>
-      <TotalComments>{video.total_comments} comments</TotalComments>
+    <CommentSection__Container>
+      <CommentSection__TotalComments>
+        {video.total_comments} comments
+      </CommentSection__TotalComments>
       {user.user_id && (
         <CommentForm
           value={newCommentText}
@@ -117,12 +119,14 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
         );
       })}
       {comments.length < video.total_comments && video.total_comments > 12 && (
-        <CommentLoadMoreBtn onClick={() => dispatchCommentSection({ type: 'NEXT_PAGE' })}>
+        <CommentSection__LoadBtn
+          onClick={() => dispatchCommentSection({ type: 'NEXT_PAGE' })}
+        >
           Load more comments
-        </CommentLoadMoreBtn>
+        </CommentSection__LoadBtn>
       )}
       {isLoadMoreCommentsLoading && <Spinner />}
-    </CommentSectionContainer>
+    </CommentSection__Container>
   );
 };
 

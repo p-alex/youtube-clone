@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, ProgressBar, ProgressBarCircle, Timeline } from './style';
+import {
+  MobileVideoTimeline__Container,
+  MobileVideoTimeline__ProgressBar,
+  MobileVideoTimeline__ProgressBarCircle,
+  MobileVideoTimeline__Timeline,
+} from './MobileVideoTimeline.styles';
 
 const MobileVideoTimeline = ({
   videoRef,
@@ -91,17 +96,17 @@ const MobileVideoTimeline = ({
   });
 
   return (
-    <Container
+    <MobileVideoTimeline__Container
       canInteract={showControls}
       onMouseDown={(e) => handleStartMove(e.pageX)}
       onTouchStart={(e) => handleStartMove(e.touches[0].pageX)}
     >
-      <Timeline ref={timelineRef}>
-        <ProgressBar style={{ width: `${progress}%` }}>
-          <ProgressBarCircle></ProgressBarCircle>
-        </ProgressBar>
-      </Timeline>
-    </Container>
+      <MobileVideoTimeline__Timeline ref={timelineRef}>
+        <MobileVideoTimeline__ProgressBar style={{ width: `${progress}%` }}>
+          <MobileVideoTimeline__ProgressBarCircle></MobileVideoTimeline__ProgressBarCircle>
+        </MobileVideoTimeline__ProgressBar>
+      </MobileVideoTimeline__Timeline>
+    </MobileVideoTimeline__Container>
   );
 };
 

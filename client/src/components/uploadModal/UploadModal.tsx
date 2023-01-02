@@ -8,13 +8,13 @@ import {
   UploadModal__CloseBtn,
 } from './UploadModal.styles';
 import { MdClose } from 'react-icons/md';
-import ChooseVideoStage from './stages/chooseVideoStage/ChooseVideoStage';
-import VideoDetailsStage from './stages/videoDetailsStage/VideoDetailsStage';
-import UploadVideoStage from './stages/uploadVideoStage/UploadVideoStage';
-import UploadResultStage from './stages/uploadResultStage/UploadResultStage';
 import FocusTrapRedirectFocus from '../focusTrap';
 import { motion } from 'framer-motion';
 import useUploadModal from '../../hooks/useUploadModal';
+import ChooseVideoStage from './stages/ChooseVideoStage/ChooseVideoStage';
+import VideoDetailsStage from './stages/VideoDetailsStage/VideoDetailsStage';
+import UploadVideoStage from './stages/UploadVideoStage/UploadVideoStage';
+import UploadResultStage from './stages/UploadResultStage/UploadResultStage';
 
 const UploadModal = ({
   handleToggleUploadModal,

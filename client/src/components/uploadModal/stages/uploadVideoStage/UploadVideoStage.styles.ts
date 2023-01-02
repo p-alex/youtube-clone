@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const UploadVideoStage__Container = styled.div`
   position: relative;
   width: 100%;
   height: calc(100% - 60px);
@@ -10,7 +10,7 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-export const UploadingContainer = styled.div`
+export const UploadVideoStage__UploadingContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -20,10 +20,10 @@ export const UploadingContainer = styled.div`
   width: 100%;
 `;
 
-export const Status = styled.h3`
+export const UploadVideoStage__Status = styled.h3`
   color: ${(props) => props.theme.textColor};
 `;
 
-export const Progress = styled.p`
+export const UploadVideoStage__Progress = styled.p`
   color: ${(props) => props.theme.textColor};
 `;

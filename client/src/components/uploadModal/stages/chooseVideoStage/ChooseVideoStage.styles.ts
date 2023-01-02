@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const ChooseVideoState__Container = styled.div`
   position: relative;
   width: 100%;
   height: calc(100% - 60px);
@@ -10,6 +10,6 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-export const HiddenFileInput = styled.input`
+export const ChooseVideoState__HiddenFileInput = styled.input`
   display: none;
 `;

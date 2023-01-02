@@ -6,16 +6,16 @@ import {
   AiFillDislike,
 } from 'react-icons/ai';
 import {
-  VideoHeaderUserInfo,
-  VideoHeaderBtnsRow,
-  VideoHeaderColumnContainer,
-  VideoHeaderContainer,
-  VideoHeaderSubscribers,
-  VideoHeaderTitle,
-  VideoHeaderUsername,
-  LikeDislikeBtn,
-  LikeDislikeGroup,
-} from './VideoHeader.styles';
+  VideoPageHeader__BtnsRow,
+  VideoPageHeader__ColumnContainer,
+  VideoPageHeader__Container,
+  VideoPageHeader__LikeDislikeBtn,
+  VideoPageHeader__LikeDislikeGroup,
+  VideoPageHeader__Subscribers,
+  VideoPageHeader__Title,
+  VideoPageHeader__UserInfo,
+  VideoPageHeader__Username,
+} from './VideoPageHeader.styles';
 import {
   dislikeVideo,
   LikeStatusType,
@@ -29,7 +29,7 @@ import { SubscribeButton } from '../../../ui/SubscribeButton';
 import router from 'next/router';
 import ProfileImage from '../../../ui/ProfileImage';
 
-const VideoHeader = ({ video }: { video: VideoInfo }) => {
+const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const dispatch = useDispatch();
 
@@ -72,37 +72,37 @@ const VideoHeader = ({ video }: { video: VideoInfo }) => {
   };
 
   return (
-    <VideoHeaderContainer>
-      <VideoHeaderTitle>{video.title}</VideoHeaderTitle>
-      <VideoHeaderBtnsRow>
-        <VideoHeaderUserInfo>
+    <VideoPageHeader__Container>
+      <VideoPageHeader__Title>{video.title}</VideoPageHeader__Title>
+      <VideoPageHeader__BtnsRow>
+        <VideoPageHeader__UserInfo>
           <ProfileImage
             imageUrl={video.profile_picture}
             width={40}
             height={40}
             username={video.username}
           />
-          <VideoHeaderColumnContainer>
-            <VideoHeaderUsername>{video.username}</VideoHeaderUsername>
-            <VideoHeaderSubscribers>
+          <VideoPageHeader__ColumnContainer>
+            <VideoPageHeader__Username>{video.username}</VideoPageHeader__Username>
+            <VideoPageHeader__Subscribers>
               {video.total_subscribers} subsribers
-            </VideoHeaderSubscribers>
-          </VideoHeaderColumnContainer>
+            </VideoPageHeader__Subscribers>
+          </VideoPageHeader__ColumnContainer>
           <SubscribeButton variant="normal">Subscribe</SubscribeButton>
-        </VideoHeaderUserInfo>
-        <LikeDislikeGroup>
-          <LikeDislikeBtn onClick={handleLikeVideo}>
+        </VideoPageHeader__UserInfo>
+        <VideoPageHeader__LikeDislikeGroup>
+          <VideoPageHeader__LikeDislikeBtn onClick={handleLikeVideo}>
             {video.like_status === 'like' ? <AiFillLike /> : <AiOutlineLike />}
             {video.total_likes}
-          </LikeDislikeBtn>
-          <LikeDislikeBtn onClick={handleDislikeVideo}>
+          </VideoPageHeader__LikeDislikeBtn>
+          <VideoPageHeader__LikeDislikeBtn onClick={handleDislikeVideo}>
             {video.like_status === 'dislike' ? <AiFillDislike /> : <AiOutlineDislike />}
             {video.total_dislikes}
-          </LikeDislikeBtn>
-        </LikeDislikeGroup>
-      </VideoHeaderBtnsRow>
-    </VideoHeaderContainer>
+          </VideoPageHeader__LikeDislikeBtn>
+        </VideoPageHeader__LikeDislikeGroup>
+      </VideoPageHeader__BtnsRow>
+    </VideoPageHeader__Container>
   );
 };
 
-export default VideoHeader;
+export default VideoPageHeader;

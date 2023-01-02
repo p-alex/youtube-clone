@@ -8,17 +8,17 @@ import {
 import useReply from '../../hooks/commentSectionHooks/useReply';
 import { dateConverter } from '../../utils/dateConverter';
 import {
-  ReplyBody,
-  ReplyButton,
-  ReplyButtons,
-  ReplyContainer,
-  ReplyDate,
-  ReplyFormContainer,
-  ReplyHeader,
-  ReplyProfilePicture,
-  ReplyText,
-  ReplyUsername,
-  ReplyUsernameAndDate,
+  Reply__Body,
+  Reply__Button,
+  Reply__Buttons,
+  Reply__Container,
+  Reply__Date,
+  Reply__FormContainer,
+  Reply__Header,
+  Reply__ProfilePicture,
+  Reply__Text,
+  Reply__Username,
+  Reply__UsernameAndDate,
 } from './Reply.styles';
 import {
   AiFillDislike,
@@ -74,7 +74,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
   }, []);
 
   return (
-    <ReplyContainer>
+    <Reply__Container>
       {toDelete === reply.reply_id && (
         <ConfirmationModal
           isLoading={isDeleteReplyLoading}
@@ -100,43 +100,43 @@ const Reply = ({ reply }: { reply: IReply }) => {
       )}
       {toEdit !== reply.reply_id && (
         <>
-          <ReplyProfilePicture>
+          <Reply__ProfilePicture>
             <Image src={reply.profile_picture} width="40" height="40" alt="" />
-          </ReplyProfilePicture>
-          <ReplyBody>
-            <ReplyHeader>
-              <ReplyUsernameAndDate>
-                <ReplyUsername>
+          </Reply__ProfilePicture>
+          <Reply__Body>
+            <Reply__Header>
+              <Reply__UsernameAndDate>
+                <Reply__Username>
                   <Link href={'#'}>{reply.username}</Link>
-                </ReplyUsername>
-                <ReplyDate>
+                </Reply__Username>
+                <Reply__Date>
                   {dateConverter(new Date(reply.created_at).getTime())}
-                </ReplyDate>
-              </ReplyUsernameAndDate>
+                </Reply__Date>
+              </Reply__UsernameAndDate>
               {reply.user_id === user.user_id && (
                 <CommentDropDown
                   handleSetToEdit={handleSetToEdit}
                   handleSetToDelete={handleSetToDelete}
                 />
               )}
-            </ReplyHeader>
-            <ReplyText showMoreText={showMoreText} id={`replyText-${reply.reply_id}`}>
+            </Reply__Header>
+            <Reply__Text showMoreText={showMoreText} id={`replyText-${reply.reply_id}`}>
               {reply.text}
-            </ReplyText>
+            </Reply__Text>
             {typeof showMoreText === 'boolean' && (
               <ReadMoreToggleBtn onClick={handleToggleShowMoreText}>
                 {showMoreText ? 'Show less' : 'Read more'}
               </ReadMoreToggleBtn>
             )}
-            <ReplyButtons>
-              <ReplyButton
+            <Reply__Buttons>
+              <Reply__Button
                 onClick={handleLikeReply}
                 disabled={isLikeReplyLoading || isDislikeReplyLoading}
               >
                 {reply.total_likes}{' '}
                 {reply.like_status === 'like' ? <AiFillLike /> : <AiOutlineLike />}
-              </ReplyButton>
-              <ReplyButton
+              </Reply__Button>
+              <Reply__Button
                 onClick={handleDislikeReply}
                 disabled={isDislikeReplyLoading || isLikeReplyLoading}
               >
@@ -146,15 +146,15 @@ const Reply = ({ reply }: { reply: IReply }) => {
                 ) : (
                   <AiOutlineDislike />
                 )}
-              </ReplyButton>
+              </Reply__Button>
               {reply.user_id !== user.user_id && (
-                <ReplyButton onClick={handleSetToReplyTo} ref={replyBtn}>
+                <Reply__Button onClick={handleSetToReplyTo} ref={replyBtn}>
                   Reply
-                </ReplyButton>
+                </Reply__Button>
               )}
-            </ReplyButtons>
+            </Reply__Buttons>
             {reply.reply_id === toReplyTo && (
-              <ReplyFormContainer>
+              <Reply__FormContainer>
                 <CommentForm
                   isLoading={isAddReplyLoading}
                   value={newReplyText}
@@ -167,12 +167,12 @@ const Reply = ({ reply }: { reply: IReply }) => {
                   autoFocus
                   error={undefined}
                 />
-              </ReplyFormContainer>
+              </Reply__FormContainer>
             )}
-          </ReplyBody>
+          </Reply__Body>
         </>
       )}
-    </ReplyContainer>
+    </Reply__Container>
   );
 };
 

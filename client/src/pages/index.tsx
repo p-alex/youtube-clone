@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Videos from '../components/videos/Videos';
+import Videos from '../components/VideosDisplay/VideosDisplay';
 import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../layout/Layout';
 import { useEffect, useState } from 'react';

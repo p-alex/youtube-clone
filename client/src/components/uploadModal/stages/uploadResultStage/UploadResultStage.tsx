@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
-import { Container, Message, ResultContainer } from './style';
+import {
+  UploadResultStage__Container,
+  UploadResultStage__Message,
+  UploadResultStage__ResultContainer,
+} from './UploadResultStage.styles';
 import { MdDone, MdError } from 'react-icons/md';
 import { UploadResult } from '../../../../hooks/useUploadModal';
 const UploadResultStage = ({
@@ -13,14 +17,18 @@ const UploadResultStage = ({
     lastFocusableElement.current.focus();
   }, []);
   return (
-    <Container>
-      <ResultContainer>
+    <UploadResultStage__Container>
+      <UploadResultStage__ResultContainer>
         {result.success ? <MdDone /> : <MdError />}
-        <Message ref={lastFocusableElement} tabIndex={0} aria-live="assertive">
+        <UploadResultStage__Message
+          ref={lastFocusableElement}
+          tabIndex={0}
+          aria-live="assertive"
+        >
           {result.message}
-        </Message>
-      </ResultContainer>
-    </Container>
+        </UploadResultStage__Message>
+      </UploadResultStage__ResultContainer>
+    </UploadResultStage__Container>
   );
 };
 

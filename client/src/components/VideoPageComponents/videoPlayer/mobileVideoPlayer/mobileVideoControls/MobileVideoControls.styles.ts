@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ showControls: boolean }>`
+export const MobileVideoControls__Container = styled.div<{ showControls: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@ export const Container = styled.div<{ showControls: boolean }>`
   opacity: ${(props) => (props.showControls ? '1' : '0')};
 `;
 
-export const BackDrop = styled.div`
+export const MobileVideoControls__BackDrop = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -20,7 +20,9 @@ export const BackDrop = styled.div`
   z-index: 1;
 `;
 
-export const PlayAndSkipControls = styled.div<{ disableClick: boolean }>`
+export const MobileVideoControls__PlayAndSkipControls = styled.div<{
+  disableClick: boolean;
+}>`
   position: absolute;
   top: 50%;
   left: 0;
@@ -33,7 +35,7 @@ export const PlayAndSkipControls = styled.div<{ disableClick: boolean }>`
   z-index: ${(props) => (props.disableClick ? '0' : '2')};
 `;
 
-export const BigControls = styled.button`
+export const MobileVideoControls__BigControls = styled.button`
   width: 30px;
   height: 30px;
   color: #ffffff;
@@ -48,7 +50,7 @@ export const BigControls = styled.button`
   }
 `;
 
-export const BottomContainer = styled.div`
+export const MobileVideoControls__BottomContainer = styled.div`
   position: absolute;
   left: 0;
   width: 100%;
@@ -60,7 +62,7 @@ export const BottomContainer = styled.div`
   z-index: 2;
 `;
 
-export const Control = styled.button`
+export const MobileVideoControls__Control = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +75,7 @@ export const Control = styled.button`
   }
 `;
 
-export const Duration = styled.p`
+export const MobileVideoControls__Duration = styled.p`
   color: #fff;
   font-size: 0.8rem;
 `;

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
-import Logo from '../components/logo/Logo';
+import Logo from '../components/Logo/Logo';
 import Layout from '../layout/Layout';
 import useAxios from '../hooks/requestHooks/useAxios';
 import { Button } from '../ui/Button';
@@ -18,7 +18,7 @@ import {
   FormTitle,
   FormWrapper,
 } from '../ui/Form';
-import VerifyCodeForm from '../components/verifyCodeForm/VerifyCodeForm';
+import VerifyCodeForm from '../components/VerifyCodeForm/VerifyCodeForm';
 import InputGroup from '../ui/InputGroup';
 
 const SignUp = () => {

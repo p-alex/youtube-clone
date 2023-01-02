@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Timeline, PreviewBar, ProgressBar, Slider } from './style';
+import {
+  DesktopVideoTimeline__PreviewBar,
+  DesktopVideoTimeline__ProgressBar,
+  DesktopVideoTimeline__Slider,
+  DesktopVideoTimeline__Timeline,
+} from './DesktopVideoTimeline.styles';
 
-const VideoTimeline = ({
+const DesktopVideoTimeline = ({
   videoRef,
   currentTime,
   setCurrentTime,
@@ -112,25 +117,25 @@ const VideoTimeline = ({
   });
 
   return (
-    <Timeline ref={timelineRef}>
-      <Slider
+    <DesktopVideoTimeline__Timeline ref={timelineRef}>
+      <DesktopVideoTimeline__Slider
         onMouseOver={mouseOverSlider}
         onMouseLeave={mouseLeaveSlider}
         onMouseDown={mouseDownSlider}
         onMouseMove={mouseMoveUpdatePreviewBar}
         ref={sliderRef}
       >
-        <PreviewBar
+        <DesktopVideoTimeline__PreviewBar
           style={{ width: `${previewBarPercentage}%` }}
           ref={previewBarRef}
-        ></PreviewBar>
-        <ProgressBar
+        ></DesktopVideoTimeline__PreviewBar>
+        <DesktopVideoTimeline__ProgressBar
           style={{ width: `${progressBarPercentage}%` }}
           ref={progressBarRef}
-        ></ProgressBar>
-      </Slider>
-    </Timeline>
+        ></DesktopVideoTimeline__ProgressBar>
+      </DesktopVideoTimeline__Slider>
+    </DesktopVideoTimeline__Timeline>
   );
 };
 
-export default VideoTimeline;
+export default DesktopVideoTimeline;

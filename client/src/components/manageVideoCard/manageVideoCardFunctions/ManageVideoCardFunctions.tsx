@@ -7,7 +7,7 @@ import {
   setLastFocusedManageVideoBtnId,
 } from '../../../app/features/manageVideo';
 import { Button } from '../../../ui/Button';
-import { VideoFunctions } from './style';
+import { ManageVideoCardFunctions__Container } from './ManageVideoCardFunctions.styles';
 import { v4 } from 'uuid';
 
 const ManageVideoCardFunctions = ({ video }: { video: IVideo }) => {
@@ -27,14 +27,14 @@ const ManageVideoCardFunctions = ({ video }: { video: IVideo }) => {
   };
 
   return (
-    <VideoFunctions>
+    <ManageVideoCardFunctions__Container>
       <Button variant="normal" onClick={handleSelectVideoToEdit} id={EDIT_BTN_ID}>
         Edit
       </Button>
       <Button variant="danger" onClick={handleSelectVideoToDelete} id={DELETE_BTN_ID}>
         Delete
       </Button>
-    </VideoFunctions>
+    </ManageVideoCardFunctions__Container>
   );
 };
 

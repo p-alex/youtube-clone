@@ -3,7 +3,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../app/store';
 import { UploadVideoData } from '../../../../hooks/useUploadModal';
 import { Button } from '../../../../ui/Button';
-import { Container, HiddenFileInput } from './style';
+import {
+  ChooseVideoState__Container,
+  ChooseVideoState__HiddenFileInput,
+} from './ChooseVideoStage.styles';
 
 const ChooseVideoStage = ({
   setUploadData,
@@ -44,7 +47,7 @@ const ChooseVideoStage = ({
   };
 
   return (
-    <Container>
+    <ChooseVideoState__Container>
       <Button
         variant="primary"
         onClick={handleClickHiddenInput}
@@ -53,13 +56,13 @@ const ChooseVideoStage = ({
       >
         Select video
       </Button>
-      <HiddenFileInput
+      <ChooseVideoState__HiddenFileInput
         ref={hiddenInput}
         type={'file'}
         accept=".mp4, .flv, .mov, .m4v"
         onChange={handleChooseFile}
       />
-    </Container>
+    </ChooseVideoState__Container>
   );
 };
 

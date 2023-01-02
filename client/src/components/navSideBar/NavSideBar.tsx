@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { MdMenu, MdHome, MdSubscriptions, MdVideoLibrary } from 'react-icons/md';
-import Logo from '../logo/Logo';
+import Logo from '../Logo/Logo';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -14,8 +14,7 @@ import {
   NavSideBar_Header,
   NavSideBar_HorizontalLine,
   NavSideBar_Wrapper,
-} from './style';
-import SignInButton from '../../ui/SignInButton';
+} from './NavSideBar.styles';
 import useAuth from '../../hooks/authHooks/useAuth';
 import useDisableScroll from '../../hooks/useDisableScroll';
 import FocusTrapRedirectFocus from '../focusTrap';

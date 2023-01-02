@@ -1,7 +1,7 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { MOBILE_BREAK_POINT } from '../../../layout/style';
-import DesktopVideoPlayer from './desktopVideoPlayer/DesktopVideoPlayer';
-import MobileVideoPlayer from './mobileVideoPlayer/MobileVideoPlayer';
+import DesktopVideoPlayer from './DesktopVideoPlayer/DesktopVideoPlayer';
+import MobileVideoPlayer from './MobileVideoPlayer/MobileVideoPlayer';
 
 const VideoPlayer = ({
   src,

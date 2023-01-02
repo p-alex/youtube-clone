@@ -10,22 +10,21 @@ import { Button } from '../../ui/Button';
 import { imageOptimizer } from '../../utils/imageOptimizer';
 import { MdClose } from 'react-icons/md';
 import {
-  Backdrop,
-  CloseBtn,
-  Container,
-  FormContainer,
-  HiddenInput,
-  ResultMessage,
-  Tag,
-  TagContainer,
-  ThumbnailContainer,
+  EditVideoModal__Backdrop,
+  EditVideoModal__CloseBtn,
+  EditVideoModal__Container,
+  EditVideoModal__FormContainer,
+  EditVideoModal__HiddenInput,
+  EditVideoModal__ResultMessage,
+  EditVideoModal__Tag,
+  EditVideoModal__TagContainer,
+  EditVideoModal__ThumbnailContainer,
 } from './EditVideoModal.styles';
 import { motion } from 'framer-motion';
 import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
 import AutoResizingTextarea from '../../ui/AutoResizeTextarea';
 import FocusTrapRedirectFocus from '../focusTrap';
 import useZodVerifySchema from '../../hooks/useZodVerifySchema';
-import { verifyCodeSchema } from '../../schemas/verifyCode.schema';
 import { editVideoSchema } from '../../schemas/editVideoModal.schema';
 import { convertToTagList } from '../../utils/convertToTagList';
 
@@ -163,34 +162,38 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
   const lastFocusableElement = useRef<HTMLButtonElement>(null);
 
   return (
-    <Container>
+    <EditVideoModal__Container>
       <FocusTrapRedirectFocus element={lastFocusableElement} />
-      <Backdrop
+      <EditVideoModal__Backdrop
         onClick={() => dispatch(resetVideoToEdit())}
         as={motion.div}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ type: 'just' }}
         exit={{ opacity: 0 }}
-      ></Backdrop>
-      <FormContainer
+      ></EditVideoModal__Backdrop>
+      <EditVideoModal__FormContainer
         as={motion.form}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'just' }}
         exit={{ y: -50, opacity: 0 }}
       >
-        <CloseBtn onClick={handleCloseModal} ref={firstFocusableElement} autoFocus>
+        <EditVideoModal__CloseBtn
+          onClick={handleCloseModal}
+          ref={firstFocusableElement}
+          autoFocus
+        >
           <MdClose />
-        </CloseBtn>
-        <ThumbnailContainer>
-          <HiddenInput
+        </EditVideoModal__CloseBtn>
+        <EditVideoModal__ThumbnailContainer>
+          <EditVideoModal__HiddenInput
             type="file"
             accept=".jpg, .png"
             ref={hiddenInput}
             required
             onChange={handleChooseThumbnail}
-          ></HiddenInput>
+          ></EditVideoModal__HiddenInput>
           <Image
             src={
               thumbnailData.newThumbnailBase64
@@ -225,11 +228,11 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
                 Reset
               </Button>
             )}
-        </ThumbnailContainer>
+        </EditVideoModal__ThumbnailContainer>
         {typeof result?.success === 'boolean' ? (
-          <ResultMessage isSuccess={result.success}>
+          <EditVideoModal__ResultMessage isSuccess={result.success}>
             {result.success ? 'Video edited successfully!' : result.error}
-          </ResultMessage>
+          </EditVideoModal__ResultMessage>
         ) : null}
         <InputGroup
           type={'text'}
@@ -253,12 +256,12 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           value={tagsText}
           setValue={handleChangeTagList}
         />
-        <TagContainer>
+        <EditVideoModal__TagContainer>
           {newTagList.length > 0 &&
             newTagList.map((tag, index) => {
-              return <Tag key={tag + index}>{tag}</Tag>;
+              return <EditVideoModal__Tag key={tag + index}>{tag}</EditVideoModal__Tag>;
             })}
-        </TagContainer>
+        </EditVideoModal__TagContainer>
         <Button
           variant="primary"
           type="submit"
@@ -268,9 +271,9 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         >
           {isUpdateVideoLoading ? 'Loading' : 'Edit'}
         </Button>
-      </FormContainer>
+      </EditVideoModal__FormContainer>
       <FocusTrapRedirectFocus element={firstFocusableElement} />
-    </Container>
+    </EditVideoModal__Container>
   );
 };
 

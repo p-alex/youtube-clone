@@ -1,6 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Video, VideoContainer } from './style';
-import VideoDesktopControls from './videoControls/VideoControls';
+import React, { useRef, useState } from 'react';
+import VideoDesktopControls from './DesktopVideoControls/DesktopVideoControls';
+import {
+  DesktopVideoPlayer__Container,
+  DesktopVideoPlayer__Video,
+} from './DesktopVideoPlayer.styles';
 
 let timeoutHideCursorAndControls: NodeJS.Timeout | null = null;
 
@@ -42,14 +45,14 @@ const DesktopVideoPlayer = ({
   };
 
   return (
-    <VideoContainer
+    <DesktopVideoPlayer__Container
       ref={videoContainerRef}
       onMouseMove={handleVideoContainerMouseMove}
       onMouseOut={handleVideoContainerMouseOut}
       showCursor={showControls}
       isTheatreMode={isTheatreMode}
     >
-      <Video
+      <DesktopVideoPlayer__Video
         src={src}
         ref={videoRef}
         isTheatreMode={isTheatreMode}
@@ -71,7 +74,7 @@ const DesktopVideoPlayer = ({
         isTheatreMode={isTheatreMode}
         setIsTheatreMode={setIsTheatreMode}
       />
-    </VideoContainer>
+    </DesktopVideoPlayer__Container>
   );
 };
 

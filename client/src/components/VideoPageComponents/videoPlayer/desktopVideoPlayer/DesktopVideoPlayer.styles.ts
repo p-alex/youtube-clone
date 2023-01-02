@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const VideoContainer = styled.div<{
+export const DesktopVideoPlayer__Container = styled.div<{
   showCursor: boolean;
   isTheatreMode: boolean;
 }>`
@@ -17,7 +17,7 @@ export const VideoContainer = styled.div<{
   background-color: black;
 `;
 
-export const Video = styled.video<{ isTheatreMode: boolean }>`
+export const DesktopVideoPlayer__Video = styled.video<{ isTheatreMode: boolean }>`
   position: relative;
   width: 100%;
   height: 100%;

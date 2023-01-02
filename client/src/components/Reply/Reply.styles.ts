@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ReplyContainer = styled.div`
+export const Reply__Container = styled.div`
   position: relative;
   display: flex;
   margin-bottom: 25px;
@@ -9,7 +9,7 @@ export const ReplyContainer = styled.div`
   width: 100%;
 `;
 
-export const ReplyProfilePicture = styled.div`
+export const Reply__ProfilePicture = styled.div`
   width: 35px;
   height: 35px;
   min-width: 35px;
@@ -18,7 +18,7 @@ export const ReplyProfilePicture = styled.div`
   }
 `;
 
-export const ReplyBody = styled.div`
+export const Reply__Body = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@ export const ReplyBody = styled.div`
   width: 100%;
 `;
 
-export const ReplyHeader = styled.div`
+export const Reply__Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -34,15 +34,15 @@ export const ReplyHeader = styled.div`
   width: 100%;
 `;
 
-export const ReplyUsernameAndDate = styled.div``;
+export const Reply__UsernameAndDate = styled.div``;
 
-export const ReplyUsername = styled.div`
+export const Reply__Username = styled.div`
   & a {
     color: ${(props) => props.theme.textColor};
   }
 `;
 
-export const ReplyText = styled.p<{ showMoreText: boolean | null }>`
+export const Reply__Text = styled.p<{ showMoreText: boolean | null }>`
   color: ${(props) => props.theme.textColor};
   white-space: pre-line;
   word-wrap: break-word;
@@ -54,16 +54,16 @@ export const ReplyText = styled.p<{ showMoreText: boolean | null }>`
   overflow: hidden;
 `;
 
-export const ReplyDate = styled.small`
+export const Reply__Date = styled.small`
   color: ${(props) => props.theme.textMutedColor};
 `;
 
-export const ReplyButtons = styled.div`
+export const Reply__Buttons = styled.div`
   display: flex;
   gap: 10px;
 `;
 
-export const ReplyButton = styled.button`
+export const Reply__Button = styled.button`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -86,6 +86,6 @@ export const ReplyButton = styled.button`
   }
 `;
 
-export const ReplyFormContainer = styled.div`
+export const Reply__FormContainer = styled.div`
   margin-top: 10px;
 `;

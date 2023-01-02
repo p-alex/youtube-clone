@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUNDER, MOBILE_BREAK_POINT } from '../../../layout/style';
 
-export const VideoHeaderContainer = styled.header`
+export const VideoPageHeader__Container = styled.header`
   position: relative;
   width: 100%;
   margin-top: 10px;
@@ -13,7 +13,7 @@ export const VideoHeaderContainer = styled.header`
   }
 `;
 
-export const VideoHeaderTitle = styled.h2`
+export const VideoPageHeader__Title = styled.h2`
   color: ${(props) => props.theme.textColor};
   font-weight: 600;
   display: -webkit-box;
@@ -23,7 +23,7 @@ export const VideoHeaderTitle = styled.h2`
   margin-bottom: 10px;
 `;
 
-export const VideoHeaderBtnsRow = styled.div`
+export const VideoPageHeader__BtnsRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,7 +34,7 @@ export const VideoHeaderBtnsRow = styled.div`
   }
 `;
 
-export const VideoHeaderUserInfo = styled.div`
+export const VideoPageHeader__UserInfo = styled.div`
   display: flex;
   gap: 15px;
   align-items: center;
@@ -43,7 +43,7 @@ export const VideoHeaderUserInfo = styled.div`
   }
 `;
 
-export const VideoHeaderColumnContainer = styled.div`
+export const VideoPageHeader__ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
   @media (max-width: 500px) {
@@ -51,16 +51,16 @@ export const VideoHeaderColumnContainer = styled.div`
   }
 `;
 
-export const VideoHeaderUsername = styled.p`
+export const VideoPageHeader__Username = styled.p`
   color: ${(props) => props.theme.textColor};
   font-weight: 600;
 `;
 
-export const VideoHeaderSubscribers = styled.small`
+export const VideoPageHeader__Subscribers = styled.small`
   color: ${(props) => props.theme.textMutedColor};
 `;
 
-export const LikeDislikeGroup = styled.div`
+export const VideoPageHeader__LikeDislikeGroup = styled.div`
   position: relative;
   border-radius: ${BORDER_RADIUS_ROUNDER}px;
   background-color: ${(props) => props.theme.uiSecondaryBg};
@@ -69,7 +69,7 @@ export const LikeDislikeGroup = styled.div`
   height: 35px;
 `;
 
-export const LikeDislikeBtn = styled.button`
+export const VideoPageHeader__LikeDislikeBtn = styled.button`
   position: relative;
   display: flex;
   justify-content: center;

@@ -1,5 +1,10 @@
 import React from 'react';
-import { Container, Progress, Status, UploadingContainer } from './style';
+import {
+  UploadVideoStage__Container,
+  UploadVideoStage__Progress,
+  UploadVideoStage__Status,
+  UploadVideoStage__UploadingContainer,
+} from './UploadVideoStage.styles';
 
 const UploadVideoStage = ({
   uploadProgress,
@@ -9,14 +14,20 @@ const UploadVideoStage = ({
   lastFocusableElement: React.MutableRefObject<any>;
 }) => {
   return (
-    <Container>
-      <UploadingContainer>
-        <Status tabIndex={0} ref={lastFocusableElement} aria-live="assertive">
+    <UploadVideoStage__Container>
+      <UploadVideoStage__UploadingContainer>
+        <UploadVideoStage__Status
+          tabIndex={0}
+          ref={lastFocusableElement}
+          aria-live="assertive"
+        >
           {uploadProgress !== 100 ? 'Uploading...' : 'Processing...'}
-        </Status>
-        <Progress>{uploadProgress.toFixed(2)}%</Progress>
-      </UploadingContainer>
-    </Container>
+        </UploadVideoStage__Status>
+        <UploadVideoStage__Progress>
+          {uploadProgress.toFixed(0)}%
+        </UploadVideoStage__Progress>
+      </UploadVideoStage__UploadingContainer>
+    </UploadVideoStage__Container>
   );
 };
 

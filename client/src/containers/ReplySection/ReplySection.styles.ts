@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const ReplySectionWrapper = styled.div`
+export const ReplySection__Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
 `;
 
-export const ReplyToggleBtn = styled.button`
+export const ReplySection__ToggleReplies = styled.button`
   width: max-content;
   color: ${(props) => props.theme.accentColor};
   font-weight: 700;
@@ -22,11 +22,11 @@ export const ReplyToggleBtn = styled.button`
   }
 `;
 
-export const ReplySectionContainer = styled.div`
+export const ReplySection__Container = styled.div`
   margin-top: 12px;
 `;
 
-export const ReplyLoadMoreBtn = styled.button`
+export const ReplySection__LoadBtn = styled.button`
   width: max-content;
   color: ${(props) => props.theme.accentColor};
   font-weight: 700;

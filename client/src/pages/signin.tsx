@@ -3,7 +3,7 @@ import router from 'next/router';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../app/features/authSlice';
-import Logo from '../components/logo/Logo';
+import Logo from '../components/Logo/Logo';
 import useAxios from '../hooks/requestHooks/useAxios';
 import useZodVerifyForm from '../hooks/useZodVerifySchema';
 import Layout from '../layout/Layout';

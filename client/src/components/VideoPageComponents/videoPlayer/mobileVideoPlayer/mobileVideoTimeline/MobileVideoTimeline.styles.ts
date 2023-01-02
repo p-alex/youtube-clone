@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ canInteract: boolean }>`
+export const MobileVideoTimeline__Container = styled.div<{ canInteract: boolean }>`
   position: absolute;
   bottom: 25px;
   padding: 10px 20px;
@@ -15,13 +15,13 @@ export const Container = styled.div<{ canInteract: boolean }>`
   }
 `;
 
-export const Timeline = styled.div`
+export const MobileVideoTimeline__Timeline = styled.div`
   background-color: rgba(100, 100, 100);
   width: 100%;
   height: 4px;
 `;
 
-export const ProgressBar = styled.div`
+export const MobileVideoTimeline__ProgressBar = styled.div`
   height: 100%;
   background-color: ${(props) => props.theme.accentColor};
   display: flex;
@@ -29,7 +29,7 @@ export const ProgressBar = styled.div`
   align-items: center;
 `;
 
-export const ProgressBarCircle = styled.div`
+export const MobileVideoTimeline__ProgressBarCircle = styled.div`
   position: absolute;
   width: 15px;
   height: 15px;

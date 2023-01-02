@@ -2,10 +2,10 @@ import { useEffect, useContext, useState } from 'react';
 import Reply from '../../components/Reply/Reply';
 import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
 import {
-  ReplyLoadMoreBtn,
-  ReplySectionContainer,
-  ReplySectionWrapper,
-  ReplyToggleBtn,
+  ReplySection__Container,
+  ReplySection__LoadBtn,
+  ReplySection__ToggleReplies,
+  ReplySection__Wrapper,
 } from './ReplySection.styles';
 import {
   IReply,
@@ -69,15 +69,15 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
   }, [showReplies]);
 
   return (
-    <ReplySectionWrapper>
+    <ReplySection__Wrapper>
       {comment.total_replies > 0 && (
-        <ReplyToggleBtn onClick={handleToggleReplies}>
+        <ReplySection__ToggleReplies onClick={handleToggleReplies}>
           {showReplies ? <AiFillCaretUp /> : <AiFillCaretDown />}
           {comment.total_replies} {comment.total_replies === 1 ? 'reply' : 'replies'}
-        </ReplyToggleBtn>
+        </ReplySection__ToggleReplies>
       )}
       {isGetRepliesLoading && <Spinner />}
-      <ReplySectionContainer>
+      <ReplySection__Container>
         {showReplies && replies.length > 0 ? (
           <>
             {replies.map((reply) => {
@@ -86,11 +86,11 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
             {replies.length < comment.total_replies &&
               !isGetRepliesLoading &&
               !isLoadMoreRepliesLoading && (
-                <ReplyLoadMoreBtn
+                <ReplySection__LoadBtn
                   onClick={() => dispatchReplySection({ type: 'NEXT_PAGE' })}
                 >
                   Load more replies
-                </ReplyLoadMoreBtn>
+                </ReplySection__LoadBtn>
               )}
           </>
         ) : (
@@ -99,8 +99,8 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
           })
         )}
         {isLoadMoreRepliesLoading && <Spinner />}
-      </ReplySectionContainer>
-    </ReplySectionWrapper>
+      </ReplySection__Container>
+    </ReplySection__Wrapper>
   );
 };
 

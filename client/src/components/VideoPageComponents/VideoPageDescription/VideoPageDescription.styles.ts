@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../../../layout/style';
 
-export const VideoDescriptionContainer = styled.div<{ showMoreText: boolean | null }>`
+export const VideoPageDescription__Container = styled.div<{
+  showMoreText: boolean | null;
+}>`
   position: relative;
   width: 100%;
   padding: 10px;
@@ -21,13 +23,13 @@ export const VideoDescriptionContainer = styled.div<{ showMoreText: boolean | nu
   }
 `;
 
-export const VideoDescriptionStats = styled.p`
+export const VideoPageDescription__Stats = styled.p`
   display: flex;
   gap: 5px;
   font-weight: 600;
 `;
 
-export const VideoDescriptionText = styled.p<{ showMoreText: boolean | null }>`
+export const VideoPageDescription__Text = styled.p<{ showMoreText: boolean | null }>`
   word-wrap: break-word;
   white-space: pre-line;
   display: -webkit-box;
@@ -41,7 +43,7 @@ export const VideoDescriptionText = styled.p<{ showMoreText: boolean | null }>`
   }
 `;
 
-export const VideoDescriptionShowMoreBtn = styled.button`
+export const VideoPageDescription__ShowMoreBtn = styled.button`
   position: relative;
   padding: 5px;
   left: -5px;
