@@ -2,6 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 export const GlobalStyle = createGlobalStyle`
+  :root {
+    --backdrop-bg: rgba(0,0,0,0.4);
+  }
   * {
     margin: 0;
     padding: 0;

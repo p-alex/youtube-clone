@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, NAV_BAR_HEIGHT } from '../../layout/style';
+import { NAV_BAR_HEIGHT } from '../../layout/style';
 
 export const NavSideBar_Wrapper = styled.div`
   position: fixed;
@@ -16,7 +16,7 @@ export const NavSideBar_Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--backdrop-bg);
   z-index: 101;
 `;
 

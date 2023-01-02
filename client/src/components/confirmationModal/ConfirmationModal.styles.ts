@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const ConfirmationModalWrapper = styled.div`
   position: fixed;
@@ -18,7 +19,7 @@ export const ConfirmationModalBackdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--backdrop-bg);
   z-index: 101;
 `;
 
@@ -31,6 +32,7 @@ export const ConfirmationModalContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   z-index: 102;
+  border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
 
 export const ConfirmationModalTitle = styled.h2`
