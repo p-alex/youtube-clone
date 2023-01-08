@@ -1,60 +1,64 @@
-import { object, string, TypeOf, z } from 'zod';
+import { z } from 'zod';
 
-export const getRepliesSchema = object({
-  params: object({
-    commentId: string({}).uuid('Invalid uuid'),
-    page: string({}),
+export const getRepliesSchema = z.object({
+  params: z.object({
+    commentId: z.string({}).uuid('Invalid uuid'),
+    page: z.string({}),
   }),
-  body: object({
-    userId: string({}),
-  }),
-});
-
-export const addReplySchema = object({
-  body: object({
-    commentId: string({ required_error: 'Comment id is required' }).uuid('Invalid uuid'),
-    text: string({ required_error: 'Text is required' }).min(1).max(1000),
+  body: z.object({
+    userId: z.string({}),
   }),
 });
 
-export const updateReplySchema = object({
-  body: object({
-    replyId: string({ required_error: 'Reply id is required' }).uuid('Invalid uuid'),
-    text: string({ required_error: 'Text is required' }).min(1).max(1000),
+export const addReplySchema = z.object({
+  body: z.object({
+    commentId: z
+      .string({ required_error: 'Comment id is required' })
+      .uuid('Invalid uuid'),
+    text: z.string({ required_error: 'Text is required' }).min(1).max(1000),
   }),
 });
 
-export const deleteReplySchema = object({
-  body: object({
-    replyId: string({ required_error: 'Reply id is required' }).uuid('Invalid uuid'),
-    commentId: string({ required_error: 'Comment id is required' }).uuid('Invalid uuid'),
+export const updateReplySchema = z.object({
+  body: z.object({
+    replyId: z.string({ required_error: 'Reply id is required' }).uuid('Invalid uuid'),
+    text: z.string({ required_error: 'Text is required' }).min(1).max(1000),
   }),
 });
 
-export const likeReplySchema = object({
-  params: object({
-    replyId: string({ required_error: 'Reply id param is required' }).uuid(
-      'Invalid uuid'
-    ),
+export const deleteReplySchema = z.object({
+  body: z.object({
+    replyId: z.string({ required_error: 'Reply id is required' }).uuid('Invalid uuid'),
+    commentId: z
+      .string({ required_error: 'Comment id is required' })
+      .uuid('Invalid uuid'),
   }),
 });
 
-export const dislikeReplySchema = object({
-  params: object({
-    replyId: string({ required_error: 'Reply id param is required' }).uuid(
-      'Invalid uuid'
-    ),
+export const likeReplySchema = z.object({
+  params: z.object({
+    replyId: z
+      .string({ required_error: 'Reply id param is required' })
+      .uuid('Invalid uuid'),
   }),
 });
 
-export type GetRepliesInput = TypeOf<typeof getRepliesSchema>;
+export const dislikeReplySchema = z.object({
+  params: z.object({
+    replyId: z
+      .string({ required_error: 'Reply id param is required' })
+      .uuid('Invalid uuid'),
+  }),
+});
 
-export type AddReplyInput = TypeOf<typeof addReplySchema>['body'];
+export type GetRepliesInput = z.TypeOf<typeof getRepliesSchema>;
 
-export type UpdateReplyInput = TypeOf<typeof updateReplySchema>['body'];
+export type AddReplyInput = z.TypeOf<typeof addReplySchema>['body'];
 
-export type DeleteReplyInput = TypeOf<typeof deleteReplySchema>['body'];
+export type UpdateReplyInput = z.TypeOf<typeof updateReplySchema>['body'];
 
-export type LikeReplyInput = TypeOf<typeof likeReplySchema>['params'];
+export type DeleteReplyInput = z.TypeOf<typeof deleteReplySchema>['body'];
 
-export type DislikeReplyInput = TypeOf<typeof dislikeReplySchema>['params'];
+export type LikeReplyInput = z.TypeOf<typeof likeReplySchema>['params'];
+
+export type DislikeReplyInput = z.TypeOf<typeof dislikeReplySchema>['params'];

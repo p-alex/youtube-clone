@@ -14,12 +14,11 @@ import {
   registerUser,
   changeUsername,
   changeProfilePicture,
-  changeEmail,
   changePassword,
   getUserInfo,
   validateHuman,
 } from './user.service';
-import argon2, { argon2d, argon2i } from 'argon2';
+import argon2 from 'argon2';
 import { sendEmail } from '../../nodemailer/sendEmail';
 import { verifyEmailTemplate } from '../../nodemailer/templates';
 import log from '../../utils/logger';
@@ -74,7 +73,7 @@ export const registerUserController = async (
       result: null,
     });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -98,7 +97,7 @@ export const getProfileInfoController = async (
       result: { profileInfo },
     });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],

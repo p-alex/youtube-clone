@@ -5,8 +5,6 @@ import { createSession, signAccessToken, signRefreshToken } from './auth.service
 import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 import { verifyJwt } from '../../utils/jwt';
-import log from '../../utils/logger';
-import { config } from 'dotenv';
 
 export const loginUserController = async (
   req: Request<{}, {}, LoginUserInput>,

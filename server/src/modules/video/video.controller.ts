@@ -37,6 +37,7 @@ export const getVideosController = async (req: Request, res: Response) => {
     const videos = await getVideos();
     return res.status(200).json({ success: true, errors: [], result: { videos } });
   } catch (error: any) {
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],

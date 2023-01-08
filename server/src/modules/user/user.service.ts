@@ -85,17 +85,6 @@ export const changeProfilePicture = async (profile_picture: string, userId: stri
   return data;
 };
 
-export const changeEmail = async (email: string, userId: string) => {
-  const result = await db.query(
-    'UPDATE users SET email = $1 WHERE user_id = $2 RETURNING email',
-    [email, userId]
-  );
-  const data: {
-    email: string;
-  } = result.rows[0];
-  return data;
-};
-
 export const changePassword = async (hashed_password: string, userId: string) => {
   const result = await db.query(
     'UPDATE users SET password = $1 WHERE user_id = $2 RETURNING NULL',

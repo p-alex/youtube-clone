@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import log from '../../utils/logger';
 import {
   AddReplyInput,
   DeleteReplyInput,
@@ -25,7 +26,7 @@ export const getRepliesController = async (
     const replies = await getReplies(commentId, userId, page);
     return res.status(200).json({ success: true, errors: [], result: { replies } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -45,7 +46,7 @@ export const addReplyController = async (
     const reply = await addReply(commentId, user_id, text);
     return res.status(201).json({ success: true, errors: [], result: { reply } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -69,7 +70,7 @@ export const updateReplyController = async (
       result: { reply_id: response.reply_id, text: response.text },
     });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -89,7 +90,7 @@ export const deleteReplyController = async (
     const reply_id = await deleteReply(replyId, commentId, user_id);
     return res.status(200).json({ success: true, errors: [], result: { reply_id } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -111,7 +112,7 @@ export const likeReplyController = async (
       .status(200)
       .json({ success: true, errors: [], result: { updatedReplyInfo } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
@@ -133,7 +134,7 @@ export const dislikeReplyController = async (
       .status(200)
       .json({ success: true, errors: [], result: { updatedReplyInfo } });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     return res.status(500).json({
       success: false,
       errors: [{ message: error.message }],
