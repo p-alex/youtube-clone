@@ -7,7 +7,7 @@ export const loginUserSchema = object({
     }).email('Invalid email or password'),
     password: string({
       required_error: 'Password is required',
-    }).min(6, 'Invalid email or password'),
+    }).min(8, 'Invalid email or password'),
   }),
 });
 

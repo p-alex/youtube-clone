@@ -1,7 +1,7 @@
 import { AnimatePresence } from 'framer-motion';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+
 import {
   IVideo,
   removeVideo,
@@ -13,37 +13,16 @@ import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationMo
 import EditVideoModal from '../../components/EditVideoModal/EditVideoModal';
 import ManageVideoCard from '../../components/ManageVideoCard/ManageVideoCard';
 import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
+import useProtectRoute from '../../hooks/useProtectRoute';
 import Layout from '../../layout/Layout';
-import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../../layout/style';
+import {
+  ManageVideosPage__Container,
+  ManageVideosPage__Title,
+  ManageVideosPage__VideoCards,
+} from '../../pageStyles/ManageVideosPage.styles';
 
-const Container = styled.div`
-  position: relative;
-  margin: calc(${NAV_BAR_HEIGHT}px + 20px) auto;
-  max-width: 1200px;
-  @media (max-width: ${MOBILE_BREAK_POINT}px) {
-    margin: calc(${NAV_BAR_HEIGHT}px + 20px) 10px;
-  }
-`;
-
-const Title = styled.h2`
-  color: ${(props) => props.theme.textColor};
-  margin-bottom: 20px;
-`;
-
-const VideoCards = styled.div`
-  display: grid;
-  gap: 10px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  @media (max-width: 800px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (max-width: 550px) {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-`;
-
-const Manage = () => {
+const ManageVideosPage = () => {
+  useProtectRoute();
   const auth = useSelector((state: RootState) => state.auth);
   const { videos, videoToEdit, videoToDelete, lastFocusedElement } = useSelector(
     (state: RootState) => state.manageVideos
@@ -95,16 +74,16 @@ const Manage = () => {
       <AnimatePresence>
         {videoToEdit && <EditVideoModal video={videoToEdit} />}
       </AnimatePresence>
-      <Container>
-        <Title>Manage your videos</Title>
-        <VideoCards>
+      <ManageVideosPage__Container>
+        <ManageVideosPage__Title>Manage your videos</ManageVideosPage__Title>
+        <ManageVideosPage__VideoCards>
           {videos.map((video) => {
             return <ManageVideoCard key={video.video_id} video={video} />;
           })}
-        </VideoCards>
-      </Container>
+        </ManageVideosPage__VideoCards>
+      </ManageVideosPage__Container>
     </Layout>
   );
 };
 
-export default Manage;
+export default ManageVideosPage;

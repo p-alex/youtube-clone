@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import router from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../app/features/authSlice';
 import Logo from '../components/Logo/Logo';
+import useAuth from '../hooks/authHooks/useAuth';
 import useAxios from '../hooks/requestHooks/useAxios';
 import useZodVerifyForm from '../hooks/useZodVerifySchema';
 import Layout from '../layout/Layout';
@@ -20,6 +21,7 @@ import {
 import InputGroup from '../ui/InputGroup';
 
 const SignIn = () => {
+  const { isAuth } = useAuth();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
@@ -47,6 +49,10 @@ const SignIn = () => {
       router.push('/');
     }
   };
+
+  useEffect(() => {
+    if (isAuth) router.push('/');
+  }, [isAuth]);
 
   return (
     <Layout>

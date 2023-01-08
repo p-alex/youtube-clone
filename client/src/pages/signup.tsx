@@ -1,14 +1,11 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '../components/Logo/Logo';
 import Layout from '../layout/Layout';
 import useAxios from '../hooks/requestHooks/useAxios';
 import { Button } from '../ui/Button';
-import useZodVerifyForm, { ZodVerifyFormErrors } from '../hooks/useZodVerifySchema';
-import {
-  CreateAccountSchemType,
-  createAccountSchema,
-} from '../schemas/createAccount.schema';
+import useZodVerifyForm from '../hooks/useZodVerifySchema';
+import { createAccountSchema } from '../schemas/createAccount.schema';
 import {
   Form,
   FormAlternativeParagraph,
@@ -20,8 +17,12 @@ import {
 } from '../ui/Form';
 import VerifyCodeForm from '../components/VerifyCodeForm/VerifyCodeForm';
 import InputGroup from '../ui/InputGroup';
+import { useRouter } from 'next/router';
+import useAuth from '../hooks/authHooks/useAuth';
 
 const SignUp = () => {
+  const router = useRouter();
+  const { isAuth } = useAuth();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -63,6 +64,10 @@ const SignUp = () => {
     handleResetForm();
     setIsSuccess(true);
   };
+
+  useEffect(() => {
+    if (isAuth) router.push('/');
+  }, [isAuth]);
 
   return (
     <Layout>

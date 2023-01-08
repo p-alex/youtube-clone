@@ -52,7 +52,7 @@ function useAxiosWithRetry<Body, Data>(
     } catch (error: any) {
       const data: DefaultResponse<Data | null> = {
         success: false,
-        errors: [{ message: error.message }],
+        errors: [{ message: error.response.data.errors[0].message }],
         result: null,
       };
       return { statusCode: error?.response?.status, data };
@@ -73,6 +73,7 @@ function useAxiosWithRetry<Body, Data>(
   };
 
   const apiRequest = async (body: Body | undefined) => {
+    setErrors(null);
     const { statusCode, data } = await request(accessToken, body);
 
     if (statusCode === 404) {
@@ -82,6 +83,10 @@ function useAxiosWithRetry<Body, Data>(
     if (statusCode === 403) {
       const retryResponse = await retryRequest(body);
       return retryResponse;
+    }
+
+    if (statusCode >= 400) {
+      setErrors(data.errors);
     }
 
     return data;

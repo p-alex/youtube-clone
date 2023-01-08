@@ -23,4 +23,5 @@ export default {
   google_client_secret: '',
   google_oauth_redirect_uri: '',
   secure_password_generator_length: '',
+  google_recaptcha_secret_key: '',
 };

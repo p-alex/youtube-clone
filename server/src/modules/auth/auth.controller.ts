@@ -6,6 +6,7 @@ import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 import { verifyJwt } from '../../utils/jwt';
 import log from '../../utils/logger';
+import { config } from 'dotenv';
 
 export const loginUserController = async (
   req: Request<{}, {}, LoginUserInput>,
@@ -70,7 +71,7 @@ export const loginUserController = async (
 
     res.cookie('rtoken', refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
       maxAge: 604800000,

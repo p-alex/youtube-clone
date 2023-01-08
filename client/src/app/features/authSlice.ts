@@ -1,5 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export const USERNAME_RESTRICTIONS = {
+  minLength: 3,
+  maxLength: 24,
+};
+
+export const PASSWORD_RESTRICTIONS = {
+  minLength: 8,
+  maxLength: 30,
+};
+
 interface IInitialState {
   user: {
     user_id: string;
@@ -29,6 +39,8 @@ const initialState: IInitialState = {
   isGettingUser: true,
 };
 
+export const DEFAULT_PROFILE_PICTURE_URL = '/images/default-profile-picture.jpg';
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -49,9 +61,15 @@ export const authSlice = createSlice({
     setIsGettingUser: (state, action: PayloadAction<boolean>) => {
       state.isGettingUser = action.payload;
     },
+    changeUserInfo: (
+      state,
+      action: PayloadAction<{ key: keyof typeof state.user; value: string }>
+    ) => {
+      state.user[action.payload.key] = action.payload.value;
+    },
   },
 });
 
-export const { setUser, resetUser, setIsGettingUser } = authSlice.actions;
+export const { setUser, resetUser, setIsGettingUser, changeUserInfo } = authSlice.actions;
 
 export default authSlice.reducer;

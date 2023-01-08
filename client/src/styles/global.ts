@@ -4,6 +4,9 @@ import { BORDER_RADIUS_ROUND } from '../layout/style';
 export const GlobalStyle = createGlobalStyle`
   :root {
     --backdrop-bg: rgba(0,0,0,0.4);
+
+    --nav-bar-layer: 100;
+    --modal-layer: 200;
   }
   * {
     margin: 0;

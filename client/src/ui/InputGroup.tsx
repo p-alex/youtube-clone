@@ -46,6 +46,7 @@ interface Props {
   onFocus?: () => void;
   onBlur?: () => void;
   disabled?: boolean;
+  autoFocus?: boolean;
 }
 
 const InputGroup = ({
@@ -58,6 +59,7 @@ const InputGroup = ({
   onFocus,
   onBlur,
   disabled,
+  autoFocus,
 }: Props) => {
   const formatedId = label.replaceAll(' ', '-').toLowerCase();
   return (
@@ -74,6 +76,7 @@ const InputGroup = ({
         onFocus={onFocus}
         onBlur={onBlur}
         disabled={disabled}
+        autoFocus={autoFocus}
       />
       {error && <InputGroup__Error>{error}</InputGroup__Error>}
     </InputGroup__Container>

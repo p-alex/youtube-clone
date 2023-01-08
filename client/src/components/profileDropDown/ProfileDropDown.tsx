@@ -57,7 +57,7 @@ export const ProfileDropDown = () => {
         </ProfileDropDown__ProfilePicture>
         <ProfileDropDown__NameAndManage>
           <ProfileDropDown__Username>{user?.username}</ProfileDropDown__Username>
-          <Link href={'#'}>Manage account</Link>
+          <Link href={'/manage/account'}>Manage account</Link>
         </ProfileDropDown__NameAndManage>
       </ProfileDropDown__Header>
       <ProfileDropDown__ButtonList>

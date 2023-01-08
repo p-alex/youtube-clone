@@ -36,10 +36,7 @@ const VideoPageDescription = ({ video }: { video: VideoInfo }) => {
       <VideoPageDescription__Stats>
         <span>{video.views} views</span>•<span>{created_at.current}</span>
       </VideoPageDescription__Stats>
-      <VideoPageDescription__Text
-        showMoreText={showMoreText}
-        id={'VideoPageDescription__'}
-      >
+      <VideoPageDescription__Text showMoreText={showMoreText} id={'videoDescription'}>
         {video.description}{' '}
       </VideoPageDescription__Text>
       {showMoreText !== null && (
