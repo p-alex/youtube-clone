@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import Logo from '../components/Logo/Logo';
 import Layout from '../layout/Layout';
 import useAxios from '../hooks/requestHooks/useAxios';
 import { Button } from '../ui/Button';
@@ -19,6 +18,7 @@ import VerifyCodeForm from '../components/VerifyCodeForm/VerifyCodeForm';
 import InputGroup from '../ui/InputGroup';
 import { useRouter } from 'next/router';
 import useAuth from '../hooks/authHooks/useAuth';
+import Logo from '../components/Logo/Logo';
 
 const SignUp = () => {
   const router = useRouter();
@@ -70,7 +70,7 @@ const SignUp = () => {
   }, [isAuth]);
 
   return (
-    <Layout>
+    <>
       {isSuccess && (
         <VerifyCodeForm
           title="Verify your email"
@@ -148,7 +148,7 @@ const SignUp = () => {
           </Form>
         </FormWrapper>
       )}
-    </Layout>
+    </>
   );
 };
 

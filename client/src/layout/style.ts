@@ -1,4 +1,4 @@
-export const NAV_BAR_HEIGHT = 65;
+export const NAV_BAR_HEIGHT = 75;
 export const COMMENTS_BREAK_POINT = 600;
 export const NAV_MOBILE_BREAK_POINT = 647;
 export const MOBILE_BREAK_POINT = 1050;

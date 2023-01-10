@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../layout/style';
+import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../layout/style';
 
 export const FormWrapper = styled.div`
   position: fixed;
@@ -8,8 +8,10 @@ export const FormWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   @media (max-width: 500px) {
     align-items: flex-start;
   }
@@ -24,6 +26,7 @@ export const Form = styled.form`
   display: block;
   padding: 30px;
   border-radius: 5px;
+  margin: calc(${NAV_BAR_HEIGHT}px + 40px) auto 0 auto;
   @media (max-width: 500px) {
     width: 100%;
     border: none;
@@ -40,7 +43,7 @@ export const FormLogoAndTitle = styled.div`
 export const FormTitle = styled.h1`
   color: ${(props) => props.theme.textColor};
   margin-bottom: 40px;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   width: max-content;
 `;
 

@@ -7,7 +7,6 @@ export const ManageAccountChangeBox__Wrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  border: solid 1px ${(props) => props.theme.borderColor};
   z-index: var(--modal-layer);
   display: flex;
   align-items: center;

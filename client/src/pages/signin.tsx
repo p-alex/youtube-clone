@@ -55,56 +55,54 @@ const SignIn = () => {
   }, [isAuth]);
 
   return (
-    <Layout>
-      <FormWrapper>
-        <Form onSubmit={handleSubmit}>
-          <FormLogoAndTitle>
-            <Logo />
-            <FormTitle>Login</FormTitle>
-          </FormLogoAndTitle>
+    <FormWrapper>
+      <Form onSubmit={handleSubmit}>
+        <FormLogoAndTitle>
+          <Logo />
+          <FormTitle>Login</FormTitle>
+        </FormLogoAndTitle>
 
-          {loginUserErrors &&
-            loginUserErrors.map((error) => {
-              return (
-                <FormErrorMessage key={error.message}>{error.message}</FormErrorMessage>
-              );
-            })}
+        {loginUserErrors &&
+          loginUserErrors.map((error) => {
+            return (
+              <FormErrorMessage key={error.message}>{error.message}</FormErrorMessage>
+            );
+          })}
 
-          <InputGroup
-            type="text"
-            label="email"
-            value={email}
-            setValue={(e) => setEmail(e.target.value)}
-            disabled={isLoginUserLoading || isLoggedIn}
-            error={fieldErrors?.email && fieldErrors.email[0]}
-          />
+        <InputGroup
+          type="text"
+          label="email"
+          value={email}
+          setValue={(e) => setEmail(e.target.value)}
+          disabled={isLoginUserLoading || isLoggedIn}
+          error={fieldErrors?.email && fieldErrors.email[0]}
+        />
 
-          <InputGroup
-            type="password"
-            label="password"
-            value={password}
-            setValue={(e) => setPassword(e.target.value)}
-            disabled={isLoginUserLoading || isLoggedIn}
-            error={fieldErrors?.password && fieldErrors.password[0]}
-          />
+        <InputGroup
+          type="password"
+          label="password"
+          value={password}
+          setValue={(e) => setPassword(e.target.value)}
+          disabled={isLoginUserLoading || isLoggedIn}
+          error={fieldErrors?.password && fieldErrors.password[0]}
+        />
 
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={isLoginUserLoading || isLoggedIn}
-          >
-            Login
-          </Button>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={isLoginUserLoading || isLoggedIn}
+        >
+          Login
+        </Button>
 
-          <FormAlternativeParagraph>
-            Don&apos;t have an account?{' '}
-            <Link href={'/signup'}>
-              <a>Create an account</a>
-            </Link>
-          </FormAlternativeParagraph>
-        </Form>
-      </FormWrapper>
-    </Layout>
+        <FormAlternativeParagraph>
+          Don&apos;t have an account?{' '}
+          <Link href={'/signup'}>
+            <a>Create an account</a>
+          </Link>
+        </FormAlternativeParagraph>
+      </Form>
+    </FormWrapper>
   );
 };
 
