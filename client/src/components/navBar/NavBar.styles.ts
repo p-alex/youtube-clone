@@ -89,3 +89,9 @@ export const NavBar__ProfileBtn = styled.button`
     border-radius: 50%;
   }
 `;
+
+export const NavBar__MobileSearchContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;

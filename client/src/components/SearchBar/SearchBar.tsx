@@ -8,9 +8,15 @@ import router from 'next/router';
 const SearchBar = ({
   searchQuery,
   setSearchQuery,
+  isMobile,
+  autoFocus,
+  lastFocusableElement,
 }: {
   searchQuery: string;
   setSearchQuery: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isMobile: boolean;
+  autoFocus?: boolean;
+  lastFocusableElement?: React.RefObject<HTMLButtonElement>;
 }) => {
   const dispatch = useDispatch();
 
@@ -20,7 +26,7 @@ const SearchBar = ({
   };
 
   return (
-    <SearchForm>
+    <SearchForm isMobile={isMobile}>
       <Search
         placeholder="Search"
         value={searchQuery}
@@ -28,8 +34,9 @@ const SearchBar = ({
         onFocus={() => dispatch(disableKeyBinds())}
         onBlur={() => dispatch(enableKeyBinds())}
         autoComplete="true"
+        autoFocus={autoFocus}
       />
-      <SearchBtn onClick={handleSearch}>
+      <SearchBtn onClick={handleSearch} ref={lastFocusableElement} aria-label="search">
         <MdSearch />
       </SearchBtn>
     </SearchForm>

@@ -14,13 +14,14 @@ import Image from 'next/image';
 import Logo from '../Logo/Logo';
 import NavSideBar from '../NavSideBar/NavSideBar';
 import { AnimatePresence } from 'framer-motion';
-import MobileSearchBar from '../SearchBar/MobileSearchBar/MobileSearchBar';
+
 import useAuth from '../../hooks/authHooks/useAuth';
 import UploadModal from '../UploadModal/UploadModal';
 import { ProfileDropDown } from '../ProfileDropDown/ProfileDropDown';
 import SearchBar from '../SearchBar/SearchBar';
 import { Button } from '../../ui/Button';
 import Link from 'next/link';
+import MobileSearchBar from './MobileSearchBar/MobileSearchBar';
 
 const NavBar = () => {
   const { isAuth, user } = useAuth();
@@ -60,7 +61,7 @@ const NavBar = () => {
     <>
       {isMobileSearchActive && (
         <MobileSearchBar
-          handleToggleMobileSearch={handleToggleMobileSearch}
+          handleClose={handleToggleMobileSearch}
           searchQuery={searchQuery}
           setSearchQuery={handleSetSearchQuery}
         />
@@ -77,12 +78,17 @@ const NavBar = () => {
           <Logo />
         </NavBar__ToggleAndLogoContainer>
 
-        <SearchBar searchQuery={searchQuery} setSearchQuery={handleSetSearchQuery} />
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={handleSetSearchQuery}
+          isMobile={false}
+        />
 
         <NavBar__BtnContainer>
           <NavBar__MobileSearchBtn
             aria-label="Search"
             onClick={() => setIsMobileSearchActive((prevState) => !prevState)}
+            id={'nav-bar-search-btn-toggle'}
           >
             <MdSearch />
           </NavBar__MobileSearchBtn>

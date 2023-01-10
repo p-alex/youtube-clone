@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUNDER, NAV_MOBILE_BREAK_POINT } from '../../layout/style';
 
-export const SearchForm = styled.form`
+export const SearchForm = styled.form<{ isMobile: boolean }>`
   position: relative;
   display: flex;
   justify-content: center;
   flex: 1;
-  display: flex;
   @media (max-width: ${NAV_MOBILE_BREAK_POINT}px) {
-    display: none;
+    display: ${(props) => (props.isMobile ? 'flex' : 'none')};
   }
 `;
 
@@ -23,6 +22,9 @@ export const Search = styled.input`
   border-top-left-radius: ${BORDER_RADIUS_ROUNDER}px;
   border-bottom-left-radius: ${BORDER_RADIUS_ROUNDER}px;
   outline: none;
+  @media (max-width: ${NAV_MOBILE_BREAK_POINT}px) {
+    width: 100%;
+  }
 `;
 
 export const SearchBtn = styled.button`
