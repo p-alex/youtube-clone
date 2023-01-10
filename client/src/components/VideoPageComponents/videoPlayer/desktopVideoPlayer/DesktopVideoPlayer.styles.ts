@@ -10,7 +10,7 @@ export const DesktopVideoPlayer__Container = styled.div<{
   justify-content: center;
   width: 100%;
   height: ${(props) => (props.isTheatreMode ? '100vh' : '100%')};
-  max-height: ${(props) => (props.isTheatreMode ? '82vh' : 'none')};
+  max-height: ${(props) => (props.isTheatreMode ? '72vh' : 'none')};
   margin: auto;
   cursor: ${(props) => (props.showCursor ? 'initial' : 'none')};
   user-select: none;
