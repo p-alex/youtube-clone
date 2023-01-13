@@ -177,6 +177,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
                   btnName={'reply'}
                   placeholder={'Write a reply...'}
                   autoFocus
+                  withTrap
                   error={undefined}
                 />
               </CommentFormContainer>

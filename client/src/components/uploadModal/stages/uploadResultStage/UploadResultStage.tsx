@@ -6,24 +6,19 @@ import {
 } from './UploadResultStage.styles';
 import { MdDone, MdError } from 'react-icons/md';
 import { UploadResult } from '../../../../hooks/useUploadModal';
-const UploadResultStage = ({
-  result,
-  lastFocusableElement,
-}: {
-  result: UploadResult;
-  lastFocusableElement: React.MutableRefObject<any>;
-}) => {
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../Modal/Modal';
+const UploadResultStage = ({ result }: { result: UploadResult }) => {
   useEffect(() => {
-    lastFocusableElement.current.focus();
+    document.getElementById(MODAL_LAST_FOCUSABLE_ELEMENT)?.focus();
   }, []);
   return (
     <UploadResultStage__Container>
       <UploadResultStage__ResultContainer>
         {result.success ? <MdDone /> : <MdError />}
         <UploadResultStage__Message
-          ref={lastFocusableElement}
           tabIndex={0}
           aria-live="assertive"
+          id={MODAL_LAST_FOCUSABLE_ELEMENT}
         >
           {result.message}
         </UploadResultStage__Message>

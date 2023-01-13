@@ -3,8 +3,7 @@ import { BORDER_RADIUS_ROUND } from '../layout/style';
 
 export const GlobalStyle = createGlobalStyle`
   :root {
-    --backdrop-bg: rgba(0,0,0,0.4);
-
+    --backdrop-bg: rgba(0,0,0,0.7);
     --nav-bar-layer: 100;
     --modal-layer: 200;
   }

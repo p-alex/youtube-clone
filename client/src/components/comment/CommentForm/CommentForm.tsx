@@ -6,6 +6,7 @@ import { disableKeyBinds, enableKeyBinds } from '../../../app/features/videoSlic
 import { RootState } from '../../../app/store';
 import AutoResizingTextarea from '../../../ui/AutoResizeTextarea';
 import { Button } from '../../../ui/Button';
+import ProfileImage from '../../../ui/ProfileImage';
 import FocusTrapRedirectFocus from '../../focusTrap';
 
 import {
@@ -43,7 +44,7 @@ const CommentForm = ({
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
-  const firstFocusableElement = useRef<any>(null);
+  const firstFocusableElement = useRef<HTMLButtonElement>(null);
   const lastFocusableElement = useRef<HTMLButtonElement>(null);
 
   const handleRedirectTo = () => {
@@ -61,11 +62,13 @@ const CommentForm = ({
     <CommentFormContainer>
       {withTrap && <FocusTrapRedirectFocus element={lastFocusableElement} />}
       <CommentFormProfilePicture>
-        <Link href={'#'}>
-          <a ref={firstFocusableElement}>
-            <Image src={user.profile_picture} width={40} height={40} alt="" />
-          </a>
-        </Link>
+        <ProfileImage
+          width={40}
+          height={40}
+          username={user.username}
+          elemRef={firstFocusableElement}
+          imageUrl={user.profile_picture}
+        />
       </CommentFormProfilePicture>
       <CommentFormBody>
         <AutoResizingTextarea
@@ -81,20 +84,11 @@ const CommentForm = ({
         />
         <CommentFormButtons>
           {toggle && (
-            <Button
-              variant="normal"
-              onClick={handleRedirectTo}
-              ref={isLoading || !value ? lastFocusableElement : null}
-            >
+            <Button variant="normal" onClick={handleRedirectTo}>
               Cancel
             </Button>
           )}
-          <Button
-            variant="primary"
-            onClick={func}
-            ref={isLoading || !value ? null : lastFocusableElement}
-            disabled={isLoading || !value}
-          >
+          <Button variant="primary" onClick={func} ref={lastFocusableElement}>
             {btnName}
           </Button>
         </CommentFormButtons>

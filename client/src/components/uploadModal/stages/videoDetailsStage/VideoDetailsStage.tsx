@@ -10,6 +10,7 @@ import { Button } from '../../../../ui/Button';
 import InputGroup from '../../../../ui/InputGroup';
 import { convertToTagList } from '../../../../utils/convertToTagList';
 import { imageOptimizer } from '../../../../utils/imageOptimizer';
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../Modal/Modal';
 import {
   VideoDetailsState__Container,
   VideoDetailsState__Error,
@@ -24,13 +25,11 @@ const VideoDetailsStage = ({
   uploadData,
   setUploadData,
   handleUploadVideo,
-  lastFocusableElement,
   fieldErrors,
 }: {
   uploadData: UploadVideoData;
   setUploadData: React.Dispatch<React.SetStateAction<UploadVideoData>>;
   handleUploadVideo: (event: React.FormEvent) => void;
-  lastFocusableElement: React.MutableRefObject<any>;
   fieldErrors: ZodVerifyFormErrors<UploadVideoSchemaType>;
 }) => {
   const dispatch = useDispatch();
@@ -171,8 +170,8 @@ const VideoDetailsStage = ({
         <Button
           variant="primary"
           type="submit"
-          ref={lastFocusableElement}
           onClick={handleUploadVideo}
+          id={MODAL_LAST_FOCUSABLE_ELEMENT}
         >
           Upload
         </Button>

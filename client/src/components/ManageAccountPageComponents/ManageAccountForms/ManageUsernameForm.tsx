@@ -11,16 +11,10 @@ import {
   changeUsernameSchema,
   ChangeUsernameSchemaType,
 } from '../../../schemas/manageAccountFormSchemas';
-import {
-  ManageAccountForm,
-  ManageAccountForm__ResultMessage,
-} from '../ManageAccountChangeBox.styles';
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../Modal/Modal';
+import { ErrorText, Text } from '../../../ui/Text';
 
-const ManageUsernameForm = ({
-  lastFocusableElement,
-}: {
-  lastFocusableElement: React.RefObject<HTMLButtonElement>;
-}) => {
+const ManageUsernameForm = () => {
   const dispatch = useDispatch();
   const [isSuccess, setIsSuccess] = useState<true | null>(null);
 
@@ -56,17 +50,15 @@ const ManageUsernameForm = ({
   };
 
   return (
-    <ManageAccountForm onSubmit={handleChangeUsername}>
+    <form onSubmit={handleChangeUsername}>
       {errors && errors[0].message && (
-        <ManageAccountForm__ResultMessage isError>
-          {errors[0].message}
-        </ManageAccountForm__ResultMessage>
+        <ErrorText size="small">{errors[0].message}</ErrorText>
       )}
 
       {isSuccess && (
-        <ManageAccountForm__ResultMessage isError={false}>
+        <Text isMuted size="small">
           Username has been changed successfully!
-        </ManageAccountForm__ResultMessage>
+        </Text>
       )}
 
       <InputGroup
@@ -92,11 +84,11 @@ const ManageUsernameForm = ({
         variant="primary"
         type="submit"
         disabled={isLoading}
-        ref={lastFocusableElement}
+        id={MODAL_LAST_FOCUSABLE_ELEMENT}
       >
         {isLoading ? 'Loading' : 'Change username'}
       </Button>
-    </ManageAccountForm>
+    </form>
   );
 };
 

@@ -14,15 +14,12 @@ import {
   ChangeProfilePictureSchemaType,
 } from '../../../schemas/manageAccountFormSchemas';
 import { Button } from '../../../ui/Button';
+import { ErrorText, Text } from '../../../ui/Text';
 import { imageOptimizer } from '../../../utils/imageOptimizer';
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../Modal/Modal';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../../ReCaptchaCheckbox/ReCaptchaCheckbox';
-import {
-  ManageAccountForm,
-  ManageAccountForm__ErrorMessage,
-  ManageAccountForm__ResultMessage,
-} from '../ManageAccountChangeBox.styles';
 
 const ManageFormChangeProfilePicture__Container = styled.div`
   display: flex;
@@ -41,11 +38,7 @@ const ManageFormChangeProfilePicture__Btns = styled.div`
   gap: 20px;
 `;
 
-const ManageProfilePictureForm = ({
-  lastFocusableElement,
-}: {
-  lastFocusableElement: React.RefObject<HTMLButtonElement>;
-}) => {
+const ManageProfilePictureForm = () => {
   const dispatch = useDispatch();
 
   const currentProfilePicture = useSelector(
@@ -98,24 +91,16 @@ const ManageProfilePictureForm = ({
   };
 
   return (
-    <ManageAccountForm onSubmit={handleChangeProfilePicture}>
+    <form onSubmit={handleChangeProfilePicture}>
       {errors && errors[0].message && (
-        <ManageAccountForm__ResultMessage isError>
-          {errors[0].message}
-        </ManageAccountForm__ResultMessage>
+        <ErrorText size="small">{errors[0].message}</ErrorText>
       )}
 
       {fieldErrors?.newProfilePicture && (
-        <ManageAccountForm__ErrorMessage>
-          {fieldErrors.newProfilePicture[0]}
-        </ManageAccountForm__ErrorMessage>
+        <ErrorText size="small">{fieldErrors.newProfilePicture[0]}</ErrorText>
       )}
 
-      {isSuccess && (
-        <ManageAccountForm__ResultMessage isError={false}>
-          Profile picture has been changed successfully!
-        </ManageAccountForm__ResultMessage>
-      )}
+      {isSuccess && <Text isMuted>Profile picture has been changed successfully!</Text>}
 
       <ManageFormChangeProfilePicture__Container>
         <Image
@@ -190,12 +175,12 @@ const ManageProfilePictureForm = ({
       <Button
         variant="primary"
         type="submit"
-        ref={lastFocusableElement}
         disabled={isLoading}
+        id={MODAL_LAST_FOCUSABLE_ELEMENT}
       >
         {isLoading ? 'Loading' : 'Change profile picture'}
       </Button>
-    </ManageAccountForm>
+    </form>
   );
 };
 

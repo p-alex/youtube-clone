@@ -7,19 +7,13 @@ import {
 } from '../../../schemas/manageAccountFormSchemas';
 import { Button } from '../../../ui/Button';
 import InputGroup from '../../../ui/InputGroup';
+import { ErrorText, Text } from '../../../ui/Text';
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../Modal/Modal';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../../ReCaptchaCheckbox/ReCaptchaCheckbox';
-import {
-  ManageAccountForm,
-  ManageAccountForm__ResultMessage,
-} from '../ManageAccountChangeBox.styles';
 
-interface Props {
-  lastFocusableElement: React.RefObject<HTMLButtonElement>;
-}
-
-const ManageProfilePasswordForm = ({ lastFocusableElement }: Props) => {
+const ManageProfilePasswordForm = () => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const reRef = useRef<ReCaptchaType>(null);
 
@@ -54,18 +48,12 @@ const ManageProfilePasswordForm = ({ lastFocusableElement }: Props) => {
   };
 
   return (
-    <ManageAccountForm onSubmit={handleChangePassword}>
+    <form onSubmit={handleChangePassword}>
       {errors && errors[0].message && (
-        <ManageAccountForm__ResultMessage isError>
-          {errors[0].message}
-        </ManageAccountForm__ResultMessage>
+        <ErrorText size="small">{errors[0].message}</ErrorText>
       )}
 
-      {isSuccess && (
-        <ManageAccountForm__ResultMessage isError={false}>
-          Password has been changed successfully!
-        </ManageAccountForm__ResultMessage>
-      )}
+      {isSuccess && <Text isMuted>Password has been changed successfully!</Text>}
 
       <InputGroup
         label="current password"
@@ -118,10 +106,10 @@ const ManageProfilePasswordForm = ({ lastFocusableElement }: Props) => {
         error={fieldErrors?.reToken && fieldErrors.reToken[0]}
       />
 
-      <Button variant="primary" type="submit" ref={lastFocusableElement}>
+      <Button variant="primary" type="submit" id={MODAL_LAST_FOCUSABLE_ELEMENT}>
         Change password
       </Button>
-    </ManageAccountForm>
+    </form>
   );
 };
 

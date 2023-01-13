@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import { IVideoSmall } from '../app/features/videoSlice';
+import Modal from '../components/Modal/Modal';
+import ManageProfilePasswordForm from '../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePasswordForm';
 
 const Home: NextPage = () => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../app/store';
 import { UploadVideoData } from '../../../../hooks/useUploadModal';
 import { Button } from '../../../../ui/Button';
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../Modal/Modal';
 import {
   ChooseVideoState__Container,
   ChooseVideoState__HiddenFileInput,
@@ -12,12 +13,10 @@ const ChooseVideoStage = ({
   setUploadData,
   handleChangeStage,
   setVideoFile,
-  lastFocusableElement,
 }: {
   setUploadData: React.Dispatch<React.SetStateAction<UploadVideoData>>;
   handleChangeStage: (stage: 'choose' | 'details' | 'uploading' | 'result') => void;
   setVideoFile: React.Dispatch<React.SetStateAction<File | null>>;
-  lastFocusableElement: React.MutableRefObject<any>;
 }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
@@ -51,8 +50,8 @@ const ChooseVideoStage = ({
       <Button
         variant="primary"
         onClick={handleClickHiddenInput}
-        ref={lastFocusableElement}
         autoFocus={true}
+        id={MODAL_LAST_FOCUSABLE_ELEMENT}
       >
         Select video
       </Button>

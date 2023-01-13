@@ -12,19 +12,16 @@ import {
 import { useRouter } from 'next/router';
 import Layout from '../../layout/Layout';
 import { BsChevronRight } from 'react-icons/bs';
-import ManageAccountChangeBox from '../../components/ManageAccountPageComponents/ManageAccountChangeBox';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 import useProtectRoute from '../../hooks/useProtectRoute';
 import Image from 'next/image';
+import Modal from '../../components/Modal/Modal';
+import ManageUsernameForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageUsernameForm';
+import ManageProfilePictureForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePictureForm';
+import ManageProfilePasswordForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePasswordForm';
 
-const MANAGE_VIDEOS_CHANGE_LIST = [
-  'Username',
-  'Profile picture',
-  'Email',
-  'Password',
-  '2 Factor Authentication',
-] as const;
+const MANAGE_VIDEOS_CHANGE_LIST = ['Username', 'Profile picture', 'Password'] as const;
 
 const ManageAccountPage = () => {
   useProtectRoute();
@@ -56,7 +53,16 @@ const ManageAccountPage = () => {
     <Layout>
       <ManageAccountPage__Container>
         {changeParam && (
-          <ManageAccountChangeBox lastFocusedElement={lastFocusedElement} />
+          <Modal
+            title={'Change ' + changeParam}
+            width={500}
+            handleClose={() => router.push('/manage/account')}
+            lastFocusedBtn={lastFocusedElement}
+          >
+            {changeParam === 'Username' && <ManageUsernameForm />}
+            {changeParam === 'Profile picture' && <ManageProfilePictureForm />}
+            {changeParam === 'Password' && <ManageProfilePasswordForm />}
+          </Modal>
         )}
         <ManageAccountPage__Title>Manage account</ManageAccountPage__Title>
         <ManageAccountPage__Box>

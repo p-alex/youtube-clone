@@ -8,25 +8,19 @@ import useDisableScroll from '../../hooks/useDisableScroll';
 import InputGroup from '../../ui/InputGroup';
 import { Button } from '../../ui/Button';
 import { imageOptimizer } from '../../utils/imageOptimizer';
-import { MdClose } from 'react-icons/md';
 import {
-  EditVideoModal__Backdrop,
-  EditVideoModal__CloseBtn,
-  EditVideoModal__Container,
-  EditVideoModal__FormContainer,
   EditVideoModal__HiddenInput,
   EditVideoModal__ResultMessage,
   EditVideoModal__Tag,
   EditVideoModal__TagContainer,
   EditVideoModal__ThumbnailContainer,
 } from './EditVideoModal.styles';
-import { motion } from 'framer-motion';
 import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
 import AutoResizingTextarea from '../../ui/AutoResizeTextarea';
-import FocusTrapRedirectFocus from '../focusTrap';
 import useZodVerifySchema from '../../hooks/useZodVerifySchema';
 import { editVideoSchema } from '../../schemas/editVideoModal.schema';
 import { convertToTagList } from '../../utils/convertToTagList';
+import Modal, { MODAL_LAST_FOCUSABLE_ELEMENT } from '../Modal/Modal';
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -158,122 +152,95 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     document.getElementById(lastFocusedElement!)?.focus();
   };
 
-  const firstFocusableElement = useRef<HTMLButtonElement>(null);
-  const lastFocusableElement = useRef<HTMLButtonElement>(null);
-
   return (
-    <EditVideoModal__Container>
-      <FocusTrapRedirectFocus element={lastFocusableElement} />
-      <EditVideoModal__Backdrop
-        onClick={() => dispatch(resetVideoToEdit())}
-        as={motion.div}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ type: 'just' }}
-        exit={{ opacity: 0 }}
-      ></EditVideoModal__Backdrop>
-      <EditVideoModal__FormContainer
-        as={motion.form}
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: 'just' }}
-        exit={{ y: -50, opacity: 0 }}
-      >
-        <EditVideoModal__CloseBtn
-          onClick={handleCloseModal}
-          ref={firstFocusableElement}
+    <Modal title={video.title} width={600} handleClose={handleCloseModal}>
+      <EditVideoModal__ThumbnailContainer>
+        <EditVideoModal__HiddenInput
+          type="file"
+          accept=".jpg, .png"
+          ref={hiddenInput}
+          required
+          onChange={handleChooseThumbnail}
+        ></EditVideoModal__HiddenInput>
+        <Image
+          src={
+            thumbnailData.newThumbnailBase64
+              ? thumbnailData.newThumbnailBase64
+              : thumbnailData.currentThumbnailUrl
+          }
+          width={500}
+          height={281.25}
+          alt=""
+          objectFit="contain"
+        />
+        <Button
+          variant="normal"
+          onClick={() => hiddenInput.current.click()}
+          type="button"
           autoFocus
         >
-          <MdClose />
-        </EditVideoModal__CloseBtn>
-        <EditVideoModal__ThumbnailContainer>
-          <EditVideoModal__HiddenInput
-            type="file"
-            accept=".jpg, .png"
-            ref={hiddenInput}
-            required
-            onChange={handleChooseThumbnail}
-          ></EditVideoModal__HiddenInput>
-          <Image
-            src={
-              thumbnailData.newThumbnailBase64
-                ? thumbnailData.newThumbnailBase64
-                : thumbnailData.currentThumbnailUrl
-            }
-            width={500}
-            height={281.25}
-            alt=""
-            objectFit="contain"
-          />
-          <Button
-            variant="normal"
-            onClick={() => hiddenInput.current.click()}
-            type="button"
-          >
-            Change thumbnail
-          </Button>
-          {video.thumbnail_url &&
-            typeof thumbnailData.newThumbnailBase64 === 'string' &&
-            video.thumbnail_url !== thumbnailData.newThumbnailBase64 && (
-              <Button
-                variant="normal"
-                onClick={() =>
-                  setThumbnailData((prevState) => ({
-                    ...prevState,
-                    newThumbnailBase64: null,
-                  }))
-                }
-                type="button"
-              >
-                Reset
-              </Button>
-            )}
-        </EditVideoModal__ThumbnailContainer>
-        {typeof result?.success === 'boolean' ? (
-          <EditVideoModal__ResultMessage isSuccess={result.success}>
-            {result.success ? 'Video edited successfully!' : result.error}
-          </EditVideoModal__ResultMessage>
-        ) : null}
-        <InputGroup
-          type={'text'}
-          label="title"
-          placeholder="Write a title"
-          value={title}
-          setValue={handleChangeTitle}
-          error={fieldErrors.title && fieldErrors.title[0]}
-        />
-        <AutoResizingTextarea
-          label={'description'}
-          placeholder="Write a description"
-          value={description}
-          setValue={handleChangeDescription}
-          maxLength={1500}
-        />
-        <InputGroup
-          type={'text'}
-          label={'tags'}
-          placeholder="E.g. tag1, tag2, tag3 (minimum 4 tags)"
-          value={tagsText}
-          setValue={handleChangeTagList}
-        />
-        <EditVideoModal__TagContainer>
-          {newTagList.length > 0 &&
-            newTagList.map((tag, index) => {
-              return <EditVideoModal__Tag key={tag + index}>{tag}</EditVideoModal__Tag>;
-            })}
-        </EditVideoModal__TagContainer>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={handleUpdateVideo}
-          disabled={isUpdateVideoLoading}
-          ref={lastFocusableElement}
-        >
-          {isUpdateVideoLoading ? 'Loading' : 'Edit'}
+          Change thumbnail
         </Button>
-      </EditVideoModal__FormContainer>
-      <FocusTrapRedirectFocus element={firstFocusableElement} />
-    </EditVideoModal__Container>
+        {video.thumbnail_url &&
+          typeof thumbnailData.newThumbnailBase64 === 'string' &&
+          video.thumbnail_url !== thumbnailData.newThumbnailBase64 && (
+            <Button
+              variant="normal"
+              onClick={() =>
+                setThumbnailData((prevState) => ({
+                  ...prevState,
+                  newThumbnailBase64: null,
+                }))
+              }
+              type="button"
+            >
+              Reset
+            </Button>
+          )}
+      </EditVideoModal__ThumbnailContainer>
+      {typeof result?.success === 'boolean' ? (
+        <EditVideoModal__ResultMessage isSuccess={result.success}>
+          {result.success ? 'Video edited successfully!' : result.error}
+        </EditVideoModal__ResultMessage>
+      ) : null}
+      <InputGroup
+        type={'text'}
+        label="title"
+        placeholder="Write a title"
+        value={title}
+        setValue={handleChangeTitle}
+        error={fieldErrors.title && fieldErrors.title[0]}
+      />
+      <AutoResizingTextarea
+        label={'description'}
+        placeholder="Write a description"
+        value={description}
+        setValue={handleChangeDescription}
+        maxLength={1500}
+      />
+      <InputGroup
+        type={'text'}
+        label={'tags'}
+        placeholder="E.g. tag1, tag2, tag3 (minimum 4 tags)"
+        value={tagsText}
+        setValue={handleChangeTagList}
+      />
+      <EditVideoModal__TagContainer>
+        {newTagList.length > 0 &&
+          newTagList.map((tag, index) => {
+            return <EditVideoModal__Tag key={tag + index}>{tag}</EditVideoModal__Tag>;
+          })}
+      </EditVideoModal__TagContainer>
+      <Button
+        variant="primary"
+        type="submit"
+        onClick={handleUpdateVideo}
+        disabled={isUpdateVideoLoading}
+        id={MODAL_LAST_FOCUSABLE_ELEMENT}
+      >
+        {isUpdateVideoLoading ? 'Loading' : 'Edit'}
+      </Button>
+    </Modal>
   );
 };
 
