@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { EditVideoSchemaType } from '../../schemas/editVideoModal.schema';
 
 export interface IVideo {
   video_id: string;
@@ -54,18 +55,11 @@ export const manageVideosSlice = createSlice({
     ) => {
       state.lastFocusedElement = action.payload.lastFocusedElementId;
     },
-    editVideo: (
-      state,
-      action: PayloadAction<{
-        video_id: string;
-        title: string;
-        thumbnail_url: string;
-      }>
-    ) => {
+    editVideo: (state, action: PayloadAction<EditVideoSchemaType>) => {
       state.videos = state.videos.map((video) => {
-        if (video.video_id === action.payload.video_id) {
+        if (video.video_id === action.payload.videoId) {
           video.title = action.payload.title;
-          video.thumbnail_url = action.payload.thumbnail_url;
+          video.thumbnail_url = action.payload.thumbnailData.currentThumbnailUrl;
           return video;
         }
         return video;

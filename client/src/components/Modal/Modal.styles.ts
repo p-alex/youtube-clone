@@ -38,6 +38,7 @@ export const Modal__Container = styled.div<{ width: number }>`
   z-index: calc(var(--modal-layer) + 2);
   border-radius: ${BORDER_RADIUS_ROUND}px;
   color: ${(props) => props.theme.textColor};
+  max-height: 80vh;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -47,6 +48,7 @@ export const Modal__Container = styled.div<{ width: number }>`
     height: 100%;
     border: none;
     border-radius: none;
+    max-height: none;
   }
 `;
 
@@ -87,5 +89,5 @@ export const Modal__Content = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  max-height: 80vh;
+  height: auto;
 `;

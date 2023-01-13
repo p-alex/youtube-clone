@@ -11,16 +11,20 @@ import { imageOptimizer } from '../../utils/imageOptimizer';
 import {
   EditVideoModal__HiddenInput,
   EditVideoModal__ResultMessage,
+  EditVideoModal__SubmitContainer,
   EditVideoModal__Tag,
   EditVideoModal__TagContainer,
   EditVideoModal__ThumbnailContainer,
 } from './EditVideoModal.styles';
-import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
 import AutoResizingTextarea from '../../ui/AutoResizeTextarea';
 import useZodVerifySchema from '../../hooks/useZodVerifySchema';
-import { editVideoSchema } from '../../schemas/editVideoModal.schema';
+import {
+  editVideoSchema,
+  EditVideoSchemaType,
+} from '../../schemas/editVideoModal.schema';
 import { convertToTagList } from '../../utils/convertToTagList';
 import Modal, { MODAL_LAST_FOCUSABLE_ELEMENT } from '../Modal/Modal';
+import ReCaptchaCheckbox, { ReCaptchaType } from '../ReCaptchaCheckbox/ReCaptchaCheckbox';
 
 const EditVideoModal = ({ video }: { video: IVideo }) => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -34,19 +38,23 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     error: string;
   } | null>(null);
 
-  const [title, setTitle] = useState(video.title);
-  const [description, setDescription] = useState(video.description);
-  const [thumbnailData, setThumbnailData] = useState<{
-    currentThumbnailUrl: string;
-    newThumbnailBase64: string | null;
-  }>({
-    currentThumbnailUrl: video.thumbnail_url,
-    newThumbnailBase64: null,
-  });
-
   const [currentTagList, setCurrentTagList] = useState<string[]>([]);
   const [newTagList, setNewTagList] = useState<string[]>([]);
   const [tagsText, setTagsText] = useState('');
+
+  const [state, setState] = useState<EditVideoSchemaType>({
+    videoId: video.video_id,
+    title: video.title,
+    description: video.description,
+    thumbnailData: {
+      currentThumbnailUrl: video.thumbnail_url,
+      newThumbnailBase64: null,
+    },
+    tagList: currentTagList,
+    reToken: '',
+  });
+
+  const reRef = useRef<ReCaptchaType>(null);
 
   const hiddenInput = useRef<any>();
 
@@ -56,16 +64,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
   >(`api/videos/${video.video_id}/tags`, 'GET');
 
   const [updateVideo, { isLoading: isUpdateVideoLoading }] = useAxiosWithRetry<
-    {
-      videoId: string;
-      title: string;
-      description: string;
-      thumbnailData: {
-        currentThumbnailUrl: string;
-        newThumbnailBase64: string | null;
-      };
-      tagList: string[] | null;
-    },
+    EditVideoSchemaType,
     {}
   >('api/videos', 'PATCH');
 
@@ -87,31 +86,35 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     handleGetTags();
   }, [auth]);
 
-  const { verify, fieldErrors } = useZodVerifySchema(editVideoSchema, { title });
+  const { verify, fieldErrors } = useZodVerifySchema(editVideoSchema, state);
+
+  console.log(
+    state.tagList?.join('').replaceAll(' ', '') ===
+      currentTagList.join('').replaceAll(',', '').replaceAll(' ', '')
+  );
 
   const handleUpdateVideo = async () => {
-    try {
-      const isValid = verify();
-      if (!isValid) return;
-      const response = await updateVideo({
-        videoId: video.video_id,
-        title,
-        description: removeEmptyLinesFromString(description),
-        thumbnailData: thumbnailData,
-        tagList:
-          newTagList !== currentTagList && newTagList.length >= 4 ? newTagList : null,
+    setResult({ success: false, error: '' });
+
+    if (
+      state.title === video.title &&
+      state.description === video.description &&
+      state.tagList?.join('').replaceAll(' ', '') ===
+        currentTagList.join('').replaceAll(',', '').replaceAll(' ', '')
+    )
+      return setResult({
+        success: false,
+        error: 'You did not make any modifications...',
       });
+    const isValid = verify();
+    if (!isValid) return;
+    try {
+      const response = await updateVideo(state);
       if (!response.result) return;
-      dispatch(
-        editVideo({
-          video_id: video.video_id,
-          title,
-          thumbnail_url: thumbnailData.newThumbnailBase64
-            ? thumbnailData.newThumbnailBase64
-            : thumbnailData.currentThumbnailUrl,
-        })
-      );
+      dispatch(editVideo(state));
       setResult({ success: response.success, error: '' });
+      reRef.current?.reset();
+      setState((prevState) => ({ ...prevState, reToken: '' }));
     } catch (error: any) {
       setResult({ success: false, error: error.message });
     }
@@ -124,19 +127,22 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     file.readAsDataURL(image);
     file.onload = async () => {
       const optimizedImageUrl = await imageOptimizer(file.result);
-      setThumbnailData((prevState) => ({
+      setState((prevState) => ({
         ...prevState,
-        newThumbnailBase64: optimizedImageUrl,
+        thumbnailData: {
+          ...prevState.thumbnailData,
+          newThumbnailBase64: optimizedImageUrl,
+        },
       }));
     };
   };
 
   const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+    setState((prevState) => ({ ...prevState, ['title']: event.target.value }));
   };
 
   const handleChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
+    setState((prevState) => ({ ...prevState, ['description']: event.target.value }));
   };
 
   const handleChangeTagList = (event: ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +150,7 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
   };
 
   useEffect(() => {
-    setNewTagList(convertToTagList(tagsText));
+    setState((prevState) => ({ ...prevState, ['tagList']: convertToTagList(tagsText) }));
   }, [tagsText]);
 
   const handleCloseModal = () => {
@@ -164,9 +170,9 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
         ></EditVideoModal__HiddenInput>
         <Image
           src={
-            thumbnailData.newThumbnailBase64
-              ? thumbnailData.newThumbnailBase64
-              : thumbnailData.currentThumbnailUrl
+            state.thumbnailData.newThumbnailBase64
+              ? state.thumbnailData.newThumbnailBase64
+              : state.thumbnailData.currentThumbnailUrl
           }
           width={500}
           height={281.25}
@@ -182,14 +188,14 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
           Change thumbnail
         </Button>
         {video.thumbnail_url &&
-          typeof thumbnailData.newThumbnailBase64 === 'string' &&
-          video.thumbnail_url !== thumbnailData.newThumbnailBase64 && (
+          typeof state.thumbnailData.newThumbnailBase64 === 'string' &&
+          video.thumbnail_url !== state.thumbnailData.newThumbnailBase64 && (
             <Button
               variant="normal"
               onClick={() =>
-                setThumbnailData((prevState) => ({
+                setState((prevState) => ({
                   ...prevState,
-                  newThumbnailBase64: null,
+                  thumbnailData: { ...prevState.thumbnailData, newThumbnailBase64: null },
                 }))
               }
               type="button"
@@ -198,48 +204,57 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
             </Button>
           )}
       </EditVideoModal__ThumbnailContainer>
-      {typeof result?.success === 'boolean' ? (
-        <EditVideoModal__ResultMessage isSuccess={result.success}>
-          {result.success ? 'Video edited successfully!' : result.error}
-        </EditVideoModal__ResultMessage>
-      ) : null}
+
       <InputGroup
         type={'text'}
         label="title"
         placeholder="Write a title"
-        value={title}
+        value={state.title}
         setValue={handleChangeTitle}
         error={fieldErrors.title && fieldErrors.title[0]}
       />
       <AutoResizingTextarea
-        label={'description'}
+        label={'description (optional)'}
         placeholder="Write a description"
-        value={description}
+        value={state.description}
         setValue={handleChangeDescription}
         maxLength={1500}
       />
       <InputGroup
+        label={'tags (optional)'}
         type={'text'}
-        label={'tags'}
         placeholder="E.g. tag1, tag2, tag3 (minimum 4 tags)"
         value={tagsText}
         setValue={handleChangeTagList}
       />
       <EditVideoModal__TagContainer>
-        {newTagList.length > 0 &&
-          newTagList.map((tag, index) => {
+        {state.tagList &&
+          state.tagList.length > 0 &&
+          state.tagList.map((tag, index) => {
             return <EditVideoModal__Tag key={tag + index}>{tag}</EditVideoModal__Tag>;
           })}
       </EditVideoModal__TagContainer>
-      <Button
-        variant="primary"
-        type="submit"
-        onClick={handleUpdateVideo}
-        disabled={isUpdateVideoLoading}
-        id={MODAL_LAST_FOCUSABLE_ELEMENT}
-      >
-        {isUpdateVideoLoading ? 'Loading' : 'Edit'}
-      </Button>
+      <ReCaptchaCheckbox
+        error={fieldErrors?.reToken && fieldErrors.reToken[0]}
+        onChange={(e) => setState((prevState) => ({ ...prevState, reToken: e }))}
+        reference={reRef}
+      />
+      <EditVideoModal__SubmitContainer>
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={handleUpdateVideo}
+          disabled={isUpdateVideoLoading}
+          id={MODAL_LAST_FOCUSABLE_ELEMENT}
+        >
+          {isUpdateVideoLoading ? 'Loading' : 'Edit'}
+        </Button>
+        {typeof result?.success === 'boolean' ? (
+          <EditVideoModal__ResultMessage isSuccess={result.success}>
+            {result.success ? 'Video edited successfully!' : result.error}
+          </EditVideoModal__ResultMessage>
+        ) : null}
+      </EditVideoModal__SubmitContainer>
     </Modal>
   );
 };

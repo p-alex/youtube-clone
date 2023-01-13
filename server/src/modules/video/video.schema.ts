@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ReTokenSchema } from '../user/user.schema';
 
 export const getVideoSchema = z.object({
   body: z.object({
@@ -68,6 +69,7 @@ export const updateVideoSchema = z.object({
       newThumbnailBase64: z.nullable(z.string({})),
     }),
     tagList: z.nullable(z.array(z.string({})).min(4)),
+    reToken: ReTokenSchema,
   }),
 });
 

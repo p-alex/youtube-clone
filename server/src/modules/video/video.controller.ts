@@ -30,6 +30,7 @@ import fs from 'fs';
 import util from 'util';
 import { boolean } from 'zod';
 import log from '../../utils/logger';
+import { validateHuman } from '../user/user.service';
 const unlinkFile = util.promisify(fs.unlink);
 
 export const getVideosController = async (req: Request, res: Response) => {
@@ -170,11 +171,24 @@ export const updateVideoController = async (
   req: Request<{}, {}, UpdateVideoInput>,
   res: Response
 ) => {
-  const videoData = req.body;
-  // @ts-ignore
-  const { user_id } = req.user;
   try {
-    const video_id = await updateVideo(videoData, user_id);
+    const { videoId, title, description, thumbnailData, tagList, reToken } = req.body;
+    // @ts-ignore
+    const { user_id } = req.user;
+
+    const isHuman = await validateHuman(reToken);
+
+    if (!isHuman)
+      return res.status(400).json({
+        success: false,
+        errors: [{ message: 'Something very suspicious is going on...' }],
+        result: null,
+      });
+
+    const video_id = await updateVideo(
+      { videoId, title, description, thumbnailData, tagList },
+      user_id
+    );
 
     if (!video_id) throw new Error('Something went wrong...');
 

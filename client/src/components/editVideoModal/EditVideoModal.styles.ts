@@ -8,7 +8,6 @@ export const EditVideoModal__ThumbnailContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px 0;
 `;
 
 export const EditVideoModal__HiddenInput = styled.input`
@@ -19,7 +18,6 @@ export const EditVideoModal__TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 20px;
 `;
 
 export const EditVideoModal__Tag = styled.p`
@@ -29,8 +27,14 @@ export const EditVideoModal__Tag = styled.p`
   border-radius: 500px;
 `;
 
+export const EditVideoModal__SubmitContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: center;
+`;
+
 export const EditVideoModal__ResultMessage = styled.p<{ isSuccess: boolean }>`
   font-weight: 700;
   color: ${(props) => (props.isSuccess ? '#95C623' : 'red')};
-  margin-top: 20px;
+  font-size: 0.85rem;
 `;
