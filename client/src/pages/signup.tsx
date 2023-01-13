@@ -1,10 +1,13 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../layout/Layout';
 import useAxios from '../hooks/requestHooks/useAxios';
 import { Button } from '../ui/Button';
 import useZodVerifyForm from '../hooks/useZodVerifySchema';
-import { createAccountSchema } from '../schemas/createAccount.schema';
+import {
+  createAccountSchema,
+  CreateAccountSchemType,
+} from '../schemas/createAccount.schema';
 import {
   Form,
   FormAlternativeParagraph,
@@ -19,49 +22,43 @@ import InputGroup from '../ui/InputGroup';
 import { useRouter } from 'next/router';
 import useAuth from '../hooks/authHooks/useAuth';
 import Logo from '../components/Logo/Logo';
+import ReCaptchaCheckbox, {
+  ReCaptchaType,
+} from '../components/ReCaptchaCheckbox/ReCaptchaCheckbox';
 
 const SignUp = () => {
   const router = useRouter();
   const { isAuth } = useAuth();
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const reRef = useRef<ReCaptchaType>(null);
+
+  const [state, setState] = useState<CreateAccountSchemType>({
+    email: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    reToken: '',
+  });
 
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [registerUser, { isLoading: isRegisterUserLoading, errors: registerUserErrors }] =
-    useAxios<
-      {
-        email: string;
-        username: string;
-        password: string;
-        confirmPassword: string;
-      },
-      null
-    >('api/users', 'POST');
+    useAxios<CreateAccountSchemType, null>('api/users', 'POST');
 
-  const { verify, fieldErrors } = useZodVerifyForm(createAccountSchema, {
-    email,
-    username,
-    password,
-    confirmPassword,
-  });
+  const { verify, fieldErrors } = useZodVerifyForm(createAccountSchema, state);
 
-  const handleResetForm = () => {
-    setEmail('');
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
+  const handleReset = () => {
+    setState({ email: '', username: '', password: '', confirmPassword: '', reToken: '' });
+    reRef.current?.reset();
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isValid = verify();
     if (!isValid) return;
-    const response = await registerUser({ email, username, password, confirmPassword });
-    if (!response.success) return;
-    handleResetForm();
+    const response = await registerUser(state);
+    if (!response.success) reRef.current?.reset();
+    handleReset();
     setIsSuccess(true);
   };
 
@@ -102,8 +99,10 @@ const SignUp = () => {
             <InputGroup
               type="text"
               label="email"
-              value={email}
-              setValue={(e) => setEmail(e.target.value)}
+              value={state.email}
+              setValue={(e) =>
+                setState((prevState) => ({ ...prevState, ['email']: e.target.value }))
+              }
               disabled={isRegisterUserLoading}
               error={fieldErrors?.email && fieldErrors.email[0]}
             />
@@ -111,8 +110,10 @@ const SignUp = () => {
             <InputGroup
               type="text"
               label="username"
-              value={username}
-              setValue={(e) => setUsername(e.target.value)}
+              value={state.username}
+              setValue={(e) =>
+                setState((prevState) => ({ ...prevState, ['username']: e.target.value }))
+              }
               disabled={isRegisterUserLoading}
               error={fieldErrors?.username && fieldErrors.username[0]}
             />
@@ -120,8 +121,10 @@ const SignUp = () => {
             <InputGroup
               type="password"
               label="password"
-              value={password}
-              setValue={(e) => setPassword(e.target.value)}
+              value={state.password}
+              setValue={(e) =>
+                setState((prevState) => ({ ...prevState, ['password']: e.target.value }))
+              }
               disabled={isRegisterUserLoading}
               error={fieldErrors?.password && fieldErrors.password[0]}
             />
@@ -129,10 +132,23 @@ const SignUp = () => {
             <InputGroup
               type="password"
               label="Confirm Password"
-              value={confirmPassword}
-              setValue={(e) => setConfirmPassword(e.target.value)}
+              value={state.confirmPassword}
+              setValue={(e) =>
+                setState((prevState) => ({
+                  ...prevState,
+                  ['confirmPassword']: e.target.value,
+                }))
+              }
               disabled={isRegisterUserLoading}
               error={fieldErrors?.confirmPassword && fieldErrors.confirmPassword[0]}
+            />
+
+            <ReCaptchaCheckbox
+              error={fieldErrors?.reToken && fieldErrors.reToken[0]}
+              onChange={(e) =>
+                setState((prevState) => ({ ...prevState, ['reToken']: e }))
+              }
+              reference={reRef}
             />
 
             <Button variant="primary" type="submit" disabled={isRegisterUserLoading}>

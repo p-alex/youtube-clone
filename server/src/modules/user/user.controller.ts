@@ -29,9 +29,18 @@ export const registerUserController = async (
   req: Request<{}, {}, RegisterUserInput>,
   res: Response
 ) => {
-  const { email, username, password } = req.body;
+  const { email, username, password, reToken } = req.body;
 
   try {
+    const isHuman = await validateHuman(reToken);
+
+    if (!isHuman)
+      return res.status(400).json({
+        success: false,
+        errors: [{ message: 'Something very suspicious is going on...' }],
+        result: null,
+      });
+
     const userWithEmail = await db.query('SELECT email FROM users WHERE email = $1', [
       email,
     ]);

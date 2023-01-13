@@ -5,14 +5,24 @@ import { createSession, signAccessToken, signRefreshToken } from './auth.service
 import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 import { verifyJwt } from '../../utils/jwt';
+import { validateHuman } from '../user/user.service';
 
 export const loginUserController = async (
   req: Request<{}, {}, LoginUserInput>,
   res: Response
 ) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password, reToken } = req.body;
+
+    const isHuman = await validateHuman(reToken);
+
+    if (!isHuman)
+      return res.status(400).json({
+        success: false,
+        errors: [{ message: 'Something very suspicious is going on...' }],
+        result: null,
+      });
+
     const response = (await db.query('SELECT * FROM users WHERE email = $1', [
       email,
     ])) as QueryResult<{
@@ -252,9 +262,20 @@ export const verifyEmailController = async (
   req: Request<{}, {}, VerifyEmailInput>,
   res: Response
 ) => {
+  const { code, reToken } = req.body;
+
+  const isHuman = await validateHuman(reToken);
+
+  if (!isHuman)
+    return res.status(400).json({
+      success: false,
+      errors: [{ message: 'Something very suspicious is going on...' }],
+      result: null,
+    });
+
   const response: QueryResult<{ verification_code: string }> = await db.query(
     'SELECT verification_code FROM users WHERE verification_code = $1',
-    [req.body.code]
+    [code]
   );
 
   if (!response.rows[0])
@@ -262,9 +283,9 @@ export const verifyEmailController = async (
       .status(400)
       .json({ success: false, errors: [{ message: 'Incorrect code' }], result: null });
 
-  const code = response.rows[0].verification_code;
+  const verificationCode = response.rows[0].verification_code;
 
-  const isCodeValid = response.rows[0].verification_code === code;
+  const isCodeValid = verificationCode === code;
 
   if (!isCodeValid)
     return res

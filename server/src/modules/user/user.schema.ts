@@ -36,6 +36,8 @@ export const UsernameSchema = z
     `Maximum ${USERNAME_RESTRICTIONS.maxLength} characters`
   );
 
+export const ReTokenSchema = z.string({ required_error: 'Recaptcha token is required' });
+
 export const registerUserSchema = z.object({
   body: z
     .object({
@@ -49,6 +51,7 @@ export const registerUserSchema = z.object({
       confirmPassword: z.string({
         required_error: 'Confirm password is required to register',
       }),
+      reToken: ReTokenSchema,
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: 'Passwords must match',
@@ -65,14 +68,14 @@ export const getProfileInfoSchema = z.object({
 export const changeUsernameSchema = z.object({
   body: z.object({
     newUsername: UsernameSchema,
-    reToken: z.string({ required_error: 'Recaptcha token is required' }),
+    reToken: ReTokenSchema,
   }),
 });
 
 export const changeProfilePictureSchema = z.object({
   body: z.object({
     newProfilePicture: z.string({ required_error: 'Provide profile picture' }),
-    reToken: z.string({ required_error: 'Recaptcha token is required' }),
+    reToken: ReTokenSchema,
   }),
 });
 
@@ -82,7 +85,7 @@ export const changePasswordSchema = z.object({
       currentPassword: z.string({ required_error: 'Old password is required' }),
       newPassword: PasswordSchema,
       confirmPassword: z.string({ required_error: 'Confirm password is required' }),
-      reToken: z.string({ required_error: 'ReCaptcha token is required' }),
+      reToken: ReTokenSchema,
     })
     .refine(
       (current) => current.newPassword === current.confirmPassword,

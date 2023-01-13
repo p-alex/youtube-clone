@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PasswordSchema, ReTokenSchema } from '../user/user.schema';
 
 export const loginUserSchema = z.object({
   body: z.object({
@@ -7,11 +8,8 @@ export const loginUserSchema = z.object({
         required_error: 'Email is required',
       })
       .email('Invalid email or password'),
-    password: z
-      .string({
-        required_error: 'Password is required',
-      })
-      .min(8, 'Invalid email or password'),
+    password: PasswordSchema,
+    reToken: ReTokenSchema,
   }),
 });
 
@@ -28,6 +26,7 @@ export const logoutUserSchema = z.object({
 export const verifyEmailSchema = z.object({
   body: z.object({
     code: z.string({ required_error: 'Code is required' }).length(6, 'Invalid code'),
+    reToken: ReTokenSchema,
   }),
 });
 

@@ -25,6 +25,8 @@ export const UsernameSchema = z
     `Maximum ${USERNAME_RESTRICTIONS.maxLength} characters`
   );
 
+export const ReTokenSchema = z.string().min(1, 'Please check the checkbox');
+
 export const createAccountSchema = z
   .object({
     email: z.string({}).min(1, "Can't be blank").email('Invalid email'),
@@ -33,6 +35,7 @@ export const createAccountSchema = z
     confirmPassword: z
       .string({ required_error: 'Confirm password is required' })
       .min(1, "Can't be blank"),
+    reToken: ReTokenSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords must match',

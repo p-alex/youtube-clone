@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import useAxios from '../../hooks/requestHooks/useAxios';
 import useZodVerifyForm from '../../hooks/useZodVerifySchema';
 import { verifyCodeSchema } from '../../schemas/verifyCode.schema';
@@ -15,6 +15,7 @@ import { VerifyCodeSchemaType } from '../../schemas/verifyCode.schema';
 import Logo from '../Logo/Logo';
 import Link from 'next/link';
 import InputGroup from '../../ui/InputGroup';
+import ReCaptchaCheckbox, { ReCaptchaType } from '../ReCaptchaCheckbox/ReCaptchaCheckbox';
 
 const VerifyCodeForm = ({
   title,
@@ -29,31 +30,38 @@ const VerifyCodeForm = ({
   linkText: string;
   linkSendTo: string;
 }) => {
-  const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  const [verifyEmail, { isLoading, errors }] = useAxios<{ code: string }, null>(
+  const [state, setState] = useState<VerifyCodeSchemaType>({
+    code: '',
+    reToken: '',
+  });
+
+  const reRef = useRef<ReCaptchaType>(null);
+
+  const [verifyEmail, { isLoading, errors }] = useAxios<VerifyCodeSchemaType, null>(
     `api/auth/verify-${whatToVerify}`,
     'POST'
   );
 
-  const handleVerifyEmail = async () => {
-    const response = await verifyEmail({ code });
-    if (response.success) {
-      setIsSuccess(true);
-    }
-  };
-
   const { verify, fieldErrors } = useZodVerifyForm<VerifyCodeSchemaType>(
     verifyCodeSchema,
-    { code }
+    state
   );
 
-  const onSubmit = (event: React.FormEvent) => {
+  const handleReset = () => {
+    setState({ code: '', reToken: '' });
+    reRef.current?.reset();
+  };
+
+  const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const isValid = verify();
     if (!isValid) return;
-    handleVerifyEmail();
+    const response = await verifyEmail(state);
+    if (!response.success) reRef.current?.reset();
+    handleReset();
+    setIsSuccess(true);
   };
 
   return (
@@ -82,10 +90,20 @@ const VerifyCodeForm = ({
             <InputGroup
               type="text"
               label="code"
-              value={code}
-              setValue={(e) => setCode(e.target.value)}
+              value={state.code}
+              setValue={(e) =>
+                setState((prevState) => ({ ...prevState, ['code']: e.target.value }))
+              }
               disabled={isLoading}
               error={fieldErrors.code && fieldErrors.code[0]}
+            />
+
+            <ReCaptchaCheckbox
+              error={fieldErrors?.reToken && fieldErrors.reToken[0]}
+              onChange={(e) =>
+                setState((prevState) => ({ ...prevState, ['reToken']: e }))
+              }
+              reference={reRef}
             />
 
             <Button variant="primary" type="submit" disabled={isLoading}>

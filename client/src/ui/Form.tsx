@@ -22,7 +22,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 350px;
+  width: 365px;
   display: block;
   padding: 30px;
   border-radius: 5px;
@@ -30,6 +30,7 @@ export const Form = styled.form`
   @media (max-width: 500px) {
     width: 100%;
     border: none;
+    margin: 0 auto 0 auto;
   }
 `;
 

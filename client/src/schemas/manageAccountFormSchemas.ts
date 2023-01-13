@@ -1,14 +1,14 @@
 import { z } from 'zod';
-import { PasswordSchema, UsernameSchema } from './createAccount.schema';
+import { PasswordSchema, ReTokenSchema, UsernameSchema } from './createAccount.schema';
 
 export const changeUsernameSchema = z.object({
   newUsername: UsernameSchema,
-  reToken: z.string({}).min(1, 'Please check the checkbox'),
+  reToken: ReTokenSchema,
 });
 
 export const changeProfilePictureSchema = z.object({
   newProfilePicture: z.string({}).min(1, 'Modify your image'),
-  reToken: z.string({}).min(1, 'Please check the checkbox'),
+  reToken: ReTokenSchema,
 });
 
 export const changePasswordFormSchema = z
@@ -16,7 +16,7 @@ export const changePasswordFormSchema = z
     currentPassword: z.string({}).min(1, "Can't be blank"),
     newPassword: PasswordSchema,
     confirmPassword: z.string({}).min(1, "Can't be blank"),
-    reToken: z.string({}).min(1, 'Please check the checkbox'),
+    reToken: ReTokenSchema,
   })
   .refine((current) => current.newPassword === current.confirmPassword, {
     message: 'Passwords must match',
