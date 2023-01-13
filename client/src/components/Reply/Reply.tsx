@@ -165,6 +165,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
                   btnName="reply"
                   placeholder="Write a reply"
                   autoFocus
+                  withTrap
                   error={undefined}
                 />
               </Reply__FormContainer>
