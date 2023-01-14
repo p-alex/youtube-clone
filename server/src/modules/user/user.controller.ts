@@ -24,6 +24,11 @@ import { verifyEmailTemplate } from '../../nodemailer/templates';
 import log from '../../utils/logger';
 import { cloudinary } from '../../cloudinary';
 import { extractCloudinaryPublicId } from '../../utils/extractCloudinaryPublicId';
+import {
+  errorResponseJson,
+  NOT_HUMAN_ERROR_MESSAGE,
+  successResponseJson,
+} from '../../utils/responseJson';
 
 export const registerUserController = async (
   req: Request<{}, {}, RegisterUserInput>,
@@ -34,23 +39,14 @@ export const registerUserController = async (
   try {
     const isHuman = await validateHuman(reToken);
 
-    if (!isHuman)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Something very suspicious is going on...' }],
-        result: null,
-      });
+    if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
     const userWithEmail = await db.query('SELECT email FROM users WHERE email = $1', [
       email,
     ]);
 
     if (userWithEmail.rows[0])
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'A user with that email already exists' }],
-        result: null,
-      });
+      return errorResponseJson(res, 400, 'A user with that email already exists');
 
     const userWithUsername = await db.query(
       'SELECT username FROM users WHERE username = $1',
@@ -58,11 +54,7 @@ export const registerUserController = async (
     );
 
     if (userWithUsername.rows[0])
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'A user with that username already exists' }],
-        result: null,
-      });
+      return errorResponseJson(res, 400, 'A user with that username already exists');
 
     const hashedPassword = await argon2.hash(password);
 
@@ -76,18 +68,10 @@ export const registerUserController = async (
 
     await sendEmail(verifyEmailTemplate(response.verification_code));
 
-    return res.status(201).json({
-      success: true,
-      errors: [],
-      result: null,
-    });
+    return successResponseJson(res, 201, null);
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -97,21 +81,16 @@ export const getProfileInfoController = async (
 ) => {
   try {
     const { username } = req.params;
+
     const profileInfo = await getProfileBasicInfo(username);
+
     if (!profileInfo?.user_id)
-      return res.status(404).json({ success: false, errors: [], result: null });
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: { profileInfo },
-    });
+      return errorResponseJson(res, 404, 'This profile does not exist');
+
+    return successResponseJson(res, 200, { profileInfo });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -122,18 +101,10 @@ export const getProfileStatsController = async (
   try {
     const { username } = req.params;
     const profileAbout = await getProfileStats(username);
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: { profileAbout },
-    });
+    return successResponseJson(res, 200, { profileAbout });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -146,36 +117,22 @@ export const changeUsernameController = async (
   const { newUsername, reToken } = req.body;
   try {
     const isHuman = await validateHuman(reToken);
-    if (!isHuman)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Something very suspicious is going on...' }],
-        result: null,
-      });
+
+    if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
     const isTaken = await db.query('SELECT username FROM users WHERE username = $1', [
       newUsername,
     ]);
 
     if (isTaken.rows[0]?.username)
-      return res.status(401).json({
-        success: false,
-        errors: [{ message: 'A user with that username already exists' }],
-        result: null,
-      });
+      return errorResponseJson(res, 401, 'A user with that username already exists');
 
     const response = await changeUsername(newUsername, user_id);
 
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { username: response.username } });
+    return successResponseJson(res, 200, { username: response.username });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -190,12 +147,7 @@ export const changeProfilePictureController = async (
 
     const isHuman = validateHuman(reToken);
 
-    if (!isHuman)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Something very suspicious is going on...' }],
-        result: null,
-      });
+    if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
     const userInfo = await getUserInfo(user_id);
 
@@ -208,10 +160,8 @@ export const changeProfilePictureController = async (
         extractCloudinaryPublicId(userInfo.profile_picture),
         { resource_type: 'image' }
       );
-      return res.status(200).json({
-        success: true,
-        errors: [],
-        result: { profile_picture: saveProfilePictureToDb.profile_picture },
+      return successResponseJson(res, 200, {
+        profile_picture: saveProfilePictureToDb.profile_picture,
       });
     }
 
@@ -232,18 +182,12 @@ export const changeProfilePictureController = async (
 
     const saveProfilePictureToDb = await changeProfilePicture(secure_url, user_id);
 
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: { profile_picture: saveProfilePictureToDb.profile_picture },
+    return successResponseJson(res, 200, {
+      profile_picture: saveProfilePictureToDb.profile_picture,
     });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -258,39 +202,21 @@ export const changePasswordController = async (
 
     const isHuman = validateHuman(reToken);
 
-    if (!isHuman)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Something very suspicious is going on...' }],
-        result: null,
-      });
+    if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
     const userInfo = await getUserInfo(user_id);
 
     const isValid = await argon2.verify(userInfo.password, currentPassword);
 
-    if (!isValid)
-      return res.status(401).json({
-        success: false,
-        errors: [{ message: 'Wrong current password' }],
-        result: null,
-      });
+    if (!isValid) return errorResponseJson(res, 401, 'Wrong current password');
 
     const newHashedPassword = await argon2.hash(newPassword);
 
     await changePassword(newHashedPassword, user_id);
 
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: null,
-    });
+    return successResponseJson(res, 200, null);
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };

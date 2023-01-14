@@ -1,5 +1,19 @@
 import { z } from 'zod';
 
+export interface IComment {
+  comment_id: string;
+  video_id: string;
+  text: string;
+  total_likes: number;
+  total_dislikes: number;
+  total_replies: number;
+  user_id: string;
+  username: string;
+  profile_picture: string;
+  like_status: boolean | null;
+  created_at: string;
+}
+
 export const getCommentsSchema = z.object({
   params: z.object({
     videoId: z.string({}).uuid('Invalid uuid'),

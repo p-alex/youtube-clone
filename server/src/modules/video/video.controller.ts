@@ -31,6 +31,11 @@ import util from 'util';
 import { boolean } from 'zod';
 import log from '../../utils/logger';
 import { validateHuman } from '../user/user.service';
+import {
+  errorResponseJson,
+  NOT_HUMAN_ERROR_MESSAGE,
+  successResponseJson,
+} from '../../utils/responseJson';
 const unlinkFile = util.promisify(fs.unlink);
 
 export const getVideosController = async (req: Request, res: Response) => {
@@ -39,11 +44,7 @@ export const getVideosController = async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, errors: [], result: { videos } });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -58,12 +59,8 @@ export const getUserVideosPrivateController = async (
     const videos = await getUserVideos(user_id, sortBy, page, true);
     return res.status(200).json({ success: true, errors: [], result: { videos } });
   } catch (error: any) {
-    log.error(error.message);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -76,12 +73,8 @@ export const getUserVideosController = async (
     const videos = await getUserVideos(userId, sortBy, page, false);
     return res.status(200).json({ success: true, errors: [], result: { videos } });
   } catch (error: any) {
-    log.error(error.message);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -97,11 +90,7 @@ export const getVideoController = async (
     return res.status(200).json({ success: true, errors: [], result: { video } });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -117,11 +106,7 @@ export const getSuggestedVideosController = async (
       .json({ success: true, errors: [], result: { suggestedVideos: videos } });
   } catch (error: any) {
     log.error(error);
-    return res.status(error?.http_code ? error.http_code : 500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -159,11 +144,7 @@ export const uploadVideoController = async (
     });
   } catch (error: any) {
     log.error(error);
-    return res.status(error?.http_code ? error.http_code : 500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -178,12 +159,7 @@ export const updateVideoController = async (
 
     const isHuman = await validateHuman(reToken);
 
-    if (!isHuman)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Something very suspicious is going on...' }],
-        result: null,
-      });
+    if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
     const video_id = await updateVideo(
       { videoId, title, description, thumbnailData, tagList },
@@ -192,18 +168,10 @@ export const updateVideoController = async (
 
     if (!video_id) throw new Error('Something went wrong...');
 
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: [{ video_id }],
-    });
+    return successResponseJson(res, 200, { video_id });
   } catch (error: any) {
     log.error(error);
-    return res.status(error?.http_code ? error.http_code : 500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -216,14 +184,10 @@ export const deleteVideoController = async (
   const { user_id } = req.user;
   try {
     const id = await deleteVideo(videoId, user_id);
-    return res.status(200).json({ success: true, errors: [], result: { video_id: id } });
+    return successResponseJson(res, 200, { video_id: id });
   } catch (error: any) {
     log.error(error);
-    return res.status(error?.http_code ? error.http_code : 500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -236,14 +200,10 @@ export const likeVideoController = async (
   const { user_id } = req.user;
   try {
     const updatedData = await likeOrDislikeVideo('like', videoId, user_id);
-    return res.status(200).json({ success: true, errors: [], result: updatedData });
+    return successResponseJson(res, 200, updatedData);
   } catch (error: any) {
     log.error(error);
-    return res.status(error?.http_code ? error.http_code : 500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -256,14 +216,10 @@ export const dislikeVideoController = async (
   const { user_id } = req.user;
   try {
     const updatedData = await likeOrDislikeVideo('dislike', videoId, user_id);
-    return res.status(200).json({ success: true, errors: [], result: updatedData });
+    return successResponseJson(res, 200, updatedData);
   } catch (error: any) {
     log.error(error);
-    return res.status(error?.http_code ? error.http_code : 500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -274,14 +230,10 @@ export const getVideoTagsController = async (
   try {
     const { videoId } = req.params;
     const tags = await getVideoTags(videoId);
-    return res.status(200).json({ success: boolean, errors: [], result: { tags } });
+    return successResponseJson(res, 200, { tags });
   } catch (error: any) {
     log.error(error);
-    return res.status(error?.http_code ? error.http_code : 500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -292,13 +244,9 @@ export const searchVideosController = async (
   const { query } = req.params;
   try {
     const searchResults = await searchVideos(query);
-    res.status(200).json({ success: true, errors: [], result: { searchResults } });
+    return successResponseJson(res, 200, { searchResults });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };

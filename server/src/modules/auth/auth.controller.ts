@@ -5,7 +5,13 @@ import { createSession, signAccessToken, signRefreshToken } from './auth.service
 import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 import { verifyJwt } from '../../utils/jwt';
-import { validateHuman } from '../user/user.service';
+import { IUser, validateHuman } from '../user/user.service';
+import {
+  errorResponseJson,
+  NOT_HUMAN_ERROR_MESSAGE,
+  successResponseJson,
+} from '../../utils/responseJson';
+import log from '../../utils/logger';
 
 export const loginUserController = async (
   req: Request<{}, {}, LoginUserInput>,
@@ -16,52 +22,24 @@ export const loginUserController = async (
 
     const isHuman = await validateHuman(reToken);
 
-    if (!isHuman)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Something very suspicious is going on...' }],
-        result: null,
-      });
+    if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
     const response = (await db.query('SELECT * FROM users WHERE email = $1', [
       email,
-    ])) as QueryResult<{
-      user_id: string;
-      email: string;
-      username: string;
-      password: string;
-      profile_picture: string;
-      is_verified: boolean;
-    }>;
+    ])) as QueryResult<IUser>;
 
     const user = response.rows[0];
 
     // Check if email already exists
-    if (!user)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Invalid email or password' }],
-        result: null,
-      });
+    if (!user) return errorResponseJson(res, 400, 'Invalid email or password');
 
     // Check if user is verified
-    if (!user.is_verified) {
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Please verify your email' }],
-        result: null,
-      });
-    }
+    if (!user.is_verified) return errorResponseJson(res, 400, 'Please verify your email');
 
     // Check if password is correct
     const isValidPassword = await argon2.verify(user.password, password);
 
-    if (!isValidPassword)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'Invalid email or password' }],
-        result: null,
-      });
+    if (!isValidPassword) return errorResponseJson(res, 400, 'Invalid email or password');
 
     const session = await createSession(user.user_id);
 
@@ -84,40 +62,25 @@ export const loginUserController = async (
       path: '/',
       maxAge: 604800000,
     });
-
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: {
-        user: {
-          user_id: user.user_id,
-          email: user.email,
-          username: user.username,
-          profile_picture: user.profile_picture,
-        },
-        accessToken,
+    return successResponseJson(res, 200, {
+      user: {
+        user_id: user.user_id,
+        email: user.email,
+        username: user.username,
+        profile_picture: user.profile_picture,
       },
+      accessToken,
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      results: 0,
-      errors: [{ message: 'Something went wrong...' }],
-      result: null,
-    });
+    log.error(error);
+    return errorResponseJson(res, 500, 'Something went wrong...');
   }
 };
 
 export const refreshTokenController = async (req: Request, res: Response) => {
   const token = req.cookies.rtoken;
 
-  if (!token)
-    return res.status(400).json({
-      success: false,
-      errors: [{ message: 'There is no rtoken cookie' }],
-      result: null,
-    });
+  if (!token) return errorResponseJson(res, 400, 'There is no rtoken cookie');
 
   try {
     const decoded = verifyJwt<{ session_id: string; user_id: string }>(
@@ -125,12 +88,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
       'refresh_token_secret'
     );
 
-    if (!decoded)
-      return res.status(403).json({
-        success: false,
-        errors: [{ message: 'Invalid token' }],
-        result: null,
-      });
+    if (!decoded) return errorResponseJson(res, 403, 'Invalid token');
 
     const session = (await db.query(
       'SELECT s.user_id, u.username, u.email, u.profile_picture, s.session_id FROM sessions as s JOIN users as u ON s.user_id = u.user_id WHERE S.session_id = $1 AND S.user_id = $2',
@@ -145,12 +103,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
     const currentSession = session.rows[0];
 
-    if (!currentSession)
-      return res.status(403).json({
-        success: false,
-        errors: [{ message: 'There is no session' }],
-        result: null,
-      });
+    if (!currentSession) return errorResponseJson(res, 403, 'There is no session');
 
     const newRefreshToken = await signRefreshToken(currentSession);
 
@@ -170,18 +123,14 @@ export const refreshTokenController = async (req: Request, res: Response) => {
       email: currentSession.email,
     });
 
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: {
-        user: {
-          user_id: currentSession.user_id,
-          email: currentSession.email,
-          username: currentSession.username,
-          profile_picture: currentSession.profile_picture,
-        },
-        accessToken: newAccessToken,
+    return successResponseJson(res, 200, {
+      user: {
+        user_id: currentSession.user_id,
+        email: currentSession.email,
+        username: currentSession.username,
+        profile_picture: currentSession.profile_picture,
       },
+      accessToken: newAccessToken,
     });
   } catch (error: any) {
     console.log(error);
@@ -192,11 +141,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
       path: '/',
       maxAge: 0,
     });
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -216,11 +161,7 @@ export const logoutUserController = async (
       maxAge: 0,
     });
 
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: null,
-    });
+    return successResponseJson(res, 200, null);
   }
 
   try {
@@ -229,10 +170,7 @@ export const logoutUserController = async (
       'refresh_token_secret'
     );
 
-    if (!decoded)
-      return res
-        .status(403)
-        .json({ success: false, errors: [{ message: 'Invalid token' }], result: null });
+    if (!decoded) return errorResponseJson(res, 403, 'Invalid token');
 
     await db.query('DELETE FROM sessions WHERE session_id = $1 AND user_id = $2', [
       decoded.session_id,
@@ -244,17 +182,10 @@ export const logoutUserController = async (
       secure: true,
       maxAge: 0,
     });
-
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: null,
-    });
+    return successResponseJson(res, 200, null);
   } catch (error: any) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, errors: [{ message: error.message }], result: null });
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -266,36 +197,25 @@ export const verifyEmailController = async (
 
   const isHuman = await validateHuman(reToken);
 
-  if (!isHuman)
-    return res.status(400).json({
-      success: false,
-      errors: [{ message: 'Something very suspicious is going on...' }],
-      result: null,
-    });
+  if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
   const response: QueryResult<{ verification_code: string }> = await db.query(
     'SELECT verification_code FROM users WHERE verification_code = $1',
     [code]
   );
 
-  if (!response.rows[0])
-    return res
-      .status(400)
-      .json({ success: false, errors: [{ message: 'Incorrect code' }], result: null });
+  if (!response.rows[0]) return errorResponseJson(res, 400, 'Incorrect code');
 
   const verificationCode = response.rows[0].verification_code;
 
   const isCodeValid = verificationCode === code;
 
-  if (!isCodeValid)
-    return res
-      .status(400)
-      .json({ success: false, errors: [{ message: 'Invalid code' }], result: null });
+  if (!isCodeValid) return errorResponseJson(res, 400, 'Invalid code');
 
   await db.query(
     'UPDATE users SET is_verified = true, verification_code = null WHERE verification_code = $1',
     [code]
   );
 
-  return res.status(200).json({ success: true, errors: [], result: null });
+  return successResponseJson(res, 200, null);
 };

@@ -1,18 +1,5 @@
 import db from '../../db';
-
-interface IComment {
-  comment_id: string;
-  video_id: string;
-  text: string;
-  total_likes: number;
-  total_dislikes: number;
-  total_replies: number;
-  user_id: string;
-  username: string;
-  profile_picture: string;
-  like_status: boolean | null;
-  created_at: string;
-}
+import { IComment } from './comment.schema';
 
 export const getComments = async (video_id: string, user_id: string, page: string) => {
   const limit = 10;

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import log from '../../utils/logger';
+import { errorResponseJson, successResponseJson } from '../../utils/responseJson';
 import {
   AddReplyInput,
   DeleteReplyInput,
@@ -24,14 +25,10 @@ export const getRepliesController = async (
   const { userId } = req.body;
   try {
     const replies = await getReplies(commentId, userId, page);
-    return res.status(200).json({ success: true, errors: [], result: { replies } });
+    return successResponseJson(res, 200, { replies });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -44,14 +41,10 @@ export const addReplyController = async (
   const { user_id } = req.user;
   try {
     const reply = await addReply(commentId, user_id, text);
-    return res.status(201).json({ success: true, errors: [], result: { reply } });
+    return successResponseJson(res, 200, { reply });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -64,18 +57,10 @@ export const updateReplyController = async (
   const { user_id } = req.user;
   try {
     const response = await updateReply(replyId, user_id, text);
-    return res.status(200).json({
-      success: true,
-      errors: [],
-      result: { reply_id: response.reply_id, text: response.text },
-    });
+    return successResponseJson(res, 200, { response });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -88,14 +73,10 @@ export const deleteReplyController = async (
   const { user_id } = req.user;
   try {
     const reply_id = await deleteReply(replyId, commentId, user_id);
-    return res.status(200).json({ success: true, errors: [], result: { reply_id } });
+    return successResponseJson(res, 200, { reply_id });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -108,16 +89,10 @@ export const likeReplyController = async (
     //@ts-ignore
     const { user_id } = req.user;
     const updatedReplyInfo = await likeOrDislikeReply('like', replyId, user_id);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { updatedReplyInfo } });
+    return successResponseJson(res, 200, { updatedReplyInfo });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
 
@@ -130,15 +105,9 @@ export const dislikeReplyController = async (
     //@ts-ignore
     const { user_id } = req.user;
     const updatedReplyInfo = await likeOrDislikeReply('dislike', replyId, user_id);
-    return res
-      .status(200)
-      .json({ success: true, errors: [], result: { updatedReplyInfo } });
+    return successResponseJson(res, 200, { updatedReplyInfo });
   } catch (error: any) {
     log.error(error);
-    return res.status(500).json({
-      success: false,
-      errors: [{ message: error.message }],
-      result: null,
-    });
+    return errorResponseJson(res, 500, error.message);
   }
 };
