@@ -21,6 +21,7 @@ const UploadModal = ({
     handleChangeStage,
     handleUploadVideo,
     fieldErrors,
+    reRef,
   } = useUploadModal();
   return (
     <Modal title={stage} width={600} handleClose={handleToggleUploadModal}>
@@ -37,6 +38,7 @@ const UploadModal = ({
           setUploadData={setUploadData}
           handleUploadVideo={(event: React.FormEvent) => handleUploadVideo(event)}
           fieldErrors={fieldErrors}
+          reRef={reRef}
         />
       )}
       {stage === 'uploading' && <UploadVideoStage uploadProgress={uploadProgress} />}

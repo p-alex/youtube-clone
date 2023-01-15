@@ -28,7 +28,6 @@ import {
 } from './video.service';
 import fs from 'fs';
 import util from 'util';
-import { boolean } from 'zod';
 import log from '../../utils/logger';
 import { validateHuman } from '../user/user.service';
 import {
@@ -119,12 +118,13 @@ export const uploadVideoController = async (
 
     const videoData = req.body;
 
-    if (!video?.mimetype)
-      return res.status(400).json({
-        success: false,
-        errors: [{ message: 'There is no file' }],
-        result: null,
-      });
+    const reToken = videoData.reToken;
+
+    const isHuman = await validateHuman(reToken);
+
+    if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
+
+    if (!video?.mimetype) return errorResponseJson(res, 400, 'There is no file');
 
     const uploadVideoResponse = await uploadVideo({ path: video.path });
 
@@ -137,11 +137,7 @@ export const uploadVideoController = async (
 
     await unlinkFile(video.path);
 
-    return res.status(201).json({
-      success: true,
-      errors: [],
-      result: { video_id },
-    });
+    return successResponseJson(res, 201, { video_id });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

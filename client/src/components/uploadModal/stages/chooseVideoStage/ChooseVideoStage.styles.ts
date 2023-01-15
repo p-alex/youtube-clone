@@ -6,6 +6,7 @@ export const ChooseVideoState__Container = styled.div`
   height: calc(100% - 60px);
   padding: 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;

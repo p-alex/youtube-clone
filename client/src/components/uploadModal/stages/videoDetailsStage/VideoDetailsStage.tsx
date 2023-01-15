@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { disableKeyBinds, enableKeyBinds } from '../../../../app/features/videoSlice';
-import { UploadVideoData } from '../../../../hooks/useUploadModal';
+
 import { ZodVerifyFormErrors } from '../../../../hooks/useZodVerifySchema';
 import { UploadVideoSchemaType } from '../../../../schemas/uploadVideo.schema';
 import AutoResizingTextarea from '../../../../ui/AutoResizeTextarea';
@@ -11,6 +11,9 @@ import InputGroup from '../../../../ui/InputGroup';
 import { convertToTagList } from '../../../../utils/convertToTagList';
 import { imageOptimizer } from '../../../../utils/imageOptimizer';
 import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../Modal/Modal';
+import ReCaptchaCheckbox, {
+  ReCaptchaType,
+} from '../../../ReCaptchaCheckbox/ReCaptchaCheckbox';
 import {
   VideoDetailsState__Container,
   VideoDetailsState__Error,
@@ -21,17 +24,21 @@ import {
   VideoDetailsState__ThumbnailContainer,
 } from './VideoDetailsState.styles';
 
+interface Props {
+  uploadData: UploadVideoSchemaType;
+  setUploadData: React.Dispatch<React.SetStateAction<UploadVideoSchemaType>>;
+  handleUploadVideo: (event: React.FormEvent) => void;
+  fieldErrors: ZodVerifyFormErrors<UploadVideoSchemaType>;
+  reRef: React.RefObject<ReCaptchaType>;
+}
+
 const VideoDetailsStage = ({
   uploadData,
   setUploadData,
   handleUploadVideo,
   fieldErrors,
-}: {
-  uploadData: UploadVideoData;
-  setUploadData: React.Dispatch<React.SetStateAction<UploadVideoData>>;
-  handleUploadVideo: (event: React.FormEvent) => void;
-  fieldErrors: ZodVerifyFormErrors<UploadVideoSchemaType>;
-}) => {
+  reRef,
+}: Props) => {
   const dispatch = useDispatch();
   const hiddenInput = useRef<any>();
 
@@ -155,7 +162,7 @@ const VideoDetailsStage = ({
           placeholder="E.g. tag1, tag2, tag3"
           value={tagsText}
           setValue={(event) => setTagsText(event.target.value)}
-          error={fieldErrors.tags && fieldErrors.tags[0]}
+          error={fieldErrors?.tagList && fieldErrors.tagList[0]}
         />
 
         <VideoDetailsState__TagContainer>
@@ -166,6 +173,12 @@ const VideoDetailsStage = ({
               );
             })}
         </VideoDetailsState__TagContainer>
+
+        <ReCaptchaCheckbox
+          reference={reRef}
+          error={fieldErrors?.reToken && fieldErrors.reToken[0]}
+          onChange={(e) => setUploadData((prevState) => ({ ...prevState, reToken: e }))}
+        />
 
         <Button
           variant="primary"

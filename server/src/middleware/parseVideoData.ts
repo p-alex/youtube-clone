@@ -1,22 +1,15 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
+import log from '../utils/logger';
+import { errorResponseJson } from '../utils/responseJson';
 
-export const parseVideoData = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const parseVideoData = (req: Request, res: Response, next: NextFunction) => {
   try {
     req.body.duration = parseFloat(req.body.duration);
     req.body.tagList = JSON.parse(req.body.tagList);
+    req.body.sizeInMb = parseFloat(req.body.sizeInMb);
     next();
   } catch (error: any) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        errors: [{ message: error.message }],
-        result: null,
-      });
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
   }
 };

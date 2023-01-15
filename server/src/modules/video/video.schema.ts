@@ -50,6 +50,8 @@ export const uploadVideoSchema = z.object({
       .url('Thumbnail url is invalid'),
     videoUrl: z.string({ required_error: 'Video_url is required' }),
     tagList: z.array(z.string({})),
+    sizeInMb: z.number({}).max(100, 'Video must be 100mb max'),
+    reToken: z.string({ required_error: 'Recaptcha token required' }),
   }),
 });
 

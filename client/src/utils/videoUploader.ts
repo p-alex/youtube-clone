@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { DefaultResponse } from '../hooks/requestHooks/useAxiosWithRetry';
-import { UploadVideoData } from '../hooks/useUploadModal';
+import { UploadVideoSchemaType } from '../schemas/uploadVideo.schema';
 import { BASE_URL } from './baseURL';
 import { removeEmptyLinesFromString } from './removeEmptyLinesFromString';
 
 export const videoUploader = async (
   videoFile: File,
-  body: UploadVideoData,
+  body: UploadVideoSchemaType,
   accessToken: string,
   setProgress: React.Dispatch<React.SetStateAction<number>>
 ) => {
@@ -20,6 +20,8 @@ export const videoUploader = async (
   formData.append('thumbnailUrl', body.thumbnailUrl!);
   formData.append('videoUrl', '');
   formData.append('tagList', JSON.stringify(body.tagList));
+  formData.append('sizeInMb', JSON.stringify(body.sizeInMb));
+  formData.append('reToken', body.reToken);
 
   const response = await axios.post(`${BASE_URL}/api/videos`, formData, {
     headers: {

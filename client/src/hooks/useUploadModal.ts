@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetUser } from '../app/features/authSlice';
 import { RootState } from '../app/store';
@@ -8,16 +8,7 @@ import useDisableScroll from './useDisableScroll';
 import useZodVerifySchema from './useZodVerifySchema';
 import { useRouter } from 'next/router';
 import { videoUploader } from '../utils/videoUploader';
-
-export interface UploadVideoData {
-  userId: string;
-  thumbnailUrl: string;
-  title: string;
-  description: string;
-  tagList: string[];
-  duration: number;
-  mimetype: string;
-}
+import { ReCaptchaType } from '../components/ReCaptchaCheckbox/ReCaptchaCheckbox';
 
 export interface UploadResult {
   success: boolean;
@@ -33,7 +24,7 @@ const useUploadModal = () => {
     'choose'
   );
   const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [uploadData, setUploadData] = useState<UploadVideoData>({
+  const [uploadData, setUploadData] = useState<UploadVideoSchemaType>({
     userId: user!.user_id,
     thumbnailUrl: '',
     title: '',
@@ -41,7 +32,11 @@ const useUploadModal = () => {
     tagList: [],
     duration: 0,
     mimetype: '',
+    sizeInMb: 0,
+    reToken: '',
   });
+  const reRef = useRef<ReCaptchaType>(null);
+
   const refreshToken = useRefreshToken();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,12 +44,7 @@ const useUploadModal = () => {
 
   const { verify, fieldErrors } = useZodVerifySchema<UploadVideoSchemaType>(
     uploadVideoSchema,
-    {
-      thumbnailUrl: uploadData.thumbnailUrl,
-      title: uploadData.title,
-      description: uploadData.description,
-      tags: uploadData.tagList,
-    }
+    uploadData
   );
 
   const handleUploadVideo = async (event: React.FormEvent) => {
@@ -108,6 +98,12 @@ const useUploadModal = () => {
     let isMounted = true;
     if (videoFile?.name && isMounted) {
       handleSetDuration();
+      const sizeInMb = (videoFile.size / 1000000) as number;
+      console.log(sizeInMb);
+      setUploadData((prevState) => ({
+        ...prevState,
+        sizeInMb,
+      }));
     }
     return () => {
       isMounted = false;
@@ -124,6 +120,7 @@ const useUploadModal = () => {
     handleChangeStage,
     handleUploadVideo,
     fieldErrors,
+    reRef,
   };
 };
 
