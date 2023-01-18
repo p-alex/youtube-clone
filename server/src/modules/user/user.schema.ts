@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { string, z } from 'zod';
 
 export const DEFAULT_PROFILE_PICTURE_URL = '/images/default-profile-picture.jpg';
 
@@ -63,6 +63,9 @@ export const getProfileInfoSchema = z.object({
   params: z.object({
     username: z.string({ required_error: 'Please provide the username param' }),
   }),
+  body: z.object({
+    currentUserId: z.string({}).optional(),
+  }),
 });
 
 export const changeUsernameSchema = z.object({
@@ -93,9 +96,17 @@ export const changePasswordSchema = z.object({
     ),
 });
 
+export const subscribeToUserSchema = z.object({
+  body: z.object({
+    subscribeToUserId: string({ required_error: 'User id is required' }).uuid(
+      'User id must be a uuid'
+    ),
+  }),
+});
+
 export type RegisterUserInput = z.TypeOf<typeof registerUserSchema>['body'];
 
-export type GetProfileInfoInput = z.TypeOf<typeof getProfileInfoSchema>['params'];
+export type GetProfileInfoInput = z.TypeOf<typeof getProfileInfoSchema>;
 
 export type ChangeUsernameInput = z.TypeOf<typeof changeUsernameSchema>['body'];
 
@@ -104,3 +115,5 @@ export type ChangeProfilePictureInput = z.TypeOf<
 >['body'];
 
 export type ChangePasswordInput = z.TypeOf<typeof changePasswordSchema>['body'];
+
+export type SubscribeToUserInput = z.TypeOf<typeof subscribeToUserSchema>['body'];

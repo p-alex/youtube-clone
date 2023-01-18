@@ -7,16 +7,17 @@ import {
   DEFAULT_PROFILE_PICTURE_URL,
   GetProfileInfoInput,
   RegisterUserInput,
+  SubscribeToUserInput,
 } from './user.schema';
 import {
-  getProfileStats,
-  getProfileBasicInfo,
   registerUser,
   changeUsername,
   changeProfilePicture,
   changePassword,
   getUserInfo,
   validateHuman,
+  subscribeToUser,
+  getProfileInfo,
 } from './user.service';
 import argon2 from 'argon2';
 import { sendEmail } from '../../nodemailer/sendEmail';
@@ -76,32 +77,19 @@ export const registerUserController = async (
 };
 
 export const getProfileInfoController = async (
-  req: Request<GetProfileInfoInput>,
+  req: Request<GetProfileInfoInput['params'], {}, GetProfileInfoInput['body']>,
   res: Response
 ) => {
   try {
     const { username } = req.params;
+    const { currentUserId } = req.body;
 
-    const profileInfo = await getProfileBasicInfo(username);
+    const profileInfo = await getProfileInfo(username, currentUserId);
 
     if (!profileInfo?.user_id)
       return errorResponseJson(res, 404, 'This profile does not exist');
 
     return successResponseJson(res, 200, { profileInfo });
-  } catch (error: any) {
-    log.error(error);
-    return errorResponseJson(res, 500, error.message);
-  }
-};
-
-export const getProfileStatsController = async (
-  req: Request<GetProfileInfoInput>,
-  res: Response
-) => {
-  try {
-    const { username } = req.params;
-    const profileAbout = await getProfileStats(username);
-    return successResponseJson(res, 200, { profileAbout });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);
@@ -215,6 +203,26 @@ export const changePasswordController = async (
     await changePassword(newHashedPassword, user_id);
 
     return successResponseJson(res, 200, null);
+  } catch (error: any) {
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
+  }
+};
+
+export const subscribeToUserController = async (
+  req: Request<{}, {}, SubscribeToUserInput>,
+  res: Response
+) => {
+  try {
+    //@ts-ignore
+    const { user_id: currentUserId } = req.user as string;
+    const { subscribeToUserId } = req.body;
+    const { success, message } = await subscribeToUser({
+      subscribeToUserId,
+      currentUserId,
+    });
+    if (!success) return errorResponseJson(res, 500, 'Something went wrong...');
+    return successResponseJson(res, 200, { success, message });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

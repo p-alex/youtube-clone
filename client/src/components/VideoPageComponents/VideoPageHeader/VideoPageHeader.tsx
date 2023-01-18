@@ -25,12 +25,13 @@ import {
 import useAxiosWithRetry from '../../../hooks/requestHooks/useAxiosWithRetry';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
-import { SubscribeButton } from '../../../ui/SubscribeButton';
 import router from 'next/router';
 import ProfileImage from '../../../ui/ProfileImage';
+import SubscribeButton from '../../../ui/SubscribeButton';
 
 const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const currentUserId = useSelector((state: RootState) => state.auth.user.user_id);
   const dispatch = useDispatch();
 
   const [likeVideoRequest, { isLoading: isLikeVideoLoading, errors: LikeVideoErrors }] =
@@ -88,7 +89,13 @@ const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
               {video.total_subscribers} subsribers
             </VideoPageHeader__Subscribers>
           </VideoPageHeader__ColumnContainer>
-          <SubscribeButton variant="normal">Subscribe</SubscribeButton>
+          {video.user_id !== currentUserId && (
+            <SubscribeButton
+              isSubscribed={video.subscribe_status}
+              subscribeToUserId={video.user_id}
+              subscribeToUsername={video.username}
+            />
+          )}
         </VideoPageHeader__UserInfo>
         <VideoPageHeader__LikeDislikeGroup>
           <VideoPageHeader__LikeDislikeBtn onClick={handleLikeVideo}>

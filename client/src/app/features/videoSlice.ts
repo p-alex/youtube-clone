@@ -17,6 +17,7 @@ export interface VideoInfo {
   total_comments: number;
   duration: number;
   like_status: LikeStatusType;
+  subscribe_status: boolean;
   created_at: string;
 }
 
@@ -59,6 +60,7 @@ const initialState: InitialState = {
     total_comments: 0,
     duration: 0,
     like_status: '',
+    subscribe_status: false,
     created_at: '',
   },
 };
@@ -102,6 +104,13 @@ const videoSlice = createSlice({
       state.videoInfo.total_likes = action.payload.total_likes;
       state.videoInfo.total_dislikes = action.payload.total_dislikes;
     },
+    subscribeToVideoOwner: (state, action: PayloadAction<{ isSubscribed: boolean }>) => {
+      state.videoInfo.subscribe_status = !action.payload.isSubscribed;
+      state.videoInfo!.total_subscribers =
+        !action.payload.isSubscribed === true
+          ? state.videoInfo!.total_subscribers + 1
+          : state.videoInfo!.total_subscribers - 1;
+    },
     disableKeyBinds: (state) => {
       state.canUseVideoKeyBinds = false;
     },
@@ -122,6 +131,7 @@ export const {
   enableKeyBinds,
   likeVideo,
   dislikeVideo,
+  subscribeToVideoOwner,
   resetVideo,
 } = videoSlice.actions;
 

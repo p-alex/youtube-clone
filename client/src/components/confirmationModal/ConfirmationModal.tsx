@@ -1,16 +1,9 @@
 import React, { useRef } from 'react';
 import useDisableScroll from '../../hooks/useDisableScroll';
 import { Button } from '../../ui/Button';
-import FocusTrapRedirectFocus from '../focusTrap';
+import { Text } from '../../ui/Text';
 import Modal from '../Modal/Modal';
-import {
-  ConfirmationModalBackdrop,
-  ConfirmationModalButtons,
-  ConfirmationModalContainer,
-  ConfirmationModalMessage,
-  ConfirmationModalTitle,
-  ConfirmationModalWrapper,
-} from './ConfirmationModal.styles';
+import { ConfirmationModalButtons } from './ConfirmationModal.styles';
 
 const ConfirmationModal = ({
   title,
@@ -41,7 +34,11 @@ const ConfirmationModal = ({
   };
 
   return (
-    <Modal title={'Are you sure?'} width={300} handleClose={handleToggle}>
+    <Modal title={title} width={300} handleClose={handleToggle}>
+      <Text isMuted size="small">
+        {message}
+      </Text>
+      <br />
       <ConfirmationModalButtons>
         <Button
           variant="normal"
@@ -51,8 +48,13 @@ const ConfirmationModal = ({
         >
           Cancel
         </Button>
-        <Button variant="danger" onClick={func} ref={lastFocusableElement}>
-          Delete
+        <Button
+          variant="danger"
+          onClick={func}
+          ref={lastFocusableElement}
+          disabled={isLoading}
+        >
+          {btnName}
         </Button>
       </ConfirmationModalButtons>
     </Modal>

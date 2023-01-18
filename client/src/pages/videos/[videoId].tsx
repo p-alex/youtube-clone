@@ -46,9 +46,9 @@ const VideoPage = () => {
   };
 
   useEffect(() => {
-    if (!videoId) return;
+    if (!videoId || auth.isGettingUser) return;
     handleGetVideo();
-  }, [videoId]);
+  }, [videoId, auth.isGettingUser]);
 
   useEffect(() => {
     setIsTheatreMode(false);
@@ -69,10 +69,7 @@ const VideoPage = () => {
     <Layout>
       <Head>
         <title>{video.title}</title>
-        <meta
-          name="description"
-          content="AlexTube is a video sharing app created by Alexandru Daniel Pistol"
-        />
+        <meta name="description" content={video.description} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {video.video_id === videoId && (

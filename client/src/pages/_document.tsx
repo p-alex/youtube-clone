@@ -37,7 +37,9 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head></Head>
+        <Head>
+          <link rel="preconnect" href="http://localhost:5000" />
+        </Head>
         <body>
           <Main />
           <NextScript />

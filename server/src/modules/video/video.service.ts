@@ -3,7 +3,7 @@ import { cloudinary } from '../../cloudinary';
 import db from '../../db';
 import { getImagePublicId, getVideoPublicId } from '../../utils/getPublicId';
 import { GetUserVideosInput, UploadVideoInput } from './video.schema';
-import uglifyJS from 'uglify-js';
+import { minify } from 'uglify-js';
 
 export interface IVideo {
   video_id: string;
@@ -49,17 +49,21 @@ export const getUserVideos = async (
 ) => {
   const LIMIT = 16;
   const OFFSET = LIMIT * parseInt(page);
+
   const recentQuery = `SELECT video_id, title, thumbnail_url, ${
     isPrivateVideoRequest ? 'description, total_likes, total_dislikes,' : ''
   } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`;
+
   const popularQuery = `SELECT video_id, title, thumbnail_url, ${
     isPrivateVideoRequest ? 'description, total_likes, total_dislikes,' : ''
   } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY views DESC LIMIT $2 OFFSET $3`;
+
   const response = await db.query(sortBy === 'recent' ? recentQuery : popularQuery, [
     user_id,
     LIMIT,
     OFFSET,
   ]);
+
   const data: IVideo[] = response.rows;
   return data;
 };
@@ -260,7 +264,7 @@ export const getSuggestedVideos = async (
   page: number
 ) => {
   const LIMIT = 20;
-  const minifiedDescription = uglifyJS.minify(description).code;
+  const minifiedDescription = minify(description).code;
   const response = await db.query(
     'SELECT * FROM get_suggested_videos($1, $2, $3, $4, $5)',
     [videoId, title, minifiedDescription, page, LIMIT]

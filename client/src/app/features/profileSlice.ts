@@ -7,12 +7,16 @@ export interface IProfileAbout {
   created_at: string;
 }
 
-export interface IProfileBasicInfo {
+export interface IProfileInfo {
   user_id: string;
   username: string;
   profile_picture: string;
   total_subscribers: number;
   description: string;
+  subscribe_status: boolean;
+  total_videos: number;
+  total_views: number;
+  created_at: string;
 }
 
 const TABS = ['videos', 'about'];
@@ -29,8 +33,7 @@ export interface ProfileInitialState {
     limit: 16;
     showLoadMoreVideosBtn: boolean;
   };
-  aboutTab: IProfileAbout;
-  profileBasicInfo: IProfileBasicInfo | null;
+  profileInfo: IProfileInfo | null;
 }
 
 const initialState: ProfileInitialState = {
@@ -43,31 +46,20 @@ const initialState: ProfileInitialState = {
     limit: 16,
     showLoadMoreVideosBtn: false,
   },
-  aboutTab: {
-    total_videos: 0,
-    total_views: 0,
-    created_at: '',
-  },
-  profileBasicInfo: null,
+  profileInfo: null,
 };
 
 export const ProfileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    setProfileBasicInfo: (
-      state,
-      action: PayloadAction<{ profileInfo: IProfileBasicInfo }>
-    ) => {
-      state.profileBasicInfo = action.payload.profileInfo;
+    setProfileInfo: (state, action: PayloadAction<{ profileInfo: IProfileInfo }>) => {
+      state.profileInfo = action.payload.profileInfo;
     },
     setProfileVideos: (state, action: PayloadAction<{ videos: IVideoSmall[] }>) => {
       state.videosTab.videos = action.payload.videos;
       state.videosTab.showLoadMoreVideosBtn =
         action.payload.videos.length === state.videosTab.limit;
-    },
-    setProfileAbout: (state, action: PayloadAction<{ profileAbout: IProfileAbout }>) => {
-      state.aboutTab = action.payload.profileAbout;
     },
     setProfileActiveTab: (state, action: PayloadAction<{ tab: string }>) => {
       if (state.tabs.includes(action.payload.tab)) {
@@ -92,18 +84,28 @@ export const ProfileSlice = createSlice({
     loadMoreProfileVideos: (state, action: PayloadAction<{ videos: IVideoSmall[] }>) => {
       state.videosTab.videos = [...state.videosTab.videos, ...action.payload.videos];
     },
+    subscribeToProfileOwner: (
+      state,
+      action: PayloadAction<{ isSubscribed: boolean }>
+    ) => {
+      state.profileInfo!.subscribe_status = !action.payload.isSubscribed;
+      state.profileInfo!.total_subscribers =
+        !action.payload.isSubscribed === true
+          ? state.profileInfo!.total_subscribers + 1
+          : state.profileInfo!.total_subscribers - 1;
+    },
   },
 });
 
 export const {
-  setProfileBasicInfo,
+  setProfileInfo,
   setProfileVideos,
-  setProfileAbout,
   changeProfileTab,
   setProfileActiveTab,
   incrementVideosPage,
   changeProfileVideosSortBy,
   loadMoreProfileVideos,
+  subscribeToProfileOwner,
 } = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

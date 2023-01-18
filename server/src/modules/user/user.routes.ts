@@ -2,12 +2,12 @@ import express from 'express';
 import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
 import {
-  getProfileStatsController,
   getProfileInfoController,
   registerUserController,
   changeUsernameController,
   changeProfilePictureController,
   changePasswordController,
+  subscribeToUserController,
 } from './user.controller';
 import {
   changePasswordSchema,
@@ -15,11 +15,19 @@ import {
   changeUsernameSchema,
   getProfileInfoSchema,
   registerUserSchema,
+  subscribeToUserSchema,
 } from './user.schema';
 
 const router = express.Router();
 
 router.post('/api/users', validateResource(registerUserSchema), registerUserController);
+
+router.post(
+  '/api/users/subscribe',
+  requireAuth,
+  validateResource(subscribeToUserSchema),
+  subscribeToUserController
+);
 
 router.patch(
   '/api/users/change/username',
@@ -42,16 +50,10 @@ router.patch(
   changePasswordController
 );
 
-router.get(
-  '/api/users/:username/basic',
+router.post(
+  '/api/users/:username/profile',
   validateResource(getProfileInfoSchema),
   getProfileInfoController
-);
-
-router.get(
-  '/api/users/:username/about',
-  validateResource(getProfileInfoSchema),
-  getProfileStatsController
 );
 
 export default router;

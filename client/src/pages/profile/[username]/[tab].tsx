@@ -13,13 +13,12 @@ import {
   ProfilePage__Username,
 } from '../../../pageStyles/ProfilePage.styles';
 import ProfileImage from '../../../ui/ProfileImage';
-import { SubscribeButton } from '../../../ui/SubscribeButton';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  IProfileBasicInfo,
+  IProfileInfo,
   setProfileActiveTab,
-  setProfileBasicInfo,
+  setProfileInfo,
   setProfileVideos,
 } from '../../../app/features/profileSlice';
 import { RootState } from '../../../app/store';
@@ -28,11 +27,14 @@ import ProfileAboutTab from '../../../components/ProfileTabs/ProfileAboutTab/Pro
 import Link from 'next/link';
 import { IVideoSmall } from '../../../app/features/videoSlice';
 import Head from 'next/head';
+import SubscribeButton from '../../../ui/SubscribeButton';
 
 const ProfilePage = () => {
   const router = useRouter();
-  const userId = useSelector(
-    (state: RootState) => state.profile.profileBasicInfo?.user_id
+
+  const currentUserId = useSelector((state: RootState) => state.auth.user.user_id);
+  const profileUserId = useSelector(
+    (state: RootState) => state.profile.profileInfo?.user_id
   );
 
   const activeTab = useSelector((state: RootState) => state.profile.activeTab);
@@ -45,29 +47,31 @@ const ProfilePage = () => {
 
   const dispatch = useDispatch();
 
-  const { profileBasicInfo, tabs } = useSelector((state: RootState) => state.profile);
+  const { profileInfo } = useSelector((state: RootState) => state.profile);
+
   const channelDesc = useSelector(
-    (state: RootState) => state.profile.profileBasicInfo?.description
+    (state: RootState) => state.profile.profileInfo?.description
   );
 
   const [
     getProfileInfo,
     { isLoading: isGetProfileInfoLoading, errors: getProfileInfoErrors },
-  ] = useAxios<{}, { profileInfo: IProfileBasicInfo }>(
-    'api/users/' + username + '/basic'
+  ] = useAxios<{ currentUserId: string | undefined }, { profileInfo: IProfileInfo }>(
+    'api/users/' + username + '/profile',
+    'POST'
   );
 
   const [
     getProfileVideosRequest,
     { isLoading: isGetProfileVideosLoading, errors: getProfileVideosErrors },
   ] = useAxios<{}, { videos: IVideoSmall[] }>(
-    'api/videos/user/' + userId + '/' + sortBy + '/' + page
+    'api/videos/user/' + profileUserId + '/' + sortBy + '/' + page
   );
 
   const handleGetProfileInfo = async () => {
-    const response = await getProfileInfo({});
+    const response = await getProfileInfo({ currentUserId });
     if (!response.success || !response.result) return;
-    dispatch(setProfileBasicInfo({ profileInfo: response.result.profileInfo }));
+    dispatch(setProfileInfo({ profileInfo: response.result.profileInfo }));
   };
 
   const handleGetProfileVideos = async () => {
@@ -77,21 +81,21 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    if (!username) return;
+    if (!username || username === profileInfo?.username) return;
     handleGetProfileInfo();
-  }, [username]);
+  }, [username, currentUserId]);
 
   useEffect(() => {
     dispatch(setProfileActiveTab({ tab: currentTab as string }));
   }, [currentTab]);
 
   useEffect(() => {
-    if (!userId || currentTab !== 'videos') return;
+    if (!profileUserId || currentTab !== 'videos') return;
     handleGetProfileVideos();
-  }, [userId, activeTab]);
+  }, [profileUserId]);
 
   useEffect(() => {
-    if (videos.length === 0) return;
+    if (videos.length !== 0 || !username) return;
     handleGetProfileVideos();
   }, [sortBy]);
 
@@ -105,41 +109,45 @@ const ProfilePage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isGetProfileInfoLoading && <p>Loading...</p>}
-      {!isGetProfileInfoLoading && !profileBasicInfo?.user_id && (
+      {!isGetProfileInfoLoading && !profileInfo?.user_id && (
         <p>{getProfileInfoErrors !== null && getProfileInfoErrors[0]?.message}</p>
       )}
-      {!isGetProfileInfoLoading && profileBasicInfo?.user_id && (
+      {!isGetProfileInfoLoading && profileInfo?.user_id && (
         <ProfilePage__Container>
           <ProfilePage__Banner bannerColor={'#222'}></ProfilePage__Banner>
           <ProfilePage__Header>
             <ProfilePage__UserInfoContainer>
               <ProfileImage
-                imageUrl={profileBasicInfo.profile_picture}
+                imageUrl={profileInfo.profile_picture}
                 width={85}
                 height={85}
-                username={profileBasicInfo.username}
+                username={profileInfo.username}
               ></ProfileImage>
               <ProfilePage__UserInfo>
-                <ProfilePage__Username>{profileBasicInfo.username}</ProfilePage__Username>
+                <ProfilePage__Username>{profileInfo.username}</ProfilePage__Username>
                 <ProfilePage__SmallText>
-                  {profileBasicInfo.total_subscribers}{' '}
-                  {profileBasicInfo.total_subscribers === 1
-                    ? 'subscriber'
-                    : 'subscribers'}
+                  {profileInfo.total_subscribers}{' '}
+                  {profileInfo.total_subscribers === 1 ? 'subscriber' : 'subscribers'}
                 </ProfilePage__SmallText>
               </ProfilePage__UserInfo>
             </ProfilePage__UserInfoContainer>
-            <SubscribeButton variant="normal">Subscribe</SubscribeButton>
+            {profileInfo.username !== username && (
+              <SubscribeButton
+                isSubscribed={profileInfo.subscribe_status}
+                subscribeToUserId={profileInfo.user_id}
+                subscribeToUsername={profileInfo.username}
+              />
+            )}
           </ProfilePage__Header>
           <ProfilePage__Navigation>
-            <Link href={`/profile/${profileBasicInfo.username}/videos`}>
+            <Link href={`/profile/${profileInfo.username}/videos`}>
               <a>
                 <ProfilePage__NavBtn isActive={currentTab === 'videos'}>
                   VIDEOS
                 </ProfilePage__NavBtn>
               </a>
             </Link>
-            <Link href={`/profile/${profileBasicInfo.username}/about`}>
+            <Link href={`/profile/${profileInfo.username}/about`}>
               <a>
                 <ProfilePage__NavBtn isActive={currentTab === 'about'}>
                   ABOUT
@@ -147,13 +155,13 @@ const ProfilePage = () => {
               </a>
             </Link>
           </ProfilePage__Navigation>
-          {currentTab === 'videos' && videos.length > 0 && profileBasicInfo && (
+          {currentTab === 'videos' && videos.length > 0 && profileInfo && (
             <ProfileVideosTab
               getProfileVideosRequest={getProfileVideosRequest}
               isGetProfileVideosLoading={isGetProfileVideosLoading}
             />
           )}
-          {currentTab === 'about' && profileBasicInfo && <ProfileAboutTab />}
+          {currentTab === 'about' && profileInfo && <ProfileAboutTab />}
         </ProfilePage__Container>
       )}
     </Layout>
