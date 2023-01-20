@@ -21,10 +21,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-export type RedirectToRefElementType = React.RefObject<HTMLElement>;
-export type RedirectToElementType = HTMLElement;
-export type RedirectToElementIdType = string;
-
 export const MODAL_LAST_FOCUSABLE_ELEMENT = 'modal-last-focusable-element';
 
 export const redirectFocusToLastFocusedElement = (element: any) => {
@@ -63,7 +59,7 @@ const Modal = ({
 
   return (
     <Modal__Wrapper width={width}>
-      <FocusTrapRedirectFocus element={lastFocusableElement} />
+      <FocusTrapRedirectFocus element={{ current: lastFocusableElement }} />
       <Modal__Backdrop
         onClick={handleCloseModal}
         as={motion.div}
