@@ -26,7 +26,6 @@ import ProfileVideosTab from '../../../components/ProfileTabs/ProfileVideosTab/P
 import ProfileAboutTab from '../../../components/ProfileTabs/ProfileAboutTab/ProfileAboutTab';
 import Link from 'next/link';
 import { IVideoSmall } from '../../../app/features/videoSlice';
-import Head from 'next/head';
 import SubscribeButton from '../../../ui/SubscribeButton';
 
 const ProfilePage = () => {
@@ -95,19 +94,15 @@ const ProfilePage = () => {
   }, [profileUserId]);
 
   useEffect(() => {
-    if (videos.length !== 0 || !username) return;
+    if (!username) return;
     handleGetProfileVideos();
   }, [sortBy]);
 
   return (
-    <Layout>
-      <Head>
-        <title>
-          {username ? username + `'s channel ${activeTab && `| ${activeTab}`}` : ''}
-        </title>
-        <meta name="description" content={channelDesc} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout
+      title={profileInfo?.username ? profileInfo.username : 'Loading channel'}
+      description={profileInfo?.description ? profileInfo.description : ''}
+    >
       {isGetProfileInfoLoading && <p>Loading...</p>}
       {!isGetProfileInfoLoading && !profileInfo?.user_id && (
         <p>{getProfileInfoErrors !== null && getProfileInfoErrors[0]?.message}</p>

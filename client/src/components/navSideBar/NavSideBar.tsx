@@ -50,11 +50,9 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
         <NavSideBar_ButtonList>
           <NavSideBar_ButtonItem>
             <Link href={'/'}>
-              <a>
-                <ListButton>
-                  <MdHome /> Home
-                </ListButton>
-              </a>
+              <ListButton>
+                <MdHome /> Home
+              </ListButton>
             </Link>
           </NavSideBar_ButtonItem>
 
@@ -62,11 +60,9 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
             <>
               <NavSideBar_ButtonItem>
                 <Link href={'/'}>
-                  <a>
-                    <ListButton>
-                      <MdSubscriptions /> Subscriptions
-                    </ListButton>
-                  </a>
+                  <ListButton>
+                    <MdSubscriptions /> Subscriptions
+                  </ListButton>
                 </Link>
               </NavSideBar_ButtonItem>
 
@@ -74,11 +70,9 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
 
               <NavSideBar_ButtonItem>
                 <Link href={'/'}>
-                  <a>
-                    <ListButton>
-                      <MdVideoLibrary /> Library
-                    </ListButton>
-                  </a>
+                  <ListButton ref={lastFocusableElement}>
+                    <MdVideoLibrary /> Library
+                  </ListButton>
                 </Link>
               </NavSideBar_ButtonItem>
             </>
@@ -90,7 +84,9 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
               <LoginContainer>
                 <LoginTitle>Login to like videos, comment, and subscribe.</LoginTitle>
                 <Link href="/signin">
-                  <Button variant="primary">login</Button>
+                  <Button variant="primary" ref={lastFocusableElement}>
+                    login
+                  </Button>
                 </Link>
               </LoginContainer>
               <NavSideBar_HorizontalLine />

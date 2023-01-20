@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../layout/Layout';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { resetVideo, setVideo, VideoInfo } from '../../app/features/videoSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -66,12 +65,7 @@ const VideoPage = () => {
   }, []);
 
   return (
-    <Layout>
-      <Head>
-        <title>{video.title}</title>
-        <meta name="description" content={video.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout title={video.title} description={video.description}>
       {video.video_id === videoId && (
         <VideoPageContainer className={isTheatreMode ? 'theatre-mode' : ''}>
           <VideoColumn>
