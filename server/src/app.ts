@@ -13,7 +13,10 @@ const PORT = process.env.PORT || config.get('port');
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : config.get<string>('client_side_base_url'),
     credentials: true,
   })
 );

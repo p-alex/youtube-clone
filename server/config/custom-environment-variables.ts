@@ -22,4 +22,5 @@ export default {
   google_oauth_redirect_uri: 'GOOGLE_OAUTH_REDIRECT_URI',
   secure_password_generator_length: 'SECURE_PASSWORD_GENERATOR_LENGTH',
   google_recaptcha_secret_key: 'GOOGLE_RECAPTCHA_SECRET_KEY',
+  client_side_base_url: 'CLIENT_SIDE_BASE_URL',
 };
