@@ -3,7 +3,6 @@ import router from 'next/router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { BASE_URL } from '../../utils/baseURL';
 import useRefreshToken from '../authHooks/useRefreshToken';
 
 export type Errors = {
@@ -32,7 +31,7 @@ function useAxiosWithRetry<Body, Data>(
     try {
       setIsLoading(true);
 
-      const response = await axios(`${BASE_URL}/${url}`, {
+      const response = await axios(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/${url}`, {
         method: !method ? 'GET' : method,
         headers: {
           'Content-Type': 'application/json',

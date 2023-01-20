@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { BASE_URL } from '../../utils/baseURL';
 import router from 'next/router';
 
 type Errors = {
@@ -26,7 +25,7 @@ const useAxios = <Body, Data>(
     setIsLoading(true);
     setErrors([]);
     try {
-      const response = await axios(`${BASE_URL}/${url}`, {
+      const response = await axios(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/${url}`, {
         method: !method ? 'GET' : method,
         headers: {
           'Content-Type': 'application/json',

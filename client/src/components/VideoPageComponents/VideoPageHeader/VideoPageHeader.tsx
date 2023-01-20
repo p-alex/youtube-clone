@@ -86,7 +86,8 @@ const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
           <VideoPageHeader__ColumnContainer>
             <VideoPageHeader__Username>{video.username}</VideoPageHeader__Username>
             <VideoPageHeader__Subscribers>
-              {video.total_subscribers} subsribers
+              {video.total_subscribers}{' '}
+              {video.total_subscribers === 1 ? 'subscriber' : 'subsribers'}
             </VideoPageHeader__Subscribers>
           </VideoPageHeader__ColumnContainer>
           {video.user_id !== currentUserId && (

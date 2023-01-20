@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../../app/features/authSlice';
-import { BASE_URL } from '../../utils/baseURL';
 import { DefaultResponse } from '../requestHooks/useAxiosWithRetry';
 
 const useRefreshToken = () => {
@@ -11,12 +10,15 @@ const useRefreshToken = () => {
     DefaultResponse<{ user: IUser; accessToken: string } | null>
   > => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/auth/refresh`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/refresh`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
       const data: DefaultResponse<{ user: IUser; accessToken: string }> = response.data;
       if (data.success && data.result) {
         dispatch(
