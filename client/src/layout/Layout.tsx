@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import NavBar from '../components/NavBar/NavBar';
 import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from './style';
-import { NextSeo } from 'next-seo';
 
 const Main = styled.main`
   margin: ${NAV_BAR_HEIGHT + 20}px auto;
@@ -23,7 +22,6 @@ interface Props {
 const Layout = ({ title, description, children }: Props) => {
   return (
     <>
-      {/* <NextSeo title={title + '| AlexTube'} description={description} /> */}
       <Head>
         <title>{title + '| AlexTube'}</title>
         <meta name="description" content={description} key="description" />

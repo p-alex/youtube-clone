@@ -57,7 +57,7 @@ const ManageVideosPage = () => {
   }, [auth]);
 
   return (
-    <Layout>
+    <Layout title={''} description={''}>
       <AnimatePresence>
         {videoToDelete && (
           <ConfirmationModal

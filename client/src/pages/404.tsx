@@ -26,7 +26,7 @@ const NotFount__Text = styled.div`
 
 const NotFountPage = () => {
   return (
-    <Layout>
+    <Layout title={'Page not found'} description={''}>
       <Head>
         <title>404 Not Found</title>
         <meta name="description" content="Page not available" />

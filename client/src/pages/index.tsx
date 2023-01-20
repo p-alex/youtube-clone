@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import Videos from '../components/VideosDisplay/VideosDisplay';
 import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../layout/Layout';
@@ -7,8 +6,6 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import { IVideoSmall } from '../app/features/videoSlice';
-import Modal from '../components/Modal/Modal';
-import ManageProfilePasswordForm from '../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePasswordForm';
 
 const Home: NextPage = () => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
@@ -31,15 +28,10 @@ const Home: NextPage = () => {
   }, [accessToken]);
 
   return (
-    <Layout>
-      <Head>
-        <title>AlexTube</title>
-        <meta
-          name="description"
-          content="AlexTube is a video sharing app created by Alexandru Daniel Pistol"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout
+      title={'AlexTube'}
+      description={'AlexTube is a video sharing app created by Alexandru Daniel Pistol'}
+    >
       {videos.length > 0 && <Videos videos={videos} />}
     </Layout>
   );

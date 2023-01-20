@@ -50,7 +50,7 @@ const ManageAccountPage = () => {
   }, [changeParam]);
 
   return (
-    <Layout>
+    <Layout title="Manage your account" description={'Manage your account'}>
       <ManageAccountPage__Container>
         {changeParam && (
           <Modal

@@ -34,7 +34,7 @@ const SearchPage = () => {
   }, [query]);
 
   return (
-    <Layout>
+    <Layout title={''} description={''}>
       <SearchPageContainer>
         {videos.map((video) => {
           return <VideoCardWithInfo key={video.video_id} video={video} />;
