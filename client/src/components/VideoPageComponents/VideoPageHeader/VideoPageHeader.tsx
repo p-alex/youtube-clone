@@ -94,6 +94,7 @@ const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
               isSubscribed={video.subscribe_status}
               subscribeToUserId={video.user_id}
               subscribeToUsername={video.username}
+              changeStateIn={'videopage'}
             />
           )}
         </VideoPageHeader__UserInfo>

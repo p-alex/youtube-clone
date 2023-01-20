@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSuggestions } from '../../app/features/suggestionsSlice';
-import { IVideoSmall, VideoInfo } from '../../app/features/videoSlice';
-import { RootState } from '../../app/store';
-import useAxios from '../../hooks/requestHooks/useAxios';
-import SuggestionCard from '../SuggestionCard/SuggestionCard';
+import { setSuggestions } from '../../../app/features/suggestionsSlice';
+import { IVideoSmall, VideoInfo } from '../../../app/features/videoSlice';
+import { RootState } from '../../../app/store';
+import useAxios from '../../../hooks/requestHooks/useAxios';
+import SuggestionCard from '../../SuggestionCard/SuggestionCard';
 import {
   SuggestionsContainer,
   SuggestionsNoResults,

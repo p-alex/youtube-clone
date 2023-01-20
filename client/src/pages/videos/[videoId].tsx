@@ -15,7 +15,7 @@ import {
   VideoDetailsWrapper,
   VideoPageContainer,
 } from '../../pageStyles/VideoPage.styles';
-import SuggestionsSideBar from '../../components/SuggestionsSideBar/SuggestionsSideBar';
+import SuggestionsSideBar from '../../components/VideoPageComponents/SuggestionsSideBar/SuggestionsSideBar';
 import VideoPlayer from '../../components/VideoPageComponents/VideoPlayer/VideoPlayer';
 import VideoPageDescription from '../../components/VideoPageComponents/VideoPageDescription/VideoPageDescription';
 import VideoPageHeader from '../../components/VideoPageComponents/VideoPageHeader/VideoPageHeader';

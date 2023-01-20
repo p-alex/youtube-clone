@@ -32,6 +32,7 @@ const ProfilePage = () => {
   const router = useRouter();
 
   const currentUserId = useSelector((state: RootState) => state.auth.user.user_id);
+  const currentUsername = useSelector((state: RootState) => state.auth.user.username);
   const profileUserId = useSelector(
     (state: RootState) => state.profile.profileInfo?.user_id
   );
@@ -126,11 +127,12 @@ const ProfilePage = () => {
                 </ProfilePage__SmallText>
               </ProfilePage__UserInfo>
             </ProfilePage__UserInfoContainer>
-            {profileInfo.username !== username && (
+            {profileInfo.username !== currentUsername && (
               <SubscribeButton
                 isSubscribed={profileInfo.subscribe_status}
                 subscribeToUserId={profileInfo.user_id}
                 subscribeToUsername={profileInfo.username}
+                changeStateIn={'profile'}
               />
             )}
           </ProfilePage__Header>

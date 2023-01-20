@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../layout/style';
+import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../../layout/style';
 
 export const SuggestionsContainer = styled.aside<{ isTheatreMode: boolean }>`
   width: 550px;

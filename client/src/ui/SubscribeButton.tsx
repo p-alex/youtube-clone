@@ -34,12 +34,14 @@ interface Props {
   isSubscribed: boolean;
   subscribeToUserId: string;
   subscribeToUsername: string;
+  changeStateIn: 'profile' | 'videopage';
 }
 
 const SubscribeButton = ({
   isSubscribed,
   subscribeToUserId,
   subscribeToUsername,
+  changeStateIn,
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -51,8 +53,8 @@ const SubscribeButton = ({
   const [isConfirmationActive, setIsConfirmationActive] = useState(false);
 
   const handleChangeStateToReflectNewSubscribeStatus = () => {
-    dispatch(subscribeToVideoOwner({ isSubscribed }));
-    dispatch(subscribeToProfileOwner({ isSubscribed }));
+    changeStateIn === 'videopage' && dispatch(subscribeToVideoOwner({ isSubscribed }));
+    changeStateIn === 'profile' && dispatch(subscribeToProfileOwner({ isSubscribed }));
   };
 
   const handleSubscribe = async () => {
