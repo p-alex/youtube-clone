@@ -2,6 +2,7 @@ import React, { SetStateAction, useEffect, useState } from 'react';
 import { MOBILE_BREAK_POINT } from '../../../layout/style';
 import DesktopVideoPlayer from './DesktopVideoPlayer/DesktopVideoPlayer';
 import MobileVideoPlayer from './MobileVideoPlayer/MobileVideoPlayer';
+import { VideoPlayer__Container } from './VideoPlayer.styles';
 
 const VideoPlayer = ({
   src,
@@ -21,7 +22,7 @@ const VideoPlayer = ({
   }, []);
 
   return (
-    <>
+    <VideoPlayer__Container>
       {!showMobileVideoPlayer ? (
         <DesktopVideoPlayer
           src={src}
@@ -32,7 +33,7 @@ const VideoPlayer = ({
       ) : (
         <MobileVideoPlayer src={src} totalDuration={totalDuration} />
       )}
-    </>
+    </VideoPlayer__Container>
   );
 };
 
