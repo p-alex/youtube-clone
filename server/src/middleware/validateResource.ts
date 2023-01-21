@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AnyZodObject } from 'zod';
+import log from '../utils/logger';
+import { errorResponseJson } from '../utils/responseJson';
 
 const validateResource =
   (schema: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
@@ -11,8 +13,8 @@ const validateResource =
       });
       next();
     } catch (error: any) {
-      console.error(error.errors);
-      return res.status(400).json({ errors: error.errors });
+      log.error(error.errors);
+      return errorResponseJson(res, 400, error.errors);
     }
   };
 

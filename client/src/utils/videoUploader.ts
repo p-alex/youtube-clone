@@ -23,7 +23,7 @@ export const videoUploader = async (
   formData.append('reToken', body.reToken);
 
   const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/videos`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/videos`,
     formData,
     {
       headers: {

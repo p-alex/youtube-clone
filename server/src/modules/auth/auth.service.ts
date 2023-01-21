@@ -1,11 +1,6 @@
 import db from '../../db';
 import { signJwt } from '../../utils/jwt';
 import config from 'config';
-import axios from 'axios';
-import qs from 'qs';
-import log from '../../utils/logger';
-import { securePasswordGenerator } from '../../utils/securePasswordGenerator';
-import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 
 interface User {

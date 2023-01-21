@@ -31,7 +31,7 @@ function useAxiosWithRetry<Body, Data>(
     try {
       setIsLoading(true);
 
-      const response = await axios(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/${url}`, {
+      const response = await axios(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/${url}`, {
         method: !method ? 'GET' : method,
         headers: {
           'Content-Type': 'application/json',

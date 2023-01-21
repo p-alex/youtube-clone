@@ -29,7 +29,7 @@ const ReCaptchaCheckbox = ({
   return (
     <ReCaptchaCheckbox__Container>
       <ReCAPTCHA
-        sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY!}
+        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
         size="normal"
         onChange={onChange}
         ref={reference}

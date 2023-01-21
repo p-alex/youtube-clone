@@ -59,7 +59,7 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
           {isAuth && (
             <>
               <NavSideBar_ButtonItem>
-                <Link href={'/'}>
+                <Link href={'/subscriptions'}>
                   <ListButton>
                     <MdSubscriptions /> Subscriptions
                   </ListButton>

@@ -10,11 +10,11 @@ import { loginUserSchema, logoutUserSchema, verifyEmailSchema } from './auth.sch
 
 const router = express.Router();
 
-router.post('/api/auth', validateResource(loginUserSchema), loginUserController);
-router.get('/api/auth/refresh', refreshTokenController);
-router.post('/api/auth/logout', validateResource(logoutUserSchema), logoutUserController);
+router.post('/auth', validateResource(loginUserSchema), loginUserController);
+router.get('/auth/refresh', refreshTokenController);
+router.post('/auth/logout', validateResource(logoutUserSchema), logoutUserController);
 router.post(
-  '/api/auth/verify-email',
+  '/auth/verify-email',
   validateResource(verifyEmailSchema),
   verifyEmailController
 );

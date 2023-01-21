@@ -20,38 +20,38 @@ import {
 
 const router = express.Router();
 
-router.post('/api/users', validateResource(registerUserSchema), registerUserController);
+router.post('/users', validateResource(registerUserSchema), registerUserController);
 
 router.post(
-  '/api/users/subscribe',
+  '/users/subscribe',
   requireAuth,
   validateResource(subscribeToUserSchema),
   subscribeToUserController
 );
 
 router.patch(
-  '/api/users/change/username',
+  '/users/change/username',
   requireAuth,
   validateResource(changeUsernameSchema),
   changeUsernameController
 );
 
 router.patch(
-  '/api/users/change/profilePicture',
+  '/users/change/profilePicture',
   requireAuth,
   validateResource(changeProfilePictureSchema),
   changeProfilePictureController
 );
 
 router.patch(
-  '/api/users/change/password',
+  '/users/change/password',
   requireAuth,
   validateResource(changePasswordSchema),
   changePasswordController
 );
 
 router.post(
-  '/api/users/:username/profile',
+  '/users/:username/profile',
   validateResource(getProfileInfoSchema),
   getProfileInfoController
 );

@@ -23,7 +23,7 @@ const Layout = ({ title, description, children }: Props) => {
   return (
     <>
       <Head>
-        <title>{title + '| AlexTube'}</title>
+        <title>{title + ' | AlexTube'}</title>
         <meta name="description" content={description} key="description" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

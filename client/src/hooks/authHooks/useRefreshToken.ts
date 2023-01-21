@@ -11,7 +11,7 @@ const useRefreshToken = () => {
   > => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/refresh`,
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/refresh`,
         {
           headers: {
             'Content-Type': 'application/json',

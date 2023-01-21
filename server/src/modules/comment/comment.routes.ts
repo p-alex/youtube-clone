@@ -21,41 +21,41 @@ import {
 const router = express.Router();
 
 router.post(
-  '/api/comments/:videoId/:page',
+  '/comments/:videoId/:page',
   validateResource(getCommentsSchema),
   getCommentsController
 );
 
 router.post(
-  '/api/comments',
+  '/comments',
   requireAuth,
   validateResource(addCommentSchema),
   addCommentController
 );
 
 router.patch(
-  '/api/comments',
+  '/comments',
   requireAuth,
   validateResource(updateCommentSchema),
   updateCommentController
 );
 
 router.delete(
-  '/api/comments',
+  '/comments',
   requireAuth,
   validateResource(deleteCommentSchema),
   deleteCommentController
 );
 
 router.post(
-  '/api/comments/react/like/:commentId',
+  '/comments/react/like/:commentId',
   requireAuth,
   validateResource(likeCommentSchema),
   likeCommentController
 );
 
 router.post(
-  '/api/comments/react/dislike/:commentId',
+  '/comments/react/dislike/:commentId',
   requireAuth,
   validateResource(dislikeCommentSchema),
   dislikeCommentController

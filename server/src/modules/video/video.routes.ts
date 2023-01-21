@@ -35,31 +35,31 @@ const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
-router.get('/api/videos', getVideosController);
+router.get('/videos', getVideosController);
 
 router.get(
-  '/api/videos/manage/:sortBy/:page',
+  '/videos/manage/:sortBy/:page',
   requireAuth,
   validateResource(getUserVideosPrivateSchema),
   getUserVideosPrivateController
 );
 
 router.get(
-  '/api/videos/user/:userId/:sortBy/:page',
+  '/videos/user/:userId/:sortBy/:page',
   validateResource(getUserVideosSchema),
   getUserVideosController
 );
 
 router.post(
-  '/api/videos/suggested',
+  '/videos/suggested',
   validateResource(getSuggestedVideosSchema),
   getSuggestedVideosController
 );
 
-router.post('/api/videos/:videoId', validateResource(getVideoSchema), getVideoController);
+router.post('/videos/:videoId', validateResource(getVideoSchema), getVideoController);
 
 router.post(
-  '/api/videos',
+  '/videos',
   requireAuth,
   upload.single('videoFile'),
   parseVideoData,
@@ -68,42 +68,42 @@ router.post(
 );
 
 router.patch(
-  '/api/videos',
+  '/videos',
   requireAuth,
   validateResource(updateVideoSchema),
   updateVideoController
 );
 
 router.delete(
-  '/api/videos',
+  '/videos',
   requireAuth,
   validateResource(deleteVideoSchema),
   deleteVideoController
 );
 
 router.post(
-  '/api/videos/:videoId/like',
+  '/videos/:videoId/like',
   requireAuth,
   validateResource(likeVideoSchema),
   likeVideoController
 );
 
 router.post(
-  '/api/videos/:videoId/dislike',
+  '/videos/:videoId/dislike',
   requireAuth,
   validateResource(dislikeVideoSchema),
   dislikeVideoController
 );
 
 router.get(
-  '/api/videos/:videoId/tags',
+  '/videos/:videoId/tags',
   requireAuth,
   validateResource(getVideoTagsSchema),
   getVideoTagsController
 );
 
 router.get(
-  '/api/videos/search/:query',
+  '/videos/search/:query',
   validateResource(searchVideosSchema),
   searchVideosController
 );

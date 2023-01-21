@@ -1,16 +1,12 @@
-import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSuggestions } from '../../../app/features/suggestionsSlice';
 import { IVideoSmall, VideoInfo } from '../../../app/features/videoSlice';
 import { RootState } from '../../../app/store';
 import useAxios from '../../../hooks/requestHooks/useAxios';
+import NoResultsMessage from '../../../ui/NoResultsMessage';
 import SuggestionCard from '../../SuggestionCard/SuggestionCard';
-import {
-  SuggestionsContainer,
-  SuggestionsNoResults,
-  SuggestionsNoResultsMessage,
-} from './SuggestionsSideBar.style';
+import { SuggestionsSideBar__Container } from './SuggestionsSideBar.style';
 
 interface ISuggestionsSideBar {
   video: VideoInfo;
@@ -50,19 +46,12 @@ const SuggestionsSideBar = ({ video, isTheatreMode }: ISuggestionsSideBar) => {
   }, [suggestions]);
 
   return (
-    <SuggestionsContainer isTheatreMode={isTheatreMode}>
-      {!suggestions.length && suggestionsRequestedOnce && (
-        <SuggestionsNoResults className="noResults">
-          <Image src="/svg/no-results.svg" width={104} height={120} alt="" />
-          <SuggestionsNoResultsMessage>
-            No suggestions found...
-          </SuggestionsNoResultsMessage>
-        </SuggestionsNoResults>
-      )}
+    <SuggestionsSideBar__Container isTheatreMode={isTheatreMode}>
+      {!suggestions.length && suggestionsRequestedOnce && <NoResultsMessage />}
       {suggestions.map((video, index) => {
         return <SuggestionCard key={index} video={video} />;
       })}
-    </SuggestionsContainer>
+    </SuggestionsSideBar__Container>
   );
 };
 

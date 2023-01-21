@@ -21,41 +21,41 @@ import {
 const router = express.Router();
 
 router.post(
-  '/api/replies/:commentId/:page',
+  '/replies/:commentId/:page',
   validateResource(getRepliesSchema),
   getRepliesController
 );
 
 router.post(
-  '/api/replies',
+  '/replies',
   requireAuth,
   validateResource(addReplySchema),
   addReplyController
 );
 
 router.patch(
-  '/api/replies',
+  '/replies',
   requireAuth,
   validateResource(updateReplySchema),
   updateReplyController
 );
 
 router.delete(
-  '/api/replies',
+  '/replies',
   requireAuth,
   validateResource(deleteReplySchema),
   deleteReplyController
 );
 
 router.post(
-  '/api/replies/react/like/:replyId',
+  '/replies/react/like/:replyId',
   requireAuth,
   validateResource(likeReplySchema),
   likeReplyController
 );
 
 router.post(
-  '/api/replies/react/dislike/:replyId',
+  '/replies/react/dislike/:replyId',
   requireAuth,
   validateResource(dislikeReplySchema),
   dislikeReplyController
