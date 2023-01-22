@@ -4,10 +4,6 @@ import { IVideoSmall } from '../../app/features/videoSlice';
 import { RootState } from '../../app/store';
 import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../../layout/Layout';
-import {
-  SubscriptionsPage__Container,
-  SubscriptionsPage__Title,
-} from '../../pageStyles/SubscriptionsPage.styles';
 import useProtectRoute from '../../hooks/useProtectRoute';
 import {
   incrementSubscriptionsVideosPage,
@@ -17,6 +13,9 @@ import {
 import VideosDisplay from '../../components/VideosDisplay/VideosDisplay';
 import { Button } from '../../ui/Button';
 import Spinner from '../../ui/Spinner';
+import PageContainer from '../../containers/PageContainer/PageContainer';
+
+const PAGE_TITLE = 'Your subscriptions';
 
 const SUBSCRIPTION_VIDEOS_LIMIT = 20;
 
@@ -63,9 +62,8 @@ const Subscriptions = () => {
   }, [subscriptions.videos.page]);
 
   return (
-    <Layout title="Subscriptions" description="">
-      <SubscriptionsPage__Container>
-        <SubscriptionsPage__Title>Subscriptions</SubscriptionsPage__Title>
+    <Layout head={{ title: PAGE_TITLE, description: '' }}>
+      <PageContainer title={PAGE_TITLE}>
         {isLoading && <Spinner />}
         {!isLoading && <VideosDisplay videos={subscriptions.videos.list} />}
         {showLoadMore && (
@@ -78,7 +76,7 @@ const Subscriptions = () => {
             Load More
           </Button>
         )}
-      </SubscriptionsPage__Container>
+      </PageContainer>
     </Layout>
   );
 };

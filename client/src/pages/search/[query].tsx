@@ -5,12 +5,15 @@ import { useRouter } from 'next/router';
 import { IVideoSmallWithInfo } from '../../app/features/videoSlice';
 import VideoCardWithInfo from '../../components/VideoCardWithInfo/VideoCardWithInfo';
 import styled from 'styled-components';
+import PageContainer from '../../containers/PageContainer/PageContainer';
 
 const SearchPageContainer = styled.div`
   position: relative;
   max-width: 1080px;
   margin: auto;
 `;
+
+const PAGE_TITLE = 'Search';
 
 const SearchPage = () => {
   const router = useRouter();
@@ -34,12 +37,14 @@ const SearchPage = () => {
   }, [query]);
 
   return (
-    <Layout title={''} description={''}>
-      <SearchPageContainer>
-        {videos.map((video) => {
-          return <VideoCardWithInfo key={video.video_id} video={video} />;
-        })}
-      </SearchPageContainer>
+    <Layout head={{ title: PAGE_TITLE, description: '' }}>
+      <PageContainer title={PAGE_TITLE} width={1000}>
+        <SearchPageContainer>
+          {videos.map((video) => {
+            return <VideoCardWithInfo key={video.video_id} video={video} />;
+          })}
+        </SearchPageContainer>
+      </PageContainer>
     </Layout>
   );
 };

@@ -19,6 +19,7 @@ import SuggestionsSideBar from '../../components/VideoPageComponents/Suggestions
 import VideoPlayer from '../../components/VideoPageComponents/VideoPlayer/VideoPlayer';
 import VideoPageDescription from '../../components/VideoPageComponents/VideoPageDescription/VideoPageDescription';
 import VideoPageHeader from '../../components/VideoPageComponents/VideoPageHeader/VideoPageHeader';
+import PageContainer from '../../containers/PageContainer/PageContainer';
 
 const VideoPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -65,7 +66,7 @@ const VideoPage = () => {
   }, []);
 
   return (
-    <Layout title={video.title} description={video.description}>
+    <Layout head={{ title: video.title, description: video.description }}>
       {video.video_id === videoId && (
         <VideoPageContainer className={isTheatreMode ? 'theatre-mode' : ''}>
           <VideoColumn>

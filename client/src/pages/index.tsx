@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import { IVideoSmall } from '../app/features/videoSlice';
+import PageContainer from '../containers/PageContainer/PageContainer';
+
+const PAGE_TITLE = 'Discover';
 
 const Home: NextPage = () => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
@@ -29,10 +32,14 @@ const Home: NextPage = () => {
 
   return (
     <Layout
-      title={'AlexTube'}
-      description={'AlexTube is a video sharing app created by Alexandru Daniel Pistol'}
+      head={{
+        title: PAGE_TITLE,
+        description: 'AlexTube is a video sharing app created by Alexandru Daniel Pistol',
+      }}
     >
-      {videos.length > 0 && <Videos videos={videos} />}
+      <PageContainer title={PAGE_TITLE}>
+        {videos.length > 0 && <Videos videos={videos} />}
+      </PageContainer>
     </Layout>
   );
 };

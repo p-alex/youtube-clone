@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import router from 'next/router';
 import React, { useEffect, useState, useRef } from 'react';
@@ -72,6 +73,13 @@ const SignIn = () => {
 
   return (
     <FormWrapper>
+      <Head>
+        <title>Sign in | AlexTube</title>
+        <meta
+          name="description"
+          content="Sign in if so you can like, comment and subscribe"
+        />
+      </Head>
       <Form onSubmit={handleSubmit}>
         <FormLogoAndTitle>
           <Logo />

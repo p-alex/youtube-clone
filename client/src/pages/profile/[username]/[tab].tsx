@@ -27,6 +27,7 @@ import ProfileAboutTab from '../../../components/ProfileTabs/ProfileAboutTab/Pro
 import Link from 'next/link';
 import { IVideoSmall } from '../../../app/features/videoSlice';
 import SubscribeButton from '../../../ui/SubscribeButton';
+import PageContainer from '../../../containers/PageContainer/PageContainer';
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -37,7 +38,6 @@ const ProfilePage = () => {
     (state: RootState) => state.profile.profileInfo?.user_id
   );
 
-  const activeTab = useSelector((state: RootState) => state.profile.activeTab);
   const { sortBy, videos, page } = useSelector(
     (state: RootState) => state.profile.videosTab
   );
@@ -48,10 +48,6 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
 
   const { profileInfo } = useSelector((state: RootState) => state.profile);
-
-  const channelDesc = useSelector(
-    (state: RootState) => state.profile.profileInfo?.description
-  );
 
   const [
     getProfileInfo,
@@ -101,66 +97,70 @@ const ProfilePage = () => {
 
   return (
     <Layout
-      title={profileInfo?.username ? profileInfo.username : 'Loading channel'}
-      description={profileInfo?.description ? profileInfo.description : ''}
+      head={{
+        title: profileInfo?.username ? profileInfo.username : 'Loading channel',
+        description: profileInfo?.description ? profileInfo.description : '',
+      }}
     >
-      {isGetProfileInfoLoading && <p>Loading...</p>}
-      {!isGetProfileInfoLoading && !profileInfo?.user_id && (
-        <p>{getProfileInfoErrors !== null && getProfileInfoErrors[0]?.message}</p>
-      )}
-      {!isGetProfileInfoLoading && profileInfo?.user_id && (
-        <ProfilePage__Container>
-          <ProfilePage__Banner bannerColor={'#222'}></ProfilePage__Banner>
-          <ProfilePage__Header>
-            <ProfilePage__UserInfoContainer>
-              <ProfileImage
-                imageUrl={profileInfo.profile_picture}
-                width={85}
-                height={85}
-                username={profileInfo.username}
-              ></ProfileImage>
-              <ProfilePage__UserInfo>
-                <ProfilePage__Username>{profileInfo.username}</ProfilePage__Username>
-                <ProfilePage__SmallText>
-                  {profileInfo.total_subscribers}{' '}
-                  {profileInfo.total_subscribers === 1 ? 'subscriber' : 'subscribers'}
-                </ProfilePage__SmallText>
-              </ProfilePage__UserInfo>
-            </ProfilePage__UserInfoContainer>
-            {profileInfo.username !== currentUsername && (
-              <SubscribeButton
-                isSubscribed={profileInfo.subscribe_status}
-                subscribeToUserId={profileInfo.user_id}
-                subscribeToUsername={profileInfo.username}
-                changeStateIn={'profile'}
+      <PageContainer>
+        {isGetProfileInfoLoading && <p>Loading...</p>}
+        {!isGetProfileInfoLoading && !profileInfo?.user_id && (
+          <p>{getProfileInfoErrors !== null && getProfileInfoErrors[0]?.message}</p>
+        )}
+        {!isGetProfileInfoLoading && profileInfo?.user_id && (
+          <ProfilePage__Container>
+            <ProfilePage__Banner bannerColor={'#222'}></ProfilePage__Banner>
+            <ProfilePage__Header>
+              <ProfilePage__UserInfoContainer>
+                <ProfileImage
+                  imageUrl={profileInfo.profile_picture}
+                  width={85}
+                  height={85}
+                  username={profileInfo.username}
+                ></ProfileImage>
+                <ProfilePage__UserInfo>
+                  <ProfilePage__Username>{profileInfo.username}</ProfilePage__Username>
+                  <ProfilePage__SmallText>
+                    {profileInfo.total_subscribers}{' '}
+                    {profileInfo.total_subscribers === 1 ? 'subscriber' : 'subscribers'}
+                  </ProfilePage__SmallText>
+                </ProfilePage__UserInfo>
+              </ProfilePage__UserInfoContainer>
+              {profileInfo.username !== currentUsername && (
+                <SubscribeButton
+                  isSubscribed={profileInfo.subscribe_status}
+                  subscribeToUserId={profileInfo.user_id}
+                  subscribeToUsername={profileInfo.username}
+                  changeStateIn={'profile'}
+                />
+              )}
+            </ProfilePage__Header>
+            <ProfilePage__Navigation>
+              <Link href={`/profile/${profileInfo.username}/videos`}>
+                <a>
+                  <ProfilePage__NavBtn isActive={currentTab === 'videos'}>
+                    VIDEOS
+                  </ProfilePage__NavBtn>
+                </a>
+              </Link>
+              <Link href={`/profile/${profileInfo.username}/about`}>
+                <a>
+                  <ProfilePage__NavBtn isActive={currentTab === 'about'}>
+                    ABOUT
+                  </ProfilePage__NavBtn>
+                </a>
+              </Link>
+            </ProfilePage__Navigation>
+            {currentTab === 'videos' && videos.length > 0 && profileInfo && (
+              <ProfileVideosTab
+                getProfileVideosRequest={getProfileVideosRequest}
+                isGetProfileVideosLoading={isGetProfileVideosLoading}
               />
             )}
-          </ProfilePage__Header>
-          <ProfilePage__Navigation>
-            <Link href={`/profile/${profileInfo.username}/videos`}>
-              <a>
-                <ProfilePage__NavBtn isActive={currentTab === 'videos'}>
-                  VIDEOS
-                </ProfilePage__NavBtn>
-              </a>
-            </Link>
-            <Link href={`/profile/${profileInfo.username}/about`}>
-              <a>
-                <ProfilePage__NavBtn isActive={currentTab === 'about'}>
-                  ABOUT
-                </ProfilePage__NavBtn>
-              </a>
-            </Link>
-          </ProfilePage__Navigation>
-          {currentTab === 'videos' && videos.length > 0 && profileInfo && (
-            <ProfileVideosTab
-              getProfileVideosRequest={getProfileVideosRequest}
-              isGetProfileVideosLoading={isGetProfileVideosLoading}
-            />
-          )}
-          {currentTab === 'about' && profileInfo && <ProfileAboutTab />}
-        </ProfilePage__Container>
-      )}
+            {currentTab === 'about' && profileInfo && <ProfileAboutTab />}
+          </ProfilePage__Container>
+        )}
+      </PageContainer>
     </Layout>
   );
 };

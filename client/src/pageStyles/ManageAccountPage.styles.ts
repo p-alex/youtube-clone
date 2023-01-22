@@ -1,25 +1,6 @@
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../layout/style';
 
-export const ManageAccountPage__Container = styled.div`
-  position: relative;
-  max-width: 800px;
-  margin: auto;
-  color: ${(props) => props.theme.textColor};
-  @media (max-width: ${MOBILE_BREAK_POINT}px) {
-    max-width: none;
-    width: calc(100%-20px);
-    margin: 20px;
-  }
-`;
-
-export const ManageAccountPage__Title = styled.h1`
-  color: ${(props) => props.theme.textColor};
-  padding: 20px 0;
-  border-bottom: solid 1px ${(props) => props.theme.borderColor};
-  margin-bottom: 60px;
-`;
-
 export const ManageAccountPage__Box = styled.section`
   position: relative;
   margin-bottom: 40px;
@@ -27,6 +8,7 @@ export const ManageAccountPage__Box = styled.section`
 
 export const ManageAccountPage__BoxTitle = styled.h2`
   margin-bottom: 20px;
+  color: ${(props) => props.theme.textColor};
 `;
 
 export const ManageAccountPage__Button = styled.button`

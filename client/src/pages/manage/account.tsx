@@ -3,9 +3,7 @@ import {
   ManageAccountPage__Box,
   ManageAccountPage__BoxTitle,
   ManageAccountPage__Button,
-  ManageAccountPage__Container,
   ManageAccountPage__Text,
-  ManageAccountPage__Title,
   ManageAccount__ButtonContainer,
   ManageAccount__ButtonTitle,
 } from '../../pageStyles/ManageAccountPage.styles';
@@ -20,8 +18,11 @@ import Modal from '../../components/Modal/Modal';
 import ManageUsernameForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageUsernameForm';
 import ManageProfilePictureForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePictureForm';
 import ManageProfilePasswordForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePasswordForm';
+import PageContainer from '../../containers/PageContainer/PageContainer';
 
 const MANAGE_VIDEOS_CHANGE_LIST = ['Username', 'Profile picture', 'Password'] as const;
+
+const PAGE_TITLE = 'Manage your account';
 
 const ManageAccountPage = () => {
   useProtectRoute();
@@ -50,8 +51,8 @@ const ManageAccountPage = () => {
   }, [changeParam]);
 
   return (
-    <Layout title="Manage your account" description={'Manage your account'}>
-      <ManageAccountPage__Container>
+    <Layout head={{ title: PAGE_TITLE }}>
+      <PageContainer title={PAGE_TITLE} width={800}>
         {changeParam && (
           <Modal
             title={'Change ' + changeParam}
@@ -64,7 +65,6 @@ const ManageAccountPage = () => {
             {changeParam === 'Password' && <ManageProfilePasswordForm />}
           </Modal>
         )}
-        <ManageAccountPage__Title>Manage account</ManageAccountPage__Title>
         <ManageAccountPage__Box>
           <ManageAccountPage__BoxTitle>Basic info</ManageAccountPage__BoxTitle>
 
@@ -102,7 +102,7 @@ const ManageAccountPage = () => {
             <BsChevronRight />
           </ManageAccountPage__Button>
         </ManageAccountPage__Box>
-      </ManageAccountPage__Container>
+      </PageContainer>
     </Layout>
   );
 };

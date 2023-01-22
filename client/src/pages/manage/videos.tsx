@@ -12,14 +12,13 @@ import { RootState } from '../../app/store';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 import EditVideoModal from '../../components/EditVideoModal/EditVideoModal';
 import ManageVideoCard from '../../components/ManageVideoCard/ManageVideoCard';
+import PageContainer from '../../containers/PageContainer/PageContainer';
 import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import useProtectRoute from '../../hooks/useProtectRoute';
 import Layout from '../../layout/Layout';
-import {
-  ManageVideosPage__Container,
-  ManageVideosPage__Title,
-  ManageVideosPage__VideoCards,
-} from '../../pageStyles/ManageVideosPage.styles';
+import { ManageVideosPage__VideoCards } from '../../pageStyles/ManageVideosPage.styles';
+
+const PAGE_TITLE = 'Manage your videos';
 
 const ManageVideosPage = () => {
   useProtectRoute();
@@ -57,31 +56,30 @@ const ManageVideosPage = () => {
   }, [auth]);
 
   return (
-    <Layout title={''} description={''}>
-      <AnimatePresence>
-        {videoToDelete && (
-          <ConfirmationModal
-            title={'Delete video'}
-            message={'Delete video permanently?'}
-            toggle={() => dispatch(resetVideoToDelete())}
-            func={handleDeleteVideo}
-            btnName={'Delete'}
-            redirectToElementIdOnClose={lastFocusedElement!}
-            isLoading={isDeleteLoading}
-          />
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {videoToEdit && <EditVideoModal video={videoToEdit} />}
-      </AnimatePresence>
-      <ManageVideosPage__Container>
-        <ManageVideosPage__Title>Manage your videos</ManageVideosPage__Title>
+    <Layout head={{ title: PAGE_TITLE }}>
+      <PageContainer title={PAGE_TITLE}>
+        <AnimatePresence>
+          {videoToDelete && (
+            <ConfirmationModal
+              title={'Delete video'}
+              message={'Delete video permanently?'}
+              toggle={() => dispatch(resetVideoToDelete())}
+              func={handleDeleteVideo}
+              btnName={'Delete'}
+              redirectToElementIdOnClose={lastFocusedElement!}
+              isLoading={isDeleteLoading}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {videoToEdit && <EditVideoModal video={videoToEdit} />}
+        </AnimatePresence>
         <ManageVideosPage__VideoCards>
           {videos.map((video) => {
             return <ManageVideoCard key={video.video_id} video={video} />;
           })}
         </ManageVideosPage__VideoCards>
-      </ManageVideosPage__Container>
+      </PageContainer>
     </Layout>
   );
 };

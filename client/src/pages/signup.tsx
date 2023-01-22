@@ -68,6 +68,8 @@ const SignUp = () => {
 
   return (
     <>
+      <title>Sign Up | AlexTube</title>
+      <meta name="description" content="Create an account now" />
       {isSuccess && (
         <VerifyCodeForm
           title="Verify your email"

@@ -14,20 +14,27 @@ const Main = styled.main`
 `;
 
 interface Props {
-  title: string;
-  description: string;
+  head: {
+    title: string;
+    description?: string;
+  };
   children: React.ReactNode;
 }
 
-const Layout = ({ title, description, children }: Props) => {
+const Layout = ({ head, children }: Props) => {
   return (
     <>
       <Head>
-        <title>{title + ' | AlexTube'}</title>
-        <meta name="description" content={description} key="description" />
+        <title key={'title'}>
+          {head?.title ? head.title + ' | AlexTube' : 'AlexTube'}
+        </title>
+        <meta
+          name="description"
+          content={head?.description ? head.description : ''}
+          key="description"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      ;
       <NavBar />
       <Main>{children}</Main>
     </>

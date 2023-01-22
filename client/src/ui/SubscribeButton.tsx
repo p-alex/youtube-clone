@@ -1,9 +1,11 @@
+import Router, { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { subscribeToProfileOwner } from '../app/features/profileSlice';
 import { subscribeToVideoOwner } from '../app/features/videoSlice';
 import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
+import useAuth from '../hooks/authHooks/useAuth';
 import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
 import { BORDER_RADIUS_ROUNDER } from '../layout/style';
 
@@ -43,6 +45,8 @@ const SubscribeButton = ({
   subscribeToUsername,
   changeStateIn,
 }: Props) => {
+  const router = useRouter();
+  const { isAuth } = useAuth();
   const dispatch = useDispatch();
 
   const [subscribeRequest, { isLoading, errors }] = useAxiosWithRetry<
@@ -58,6 +62,7 @@ const SubscribeButton = ({
   };
 
   const handleSubscribe = async () => {
+    if (!isAuth) return router.push('/signin');
     const response = await subscribeRequest({ subscribeToUserId });
     if (!response.success) return;
     handleChangeStateToReflectNewSubscribeStatus();
