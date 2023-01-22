@@ -19,6 +19,11 @@ import router from 'next/router';
 import useAxios from '../../hooks/requestHooks/useAxios';
 import { motion } from 'framer-motion';
 import { ListButton } from '../../ui/ListButton';
+import { resetManageVideos } from '../../app/features/manageVideo';
+import { resetProfile } from '../../app/features/profileSlice';
+import { resetSubscriptions } from '../../app/features/subscriptionsSlice';
+import { resetSuggestions } from '../../app/features/suggestionsSlice';
+import { resetVideoState } from '../../app/features/videoSlice';
 
 export const ProfileDropDown = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -30,11 +35,20 @@ export const ProfileDropDown = () => {
     'POST'
   );
 
+  const handleResetReducers = () => {
+    dispatch(resetUser());
+    dispatch(resetManageVideos());
+    dispatch(resetProfile());
+    dispatch(resetSubscriptions());
+    dispatch(resetSuggestions());
+    dispatch(resetVideoState());
+  };
+
   const handleLogoutUser = async () => {
     const response = await logoutUser({ userId: user.user_id });
     if (response.success) {
-      dispatch(resetUser());
       router.push('/signin');
+      handleResetReducers();
     }
   };
 

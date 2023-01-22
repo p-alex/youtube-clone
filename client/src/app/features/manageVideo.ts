@@ -70,6 +70,12 @@ export const manageVideosSlice = createSlice({
         (video) => video.video_id !== action.payload.video_id
       );
     },
+    resetManageVideos: (state) => {
+      state.videos = [];
+      state.videoToEdit = null;
+      state.videoToDelete = null;
+      state.lastFocusedElement = null;
+    },
   },
 });
 
@@ -82,6 +88,7 @@ export const {
   resetVideoToDelete,
   editVideo,
   removeVideo,
+  resetManageVideos,
 } = manageVideosSlice.actions;
 
 export default manageVideosSlice.reducer;

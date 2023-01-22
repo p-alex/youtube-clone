@@ -94,6 +94,12 @@ export const ProfileSlice = createSlice({
           ? state.profileInfo!.total_subscribers + 1
           : state.profileInfo!.total_subscribers - 1;
     },
+    resetProfile: (state) => {
+      state.profileInfo = null;
+      state.videosTab.videos = [];
+      state.videosTab.page = 0;
+      state.videosTab.sortBy = 'recent';
+    },
   },
 });
 
@@ -106,6 +112,7 @@ export const {
   changeProfileVideosSortBy,
   loadMoreProfileVideos,
   subscribeToProfileOwner,
+  resetProfile,
 } = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

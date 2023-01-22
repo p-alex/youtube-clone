@@ -66,7 +66,7 @@ const VideoPage = () => {
   }, []);
 
   return (
-    <Layout head={{ title: video.title, description: video.description }}>
+    <Layout head={{ title: video?.title, description: video?.description }}>
       {video.video_id === videoId && (
         <VideoPageContainer className={isTheatreMode ? 'theatre-mode' : ''}>
           <VideoColumn>

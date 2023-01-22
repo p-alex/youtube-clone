@@ -27,10 +27,14 @@ const suggestionsSlice = createSlice({
     ) => {
       state.suggestions = [...state.suggestions, ...action.payload.suggestions];
     },
+    resetSuggestions: (state) => {
+      state.suggestions = [];
+      state.page = 0;
+    },
   },
 });
 
-export const { setSuggestions, incrementPage, loadMoreSuggestions } =
+export const { setSuggestions, incrementPage, loadMoreSuggestions, resetSuggestions } =
   suggestionsSlice.actions;
 
 export default suggestionsSlice.reducer;

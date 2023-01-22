@@ -120,6 +120,27 @@ const videoSlice = createSlice({
     resetVideo: (state) => {
       state.videoInfo = initialState.videoInfo;
     },
+    resetVideoState: (state) => {
+      state.canUseVideoKeyBinds = true;
+      state.videoInfo = {
+        video_id: '',
+        user_id: '',
+        username: '',
+        profile_picture: '',
+        total_subscribers: 0,
+        video_url: '',
+        title: '',
+        description: '',
+        views: '',
+        total_likes: 0,
+        total_dislikes: 0,
+        total_comments: 0,
+        duration: 0,
+        like_status: '',
+        subscribe_status: false,
+        created_at: '',
+      };
+    },
   },
 });
 
@@ -133,6 +154,7 @@ export const {
   dislikeVideo,
   subscribeToVideoOwner,
   resetVideo,
+  resetVideoState,
 } = videoSlice.actions;
 
 export default videoSlice.reducer;

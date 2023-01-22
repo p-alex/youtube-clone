@@ -81,6 +81,10 @@ const subscriptionSlice = createSlice({
       state.videos.list = [];
       state.videos.page = 0;
     },
+    resetSubscriptions: (state) => {
+      state.users = { list: [], page: 0 };
+      state.videos = { list: [], page: 0 };
+    },
   },
 });
 
@@ -92,6 +96,7 @@ export const {
   incrementSubscriptionsVideosPage,
   incrementSubscriptionsUsersPage,
   changeSubscriptionSubscribeStatus,
+  resetSubscriptions,
 } = subscriptionSlice.actions;
 
 export default subscriptionSlice.reducer;
