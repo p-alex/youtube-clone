@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { subscribeToProfileOwner } from '../app/features/profileSlice';
+import { changeSubscriptionSubscribeStatus } from '../app/features/subscriptionsSlice';
 import { subscribeToVideoOwner } from '../app/features/videoSlice';
 import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
 import useAuth from '../hooks/authHooks/useAuth';
@@ -14,6 +15,7 @@ const SubscribeButton__Btn = styled.button<{ variant: 'subed' | 'normal' }>`
   text-transform: uppercase;
   font-weight: 600;
   font-size: 0.85rem;
+  width: max-content;
   height: 35px;
   color: ${(props) =>
     props.variant === 'subed'
@@ -36,7 +38,8 @@ interface Props {
   isSubscribed: boolean;
   subscribeToUserId: string;
   subscribeToUsername: string;
-  changeStateIn: 'profile' | 'videopage';
+  changeStateIn: 'profile' | 'videopage' | 'manageSubscriptions';
+  withConfirmation?: boolean;
 }
 
 const SubscribeButton = ({
@@ -44,6 +47,7 @@ const SubscribeButton = ({
   subscribeToUserId,
   subscribeToUsername,
   changeStateIn,
+  withConfirmation,
 }: Props) => {
   const router = useRouter();
   const { isAuth } = useAuth();
@@ -59,6 +63,10 @@ const SubscribeButton = ({
   const handleChangeStateToReflectNewSubscribeStatus = () => {
     changeStateIn === 'videopage' && dispatch(subscribeToVideoOwner({ isSubscribed }));
     changeStateIn === 'profile' && dispatch(subscribeToProfileOwner({ isSubscribed }));
+    changeStateIn === 'manageSubscriptions' &&
+      dispatch(
+        changeSubscriptionSubscribeStatus({ isSubscribed, userId: subscribeToUserId })
+      );
   };
 
   const handleSubscribe = async () => {
@@ -89,7 +97,7 @@ const SubscribeButton = ({
       <SubscribeButton__Btn
         variant={isSubscribed ? 'subed' : 'normal'}
         type="button"
-        onClick={isSubscribed ? handleToggleConfirm : handleSubscribe}
+        onClick={isSubscribed && withConfirmation ? handleToggleConfirm : handleSubscribe}
         disabled={isLoading}
         id={'subscribe-btn'}
       >

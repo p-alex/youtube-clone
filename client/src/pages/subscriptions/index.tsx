@@ -14,8 +14,9 @@ import VideosDisplay from '../../components/VideosDisplay/VideosDisplay';
 import { Button } from '../../ui/Button';
 import Spinner from '../../ui/Spinner';
 import PageContainer from '../../containers/PageContainer/PageContainer';
+import Link from 'next/link';
 
-const PAGE_TITLE = 'Your subscriptions';
+const PAGE_TITLE = 'Subscriptions';
 
 const SUBSCRIPTION_VIDEOS_LIMIT = 20;
 
@@ -64,6 +65,13 @@ const Subscriptions = () => {
   return (
     <Layout head={{ title: PAGE_TITLE, description: '' }}>
       <PageContainer title={PAGE_TITLE}>
+        {subscriptions.videos.list.length !== 0 && (
+          <>
+            <Link href={'/subscriptions/manage'}>
+              <Button variant="primary">Manage</Button>
+            </Link>
+          </>
+        )}
         {isLoading && <Spinner />}
         {!isLoading && <VideosDisplay videos={subscriptions.videos.list} />}
         {showLoadMore && (

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const getSubscriptionVideosSchema = z.object({
+export const getSubscriptionsSchema = z.object({
   params: z.object({
     page: z
       .string({ required_error: 'No page param' })
@@ -9,5 +9,5 @@ export const getSubscriptionVideosSchema = z.object({
 });
 
 export type GetSubscriptionVideosInput = z.TypeOf<
-  typeof getSubscriptionVideosSchema
+  typeof getSubscriptionsSchema
 >['params'];

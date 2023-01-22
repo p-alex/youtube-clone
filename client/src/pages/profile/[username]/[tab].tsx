@@ -132,6 +132,7 @@ const ProfilePage = () => {
                   subscribeToUserId={profileInfo.user_id}
                   subscribeToUsername={profileInfo.username}
                   changeStateIn={'profile'}
+                  withConfirmation
                 />
               )}
             </ProfilePage__Header>

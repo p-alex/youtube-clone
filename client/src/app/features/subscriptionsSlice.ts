@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IVideoSmall } from './videoSlice';
 
-export interface IChannel {
+export interface ISubscriptionUser {
   user_id: string;
   username: string;
   profile_picture: string;
+  description: string;
   total_subscribers: number;
   total_videos: number;
   subscribe_status: boolean;
@@ -16,7 +17,7 @@ interface InitialState {
     page: number;
   };
   users: {
-    list: IChannel[];
+    list: ISubscriptionUser[];
     page: number;
   };
 }
@@ -39,7 +40,10 @@ const subscriptionSlice = createSlice({
     setSubscriptionVideos: (state, action: PayloadAction<{ videos: IVideoSmall[] }>) => {
       state.videos.list = action.payload.videos;
     },
-    setSubscriptionUsers: (state, action: PayloadAction<{ users: IChannel[] }>) => {
+    setSubscriptionUsers: (
+      state,
+      action: PayloadAction<{ users: ISubscriptionUser[] }>
+    ) => {
       state.users.list = action.payload.users;
     },
     loadMoreSubscriptionVideos: (
@@ -48,7 +52,10 @@ const subscriptionSlice = createSlice({
     ) => {
       state.videos.list = [...state.videos.list, ...action.payload.videos];
     },
-    loadMoreSubscriptionUsers: (state, action: PayloadAction<{ users: IChannel[] }>) => {
+    loadMoreSubscriptionUsers: (
+      state,
+      action: PayloadAction<{ users: ISubscriptionUser[] }>
+    ) => {
       state.users.list = [...state.users.list, ...action.payload.users];
     },
     incrementSubscriptionsVideosPage: (state) => {
@@ -56,6 +63,23 @@ const subscriptionSlice = createSlice({
     },
     incrementSubscriptionsUsersPage: (state) => {
       state.users.page = state.users.page + 1;
+    },
+    changeSubscriptionSubscribeStatus: (
+      state,
+      action: PayloadAction<{ isSubscribed: boolean; userId: string }>
+    ) => {
+      state.users.list = state.users.list.map((user) => {
+        if (user.user_id === action.payload.userId) {
+          user.subscribe_status = !action.payload.isSubscribed;
+          user.total_subscribers = action.payload.isSubscribed
+            ? user.total_subscribers - 1
+            : user.total_subscribers + 1;
+          return user;
+        }
+        return user;
+      });
+      state.videos.list = [];
+      state.videos.page = 0;
     },
   },
 });
@@ -67,6 +91,7 @@ export const {
   loadMoreSubscriptionUsers,
   incrementSubscriptionsVideosPage,
   incrementSubscriptionsUsersPage,
+  changeSubscriptionSubscribeStatus,
 } = subscriptionSlice.actions;
 
 export default subscriptionSlice.reducer;
