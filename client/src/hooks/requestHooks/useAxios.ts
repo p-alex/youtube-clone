@@ -38,10 +38,10 @@ const useAxios = <Body, Data>(
 
       return data;
     } catch (error: any) {
-      console.log(error);
       if (error?.request?.status === 404) {
         router.push('/404');
       }
+
       const data: DefaultResponse<Data | null> = {
         success: false,
         errors: [{ message: error?.response?.data?.errors }],

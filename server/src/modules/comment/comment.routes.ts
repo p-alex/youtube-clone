@@ -1,4 +1,5 @@
 import express from 'express';
+import { commentEditLimiter, addCommentLimiter } from '../../middleware/rateLimit';
 import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
 import {
@@ -28,6 +29,7 @@ router.post(
 
 router.post(
   '/comments',
+  addCommentLimiter,
   requireAuth,
   validateResource(addCommentSchema),
   addCommentController
@@ -35,6 +37,7 @@ router.post(
 
 router.patch(
   '/comments',
+  commentEditLimiter,
   requireAuth,
   validateResource(updateCommentSchema),
   updateCommentController

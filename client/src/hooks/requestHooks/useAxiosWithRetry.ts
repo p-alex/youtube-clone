@@ -85,7 +85,7 @@ function useAxiosWithRetry<Body, Data>(
     }
 
     if (statusCode >= 400) {
-      setErrors(data.errors);
+      setErrors(data?.errors);
     }
 
     return data;

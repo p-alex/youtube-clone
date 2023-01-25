@@ -23,7 +23,6 @@ export const getCommentsController = async (
 ) => {
   const { videoId, page } = req.params;
   const { userId } = req.body;
-  // @ts-ignore
   try {
     const comments = await getComments(videoId, userId, page);
     return successResponseJson(res, 200, { comments });

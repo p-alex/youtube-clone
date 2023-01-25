@@ -58,6 +58,8 @@ const Reply = ({ reply }: { reply: IReply }) => {
     isDislikeReplyLoading,
     isEditReplyLoading,
     isDeleteReplyLoading,
+    addReplyErrors,
+    editReplyErrors,
   } = useReply(reply);
 
   const replyBtn = useRef<HTMLButtonElement>(null);
@@ -95,7 +97,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
           btnName="edit"
           placeholder="Edit your comment..."
           isLoading={isEditReplyLoading}
-          error={undefined}
+          error={editReplyErrors ? editReplyErrors[0].message : undefined}
         />
       )}
       {toEdit !== reply.reply_id && (
@@ -166,7 +168,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
                   placeholder="Write a reply"
                   autoFocus
                   withTrap
-                  error={undefined}
+                  error={addReplyErrors ? addReplyErrors[0].message : undefined}
                 />
               </Reply__FormContainer>
             )}

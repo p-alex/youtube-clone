@@ -70,10 +70,11 @@ const useComment = (comment: IComment) => {
     });
   };
 
-  const [addReply, { isLoading: isAddReplyLoading }] = useAxiosWithRetry<
-    { commentId: string; text: string },
-    { reply: IReply }
-  >('api/replies', 'POST');
+  const [addReply, { isLoading: isAddReplyLoading, errors: addReplyErrors }] =
+    useAxiosWithRetry<{ commentId: string; text: string }, { reply: IReply }>(
+      'api/replies',
+      'POST'
+    );
 
   const [likeComment, { isLoading: isLikeCommentLoading }] = useAxiosWithRetry<
     undefined,
@@ -99,10 +100,11 @@ const useComment = (comment: IComment) => {
     }
   >(`api/comments/react/dislike/${comment.comment_id}`, 'POST');
 
-  const [editComment, { isLoading: isEditLoading }] = useAxiosWithRetry<
-    { commentId: string; text: string },
-    { comment_id: string }
-  >('api/comments', 'PATCH');
+  const [editComment, { isLoading: isEditLoading, errors: editCommentErrors }] =
+    useAxiosWithRetry<{ commentId: string; text: string }, { comment_id: string }>(
+      'api/comments',
+      'PATCH'
+    );
 
   const [deleteComment, { isLoading: isDeleteLoading }] = useAxiosWithRetry<
     { commentId: string; videoId: string },
@@ -198,10 +200,13 @@ const useComment = (comment: IComment) => {
     handleDislikeComment,
     handleEditComment,
     handleDeleteComment,
-    isLikeCommentLoading,
-    isDislikeCommentLoading,
+    isAddReplyLoading,
     isEditLoading,
     isDeleteLoading,
+    isLikeCommentLoading,
+    isDislikeCommentLoading,
+    addReplyErrors,
+    editCommentErrors,
   };
 };
 

@@ -18,6 +18,8 @@ import { addToTotalComments, VideoInfo } from '../../app/features/videoSlice';
 import Spinner from '../../ui/Spinner';
 import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromString';
 
+const COMMENTS_LIMIT = 10;
+
 const CommentSection = ({ video }: { video: VideoInfo }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
@@ -26,6 +28,8 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
     useContext(CommentSectionContext);
 
   const [newCommentText, setNewCommentText] = useState('');
+
+  const [showMoreComments, setShowMoreComments] = useState(false);
 
   const changeNewCommentText = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setNewCommentText(event.target.value);
@@ -39,6 +43,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
   const handleGetComments = async () => {
     const { success, result } = await getComments({ userId: user.user_id });
     if (!success || !result) return;
+    if (result.comments.length === COMMENTS_LIMIT) setShowMoreComments(true);
     dispatchCommentSection({
       type: 'SET_COMMENTS',
       payload: { comments: result.comments },
@@ -74,14 +79,14 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
     dispatch(addToTotalComments());
   };
 
-  const [loadMoreComment, { isLoading: isLoadMoreCommentsLoading }] = useAxiosWithRetry<
-    {},
-    { comments: IComment[] }
-  >(`api/comments/${video.video_id}/${page}`);
-
   const handleLoadMoreComments = async () => {
-    const { success, result } = await loadMoreComment({});
+    const { success, result } = await getComments({ userId: user.user_id });
     if (!success || !result) return;
+    if (result.comments.length === COMMENTS_LIMIT) {
+      setShowMoreComments(true);
+    } else {
+      setShowMoreComments(false);
+    }
     dispatchCommentSection({
       type: 'LOAD_MORE_COMMENTS',
       payload: { comments: result.comments },
@@ -118,14 +123,15 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
           </ReplySectionProvider>
         );
       })}
-      {comments.length < video.total_comments && video.total_comments > 12 && (
+      {showMoreComments && (
         <CommentSection__LoadBtn
           onClick={() => dispatchCommentSection({ type: 'NEXT_PAGE' })}
+          disabled={isGetCommentsLoading}
         >
           Load more comments
         </CommentSection__LoadBtn>
       )}
-      {isLoadMoreCommentsLoading && <Spinner />}
+      {isGetCommentsLoading && <Spinner />}
     </CommentSection__Container>
   );
 };

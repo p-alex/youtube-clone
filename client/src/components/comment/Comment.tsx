@@ -52,10 +52,13 @@ const Comment = ({ comment }: { comment: IComment }) => {
     handleDislikeComment,
     handleEditComment,
     handleDeleteComment,
+    isAddReplyLoading,
+    isEditLoading,
     isLikeCommentLoading,
     isDislikeCommentLoading,
-    isEditLoading,
     isDeleteLoading,
+    addReplyErrors,
+    editCommentErrors,
   } = useComment(comment);
 
   const replyBtn = useRef<HTMLButtonElement>(null);
@@ -98,7 +101,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
           btnName="edit"
           placeholder="Edit your comment..."
           isLoading={isEditLoading}
-          error={undefined}
+          error={editCommentErrors ? editCommentErrors[0].message : undefined}
         />
       )}
       {toEdit !== comment.comment_id && (
@@ -172,13 +175,13 @@ const Comment = ({ comment }: { comment: IComment }) => {
                   setValue={changeNewReplyText}
                   toggle={handleResetIds}
                   func={handleAddReply}
-                  isLoading={false}
+                  isLoading={isAddReplyLoading}
                   redirectToElement={replyBtn}
                   btnName={'reply'}
                   placeholder={'Write a reply...'}
                   autoFocus
                   withTrap
-                  error={undefined}
+                  error={addReplyErrors ? addReplyErrors[0].message : undefined}
                 />
               </CommentFormContainer>
             )}

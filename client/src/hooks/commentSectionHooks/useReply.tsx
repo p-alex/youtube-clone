@@ -62,10 +62,11 @@ const useReply = (reply: IReply) => {
     });
   };
 
-  const [addReply, { isLoading: isAddReplyLoading }] = useAxiosWithRetry<
-    { commentId: string; text: string },
-    { reply: IReply }
-  >('api/replies', 'POST');
+  const [addReply, { isLoading: isAddReplyLoading, errors: addReplyErrors }] =
+    useAxiosWithRetry<{ commentId: string; text: string }, { reply: IReply }>(
+      'api/replies',
+      'POST'
+    );
 
   const [likeReply, { isLoading: isLikeReplyLoading }] = useAxiosWithRetry<
     undefined,
@@ -91,10 +92,11 @@ const useReply = (reply: IReply) => {
     }
   >(`api/replies/react/dislike/${reply.reply_id}`, 'POST');
 
-  const [editReply, { isLoading: isEditReplyLoading }] = useAxiosWithRetry<
-    { replyId: string; text: string },
-    { reply_id: string; text: string }
-  >('api/replies', 'PATCH');
+  const [editReply, { isLoading: isEditReplyLoading, errors: editReplyErrors }] =
+    useAxiosWithRetry<
+      { replyId: string; text: string },
+      { reply_id: string; text: string }
+    >('api/replies', 'PATCH');
 
   const [deleteReply, { isLoading: isDeleteReplyLoading }] = useAxiosWithRetry<
     { replyId: string; commentId: string },
@@ -190,6 +192,8 @@ const useReply = (reply: IReply) => {
     isDislikeReplyLoading,
     isEditReplyLoading,
     isDeleteReplyLoading,
+    addReplyErrors,
+    editReplyErrors,
   };
 };
 
