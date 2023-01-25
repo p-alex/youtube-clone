@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { parseVideoData } from '../../middleware/parseVideoData';
+import { searchLimiter } from '../../middleware/rateLimit';
 import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
 import {
@@ -104,6 +105,7 @@ router.get(
 
 router.get(
   '/videos/search/:query',
+  searchLimiter,
   validateResource(searchVideosSchema),
   searchVideosController
 );

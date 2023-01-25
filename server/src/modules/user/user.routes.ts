@@ -1,4 +1,5 @@
 import express from 'express';
+import { registerLimiter } from '../../middleware/rateLimit';
 import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
 import {
@@ -20,7 +21,12 @@ import {
 
 const router = express.Router();
 
-router.post('/users', validateResource(registerUserSchema), registerUserController);
+router.post(
+  '/users',
+  registerLimiter,
+  validateResource(registerUserSchema),
+  registerUserController
+);
 
 router.post(
   '/users/subscribe',

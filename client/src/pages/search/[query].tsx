@@ -33,6 +33,7 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
+    if (!query) return;
     handleSearchVideos();
   }, [query]);
 
