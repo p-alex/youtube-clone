@@ -139,6 +139,7 @@ export const uploadVideoController = async (
 
     return successResponseJson(res, 201, { video_id });
   } catch (error: any) {
+    await unlinkFile(req.file!.path);
     log.error(error);
     return errorResponseJson(res, 500, error.message);
   }
