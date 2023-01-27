@@ -1,24 +1,6 @@
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND } from '../layout/style';
 
-export const ProfilePage__Container = styled.div`
-  position: relative;
-  max-width: 1350px;
-  margin: auto;
-  @media (max-width: 1240px) {
-    margin: 0 20px;
-  }
-`;
-
-export const ProfilePage__Banner = styled.div<{ bannerColor: string }>`
-  position: relative;
-  width: 100%;
-  height: 30px;
-  background-color: ${(props) => props.bannerColor};
-  border-top-left-radius: ${BORDER_RADIUS_ROUND}px;
-  border-top-right-radius: ${BORDER_RADIUS_ROUND}px;
-`;
-
 export const ProfilePage__Header = styled.div`
   position: relative;
   width: 100%;

@@ -129,6 +129,7 @@ const SignUp = () => {
               }
               disabled={isRegisterUserLoading}
               error={fieldErrors?.password && fieldErrors.password[0]}
+              withPasswordSchemaDisplay
             />
 
             <InputGroup

@@ -65,16 +65,6 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
                   </ListButton>
                 </Link>
               </NavSideBar_ButtonItem>
-
-              <NavSideBar_HorizontalLine />
-
-              <NavSideBar_ButtonItem>
-                <Link href={'/'}>
-                  <ListButton ref={lastFocusableElement}>
-                    <MdVideoLibrary /> Library
-                  </ListButton>
-                </Link>
-              </NavSideBar_ButtonItem>
             </>
           )}
 

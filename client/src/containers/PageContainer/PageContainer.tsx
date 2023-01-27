@@ -1,8 +1,6 @@
-import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 import { MOBILE_BREAK_POINT } from '../../layout/style';
-import { Button } from '../../ui/Button';
 
 const PageContainer__Container = styled.section<{ width: number }>`
   position: relative;

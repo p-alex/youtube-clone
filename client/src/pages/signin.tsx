@@ -77,7 +77,7 @@ const SignIn = () => {
         <title>Sign in | AlexTube</title>
         <meta
           name="description"
-          content="Sign in if so you can like, comment and subscribe"
+          content="Sign in so you can like, comment and subscribe"
         />
       </Head>
       <Form onSubmit={handleSubmit}>
@@ -89,7 +89,7 @@ const SignIn = () => {
         {loginUserErrors &&
           loginUserErrors.map((error) => {
             return (
-              <FormErrorMessage key={error.message}>{error.message}</FormErrorMessage>
+              <FormErrorMessage key={error?.message}>{error?.message}</FormErrorMessage>
             );
           })}
 

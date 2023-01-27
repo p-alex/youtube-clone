@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { BORDER_RADIUS_ROUND } from '../layout/style';
+import PasswordSchemaDisplay from './PasswordSchemaDisplay';
 
 const InputGroup__Container = styled.div`
   color: ${(props) => props.theme.textColor};
@@ -47,6 +49,7 @@ interface Props {
   onBlur?: () => void;
   disabled?: boolean;
   autoFocus?: boolean;
+  withPasswordSchemaDisplay?: boolean;
 }
 
 const InputGroup = ({
@@ -60,8 +63,20 @@ const InputGroup = ({
   onBlur,
   disabled,
   autoFocus,
+  withPasswordSchemaDisplay,
 }: Props) => {
+  const [showPasswordSchema, setShowPasswordSchema] = useState(false);
   const formatedId = label.replaceAll(' ', '-').toLowerCase();
+  const handleOnFocus = () => {
+    if (withPasswordSchemaDisplay) {
+      setShowPasswordSchema(true);
+    }
+    onFocus && onFocus();
+  };
+  const handleOnBlur = () => {
+    onBlur && onBlur();
+  };
+  // aria-describedby
   return (
     <InputGroup__Container>
       <InputGroup__Label htmlFor={formatedId}>{label}</InputGroup__Label>
@@ -73,12 +88,15 @@ const InputGroup = ({
         value={value}
         onChange={setValue}
         isError={error !== undefined}
-        onFocus={onFocus}
-        onBlur={onBlur}
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
         disabled={disabled}
         autoFocus={autoFocus}
+        aria-describedby={withPasswordSchemaDisplay ? 'password-schema-display' : ''}
+        aria-invalid={error !== undefined}
       />
       {error && <InputGroup__Error>{error}</InputGroup__Error>}
+      <PasswordSchemaDisplay password={value} show={showPasswordSchema} />
     </InputGroup__Container>
   );
 };

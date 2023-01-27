@@ -9,24 +9,26 @@ const USERNAME_RESTRICTIONS = {
 
 export const PASSWORD_RESTRICTIONS = {
   minLength: 8,
-  maxLength: 30,
+  maxLength: 24,
 };
 
 export const PasswordSchema = z
   .string({ required_error: 'Password is required' })
-  .min(1, "Can't be blank")
   .min(
     PASSWORD_RESTRICTIONS.minLength,
-    `Minimum ${PASSWORD_RESTRICTIONS.minLength} characters`
+    `min ${PASSWORD_RESTRICTIONS.minLength} characters`
   )
   .max(
     PASSWORD_RESTRICTIONS.maxLength,
-    `Maximum ${PASSWORD_RESTRICTIONS.maxLength} characters`
-  );
+    `max ${PASSWORD_RESTRICTIONS.maxLength} characters`
+  )
+  .regex(/[a-z]/g, '1 lowercase letter')
+  .regex(/[A-Z]/g, '1 uppercase letter')
+  .regex(/[0-9]/g, '1 number')
+  .regex(/[!@#$%^&*]/g, '1 symbol');
 
 export const UsernameSchema = z
-  .string({})
-  .min(1, "Can't be blank")
+  .string({ required_error: 'Username is required' })
   .min(
     USERNAME_RESTRICTIONS.minLength,
     `Minimum ${USERNAME_RESTRICTIONS.minLength} characters`

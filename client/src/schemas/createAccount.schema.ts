@@ -4,14 +4,12 @@ import { PASSWORD_RESTRICTIONS, USERNAME_RESTRICTIONS } from '../app/features/au
 export const PasswordSchema = z
   .string({ required_error: 'Password is required' })
   .min(1, "Can't be blank")
-  .min(
-    PASSWORD_RESTRICTIONS.minLength,
-    `Minimum ${PASSWORD_RESTRICTIONS.minLength} characters`
-  )
-  .max(
-    PASSWORD_RESTRICTIONS.maxLength,
-    `Maximum ${PASSWORD_RESTRICTIONS.maxLength} characters`
-  );
+  .min(PASSWORD_RESTRICTIONS.minLength, 'Invalid password')
+  .max(PASSWORD_RESTRICTIONS.maxLength, 'Invalid password')
+  .regex(/[a-z]/g, 'Invalid password')
+  .regex(/[A-Z]/g, 'Invalid password')
+  .regex(/[0-9]/g, 'Invalid password')
+  .regex(/[!@#$%^&*]/g, 'Invalid password');
 
 export const UsernameSchema = z
   .string({})
@@ -25,7 +23,9 @@ export const UsernameSchema = z
     `Maximum ${USERNAME_RESTRICTIONS.maxLength} characters`
   );
 
-export const ReTokenSchema = z.string().min(1, 'Please check the checkbox');
+export const ReTokenSchema = z
+  .string({ invalid_type_error: 'Please check the checkbox again' })
+  .min(1, 'Please check the checkbox');
 
 export const createAccountSchema = z
   .object({

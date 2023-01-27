@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import useAxios from '../../../hooks/requestHooks/useAxios';
 import Layout from '../../../layout/Layout';
 import {
-  ProfilePage__Banner,
-  ProfilePage__Container,
   ProfilePage__Header,
   ProfilePage__NavBtn,
   ProfilePage__Navigation,
@@ -102,14 +100,13 @@ const ProfilePage = () => {
         description: profileInfo?.description ? profileInfo.description : '',
       }}
     >
-      <PageContainer>
+      <PageContainer width={1250}>
         {isGetProfileInfoLoading && <p>Loading...</p>}
         {!isGetProfileInfoLoading && !profileInfo?.user_id && (
           <p>{getProfileInfoErrors !== null && getProfileInfoErrors[0]?.message}</p>
         )}
         {!isGetProfileInfoLoading && profileInfo?.user_id && (
-          <ProfilePage__Container>
-            <ProfilePage__Banner bannerColor={'#222'}></ProfilePage__Banner>
+          <>
             <ProfilePage__Header>
               <ProfilePage__UserInfoContainer>
                 <ProfileImage
@@ -159,7 +156,7 @@ const ProfilePage = () => {
               />
             )}
             {currentTab === 'about' && profileInfo && <ProfileAboutTab />}
-          </ProfilePage__Container>
+          </>
         )}
       </PageContainer>
     </Layout>

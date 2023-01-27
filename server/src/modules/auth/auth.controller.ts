@@ -71,7 +71,7 @@ export const loginUserController = async (
       },
       accessToken,
     });
-  } catch (error) {
+  } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, 'Something went wrong...');
   }
