@@ -22,7 +22,7 @@ const VideoPlayer = ({
   }, []);
 
   return (
-    <VideoPlayer__Container>
+    <VideoPlayer__Container isTheatreMode={isTheatreMode}>
       {!showMobileVideoPlayer ? (
         <DesktopVideoPlayer
           src={src}
