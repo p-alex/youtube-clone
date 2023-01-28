@@ -70,7 +70,7 @@ export const updateVideoSchema = z.object({
         .url('Current thumbnail url is invalid'),
       newThumbnailBase64: z.nullable(z.string({})),
     }),
-    tagList: z.nullable(z.array(z.string({})).min(4)),
+    tagList: z.nullable(z.array(z.string({}))),
     reToken: ReTokenSchema,
   }),
 });
