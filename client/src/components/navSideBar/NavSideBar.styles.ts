@@ -27,6 +27,8 @@ export const NavSideBar_Container = styled.aside`
   color: ${(props) => props.theme.textColor};
   z-index: 102;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const NavSideBar_Header = styled.div`

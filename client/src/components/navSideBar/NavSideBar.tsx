@@ -20,6 +20,7 @@ import useDisableScroll from '../../hooks/useDisableScroll';
 import FocusTrapRedirectFocus from '../focusTrap';
 import { ListButton } from '../../ui/ListButton';
 import { Button } from '../../ui/Button';
+import Footer from '../Footer/Footer';
 
 const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }) => {
   const { isAuth } = useAuth();
@@ -83,6 +84,7 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
             </>
           )}
         </NavSideBar_ButtonList>
+        <Footer />
       </NavSideBar_Container>
       <NavSideBar_Backdrop
         as={motion.div}

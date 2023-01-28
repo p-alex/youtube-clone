@@ -15,8 +15,19 @@ export const GlobalStyle = createGlobalStyle`
     letter-spacing: .5px;
   }
 
+  html {
+    height: 100%;
+  }
+  
   body {
     background-color: ${(props) => props.theme.siteBg};
+  }
+
+  #__next {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
   }
 
   button {

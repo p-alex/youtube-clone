@@ -4,6 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import { RootState } from '../../app/store';
 import { GlobalStyle } from '../../styles/global';
 
+const accentColor = '#3ea6ff';
+
 const lightTheme = {
   siteBg: '#FFFFFF',
   uiBg: '#FFFFFF',
@@ -13,7 +15,7 @@ const lightTheme = {
   borderColor: '#d2d2d2',
   inputBg: '#fefeff',
   hrColor: 'silver',
-  accentColor: '#3ea6ff',
+  accentColor: accentColor,
   errorColor: '#ff3434',
   primaryBtn: {
     bg: '#3ea6ff',
@@ -52,7 +54,7 @@ const darkTheme = {
   borderColor: '#343534',
   inputBg: '#121213',
   hrColor: '#333',
-  accentColor: '#3ea6ff',
+  accentColor: accentColor,
   errorColor: '#ff3434',
   primaryBtn: {
     bg: '#3ea6ff',

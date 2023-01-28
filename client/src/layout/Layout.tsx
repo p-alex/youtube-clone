@@ -5,6 +5,7 @@ import NavBar from '../components/NavBar/NavBar';
 import { MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from './style';
 
 const Main = styled.main`
+  position: relative;
   margin: ${NAV_BAR_HEIGHT + 20}px auto;
   width: 100%;
   max-width: 1850px;

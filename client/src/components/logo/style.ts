@@ -10,15 +10,16 @@ export const BigLogo = styled.a`
 `;
 
 export const CustomLogo = styled.div`
+  position: relative;
   width: 35px;
   height: 25px;
-  background-color: ${(props) => props.theme.accentColor};
+  background-color: #ff0000;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
   & svg {
     width: 20px;
-    color: ${(props) => props.theme.uiBg};
+    color: white;
   }
 `;
