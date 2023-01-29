@@ -2,8 +2,7 @@ import db from '../../db';
 import { createRandomCode } from '../../utils/createRandomCode';
 import config from 'config';
 import axios from 'axios';
-import { Query, QueryResult } from 'pg';
-
+import crypto from 'crypto';
 interface RegisterInput {
   email: string;
   username: string;
@@ -48,6 +47,7 @@ export const registerUser = async (input: RegisterInput) => {
 };
 
 export const getProfileInfo = async (username: string, currentUserId?: string) => {
+  if (currentUserId === '') currentUserId = crypto.randomUUID();
   const profileInfoResult = await db.query(
     'SELECT u.user_id, u.username, u.profile_picture, u.description, u.total_subscribers, u.total_views, u.total_videos, u.created_at, CASE WHEN s.user_id = u.user_id AND s.subscriber_user_id = $2 THEN TRUE ELSE FALSE END subscribe_status FROM users as u LEFT JOIN subscribers as s ON s.user_id = u.user_id AND s.subscriber_user_id = $2 WHERE u.username = $1',
     [username, currentUserId]
