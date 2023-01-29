@@ -52,6 +52,10 @@ export const Reply__Text = styled.p<{ showMoreText: boolean | null }>`
   -webkit-line-clamp: ${(props) =>
     props.showMoreText === true ? '0' : props.showMoreText === false ? '4' : '0'};
   overflow: hidden;
+  & a {
+    color: ${(props) => props.theme.accentColor};
+    margin-right: 5px;
+  }
 `;
 
 export const Reply__Date = styled.small`

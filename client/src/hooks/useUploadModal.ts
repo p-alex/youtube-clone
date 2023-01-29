@@ -99,7 +99,6 @@ const useUploadModal = () => {
     if (videoFile?.name && isMounted) {
       handleSetDuration();
       const sizeInMb = (videoFile.size / 1000000) as number;
-      console.log(sizeInMb);
       setUploadData((prevState) => ({
         ...prevState,
         sizeInMb,

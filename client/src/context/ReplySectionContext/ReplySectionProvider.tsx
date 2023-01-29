@@ -13,6 +13,7 @@ export interface IReply {
   total_likes: number;
   total_dislikes: number;
   like_status: LikeStatusType;
+  replied_to: string;
   created_at: string | number;
 }
 

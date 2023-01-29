@@ -32,8 +32,9 @@ import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 import { ReadMoreToggleBtn } from '../Comment/Comment.styles';
+import { IComment } from '../../context/CommentSectionContext/CommentSectionProvider';
 
-const Reply = ({ reply }: { reply: IReply }) => {
+const Reply = ({ reply, comment }: { reply: IReply; comment: IComment }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const { toReplyTo, toEdit, toDelete } = useContext(ReplySectionContext);
   const [showMoreText, setShowMoreText] = useState<boolean | null>(null);
@@ -60,7 +61,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
     isDeleteReplyLoading,
     addReplyErrors,
     editReplyErrors,
-  } = useReply(reply);
+  } = useReply(reply, comment);
 
   const replyBtn = useRef<HTMLButtonElement>(null);
 
@@ -80,7 +81,7 @@ const Reply = ({ reply }: { reply: IReply }) => {
       {toDelete === reply.reply_id && (
         <ConfirmationModal
           isLoading={isDeleteReplyLoading}
-          btnName={'edit'}
+          btnName={'delete'}
           title={'Delete reply'}
           message={'Delete reply permanently?'}
           func={handleDeleteReply}
@@ -123,6 +124,9 @@ const Reply = ({ reply }: { reply: IReply }) => {
               )}
             </Reply__Header>
             <Reply__Text showMoreText={showMoreText} id={`replyText-${reply.reply_id}`}>
+              <Link href={'/profile/' + reply.replied_to + '/videos'}>
+                <a>@{reply.replied_to}</a>
+              </Link>
               {reply.text}
             </Reply__Text>
             {typeof showMoreText === 'boolean' && (

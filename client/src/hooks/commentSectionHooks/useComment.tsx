@@ -173,6 +173,7 @@ const useComment = (comment: IComment) => {
       user_id: user.user_id,
       username: user.username,
       profile_picture: user.profile_picture,
+      replied_to: comment.comment_id,
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     setNewReplyText('');

@@ -88,11 +88,6 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
 
   const { verify, fieldErrors } = useZodVerifySchema(editVideoSchema, state);
 
-  console.log(
-    state.tagList?.join('').replaceAll(' ', '') ===
-      currentTagList.join('').replaceAll(',', '').replaceAll(' ', '')
-  );
-
   const handleUpdateVideo = async () => {
     setResult({ success: false, error: '' });
 

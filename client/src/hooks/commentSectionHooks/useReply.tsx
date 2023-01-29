@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addToTotalComments,
@@ -6,7 +6,10 @@ import {
   subtractFromTotalComments,
 } from '../../app/features/videoSlice';
 import { RootState } from '../../app/store';
-import { CommentSectionContext } from '../../context/CommentSectionContext/CommentSectionProvider';
+import {
+  CommentSectionContext,
+  IComment,
+} from '../../context/CommentSectionContext/CommentSectionProvider';
 import {
   IReply,
   ReplySectionContext,
@@ -15,7 +18,7 @@ import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromStri
 import useAxiosWithRetry from '../requestHooks/useAxiosWithRetry';
 import router from 'next/router';
 
-const useReply = (reply: IReply) => {
+const useReply = (reply: IReply, comment: IComment) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -114,6 +117,7 @@ const useReply = (reply: IReply) => {
       user_id: user.user_id,
       username: user.username,
       profile_picture: user.profile_picture,
+      replied_to: comment.username,
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     dispatchReplySection({ type: 'RESET_IDS' });

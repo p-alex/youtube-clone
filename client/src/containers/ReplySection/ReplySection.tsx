@@ -16,6 +16,7 @@ import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import Spinner from '../../ui/Spinner';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import useAxios from '../../hooks/requestHooks/useAxios';
 
 const REPLY_LIMIT = 6;
 
@@ -32,7 +33,7 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
     setShowReplies((prevState) => !prevState);
   };
 
-  const [getReplies, { isLoading: isGetRepliesLoading }] = useAxiosWithRetry<
+  const [getReplies, { isLoading: isGetRepliesLoading }] = useAxios<
     { userId: string },
     { replies: IReply[] }
   >(`api/replies/${comment.comment_id}/${page}`, 'POST');
@@ -86,7 +87,7 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
         {showReplies && replies.length > 0 ? (
           <>
             {replies.map((reply) => {
-              return <Reply key={reply.reply_id} reply={reply} />;
+              return <Reply key={reply.reply_id} reply={reply} comment={comment} />;
             })}
             {showMoreReplies && (
               <ReplySection__LoadBtn
@@ -99,7 +100,7 @@ const ReplySection = ({ comment }: { comment: IComment }) => {
           </>
         ) : (
           newReplies.map((reply) => {
-            return <Reply key={reply.created_at} reply={reply} />;
+            return <Reply key={reply.created_at} reply={reply} comment={comment} />;
           })
         )}
         {isGetRepliesLoading && <Spinner />}
