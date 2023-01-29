@@ -1,5 +1,6 @@
 import express from 'express';
 import multer from 'multer';
+import { checkVideoLimit } from '../../middleware/checkVideoLimit';
 import { parseVideoData } from '../../middleware/parseVideoData';
 import { searchLimiter } from '../../middleware/rateLimit';
 import { requireAuth } from '../../middleware/requireAuth';
@@ -62,6 +63,7 @@ router.post('/videos/:videoId', validateResource(getVideoSchema), getVideoContro
 router.post(
   '/videos',
   requireAuth,
+  checkVideoLimit,
   upload.single('videoFile'),
   parseVideoData,
   validateResource(uploadVideoSchema),

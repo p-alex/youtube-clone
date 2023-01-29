@@ -21,7 +21,6 @@ export const getReplies = async (comment_id: string, user_id: string, page: stri
     [user_id, comment_id, limit, limit * parseInt(page)]
   );
   const data: IReply[] = response.rows;
-  console.log(data);
   return data;
 };
 
