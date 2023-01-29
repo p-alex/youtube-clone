@@ -73,7 +73,7 @@ const useUploadModal = () => {
       handleChangeStage('result');
     } catch (error: any) {
       setIsLoading(false);
-      setResult({ success: false, message: error.message });
+      setResult({ success: false, message: error.response.data.errors[0].message });
       handleChangeStage('result');
     } finally {
       setIsLoading(false);
