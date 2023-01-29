@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
+import React, { ReactNode, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+import { setTheme } from '../../app/features/themeSlice';
 import { RootState } from '../../app/store';
 import { GlobalStyle } from '../../styles/global';
 
@@ -85,7 +86,14 @@ const darkTheme = {
 };
 
 const StylesTopLevelProvider = ({ children }: { children: ReactNode }) => {
+  const dispatch = useDispatch();
   const { theme } = useSelector((state: RootState) => state.theme);
+  useEffect(() => {
+    if (window.localStorage.getItem('theme') === 'null')
+      window.localStorage.setItem('theme', 'light');
+    const currentTheme = window.localStorage.getItem('theme') as 'light' | 'dark';
+    dispatch(setTheme({ theme: currentTheme }));
+  }, []);
   return (
     <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
       <GlobalStyle />

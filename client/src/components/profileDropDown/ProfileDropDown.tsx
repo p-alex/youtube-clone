@@ -44,6 +44,11 @@ export const ProfileDropDown = () => {
     dispatch(resetVideoState());
   };
 
+  const handleChangeTheme = () => {
+    window.localStorage.setItem('theme', theme === 'light' ? 'dark' : 'light');
+    dispatch(toggleTheme());
+  };
+
   const handleLogoutUser = async () => {
     const response = await logoutUser({ userId: user.user_id });
     if (response.success) {
@@ -90,7 +95,7 @@ export const ProfileDropDown = () => {
           </Link>
         </ProfileDropDown__ButtonItem>
         <ProfileDropDown__ButtonItem>
-          <ListButton onClick={() => dispatch(toggleTheme())}>
+          <ListButton onClick={handleChangeTheme}>
             {theme === 'dark' ? (
               <>
                 <MdLightMode /> Light Mode
