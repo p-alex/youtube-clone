@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const BigLogo = styled.a`
+export const Logo__Container = styled.a`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -9,7 +9,7 @@ export const BigLogo = styled.a`
   cursor: pointer;
 `;
 
-export const CustomLogo = styled.div`
+export const Logo__Custom = styled.div`
   position: relative;
   width: 35px;
   height: 25px;
@@ -20,6 +20,7 @@ export const CustomLogo = styled.div`
   border-radius: 5px;
   & svg {
     width: 20px;
+    height: 20px;
     color: white;
   }
 `;
