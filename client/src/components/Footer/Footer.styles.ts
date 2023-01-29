@@ -9,9 +9,9 @@ export const Footer__Container = styled.footer`
   gap: 10px;
   text-align: center;
   margin-top: auto;
-
+  background-color: ${(props) => props.theme.uiSecondaryBg};
   & span {
-    color: ${(props) => props.theme.accentColor};
+    font-weight: 700;
   }
 `;
 
@@ -27,7 +27,7 @@ export const Footer__SocialLink = styled.a`
   justify-content: center;
   & svg {
     font-size: 2.2rem;
-    color: ${(props) => props.theme.textMutedColor};
+    color: ${(props) => props.theme.textColor};
     transition: color 150ms ease-in-out;
   }
   &:hover svg {

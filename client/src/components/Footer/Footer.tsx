@@ -22,10 +22,10 @@ const Footer = () => {
           <AiFillLinkedin />
         </Footer__SocialLink>
       </Footer__Socials>
-      <Text isMuted>
+      <p>
         Developed by <br />
         <span>Pistol Alexandru Daniel</span>
-      </Text>
+      </p>
     </Footer__Container>
   );
 };
