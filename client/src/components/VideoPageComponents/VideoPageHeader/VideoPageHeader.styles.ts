@@ -13,7 +13,7 @@ export const VideoPageHeader__Container = styled.header`
   }
 `;
 
-export const VideoPageHeader__Title = styled.h2`
+export const VideoPageHeader__Title = styled.h1`
   color: ${(props) => props.theme.textColor};
   font-weight: 600;
   display: -webkit-box;
