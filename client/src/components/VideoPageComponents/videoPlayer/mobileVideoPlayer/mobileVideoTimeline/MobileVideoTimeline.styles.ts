@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const MobileVideoTimeline__Container = styled.div<{ canInteract: boolean }>`
   position: absolute;
   bottom: 25px;
-  padding: 10px 20px;
+  padding: var(--space-small) var(--space-medium);
   transform: translateY(50%);
   width: 100%;
   height: 18px;

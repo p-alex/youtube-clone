@@ -44,7 +44,7 @@ export const DesktopVideoTimeline__ProgressBar = styled.div`
   background-color: #ff0000;
   & p {
     color: black;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: bold;
     margin-right: 5px;
   }

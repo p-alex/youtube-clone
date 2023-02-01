@@ -5,7 +5,6 @@ import {
   SuggestionCard__Body,
   SuggestionCard__Container,
   SuggestionCard__Details,
-  SuggestionCard__Duration,
   SuggestionCard__Stats,
   SuggestionCard__Thumbnail,
   SuggestionCard__ThumbnailContainer,
@@ -15,6 +14,7 @@ import {
 import { IVideoSmall } from '../../app/features/videoSlice';
 import { dateConverter } from '../../utils/dateConverter';
 import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
+import VideoDuration from '../../ui/VideoDuration';
 
 const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
   return (
@@ -32,9 +32,7 @@ const SuggestionCard = ({ video }: { video: IVideoSmall }) => {
               />
             </a>
           </Link>
-          <SuggestionCard__Duration>
-            {videoDurationFormatter(video.duration)}
-          </SuggestionCard__Duration>
+          <VideoDuration>{videoDurationFormatter(video.duration)}</VideoDuration>
         </SuggestionCard__ThumbnailContainer>
         <SuggestionCard__Details>
           <Link href={'/video/1'}>

@@ -9,12 +9,12 @@ export const ProfileVideosTab__Container = styled.div`
 export const ProfileVideosTab__SortBtnsContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: var(--space-small);
+  margin-bottom: var(--space-big);
 `;
 
 export const ProfileVideosTab__SortBtn = styled.button<{ isActive: boolean }>`
-  padding: 7px 20px;
+  padding: var(--space-small) var(--space-medium);
   background-color: ${(props) =>
     props.isActive ? props.theme.normalBtn.bgHover : props.theme.normalBtn.bg};
   color: ${(props) => props.theme.textColor};
@@ -27,7 +27,7 @@ export const ProfileVideosTab__SortBtn = styled.button<{ isActive: boolean }>`
 export const ProfileVideosTab__VideoContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: var(--space-medium);
   @media (max-width: 1100px) {
     grid-template-columns: repeat(3, 1fr);
   }

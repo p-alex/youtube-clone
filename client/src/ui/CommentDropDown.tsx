@@ -11,11 +11,11 @@ const CommentDropDownWrapper = styled.div`
 
 const CommentDropDownContainer = styled.div`
   position: absolute;
-  top: 30px;
+  top: calc(30px + var(--space-small));
   right: 0;
   background-color: ${(props) => props.theme.uiSecondaryBg};
   border-radius: ${BORDER_RADIUS_ROUND}px;
-  padding: 10px 0;
+  padding: var(--space-small) 0;
 `;
 
 const CommentDropDownToggle = styled.button`
@@ -33,11 +33,11 @@ const CommentDropDownBtn = styled.button`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 7px 15px;
+  padding: var(--space-small) var(--space-medium);
   width: 100%;
   text-align: left;
   color: ${(props) => props.theme.textColor};
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   & svg {
     font-size: 1.2rem;
   }

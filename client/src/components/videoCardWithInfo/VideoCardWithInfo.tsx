@@ -7,7 +7,6 @@ import {
   VideoCardWithInfo_Container,
   VideoCardWithInfo__Body,
   VideoCardWithInfo__Description,
-  VideoCardWithInfo__Duration,
   VideoCardWithInfo__ThumbnailContainer,
   VideoCardWithInfo__Title,
   VideoCardWithInfo__UserContainer,
@@ -16,6 +15,7 @@ import {
 } from './VideoCardWithInfo.styles';
 import Link from 'next/link';
 import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
+import VideoDuration from '../../ui/VideoDuration';
 
 const VideoCardWithInfo = ({ video }: { video: IVideoSmallWithInfo }) => {
   return (
@@ -32,9 +32,7 @@ const VideoCardWithInfo = ({ video }: { video: IVideoSmallWithInfo }) => {
             />
           </a>
         </Link>
-        <VideoCardWithInfo__Duration>
-          {videoDurationFormatter(video.duration)}
-        </VideoCardWithInfo__Duration>
+        <VideoDuration>{videoDurationFormatter(video.duration)}</VideoDuration>
       </VideoCardWithInfo__ThumbnailContainer>
 
       <VideoCardWithInfo__Body>

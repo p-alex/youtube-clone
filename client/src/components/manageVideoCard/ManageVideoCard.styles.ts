@@ -1,33 +1,25 @@
 import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const ManageVideoCard__Container = styled.div`
-  border-radius: 5px;
   background-color: ${(props) => props.theme.uiBg};
-  padding: 10px;
+  margin-bottom: var(--space-big);
 `;
 
 export const ManageVideoCard__Image = styled.div`
   position: relative;
-  margin-bottom: 10px;
-`;
-
-export const ManageVideoCard__Duration = styled.div`
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  padding: 5px;
-  background-color: black;
-  color: white;
-  border-radius: 5px;
+  display: flex;
+  margin-bottom: var(--space-small);
 `;
 
 export const ManageVideoCard__Details = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-small);
+  margin-bottom: var(--space-big);
 `;
 
-export const ManageVideoCard__Title = styled.h3`
+export const ManageVideoCard__Title = styled.h2`
   color: ${(props) => props.theme.textColor};
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -38,16 +30,17 @@ export const ManageVideoCard__Title = styled.h3`
 export const ManageVideoCard__Items = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-small);
   flex-wrap: wrap;
 `;
 
 export const ManageVideoCard__Item = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-radius: 5px;
-  padding: 5px;
+  gap: var(--space-small);
+  background-color: ${(props) => props.theme.uiSecondaryBg};
+  padding: 4px var(--space-small);
+  border-radius: ${BORDER_RADIUS_ROUND}px;
   color: ${(props) => props.theme.textColor};
   font-size: 0.85rem;
   svg {

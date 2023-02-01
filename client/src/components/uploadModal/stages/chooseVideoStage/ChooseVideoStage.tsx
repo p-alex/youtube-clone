@@ -5,10 +5,8 @@ import { UploadVideoSchemaType } from '../../../../schemas/uploadVideo.schema';
 import { Button } from '../../../../ui/Button';
 import { ErrorText } from '../../../../ui/Text';
 import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../Modal/Modal';
-import {
-  ChooseVideoState__Container,
-  ChooseVideoState__HiddenFileInput,
-} from './ChooseVideoStage.styles';
+import UploadModalStage from '../../UploadModalStage/UploadModalStage';
+import { ChooseVideoState__HiddenFileInput } from './ChooseVideoStage.styles';
 
 interface Props {
   setUploadData: React.Dispatch<React.SetStateAction<UploadVideoSchemaType>>;
@@ -48,7 +46,7 @@ const ChooseVideoStage = ({ setUploadData, handleChangeStage, setVideoFile }: Pr
   };
 
   return (
-    <ChooseVideoState__Container>
+    <UploadModalStage>
       {error && <ErrorText>{error}</ErrorText>}
       <Button
         variant="primary"
@@ -64,7 +62,7 @@ const ChooseVideoStage = ({ setUploadData, handleChangeStage, setVideoFile }: Pr
         accept=".mp4, .flv, .mov, .m4v"
         onChange={handleChooseFile}
       />
-    </ChooseVideoState__Container>
+    </UploadModalStage>
   );
 };
 

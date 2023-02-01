@@ -15,7 +15,7 @@ export const Search = styled.input`
   border: solid 1px ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.inputBg};
-  padding: 8px 20px;
+  padding: var(--space-small) var(--space-medium);
   font-size: 1rem;
   width: 70%;
   max-width: 600px;
@@ -30,7 +30,7 @@ export const Search = styled.input`
 export const SearchBtn = styled.button`
   border-top-right-radius: ${BORDER_RADIUS_ROUNDER}px;
   border-bottom-right-radius: ${BORDER_RADIUS_ROUNDER}px;
-  padding: 10px 20px;
+  padding: var(--space-small) var(--space-medium);
   color: ${(props) => props.theme.textColor};
   display: flex;
   align-items: center;

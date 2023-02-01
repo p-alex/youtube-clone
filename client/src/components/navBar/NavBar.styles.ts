@@ -9,14 +9,14 @@ export const NavBar__Container = styled.nav`
   position: fixed;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-small);
   top: 0;
   left: 0;
   width: 100%;
   height: ${NAV_BAR_HEIGHT}px;
   background-color: ${(props) => props.theme.uiBg};
   z-index: 80;
-  padding: 10px ${CONTAINER_HORIZONTAL_PADDING}px;
+  padding: var(--space-small) ${CONTAINER_HORIZONTAL_PADDING}px;
   @media (max-width: ${NAV_MOBILE_BREAK_POINT}px) {
     justify-content: space-between;
   }
@@ -25,7 +25,7 @@ export const NavBar__Container = styled.nav`
 export const NavBar__ToggleAndLogoContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: var(--space-big);
 `;
 
 export const NavBar__ToggleBtn = styled.button`
@@ -50,15 +50,14 @@ export const NavBar__Search = styled.input`
   border: solid 1px ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.inputBg};
-  padding: 8px;
-  font-size: 1rem;
+  padding: var(--space-small);
   width: 70%;
   max-width: 600px;
 `;
 
 export const NavBar__BtnContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: var(--space-medium);
 `;
 
 export const NavBar__MobileSearchBtn = styled.button`

@@ -6,6 +6,11 @@ export const GlobalStyle = createGlobalStyle`
     --backdrop-bg: rgba(0,0,0,0.7);
     --nav-bar-layer: 100;
     --modal-layer: 200;
+
+    --space-small: 8px;
+    --space-medium: 16px;
+    --space-big: 24px;
+    --space-large: 32px;
   }
   * {
     margin: 0;
@@ -64,11 +69,10 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   h1 {
-    font-size: 1.55rem;
+    font-size: 1.75rem;
   }
   h2 {
-    font-size: 1.35rem;
-    line-height: 25px;
+    font-size: 1.3rem;
   }
   h3 {
     font-size: 1.15rem;

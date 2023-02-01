@@ -10,7 +10,8 @@ const TextStyles = styled.p<{ isMuted: boolean | undefined; size: string | undef
 const ErrorTextStyles = styled.p<{ size: string | undefined }>`
   color: ${(props) => props.theme.errorColor};
   font-size: ${(props) => (props.size === 'small' ? '0.85rem' : '1rem')};
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: var(--space-small);
 `;
 
 export const Text = ({

@@ -1,13 +1,17 @@
 import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../layout/style';
+import {
+  BORDER_RADIUS_ROUND,
+  CONTAINER_HORIZONTAL_PADDING,
+  MOBILE_BREAK_POINT,
+} from '../../layout/style';
 
 export const SuggestionCard__Container = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-small);
   max-width: 550px;
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
-    margin-bottom: 20px;
+    margin-bottom: var(--space-big);
   }
 `;
 
@@ -19,17 +23,6 @@ export const SuggestionCard__ThumbnailContainer = styled.div`
     width: 100%;
     height: auto;
   }
-`;
-
-export const SuggestionCard__Duration = styled.p`
-  position: absolute;
-  bottom: 3px;
-  right: 3px;
-  font-size: 0.9rem;
-  padding: 3px 5px;
-  border-radius: 5px;
-  color: white;
-  background-color: black;
 `;
 
 export const SuggestionCard__Thumbnail = styled.img`
@@ -46,7 +39,7 @@ export const SuggestionCard__Thumbnail = styled.img`
 export const SuggestionCard__Body = styled.div`
   display: flex;
   justify-content: flex-start;
-  gap: 10px;
+  gap: var(--space-medium);
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     flex-direction: column;
   }
@@ -56,30 +49,28 @@ export const SuggestionCard__Details = styled.div`
   display: flex;
   flex-direction: column;
   color: ${(props) => props.theme.textMutedColor};
-  padding: 5px 0;
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     flex-direction: column;
     padding: 0;
   }
   @media (max-width: 577px) {
-    padding: 5px ${CONTAINER_HORIZONTAL_PADDING}px;
+    /* padding: 5px ${CONTAINER_HORIZONTAL_PADDING}px; */
   }
 `;
 
-export const SuggestionCard__Title = styled.h3`
+export const SuggestionCard__Title = styled.h2`
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 5px;
+  margin-bottom: var(--space-small);
   cursor: pointer;
   width: 180px;
   font-size: 1rem;
-  line-height: 22px;
   font-weight: 500;
 `;
 
 export const SuggestionCard__Username = styled.p`
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 `;
 
 export const SuggestionCard__Stats = styled.p`
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 `;

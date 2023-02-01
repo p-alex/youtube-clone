@@ -7,7 +7,6 @@ import { MdThumbUp, MdThumbDown } from 'react-icons/md';
 import {
   ManageVideoCard__Container,
   ManageVideoCard__Details,
-  ManageVideoCard__Duration,
   ManageVideoCard__Image,
   ManageVideoCard__Item,
   ManageVideoCard__Items,
@@ -15,6 +14,7 @@ import {
 } from './ManageVideoCard.styles';
 import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
 import { IVideo } from '../../app/features/manageVideo';
+import VideoDuration from '../../ui/VideoDuration';
 
 const ManageVideoCard = ({ video }: { video: IVideo }) => {
   return (
@@ -23,9 +23,7 @@ const ManageVideoCard = ({ video }: { video: IVideo }) => {
         <a>
           <ManageVideoCard__Image>
             <Image src={video.thumbnail_url} width={700} height={393.75} alt="" />
-            <ManageVideoCard__Duration>
-              {videoDurationFormatter(video.duration)}
-            </ManageVideoCard__Duration>
+            <VideoDuration>{videoDurationFormatter(video.duration)}</VideoDuration>
           </ManageVideoCard__Image>
         </a>
       </Link>

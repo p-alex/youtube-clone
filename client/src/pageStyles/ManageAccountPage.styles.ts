@@ -3,11 +3,11 @@ import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT } from '../layout/style';
 
 export const ManageAccountPage__Box = styled.section`
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-big);
 `;
 
 export const ManageAccountPage__BoxTitle = styled.h2`
-  margin-bottom: 20px;
+  margin-bottom: var(--space-medium);
   color: ${(props) => props.theme.textColor};
 `;
 
@@ -17,9 +17,9 @@ export const ManageAccountPage__Button = styled.button`
   justify-content: space-between;
   align-items: center;
   color: ${(props) => props.theme.textColor};
-  padding: 20px;
+  padding: var(--space-medium);
   background-color: ${(props) => props.theme.normalBtn.bg};
-  margin-bottom: 10px;
+  margin-bottom: var(--space-medium);
   border-radius: ${BORDER_RADIUS_ROUND}px;
   & svg {
     color: ${(props) => props.theme.textMutedColor};
@@ -35,7 +35,7 @@ export const ManageAccount__ButtonContainer = styled.div`
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     flex-direction: column;
     align-items: flex-start;
-    gap: 5px;
+    gap: var(--space-small);
   }
 `;
 

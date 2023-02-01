@@ -5,8 +5,8 @@ export const ProfileAboutTab__Container = styled.div`
   position: relative;
   width: 100%;
   display: flex;
-  gap: 20px;
-  margin-top: 20px;
+  gap: var(--space-big);
+  margin-top: var(--space-big);
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     flex-direction: column;
   }
@@ -30,22 +30,22 @@ export const ProfileAboutTab__Description = styled.p`
 export const ProfileAboutTab__Title = styled.h2`
   position: relative;
   color: ${(props) => props.theme.textMutedColor};
-  padding: 20px 0;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-big);
 `;
 
 export const ProfileAboutTab__List = styled.ul`
   list-style-type: none;
   color: ${(props) => props.theme.textColor};
+  display: grid;
 `;
 
 export const ProfileAboutTab__Item = styled.li`
   display: block;
-  padding: 15px 0;
+  padding: var(--space-medium) 0;
   font-size: 0.85rem;
   background-color: ${(props) => props.theme.uiSecondaryBg};
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: var(--space-small);
+  margin-bottom: var(--space-small);
   border-radius: ${BORDER_RADIUS_ROUND}px;
   & span {
     font-weight: 700;

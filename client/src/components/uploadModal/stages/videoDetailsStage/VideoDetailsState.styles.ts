@@ -1,19 +1,11 @@
 import styled from 'styled-components';
-
-export const VideoDetailsState__Container = styled.div`
-  position: relative;
-  width: 100%;
-  height: calc(100% - 60px);
-  padding: 20px;
-  display: flex;
-  height: max-content;
-`;
+import { BORDER_RADIUS_ROUND } from '../../../../layout/style';
 
 export const VideoDetailsState__ThumbnailContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
-  gap: 20px;
+  gap: 24px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -32,24 +24,24 @@ export const VideoDetailsState__FormContainer = styled.form`
 export const VideoDetailsState__InputLabel = styled.label`
   display: block;
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 `;
 
 export const VideoDetailsState__Error = styled.p`
   color: red;
-  margin-top: 5px;
+  margin-top: 8px;
 `;
 
 export const VideoDetailsState__TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin-bottom: 24px;
 `;
 
 export const VideoDetailsState__Tag = styled.p`
   background-color: ${(props) => props.theme.normalBtn.bg};
   color: ${(props) => props.theme.textColor};
-  padding: 5px 15px;
-  border-radius: 500px;
+  padding: 8px 16px;
+  border-radius: ${BORDER_RADIUS_ROUND}px;
 `;

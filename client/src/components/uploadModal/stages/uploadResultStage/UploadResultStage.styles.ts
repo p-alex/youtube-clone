@@ -1,15 +1,5 @@
 import styled from 'styled-components';
 
-export const UploadResultStage__Container = styled.div`
-  position: relative;
-  width: 100%;
-  height: calc(100% - 60px);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const UploadResultStage__ResultContainer = styled.div`
   position: relative;
   width: 100%;
@@ -17,9 +7,9 @@ export const UploadResultStage__ResultContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 16px;
   & svg {
-    font-size: 80px;
+    font-size: 70px;
     color: ${(props) => props.theme.textColor};
   }
 `;

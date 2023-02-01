@@ -15,8 +15,8 @@ export const ProfileDropDown__Container = styled.div`
 export const ProfileDropDown__Header = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 20px;
+  gap: var(--space-medium);
+  padding: var(--space-medium) var(--space-medium);
   border-bottom: solid 1px ${(props) => props.theme.borderColor};
   a {
     color: ${(props) => props.theme.accentColor};
@@ -39,13 +39,13 @@ export const ProfileDropDown__Username = styled.h3`
 export const ProfileDropDown__NameAndManage = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
 `;
 
 export const ProfileDropDown__ButtonList = styled.ul`
   position: relative;
   width: 100%;
   list-style: none;
+  padding: var(--space-small) 0;
 `;
 
 export const ProfileDropDown__ButtonItem = styled.li``;

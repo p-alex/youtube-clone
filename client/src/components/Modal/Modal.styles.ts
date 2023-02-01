@@ -60,18 +60,17 @@ export const Modal__Header = styled.div`
   position: sticky;
   top: 0px;
   border-bottom: solid 1px ${(props) => props.theme.borderColor};
-  padding: 20px;
+  padding: var(--space-medium) var(--space-big);
   z-index: calc(var(--modal-layer) + 3);
   background-color: ${(props) => props.theme.uiBg};
 `;
 
-export const Modal__Title = styled.h1`
+export const Modal__Title = styled.h2`
   text-transform: capitalize;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
-  font-size: 1.3rem;
 `;
 
 export const Modal__CloseBtn = styled.button`
@@ -86,8 +85,8 @@ export const Modal__CloseBtn = styled.button`
 `;
 
 export const Modal__Content = styled.div`
-  padding: 20px;
   display: flex;
   flex-direction: column;
   height: auto;
+  padding: var(--space-big); ;
 `;

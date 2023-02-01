@@ -1,11 +1,11 @@
 import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const CommentContainer = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
-  border-radius: 5px;
-  gap: 15px;
+  gap: var(--space-medium);
   width: 100%;
 `;
 
@@ -22,7 +22,7 @@ export const CommentBody = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-small);
   width: 100%;
 `;
 
@@ -30,7 +30,7 @@ export const CommentHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--space-small);
   width: 100%;
 `;
 
@@ -47,7 +47,6 @@ export const CommentText = styled.p<{ showMoreText: boolean | null }>`
   color: ${(props) => props.theme.textColor};
   white-space: pre-line;
   word-wrap: break-word;
-  line-height: 20px;
   height: auto;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -60,10 +59,10 @@ export const ReadMoreToggleBtn = styled.button`
   color: ${(props) => props.theme.textMutedColor};
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   position: relative;
   width: max-content;
-  margin: 5px 0;
+  margin: var(--space-small) 0;
 `;
 
 export const CommentDate = styled.small`
@@ -72,21 +71,20 @@ export const CommentDate = styled.small`
 
 export const CommentButtons = styled.div`
   display: flex;
-  gap: 10px;
+  gap: var(--space-small);
 `;
 
 export const CommentButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--space-small);
   color: ${(props) => props.theme.textColor};
   text-transform: uppercase;
-  font-size: 1rem;
   background-color: ${(props) => props.theme.normalBtn.bg};
-  padding: 3px 10px;
-  border-radius: 500px;
-  font-size: 0.8rem;
-  font-weight: bold;
+  padding: calc(var(--space-small) / 2) calc(var(--space-medium) / 2);
+  border-radius: ${BORDER_RADIUS_ROUND}px;
+  font-size: 0.85rem;
+  font-weight: 700;
   &:hover {
     background-color: ${(props) => props.theme.normalBtn.bgHover};
   }
@@ -96,8 +94,4 @@ export const CommentButton = styled.button`
   & svg {
     font-size: 1rem;
   }
-`;
-
-export const CommentFormContainer = styled.div`
-  margin-top: 10px;
 `;

@@ -8,14 +8,15 @@ import { UploadVideoSchemaType } from '../../../../schemas/uploadVideo.schema';
 import AutoResizingTextarea from '../../../../ui/AutoResizeTextarea';
 import { Button } from '../../../../ui/Button';
 import InputGroup from '../../../../ui/InputGroup';
+import { ErrorText } from '../../../../ui/Text';
 import { convertToTagList } from '../../../../utils/convertToTagList';
 import { imageOptimizer } from '../../../../utils/imageOptimizer';
 import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../Modal/Modal';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../../../ReCaptchaCheckbox/ReCaptchaCheckbox';
+import UploadModalStage from '../../UploadModalStage/UploadModalStage';
 import {
-  VideoDetailsState__Container,
   VideoDetailsState__Error,
   VideoDetailsState__FormContainer,
   VideoDetailsState__HiddenInput,
@@ -78,7 +79,7 @@ const VideoDetailsStage = ({
   }, []);
 
   return (
-    <VideoDetailsState__Container>
+    <UploadModalStage>
       <VideoDetailsState__FormContainer>
         <VideoDetailsState__ThumbnailContainer>
           {!uploadData.thumbnailUrl && (
@@ -98,9 +99,9 @@ const VideoDetailsStage = ({
                 required
                 onChange={handleChooseThumbnail}
               ></VideoDetailsState__HiddenInput>
-              <VideoDetailsState__Error>
+              <ErrorText size="small">
                 {fieldErrors.thumbnailUrl && fieldErrors.thumbnailUrl[0]}
-              </VideoDetailsState__Error>
+              </ErrorText>
             </>
           )}
           {uploadData.thumbnailUrl && (
@@ -189,7 +190,7 @@ const VideoDetailsStage = ({
           Upload
         </Button>
       </VideoDetailsState__FormContainer>
-    </VideoDetailsState__Container>
+    </UploadModalStage>
   );
 };
 

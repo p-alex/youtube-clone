@@ -8,18 +8,18 @@ import { PASSWORD_RESTRICTIONS } from '../app/features/authSlice';
 const InputSchemaDisplay__Container = styled.div<{ show: boolean }>`
   display: ${(props) => (props.show ? 'flex' : 'none')};
   flex-direction: column;
-  gap: 10px;
-  padding: 10px;
+  gap: var(--space-small);
+  padding: var(--space-small);
   border-radius: ${BORDER_RADIUS_ROUND}px;
   background-color: ${(props) => props.theme.uiSecondaryBg};
   font-size: 0.85rem;
-  margin-top: 10px;
+  margin-top: var(--space-small);
 `;
 
 const InputSchemaDispaly__Rule = styled.div<{ isValid: boolean }>`
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--space-small);
   & svg {
     color: ${(props) =>
       props.isValid ? props.theme.accentColor : props.theme.errorColor};

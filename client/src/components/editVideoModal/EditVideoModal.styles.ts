@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const EditVideoModal__ThumbnailContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
-  gap: 20px;
+  gap: var(--space-big);
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -17,19 +18,19 @@ export const EditVideoModal__HiddenInput = styled.input`
 export const EditVideoModal__TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-small);
 `;
 
 export const EditVideoModal__Tag = styled.p`
   background-color: ${(props) => props.theme.normalBtn.bg};
   color: ${(props) => props.theme.textColor};
-  padding: 5px 15px;
-  border-radius: 500px;
+  padding: var(--space-small) var(--space-medium);
+  border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
 
 export const EditVideoModal__SubmitContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: var(--space-big);
   align-items: center;
 `;
 

@@ -6,8 +6,8 @@ export const VideoPageDescription__Container = styled.div<{
 }>`
   position: relative;
   width: 100%;
-  padding: 10px;
-  margin-top: 15px;
+  padding: var(--space-medium);
+  margin-top: var(--space-medium);
   border-radius: ${BORDER_RADIUS_ROUND}px;
   background-color: ${(props) => props.theme.uiSecondaryBg};
   color: ${(props) => props.theme.textColor};
@@ -18,14 +18,14 @@ export const VideoPageDescription__Container = styled.div<{
     cursor: ${(props) => (props.showMoreText ? 'normal' : 'pointer')};
   }
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
-    margin: 10px 20px;
-    width: calc(100% - 40px);
+    margin: var(--space-small) var(--space-big);
+    width: calc(100% - var(--space-big) * 2);
   }
 `;
 
 export const VideoPageDescription__Stats = styled.p`
   display: flex;
-  gap: 5px;
+  gap: var(--space-small);
   font-weight: 600;
 `;
 
@@ -50,5 +50,5 @@ export const VideoPageDescription__ShowMoreBtn = styled.button`
   color: ${(props) => props.theme.accentColor};
   font-size: 0.85rem;
   font-weight: 600;
-  margin-top: 10px;
+  margin-top: var(--space-small);
 `;

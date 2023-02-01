@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 export const ManageVideosPage__VideoCards = styled.div`
   display: grid;
-  gap: 10px;
-  display: grid;
+  gap: 16px;
   grid-template-columns: repeat(5, 1fr);
   @media (max-width: 1400px) {
     grid-template-columns: repeat(4, 1fr);

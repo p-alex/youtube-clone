@@ -4,8 +4,8 @@ export const VideoCardWithInfo_Container = styled.div`
   position: relative;
   width: 100%;
   display: flex;
-  gap: 20px;
-  margin-bottom: 10px;
+  gap: var(--space-medium);
+  margin-bottom: var(--space-medium);
   @media (max-width: 600px) {
     flex-direction: column;
   }
@@ -18,17 +18,6 @@ export const VideoCardWithInfo__ThumbnailContainer = styled.div`
   @media (max-width: 600px) {
     width: 100%;
   }
-`;
-
-export const VideoCardWithInfo__Duration = styled.p`
-  position: absolute;
-  bottom: 10px;
-  right: 5px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background-color: black;
-  color: white;
-  font-size: 0.85rem;
 `;
 
 export const VideoCardWithInfo__Body = styled.div`

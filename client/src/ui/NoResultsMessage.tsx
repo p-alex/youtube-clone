@@ -9,7 +9,7 @@ const NoResultsMessage__Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-big);
 `;
 
 export const NoResultsMessage__Message = styled.p`

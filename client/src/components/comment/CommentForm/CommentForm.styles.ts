@@ -4,13 +4,10 @@ export const CommentFormContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-start;
+  gap: var(--space-medium);
 `;
 
 export const CommentFormProfilePicture = styled.div`
-  min-width: 35px;
-  width: 35px;
-  height: 35px;
-  margin-right: 15px;
   & img {
     border-radius: 50%;
   }
@@ -23,7 +20,6 @@ export const CommentFormBody = styled.div`
 export const CommentFormButtons = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-small);
   float: right;
-  margin-top: 10px;
 `;

@@ -124,9 +124,11 @@ const Reply = ({ reply, comment }: { reply: IReply; comment: IComment }) => {
               )}
             </Reply__Header>
             <Reply__Text showMoreText={showMoreText} id={`replyText-${reply.reply_id}`}>
-              <Link href={'/profile/' + reply.replied_to + '/videos'}>
-                <a>@{reply.replied_to}</a>
-              </Link>
+              {reply.replied_to !== comment.username && (
+                <Link href={'/profile/' + reply.replied_to + '/videos'}>
+                  <a>@{reply.replied_to}</a>
+                </Link>
+              )}
               {reply.text}
             </Reply__Text>
             {typeof showMoreText === 'boolean' && (

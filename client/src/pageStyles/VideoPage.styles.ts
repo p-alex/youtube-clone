@@ -4,10 +4,10 @@ import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../layout/styl
 export const VideoPageContainer = styled.main`
   position: relative;
   display: flex;
-  gap: 20px;
+  gap: var(--space-big);
   max-width: 1750px;
   margin: auto;
-  padding: 0 ${CONTAINER_HORIZONTAL_PADDING}px;
+  padding: 0 var(--space-big);
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     flex-direction: column;
     padding: 0px;
@@ -28,7 +28,7 @@ export const VideoContainer = styled.div`
 
 export const VideoDetailsWrapper = styled.div`
   display: flex;
-  gap: 20px;
+  gap: var(--space-big);
 `;
 
 export const VideoDetailsContainer = styled.div`

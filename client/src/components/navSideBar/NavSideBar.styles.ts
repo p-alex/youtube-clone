@@ -34,9 +34,9 @@ export const NavSideBar_Container = styled.aside`
 export const NavSideBar_Header = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: var(--space-big);
   height: ${NAV_BAR_HEIGHT}px;
-  padding: 20px;
+  padding: var(--space-big);
 `;
 
 export const NavSideBar_CloseBtn = styled.button`
@@ -51,24 +51,26 @@ export const NavSideBar_HorizontalLine = styled.hr`
   border: none;
   height: 1px;
   width: 90%;
-  margin: 10px 0;
 `;
 
 export const NavSideBar_ButtonList = styled.ul`
   position: relative;
   width: 100%;
   list-style: none;
-  margin-top: 20px;
+  margin-top: var(--space-big);
 `;
 
 export const NavSideBar_ButtonItem = styled.li``;
 
 export const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
   width: 100%;
-  padding: 10px 20px;
+  padding: var(--space-big);
 `;
 
 export const LoginTitle = styled.p`
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 10px;
+  margin-bottom: var(--space-small);
 `;

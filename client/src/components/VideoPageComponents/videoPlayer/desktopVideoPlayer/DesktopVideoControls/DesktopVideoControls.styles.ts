@@ -6,8 +6,8 @@ export const DesktopVideoControls__Container = styled.div<{ showControls: boolea
   left: 0;
   right: 0;
   display: flex;
-  gap: 10px;
-  padding: 10px;
+  gap: var(--space-small);
+  padding: var(--space-small);
   opacity: ${(props) => (props.showControls ? '1' : '0')};
   background: rgba(0, 0, 0, 0.5);
   transition: opacity 200ms ease-in-out;
@@ -43,12 +43,12 @@ export const DesktopVideoControls__VolumeSlider = styled.input`
   ${DesktopVideoControls__VolumeContainer}:hover & {
     width: 60px;
     opacity: 1;
-    margin-left: 10px;
+    margin-left: var(--space-small);
   }
   ${DesktopVideoControls__VolumeContainer}:focus-within {
     width: 60px;
     opacity: 1;
-    margin-left: 10px;
+    margin-left: var(--space-small);
   }
   &::-webkit-slider-thumb {
     -webkit-appearance: none !important;
@@ -65,7 +65,7 @@ export const DesktopVideoControls__DurationContainer = styled.div`
   align-items: center;
   flex: 1;
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 `;
 
 export const DesktopVideoControls__TheatreIcon = styled.div`

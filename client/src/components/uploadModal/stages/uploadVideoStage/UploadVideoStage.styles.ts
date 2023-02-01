@@ -1,15 +1,5 @@
 import styled from 'styled-components';
 
-export const UploadVideoStage__Container = styled.div`
-  position: relative;
-  width: 100%;
-  height: calc(100% - 60px);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const UploadVideoStage__UploadingContainer = styled.div`
   position: relative;
   display: flex;

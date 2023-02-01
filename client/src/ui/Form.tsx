@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BORDER_RADIUS_ROUND, MOBILE_BREAK_POINT, NAV_BAR_HEIGHT } from '../layout/style';
+import { NAV_BAR_HEIGHT } from '../layout/style';
 
 export const FormWrapper = styled.div`
   position: fixed;
@@ -24,7 +24,7 @@ export const Form = styled.form`
   align-items: center;
   width: 365px;
   display: block;
-  padding: 30px;
+  padding: var(--space-large);
   border-radius: 5px;
   margin: calc(${NAV_BAR_HEIGHT}px + 40px) auto 0 auto;
   @media (max-width: 500px) {
@@ -38,19 +38,19 @@ export const FormLogoAndTitle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-small);
 `;
 
 export const FormTitle = styled.h1`
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 40px;
+  margin-bottom: var(--space-large);
   font-size: 1.4rem;
   width: max-content;
 `;
 
 export const FormAlternativeParagraph = styled.p`
   color: ${(props) => props.theme.textColor};
-  margin-top: 20px;
+  margin-top: var(--space-big);
   & a {
     color: ${(props) => props.theme.accentColor};
   }
@@ -58,10 +58,10 @@ export const FormAlternativeParagraph = styled.p`
 
 export const FormMessage = styled.p`
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 15px;
+  margin-bottom: var(--space-medium);
 `;
 
 export const FormErrorMessage = styled.small`
   color: red;
-  margin-bottom: 15px;
+  margin-bottom: var(--space-medium);
 `;

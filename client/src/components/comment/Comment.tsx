@@ -14,7 +14,6 @@ import {
   CommentButtons,
   CommentContainer,
   CommentDate,
-  CommentFormContainer,
   CommentHeader,
   CommentProfilePicture,
   CommentText,
@@ -169,21 +168,19 @@ const Comment = ({ comment }: { comment: IComment }) => {
               )}
             </CommentButtons>
             {toReplyTo === comment.comment_id && (
-              <CommentFormContainer>
-                <CommentForm
-                  value={newReplyText}
-                  setValue={changeNewReplyText}
-                  toggle={handleResetIds}
-                  func={handleAddReply}
-                  isLoading={isAddReplyLoading}
-                  redirectToElement={replyBtn}
-                  btnName={'reply'}
-                  placeholder={'Write a reply...'}
-                  autoFocus
-                  withTrap
-                  error={addReplyErrors ? addReplyErrors[0].message : undefined}
-                />
-              </CommentFormContainer>
+              <CommentForm
+                value={newReplyText}
+                setValue={changeNewReplyText}
+                toggle={handleResetIds}
+                func={handleAddReply}
+                isLoading={isAddReplyLoading}
+                redirectToElement={replyBtn}
+                btnName={'reply'}
+                placeholder={'Write a reply...'}
+                autoFocus
+                withTrap
+                error={addReplyErrors ? addReplyErrors[0].message : undefined}
+              />
             )}
             <ReplySection comment={comment} />
           </CommentBody>

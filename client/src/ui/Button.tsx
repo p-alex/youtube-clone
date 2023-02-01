@@ -18,7 +18,7 @@ export const Button = styled.button<{
       : props.variant === 'danger'
       ? props.theme.dangerBtn.bg
       : props.theme.normalBtn.bg};
-  padding: 10px 16px;
+  padding: var(--space-small) var(--space-medium);
   color: ${(props) =>
     props.variant === 'primary'
       ? props.theme.primaryBtn.textColor

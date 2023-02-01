@@ -3,14 +3,15 @@ import styled from 'styled-components';
 export const ChannelCard__Container = styled.div`
   display: flex;
   align-items: center;
-  gap: 40px;
+  width: 100%;
+  gap: var(--space-large);
   img {
     border-radius: 50%;
   }
   @media (max-width: 450px) {
     flex-direction: column;
     text-align: center;
-    gap: 20px;
+    gap: var(--space-big);
   }
 `;
 
@@ -24,7 +25,7 @@ export const ChannelCard__Image = styled.img`
 export const ChannelCard__Body = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-small);
   @media (max-width: 450px) {
     align-items: center;
   }

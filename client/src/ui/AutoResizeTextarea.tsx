@@ -19,8 +19,8 @@ const AutoResizeTextarea__Container = styled.div`
   color: ${(props) => props.theme.textColor};
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-bottom: 20px;
+  gap: var(--space-small);
+  margin-bottom: var(--space-big);
 `;
 
 const AutoResizeTextArea__Label = styled.label`
@@ -39,7 +39,6 @@ const AutoResizeTextarea__Textarea = styled.textarea<{ isError: boolean }>`
   width: 100%;
   resize: none;
   font-size: 1rem;
-  padding: 3px;
   border: ${(props) =>
     props.isError ? `solid ${props.theme.errorColor} 1px` : `solid transparent 1px`};
   color: ${(props) => props.theme.textColor};
@@ -51,7 +50,7 @@ const AutoResizeTextarea__Textarea = styled.textarea<{ isError: boolean }>`
   }
   display: block;
   background-color: ${(props) => props.theme.uiSecondaryBg};
-  padding: 10px;
+  padding: var(--space-small);
   border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
 

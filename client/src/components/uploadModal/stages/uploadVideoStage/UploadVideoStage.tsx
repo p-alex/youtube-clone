@@ -1,7 +1,7 @@
 import React from 'react';
 import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../Modal/Modal';
+import UploadModalStage from '../../UploadModalStage/UploadModalStage';
 import {
-  UploadVideoStage__Container,
   UploadVideoStage__Progress,
   UploadVideoStage__Status,
   UploadVideoStage__UploadingContainer,
@@ -9,7 +9,7 @@ import {
 
 const UploadVideoStage = ({ uploadProgress }: { uploadProgress: number }) => {
   return (
-    <UploadVideoStage__Container>
+    <UploadModalStage>
       <UploadVideoStage__UploadingContainer>
         <UploadVideoStage__Status
           tabIndex={0}
@@ -22,7 +22,7 @@ const UploadVideoStage = ({ uploadProgress }: { uploadProgress: number }) => {
           {uploadProgress.toFixed(0)}%
         </UploadVideoStage__Progress>
       </UploadVideoStage__UploadingContainer>
-    </UploadVideoStage__Container>
+    </UploadModalStage>
   );
 };
 

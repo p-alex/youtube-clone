@@ -1,20 +1,15 @@
 import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../../layout/style';
 
 export const VideosDisplay__Container = styled.section`
   position: relative;
   width: 100%;
   max-width: 1850px;
-  padding: 0 ${CONTAINER_HORIZONTAL_PADDING}px;
-  @media (max-width: 550px) {
-    padding: 0;
-  }
 `;
 
 export const VideosDisplay__VideoList = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  gap: 16px;
   list-style: none;
   @media (max-width: 1200px) {
     grid-template-columns: repeat(4, 1fr);

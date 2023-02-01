@@ -1,24 +1,16 @@
 import styled from 'styled-components';
+import { BORDER_RADIUS_ROUND } from '../../layout/style';
 
 export const VideoCard__Container = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 `;
 
 export const VideoCard__ThumbnailContainer = styled.div`
   position: relative;
-`;
-
-export const VideoCard__Duration = styled.p`
-  position: absolute;
-  bottom: 10px;
-  right: 5px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background-color: black;
-  color: white;
-  font-size: 0.85rem;
+  margin-bottom: 16px;
+  display: flex;
 `;
 
 export const VideoCard__Thumbnail = styled.img`
@@ -32,11 +24,7 @@ export const VideoCard__Thumbnail = styled.img`
 export const VideoCard__Body = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 15px;
-  padding: 10px 0;
-  @media (max-width: 550px) {
-    padding: 10px 20px;
-  }
+  gap: 16px;
 `;
 
 export const VideoCard__ProfilePicture = styled.img`
@@ -46,18 +34,17 @@ export const VideoCard__ProfilePicture = styled.img`
 export const VideoCard__Details = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4px;
   color: ${(props) => props.theme.textMutedColor};
 `;
 
-export const VideoCard__Title = styled.p`
+export const VideoCard__Title = styled.h2`
   color: ${(props) => props.theme.textColor};
-  margin-bottom: 5px;
   cursor: pointer;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  font-size: 1.2rem;
   line-height: 25px;
   font-weight: 500;
 `;

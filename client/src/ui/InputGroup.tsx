@@ -7,8 +7,8 @@ const InputGroup__Container = styled.div`
   color: ${(props) => props.theme.textColor};
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-bottom: 20px;
+  gap: var(--space-small);
+  margin-bottom: var(--space-medium);
 `;
 
 const InputGroup__Label = styled.label`
@@ -32,7 +32,7 @@ const Input = styled.input<{ isError: boolean }>`
       : `solid 1px ${props.theme.borderColor}`};
   color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.inputBg};
-  padding: 8px 16px;
+  padding: var(--space-small) var(--space-medium);
   font-size: 1rem;
   width: 100%;
   border-radius: ${BORDER_RADIUS_ROUND}px;

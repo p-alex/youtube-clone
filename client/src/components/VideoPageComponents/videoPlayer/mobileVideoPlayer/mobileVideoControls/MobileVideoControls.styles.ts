@@ -30,7 +30,7 @@ export const MobileVideoControls__PlayAndSkipControls = styled.div<{
   margin: auto;
   transform: translateY(-50%);
   display: flex;
-  gap: 40px;
+  gap: var(--space-large);
   width: max-content;
   z-index: ${(props) => (props.disableClick ? '0' : '2')};
 `;
@@ -55,7 +55,7 @@ export const MobileVideoControls__BottomContainer = styled.div`
   left: 0;
   width: 100%;
   bottom: 35px;
-  padding: 5px 20px;
+  padding: var(--space-small) var(--space-medium);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -77,5 +77,5 @@ export const MobileVideoControls__Control = styled.button`
 
 export const MobileVideoControls__Duration = styled.p`
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 `;

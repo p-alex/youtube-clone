@@ -4,7 +4,7 @@ import { NAV_BAR_HEIGHT, NAV_MOBILE_BREAK_POINT } from '../../../layout/style';
 export const MobileSearchBar__Container = styled.div`
   position: absolute;
   width: 100%;
-  padding: 0 20px;
+  padding: 0 var(--space-big);
   z-index: 100;
   height: ${NAV_BAR_HEIGHT}px;
   top: 0;
@@ -13,7 +13,7 @@ export const MobileSearchBar__Container = styled.div`
   display: none;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--space-medium);
   @media (max-width: ${NAV_MOBILE_BREAK_POINT}px) {
     display: flex;
   }

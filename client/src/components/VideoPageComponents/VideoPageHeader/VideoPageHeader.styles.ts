@@ -4,12 +4,12 @@ import { BORDER_RADIUS_ROUNDER, MOBILE_BREAK_POINT } from '../../../layout/style
 export const VideoPageHeader__Container = styled.header`
   position: relative;
   width: 100%;
-  margin-top: 10px;
+  margin-top: var(--space-small);
   & img {
     border-radius: 50%;
   }
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
-    padding: 10px 20px;
+    padding: var(--space-small) var(--space-medium);
   }
 `;
 
@@ -20,7 +20,7 @@ export const VideoPageHeader__Title = styled.h1`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-small);
 `;
 
 export const VideoPageHeader__BtnsRow = styled.div`
@@ -30,13 +30,13 @@ export const VideoPageHeader__BtnsRow = styled.div`
   @media (max-width: 500px) {
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: var(--space-medium);
   }
 `;
 
 export const VideoPageHeader__UserInfo = styled.div`
   display: flex;
-  gap: 15px;
+  gap: var(--space-medium);
   align-items: center;
   @media (max-width: 500px) {
     width: 100%;
@@ -76,8 +76,8 @@ export const VideoPageHeader__LikeDislikeBtn = styled.button`
   align-items: center;
   color: ${(props) => props.theme.textColor};
   height: 100%;
-  padding: 0 15px;
-  gap: 6px;
+  padding: 0 var(--space-medium);
+  gap: var(--space-small);
   font-size: 1rem;
   font-weight: 600;
   svg {

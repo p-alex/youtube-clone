@@ -11,7 +11,7 @@ import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
 import { BORDER_RADIUS_ROUNDER } from '../layout/style';
 
 const SubscribeButton__Btn = styled.button<{ variant: 'subed' | 'normal' }>`
-  padding: 8px 16px;
+  padding: var(--space-small) var(--space-medium);
   text-transform: uppercase;
   font-weight: 600;
   font-size: 0.85rem;

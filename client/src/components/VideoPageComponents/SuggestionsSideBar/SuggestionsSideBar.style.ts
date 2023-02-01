@@ -8,7 +8,7 @@ export const SuggestionsSideBar__Container = styled.aside<{ isTheatreMode: boole
   @media (max-width: ${MOBILE_BREAK_POINT}px) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    gap: var(--space-medium);
     width: 100%;
     margin: auto;
     padding: 0 ${CONTAINER_HORIZONTAL_PADDING}px;

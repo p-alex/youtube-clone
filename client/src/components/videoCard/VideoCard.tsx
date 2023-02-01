@@ -5,7 +5,6 @@ import {
   VideoCard__Body,
   VideoCard__Container,
   VideoCard__Details,
-  VideoCard__Duration,
   VideoCard__ProfilePicture,
   VideoCard__Stats,
   VideoCard__Thumbnail,
@@ -16,6 +15,7 @@ import {
 import { dateConverter } from '../../utils/dateConverter';
 import { IVideoSmall } from '../../app/features/videoSlice';
 import { videoDurationFormatter } from '../../utils/videoDurationFormatter';
+import VideoDuration from '../../ui/VideoDuration';
 
 const VideoCard = ({
   video,
@@ -35,9 +35,7 @@ const VideoCard = ({
             width={700}
             height={393}
           />
-          <VideoCard__Duration>
-            {videoDurationFormatter(video.duration)}
-          </VideoCard__Duration>
+          <VideoDuration>{videoDurationFormatter(video.duration)}</VideoDuration>
         </VideoCard__ThumbnailContainer>
       </Link>
       <VideoCard__Body>
