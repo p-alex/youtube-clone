@@ -1,8 +1,8 @@
 import express from 'express';
-import { googleOAuthHandler } from './session.controller';
+import { googleOAuthController } from './session.controller';
 
 const router = express.Router();
 
-router.get('/sessions/oauth/google', googleOAuthHandler);
+router.get('/sessions/oauth/google', googleOAuthController);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  CheckIfVideoIsLikedInput,
   DeleteVideoInput,
   DislikeVideoInput,
   GetSuggestedVideosInput,
@@ -13,6 +14,7 @@ import {
   UploadVideoInput,
 } from './video.schema';
 import {
+  checkIfVideoIsLiked,
   deleteVideo,
   getSuggestedVideos,
   getUserVideos,
@@ -77,15 +79,10 @@ export const getUserVideosController = async (
   }
 };
 
-export const getVideoController = async (
-  req: Request<{}, {}, GetVideoInput>,
-  res: Response
-) => {
-  // @ts-ignore
-  const { videoId, userId } = req.body;
-  const isLoggedIn = userId !== '';
+export const getVideoController = async (req: Request<GetVideoInput>, res: Response) => {
+  const { videoId } = req.params;
   try {
-    const video = await getVideo(videoId, userId, isLoggedIn);
+    const video = await getVideo(videoId);
     return res.status(200).json({ success: true, errors: [], result: { video } });
   } catch (error: any) {
     log.error(error);
@@ -242,6 +239,22 @@ export const searchVideosController = async (
   try {
     const searchResults = await searchVideos(query);
     return successResponseJson(res, 200, { searchResults });
+  } catch (error: any) {
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
+  }
+};
+
+export const checkIfVideoIsLikedController = async (
+  req: Request<CheckIfVideoIsLikedInput>,
+  res: Response
+) => {
+  const { videoId } = req.params;
+  // @ts-ignore
+  const { user_id } = req.user;
+  try {
+    const like_status = await checkIfVideoIsLiked({ videoId, userId: user_id });
+    return successResponseJson(res, 200, { like_status });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

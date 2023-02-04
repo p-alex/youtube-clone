@@ -2,9 +2,10 @@ import { z } from 'zod';
 import { ReTokenSchema } from '../user/user.schema';
 
 export const getVideoSchema = z.object({
-  body: z.object({
-    videoId: z.string({}).uuid('Video id is invalid'),
-    userId: z.string({}),
+  params: z.object({
+    videoId: z
+      .string({ required_error: 'Video id is required' })
+      .uuid('Video id is invalid'),
   }),
 });
 
@@ -124,7 +125,15 @@ export const getSuggestedVideosSchema = z.object({
   }),
 });
 
-export type GetVideoInput = z.TypeOf<typeof getVideoSchema>['body'];
+export const checkIfVideoIsLikedSchema = z.object({
+  params: z.object({
+    videoId: z
+      .string({ required_error: 'Video id param is required' })
+      .uuid('Video id param must be a uuid'),
+  }),
+});
+
+export type GetVideoInput = z.TypeOf<typeof getVideoSchema>['params'];
 
 export type GetUserVideosPrivateInput = z.TypeOf<
   typeof getUserVideosPrivateSchema
@@ -147,3 +156,7 @@ export type GetVideoTagsInput = z.TypeOf<typeof getVideoTagsSchema>['params'];
 export type SearchVideosInput = z.TypeOf<typeof searchVideosSchema>['params'];
 
 export type GetSuggestedVideosInput = z.TypeOf<typeof getSuggestedVideosSchema>['body'];
+
+export type CheckIfVideoIsLikedInput = z.TypeOf<
+  typeof checkIfVideoIsLikedSchema
+>['params'];

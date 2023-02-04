@@ -12,7 +12,7 @@ import { createSession } from '../auth/auth.service';
 import { signRefreshToken } from '../auth/auth.service';
 import argon2 from 'argon2';
 
-export const googleOAuthHandler = async (req: Request, res: Response) => {
+export const googleOAuthController = async (req: Request, res: Response) => {
   // get the code from the qs
   const code = req.query.code as string;
   // get the id and access token with the code

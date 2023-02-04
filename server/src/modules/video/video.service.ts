@@ -68,37 +68,9 @@ export const getUserVideos = async (
   return data;
 };
 
-export const getVideo = async (
-  video_id: string,
-  user_id: string,
-  isLoggedIn: boolean
-) => {
-  let response;
-  if (isLoggedIn) {
-    response = await db.query('SELECT * FROM get_video_auth($1, $2)', [
-      video_id,
-      user_id,
-    ]);
-  } else {
-    response = await db.query('SELECT * FROM get_video($1)', [video_id]);
-  }
-
-  const data: {
-    video_id: string;
-    user_id: string;
-    username: string;
-    profile_picture: string;
-    video_url: string;
-    title: string;
-    description: string;
-    views: number;
-    duration: number;
-    total_likes: number;
-    total_dislikes: number;
-    total_comments: number;
-    like_status: boolean | null;
-    created_at: string;
-  } = response.rows[0];
+export const getVideo = async (video_id: string) => {
+  const response = await db.query('SELECT * FROM get_video($1)', [video_id]);
+  const data: IVideo = response.rows[0];
   return data;
 };
 
@@ -271,4 +243,19 @@ export const getSuggestedVideos = async (
   );
   const data: IVideoSmall[] = response.rows;
   return data;
+};
+
+export const checkIfVideoIsLiked = async ({
+  videoId,
+  userId,
+}: {
+  videoId: string;
+  userId: string;
+}) => {
+  const response = await db.query(
+    'SELECT like_status FROM video_likes WHERE video_id = $1 AND user_id = $2',
+    [videoId, userId]
+  );
+  const like_status = response.rows[0] ? response.rows[0].like_status : null;
+  return like_status;
 };

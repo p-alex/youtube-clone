@@ -133,7 +133,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
       accessToken: newAccessToken,
     });
   } catch (error: any) {
-    console.log(error);
+    log.error(error);
     res.cookie('rtoken', '', {
       httpOnly: true,
       secure: true,

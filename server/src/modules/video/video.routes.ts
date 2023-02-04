@@ -6,6 +6,7 @@ import { searchLimiter } from '../../middleware/rateLimit';
 import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
 import {
+  checkIfVideoIsLikedController,
   deleteVideoController,
   dislikeVideoController,
   getSuggestedVideosController,
@@ -20,6 +21,7 @@ import {
   uploadVideoController,
 } from './video.controller';
 import {
+  checkIfVideoIsLikedSchema,
   deleteVideoSchema,
   dislikeVideoSchema,
   getSuggestedVideosSchema,
@@ -40,6 +42,13 @@ const router = express.Router();
 router.get('/videos', getVideosController);
 
 router.get(
+  '/videos/like-status/:videoId',
+  requireAuth,
+  validateResource(checkIfVideoIsLikedSchema),
+  checkIfVideoIsLikedController
+);
+
+router.get(
   '/videos/manage/:sortBy/:page',
   requireAuth,
   validateResource(getUserVideosPrivateSchema),
@@ -58,7 +67,7 @@ router.post(
   getSuggestedVideosController
 );
 
-router.post('/videos/:videoId', validateResource(getVideoSchema), getVideoController);
+router.get('/videos/:videoId', validateResource(getVideoSchema), getVideoController);
 
 router.post(
   '/videos',
