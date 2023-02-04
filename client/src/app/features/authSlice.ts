@@ -7,7 +7,7 @@ export const USERNAME_RESTRICTIONS = {
 
 export const PASSWORD_RESTRICTIONS = {
   minLength: 8,
-  maxLength: 24,
+  maxLength: 50,
 };
 
 interface IInitialState {

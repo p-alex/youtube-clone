@@ -21,6 +21,9 @@ export default {
   verify_email_token_secret: '',
   secure_password_generator_length: '',
   google_recaptcha_secret_key: '',
+  google_client_id: '',
+  google_client_secret: '',
+  google_oauth_redirect_url: '',
   client_side_base_url: '',
   max_videos_per_user: '',
 };

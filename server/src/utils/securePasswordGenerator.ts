@@ -1,9 +1,12 @@
-export const securePasswordGenerator = ({ length }: { length: number }) => {
+import config from 'config';
+
+export const securePasswordGenerator = () => {
+  const length = parseInt(config.get('secure_password_generator_length'));
   let password = '';
   const charList: string[] = [
     'abcdefghijklmnopqrstuvwxyz',
     'abcdefghijklmnopqrstuvwxyz'.toUpperCase(),
-    '2937438916',
+    '29374381650',
     `!?'"$%^&*()[]{}_-+=.,:;@~#<>/`,
   ];
   for (let i = 0; i < length; i++) {

@@ -25,6 +25,7 @@ import Logo from '../components/Logo/Logo';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../components/ReCaptchaCheckbox/ReCaptchaCheckbox';
+import AuthProviderLink from '../ui/AuthProviderButton';
 
 const SignUp = () => {
   const router = useRouter();
@@ -86,6 +87,10 @@ const SignUp = () => {
               <Logo />
               <FormTitle>Create an account</FormTitle>
             </FormLogoAndTitle>
+
+            <AuthProviderLink providerName="google">Login with google</AuthProviderLink>
+            <br />
+
             {isSuccess && (
               <FormMessage>
                 Success! Please check your inbox for email verification

@@ -12,6 +12,8 @@ import useAuth from '../hooks/authHooks/useAuth';
 import useAxios from '../hooks/requestHooks/useAxios';
 import useZodVerifyForm from '../hooks/useZodVerifySchema';
 import { loginSchema, LoginSchemaType } from '../schemas/login.schema';
+import AuthProviderLink from '../ui/AuthProviderButton';
+import AuthProviderButton from '../ui/AuthProviderButton';
 import { Button } from '../ui/Button';
 import {
   Form,
@@ -22,6 +24,7 @@ import {
   FormWrapper,
 } from '../ui/Form';
 import InputGroup from '../ui/InputGroup';
+import getGoogleOAuthURL from '../utils/getGoogleUrl';
 
 const SignIn = () => {
   const { isAuth } = useAuth();
@@ -85,6 +88,9 @@ const SignIn = () => {
           <Logo />
           <FormTitle>Login</FormTitle>
         </FormLogoAndTitle>
+
+        <AuthProviderLink providerName="google">Login with google</AuthProviderLink>
+        <br />
 
         {loginUserErrors &&
           loginUserErrors.map((error) => {

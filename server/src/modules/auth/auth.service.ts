@@ -22,10 +22,7 @@ export const createSession = async (user_id: string) => {
   }
 };
 
-export const signRefreshToken = async (session: {
-  session_id: string;
-  user_id: string;
-}) => {
+export const signRefreshToken = (session: { session_id: string; user_id: string }) => {
   const refreshToken = signJwt(session, 'refresh_token_secret', {
     expiresIn: config.get('refresh_token_expire'),
   });
