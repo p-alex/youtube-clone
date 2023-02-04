@@ -7,7 +7,7 @@ export const DesktopVideoTimeline__Timeline = styled.div`
   width: 100%;
   left: 0;
   height: 12px;
-  bottom: 50px;
+  bottom: 45px;
   opacity: 0.9;
   &.active {
     opacity: 1;

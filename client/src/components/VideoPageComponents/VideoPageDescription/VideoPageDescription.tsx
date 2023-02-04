@@ -10,27 +10,13 @@ import {
 } from './VideoPageDescription.styles';
 
 const VideoPageDescription = ({ video }: { video: VideoInfo }) => {
-  const [showMoreText, setShowMoreText] = useState<boolean | null>(null);
+  const [showMoreText, setShowMoreText] = useState<boolean>(false);
   const created_at = useRef(dateConverter(new Date(video.created_at).getTime()));
-  useEffect(() => {
-    const replyText = document.getElementById(`videoDescription`) as HTMLParagraphElement;
-    const maxLines = 4;
-    const lineHeight = 20;
-    if (replyText.offsetHeight > maxLines * lineHeight) {
-      setShowMoreText(false);
-    } else {
-      setShowMoreText(null);
-    }
-  }, []);
   return (
     <VideoPageDescription__Container
       showMoreText={showMoreText}
-      onClick={
-        showMoreText
-          ? () => {}
-          : showMoreText === false
-          ? () => setShowMoreText((prevState) => !prevState)
-          : () => {}
+      onClick={() =>
+        showMoreText === false ? setShowMoreText((prevState) => !prevState) : undefined
       }
     >
       <VideoPageDescription__Stats>
@@ -39,11 +25,10 @@ const VideoPageDescription = ({ video }: { video: VideoInfo }) => {
       <VideoPageDescription__Text showMoreText={showMoreText} id={'videoDescription'}>
         {video.description}{' '}
       </VideoPageDescription__Text>
-      {showMoreText !== null && (
+      {video.description && showMoreText !== null && (
         <VideoPageDescription__ShowMoreBtn
-          onClick={
-            showMoreText ? () => setShowMoreText((prevState) => !prevState) : () => {}
-          }
+          showMoreText={showMoreText}
+          onClick={() => setShowMoreText((prevState) => !prevState)}
         >
           {showMoreText ? 'Show less' : 'Show more'}
         </VideoPageDescription__ShowMoreBtn>

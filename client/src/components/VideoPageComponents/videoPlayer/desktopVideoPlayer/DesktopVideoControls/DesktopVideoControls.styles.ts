@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const DesktopVideoControls__Container = styled.div<{ showControls: boolean }>`
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   left: 0;
   right: 0;
   display: flex;

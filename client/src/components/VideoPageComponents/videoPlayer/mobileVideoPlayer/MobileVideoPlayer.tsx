@@ -8,9 +8,11 @@ import {
 const MobileVideoPlayer = ({
   src,
   totalDuration,
+  thumbnail_url,
 }: {
   src: string;
   totalDuration: number;
+  thumbnail_url: string;
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -32,6 +34,7 @@ const MobileVideoPlayer = ({
     <MobileVideoPlayer__Container ref={videoContainerRef} hideOverflow={!showControls}>
       <MobileVideoPlayer__Video
         src={src}
+        poster={thumbnail_url}
         ref={videoRef}
         onTimeUpdate={handleTimeUpdate}
       />

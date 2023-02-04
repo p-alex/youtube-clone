@@ -25,4 +25,5 @@ export const DesktopVideoPlayer__Video = styled.video<{ isTheatreMode: boolean }
   position: relative;
   width: 100%;
   height: 100%;
+  aspect-ratio: 16 / 9;
 `;

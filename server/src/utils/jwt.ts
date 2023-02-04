@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from 'config';
+import log from './logger';
 
 type Secrets =
   | 'access_token_secret'
@@ -24,7 +25,7 @@ export function verifyJwt<T>(token: string, secretName: Secrets): T | null {
     const decoded = jwt.verify(token, secret) as T;
     return decoded;
   } catch (error) {
-    console.log(error);
+    log.error(error);
     return null;
   }
 }

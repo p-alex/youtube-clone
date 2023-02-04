@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CONTAINER_HORIZONTAL_PADDING, MOBILE_BREAK_POINT } from '../layout/style';
+import { MOBILE_BREAK_POINT } from '../layout/style';
 
 export const VideoPageContainer = styled.main`
   position: relative;
@@ -33,6 +33,5 @@ export const VideoDetailsWrapper = styled.div`
 
 export const VideoDetailsContainer = styled.div`
   position: relative;
-  grid-area: video_details;
   width: 100%;
 `;

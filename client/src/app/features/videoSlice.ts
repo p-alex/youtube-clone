@@ -9,6 +9,7 @@ export interface VideoInfo {
   profile_picture: string;
   total_subscribers: number;
   video_url: string;
+  thumbnail_url: string;
   title: string;
   description: string;
   views: string;
@@ -50,6 +51,7 @@ const initialState: InitialState = {
     profile_picture: '',
     total_subscribers: 0,
     video_url: '',
+    thumbnail_url: '',
     title: '',
     description: '',
     views: '',
@@ -110,6 +112,7 @@ const videoSlice = createSlice({
         profile_picture: '',
         total_subscribers: 0,
         video_url: '',
+        thumbnail_url: '',
         title: '',
         description: '',
         views: '',

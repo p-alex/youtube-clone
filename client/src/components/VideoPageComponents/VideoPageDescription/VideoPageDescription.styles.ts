@@ -43,7 +43,7 @@ export const VideoPageDescription__Text = styled.p<{ showMoreText: boolean | nul
   }
 `;
 
-export const VideoPageDescription__ShowMoreBtn = styled.button`
+export const VideoPageDescription__ShowMoreBtn = styled.button<{ showMoreText: boolean }>`
   position: relative;
   padding: 5px;
   left: -5px;
@@ -51,4 +51,5 @@ export const VideoPageDescription__ShowMoreBtn = styled.button`
   font-size: 0.85rem;
   font-weight: 600;
   margin-top: var(--space-small);
+  pointer-events: ${(props) => (props.showMoreText ? 'all' : 'none')};
 `;

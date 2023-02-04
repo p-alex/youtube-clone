@@ -9,11 +9,13 @@ let timeoutHideCursorAndControls: NodeJS.Timeout | null = null;
 
 const DesktopVideoPlayer = ({
   src,
+  thumbnail_url,
   totalDuration,
   isTheatreMode,
   setIsTheatreMode,
 }: {
   src: string;
+  thumbnail_url: string;
   totalDuration: number;
   isTheatreMode: boolean;
   setIsTheatreMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -54,6 +56,7 @@ const DesktopVideoPlayer = ({
     >
       <DesktopVideoPlayer__Video
         src={src}
+        poster={thumbnail_url}
         ref={videoRef}
         isTheatreMode={isTheatreMode}
         onContextMenu={(e) => e.preventDefault()}
