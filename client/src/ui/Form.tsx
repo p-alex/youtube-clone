@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NAV_BAR_HEIGHT } from '../layout/style';
+import { BORDER_RADIUS_ROUND, NAV_BAR_HEIGHT } from '../layout/style';
 
 export const FormWrapper = styled.div`
   position: fixed;
@@ -49,6 +49,11 @@ export const FormTitle = styled.h1`
 `;
 
 export const FormAlternativeParagraph = styled.p`
+  display: flex;
+  gap: var(--space-small);
+  background-color: ${(props) => props.theme.uiSecondaryBg};
+  padding: var(--space-small);
+  border-radius: ${BORDER_RADIUS_ROUND}px;
   color: ${(props) => props.theme.textColor};
   margin-top: var(--space-big);
   & a {

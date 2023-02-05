@@ -5,7 +5,6 @@ import axios from 'axios';
 import crypto from 'crypto';
 import qs from 'querystring';
 import log from '../../utils/logger';
-import { string } from 'zod';
 interface RegisterInput {
   email: string;
   username: string;
@@ -27,6 +26,7 @@ export interface IUser {
   total_views: number;
   created_at: string;
   description: string;
+  oauth_provider: string;
 }
 
 export interface IProfileInfo {
@@ -103,7 +103,7 @@ export const getUserInfo = async (userId: string, email?: string): Promise<IUser
     ? 'SELECT * FROM users WHERE email = $1'
     : 'SELECT * FROM users WHERE user_id = $1';
   const result = await db.query(query, [email ? email : userId]);
-  return result.rows[0];
+  return result.rows[0] as IUser;
 };
 
 export const validateHuman = async (reToken: string) => {

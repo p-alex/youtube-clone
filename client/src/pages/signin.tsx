@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../app/features/authSlice';
@@ -13,20 +13,19 @@ import useAxios from '../hooks/requestHooks/useAxios';
 import useZodVerifyForm from '../hooks/useZodVerifySchema';
 import { loginSchema, LoginSchemaType } from '../schemas/login.schema';
 import AuthProviderLink from '../ui/AuthProviderButton';
-import AuthProviderButton from '../ui/AuthProviderButton';
 import { Button } from '../ui/Button';
 import {
   Form,
   FormAlternativeParagraph,
-  FormErrorMessage,
   FormLogoAndTitle,
   FormTitle,
   FormWrapper,
 } from '../ui/Form';
 import InputGroup from '../ui/InputGroup';
-import getGoogleOAuthURL from '../utils/getGoogleUrl';
+import { ErrorText } from '../ui/Text';
 
 const SignIn = () => {
+  const router = useRouter();
   const { isAuth } = useAuth();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,8 +54,11 @@ const SignIn = () => {
     reRef.current?.reset();
   };
 
+  const providerError = router.query?.error;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (providerError) router.push('/signin');
     const isValid = verify();
     if (!isValid) return;
     const { success, result } = await loginUser(state);
@@ -89,15 +91,15 @@ const SignIn = () => {
           <FormTitle>Login</FormTitle>
         </FormLogoAndTitle>
 
-        <AuthProviderLink providerName="google">Login with google</AuthProviderLink>
+        <AuthProviderLink providerName="google">Login with Google</AuthProviderLink>
         <br />
 
         {loginUserErrors &&
           loginUserErrors.map((error) => {
-            return (
-              <FormErrorMessage key={error?.message}>{error?.message}</FormErrorMessage>
-            );
+            return <ErrorText key={error?.message}>{error?.message}</ErrorText>;
           })}
+
+        {providerError && <ErrorText>{providerError}</ErrorText>}
 
         <InputGroup
           type="text"
@@ -136,9 +138,9 @@ const SignIn = () => {
         </Button>
 
         <FormAlternativeParagraph>
-          Don&apos;t have an account?{' '}
+          <p>Don&apos;t have an account?</p>
           <Link href={'/signup'}>
-            <a>Create an account</a>
+            <a>Sign up</a>
           </Link>
         </FormAlternativeParagraph>
       </Form>

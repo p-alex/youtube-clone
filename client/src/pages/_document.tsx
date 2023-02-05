@@ -38,7 +38,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href="http://localhost:5000" />
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_SERVER_BASE_URL} />
         </Head>
         <body>
           <Main />

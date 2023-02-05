@@ -36,6 +36,8 @@ export const googleOAuthController = async (req: Request, res: Response) => {
       });
       newUserId = registerUserResponse.user_id;
     }
+    if (user.oauth_provider !== 'google')
+      throw new Error('A user with that email already exists');
     // create a session
     const session = await createSession(newUserId ? newUserId : user.user_id);
     // create refresh tokens
@@ -50,8 +52,10 @@ export const googleOAuthController = async (req: Request, res: Response) => {
     });
     // redirect back to client
     res.redirect(config.get('client_side_base_url'));
-  } catch (error) {
+  } catch (error: any) {
     log.error(error, 'Failed to authorize Google user');
-    return res.redirect(`${config.get('client_side_base_url')}/oauth/error`);
+    return res.redirect(
+      `${config.get('client_side_base_url')}/signin?error=${error.message}`
+    );
   }
 };

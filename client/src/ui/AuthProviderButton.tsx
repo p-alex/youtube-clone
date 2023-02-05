@@ -15,13 +15,13 @@ const ProviderLink = styled.a`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-small);
   padding: var(--space-small);
   border-radius: ${BORDER_RADIUS_ROUND}px;
   font-size: 1rem;
   margin-bottom: var(--space-small);
   font-weight: 700;
-  text-transform: capitalize;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: background-color 150ms ease-in-out;
   & svg {

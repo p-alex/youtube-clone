@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export const USERNAME_RESTRICTIONS = {
   minLength: 3,
-  maxLength: 24,
+  maxLength: 20,
 };
 
 export const PASSWORD_RESTRICTIONS = {
   minLength: 8,
-  maxLength: 50,
+  maxLength: 64,
 };
 
 interface IInitialState {

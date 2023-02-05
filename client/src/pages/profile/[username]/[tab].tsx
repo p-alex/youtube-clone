@@ -77,7 +77,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!username || username === profileInfo?.username) return;
     handleGetProfileInfo();
-  }, [username, currentUserId]);
+  }, [username]);
 
   useEffect(() => {
     dispatch(setProfileActiveTab({ tab: currentTab as string }));

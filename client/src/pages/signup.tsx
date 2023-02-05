@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React, { useEffect, useState, useRef } from 'react';
-import Layout from '../layout/Layout';
 import useAxios from '../hooks/requestHooks/useAxios';
 import { Button } from '../ui/Button';
 import useZodVerifyForm from '../hooks/useZodVerifySchema';
@@ -85,10 +84,10 @@ const SignUp = () => {
           <Form onSubmit={onSubmit}>
             <FormLogoAndTitle>
               <Logo />
-              <FormTitle>Create an account</FormTitle>
+              <FormTitle>Sign up</FormTitle>
             </FormLogoAndTitle>
 
-            <AuthProviderLink providerName="google">Login with google</AuthProviderLink>
+            <AuthProviderLink providerName="google">Sign up with Google</AuthProviderLink>
             <br />
 
             {isSuccess && (
@@ -164,7 +163,7 @@ const SignUp = () => {
             </Button>
 
             <FormAlternativeParagraph>
-              Already have an account?{' '}
+              <p>Already have an account?</p>
               <Link href={'/signin'}>
                 <a>Login</a>
               </Link>

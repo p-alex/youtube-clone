@@ -3,13 +3,13 @@ import { string, z } from 'zod';
 export const DEFAULT_PROFILE_PICTURE_URL = '/images/default-profile-picture.jpg';
 
 const USERNAME_RESTRICTIONS = {
-  minLength: 4,
-  maxLength: 15,
+  minLength: 3,
+  maxLength: 20,
 };
 
 export const PASSWORD_RESTRICTIONS = {
   minLength: 8,
-  maxLength: 50,
+  maxLength: 64,
 };
 
 export const PasswordSchema = z
