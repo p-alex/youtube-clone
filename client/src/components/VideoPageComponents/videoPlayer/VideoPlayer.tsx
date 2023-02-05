@@ -1,19 +1,16 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
+import { VideoInfo } from '../../../app/features/videoSlice';
 import { MOBILE_BREAK_POINT } from '../../../layout/style';
 import DesktopVideoPlayer from './DesktopVideoPlayer/DesktopVideoPlayer';
 import MobileVideoPlayer from './MobileVideoPlayer/MobileVideoPlayer';
 import { VideoPlayer__Container } from './VideoPlayer.styles';
 
 const VideoPlayer = ({
-  src,
-  thumbnail_url,
-  totalDuration,
+  video,
   isTheatreMode,
   setIsTheatreMode,
 }: {
-  src: string;
-  thumbnail_url: string;
-  totalDuration: number;
+  video: VideoInfo;
   isTheatreMode: boolean;
   setIsTheatreMode: React.Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -29,18 +26,12 @@ const VideoPlayer = ({
         <>
           {initialWindowWidth > MOBILE_BREAK_POINT ? (
             <DesktopVideoPlayer
-              src={src}
-              thumbnail_url={thumbnail_url}
-              totalDuration={totalDuration}
+              video={video}
               isTheatreMode={isTheatreMode}
               setIsTheatreMode={setIsTheatreMode}
             />
           ) : (
-            <MobileVideoPlayer
-              src={src}
-              totalDuration={totalDuration}
-              thumbnail_url={thumbnail_url}
-            />
+            <MobileVideoPlayer video={video} />
           )}
         </>
       )}

@@ -39,7 +39,7 @@ export const DesktopVideoControls__VolumeSlider = styled.input`
   height: 4px;
   background-color: rgb(150, 150, 150);
   border-radius: 500px;
-  transition: width 200ms ease-in-out, opacity 200ms ease-in-out;
+  transition: width 150ms ease-in-out, opacity 150ms ease-in-out;
   ${DesktopVideoControls__VolumeContainer}:hover & {
     width: 60px;
     opacity: 1;
@@ -71,7 +71,7 @@ export const DesktopVideoControls__DurationContainer = styled.div`
 export const DesktopVideoControls__TheatreIcon = styled.div`
   width: 90%;
   height: 50%;
-  border: solid white 2.5px;
+  border: solid white 2px;
   &.active {
     width: 75%;
     height: 42%;

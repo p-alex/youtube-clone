@@ -37,7 +37,7 @@ const Layout = ({ head, children }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <Main>{children}</Main>
+      <Main id="main">{children}</Main>
     </>
   );
 };

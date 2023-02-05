@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { VideoInfo } from '../../../app/features/videoSlice';
 import { dateConverter } from '../../../utils/dateConverter';
 
@@ -11,6 +11,13 @@ import {
 
 const VideoPageDescription = ({ video }: { video: VideoInfo }) => {
   const [showMoreText, setShowMoreText] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (showMoreText === false) {
+      window.scroll({ top: 0, behavior: 'smooth' });
+    }
+  }, [showMoreText]);
+
   const created_at = useRef(dateConverter(new Date(video.created_at).getTime()));
   return (
     <VideoPageDescription__Container

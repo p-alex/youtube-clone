@@ -1,19 +1,12 @@
 import React, { useRef, useState } from 'react';
+import { VideoInfo } from '../../../../app/features/videoSlice';
 import MobileVideoControls from './MobileVideoControls/MobileVideoControls';
 import {
   MobileVideoPlayer__Container,
   MobileVideoPlayer__Video,
 } from './MobileVideoPlayer.styles';
 
-const MobileVideoPlayer = ({
-  src,
-  totalDuration,
-  thumbnail_url,
-}: {
-  src: string;
-  totalDuration: number;
-  thumbnail_url: string;
-}) => {
+const MobileVideoPlayer = ({ video }: { video: VideoInfo }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [showControls, setShowControls] = useState(true);
@@ -30,10 +23,12 @@ const MobileVideoPlayer = ({
     videoRef.current!.currentTime = newTime;
   };
 
+  const { video_url, thumbnail_url, duration } = video;
+
   return (
     <MobileVideoPlayer__Container ref={videoContainerRef} hideOverflow={!showControls}>
       <MobileVideoPlayer__Video
-        src={src}
+        src={video_url}
         poster={thumbnail_url}
         ref={videoRef}
         onTimeUpdate={handleTimeUpdate}
@@ -47,7 +42,7 @@ const MobileVideoPlayer = ({
         setIsFullscreen={setIsFullscreen}
         showControls={showControls}
         setShowControls={setShowControls}
-        totalDuration={totalDuration}
+        totalDuration={duration}
         currentTime={currentTime}
         setCurrentTime={setCurrentTime}
         handleSetNewTime={handleSetNewTime}

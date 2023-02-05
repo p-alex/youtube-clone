@@ -1,25 +1,30 @@
 import React, { useRef, useState } from 'react';
+import { VideoInfo } from '../../../../app/features/videoSlice';
 import VideoDesktopControls from './DesktopVideoControls/DesktopVideoControls';
 import {
   DesktopVideoPlayer__Container,
+  DesktopVideoPlayer__Title,
+  DesktopVideoPlayer__TitleContainer,
   DesktopVideoPlayer__Video,
 } from './DesktopVideoPlayer.styles';
 
 let timeoutHideCursorAndControls: NodeJS.Timeout | null = null;
 
 const DesktopVideoPlayer = ({
-  src,
-  thumbnail_url,
-  totalDuration,
+  video,
   isTheatreMode,
   setIsTheatreMode,
 }: {
-  src: string;
-  thumbnail_url: string;
-  totalDuration: number;
+  video: VideoInfo;
   isTheatreMode: boolean;
   setIsTheatreMode: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleToggleFullscreen = () => {
+    setIsFullscreen((prevState) => !prevState);
+  };
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [showControls, setShowControls] = useState(true);
@@ -46,6 +51,8 @@ const DesktopVideoPlayer = ({
     setCurrentTime(videoRef.current!.currentTime);
   };
 
+  const { video_url, title, thumbnail_url, duration } = video;
+
   return (
     <DesktopVideoPlayer__Container
       ref={videoContainerRef}
@@ -54,8 +61,13 @@ const DesktopVideoPlayer = ({
       showCursor={showControls}
       isTheatreMode={isTheatreMode}
     >
+      {isFullscreen && showControls && (
+        <DesktopVideoPlayer__TitleContainer>
+          <DesktopVideoPlayer__Title>{title}</DesktopVideoPlayer__Title>
+        </DesktopVideoPlayer__TitleContainer>
+      )}
       <DesktopVideoPlayer__Video
-        src={src}
+        src={video_url}
         poster={thumbnail_url}
         ref={videoRef}
         isTheatreMode={isTheatreMode}
@@ -70,12 +82,14 @@ const DesktopVideoPlayer = ({
         setIsPlaying={setIsPlaying}
         showControls={showControls}
         setShowControls={setShowControls}
-        totalDuration={totalDuration}
+        totalDuration={duration}
         currentTime={currentTime}
         setCurrentTime={setCurrentTime}
         timeoutHideCursorAndControls={timeoutHideCursorAndControls}
         isTheatreMode={isTheatreMode}
         setIsTheatreMode={setIsTheatreMode}
+        isFullscreen={isFullscreen}
+        handleToggleFullscreen={handleToggleFullscreen}
       />
     </DesktopVideoPlayer__Container>
   );

@@ -72,7 +72,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 1.75rem;
   }
   h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
   h3 {
     font-size: 1.15rem;

@@ -35,6 +35,8 @@ const VideoDesktopControls = ({
   currentTime,
   setCurrentTime,
   totalDuration,
+  isFullscreen,
+  handleToggleFullscreen,
 }: {
   videoContainerRef: React.RefObject<HTMLDivElement>;
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -48,11 +50,12 @@ const VideoDesktopControls = ({
   currentTime: number;
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
   totalDuration: number;
+  isFullscreen: boolean;
+  handleToggleFullscreen: () => void;
 }) => {
   const canUseKeyBinds = useSelector(
     (state: RootState) => state.video.canUseVideoKeyBinds
   );
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState<number>(1);
   const [volumeLevel, setVolumeLevel] = useState<'high' | 'low' | 'muted'>('high');
@@ -91,10 +94,6 @@ const VideoDesktopControls = ({
 
   const handleToggleTheatreMode = () => {
     setIsTheatreMode((prevState) => !prevState);
-  };
-
-  const handleToggleFullscreen = () => {
-    setIsFullscreen((prevState) => !prevState);
   };
 
   useEffect(() => {

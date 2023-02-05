@@ -11,10 +11,10 @@ export const VideosDisplay__VideoList = styled.ul`
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   list-style: none;
-  @media (max-width: 1200px) {
+  @media (max-width: 1400px) {
     grid-template-columns: repeat(4, 1fr);
   }
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }
   @media (max-width: 800px) {

@@ -62,9 +62,7 @@ const VideoPage = ({ video }: { video: VideoInfo }) => {
           <VideoColumn>
             <VideoContainer>
               <VideoPlayer
-                src={video.video_url}
-                thumbnail_url={video.thumbnail_url}
-                totalDuration={video.duration}
+                video={video}
                 isTheatreMode={isTheatreMode}
                 setIsTheatreMode={setIsTheatreMode}
               />
