@@ -1,6 +1,7 @@
 import { string, z } from 'zod';
 
 export const DEFAULT_PROFILE_PICTURE_URL = '/images/default-profile-picture.jpg';
+export const PasswordSymbolsRegex = /[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g;
 
 const USERNAME_RESTRICTIONS = {
   minLength: 3,
@@ -15,12 +16,12 @@ export const PasswordSchema = z
   .string({ required_error: 'Password is required' })
   .min(
     PASSWORD_RESTRICTIONS.minLength,
-    `min ${PASSWORD_RESTRICTIONS.minLength} characters`
+    `minimum ${PASSWORD_RESTRICTIONS.minLength} characters`
   )
-  .regex(/[a-z]/g, '1 lowercase letter')
-  .regex(/[A-Z]/g, '1 uppercase letter')
-  .regex(/[0-9]/g, '1 number')
-  .regex(/[!@#$%^&*]/g, '1 symbol');
+  .regex(/[a-z]/g, 'minimum 1 lowercase letter')
+  .regex(/[A-Z]/g, 'minimum 1 uppercase letter')
+  .regex(/[0-9]/g, 'minimum 1 number')
+  .regex(PasswordSymbolsRegex, 'minimum 1 symbol');
 
 export const UsernameSchema = z
   .string({ required_error: 'Username is required' })

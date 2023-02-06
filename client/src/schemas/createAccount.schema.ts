@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { PASSWORD_RESTRICTIONS, USERNAME_RESTRICTIONS } from '../app/features/authSlice';
 
+export const PasswordSymbolsRegex = /[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g;
+
 export const PasswordSchema = z
   .string({ required_error: 'Password is required' })
   .min(1, "Can't be blank")
@@ -8,7 +10,7 @@ export const PasswordSchema = z
   .regex(/[a-z]/g, 'Invalid password')
   .regex(/[A-Z]/g, 'Invalid password')
   .regex(/[0-9]/g, 'Invalid password')
-  .regex(/[!@#$%^&*]/g, 'Invalid password');
+  .regex(PasswordSymbolsRegex, 'Invalid password');
 
 export const UsernameSchema = z
   .string({})
