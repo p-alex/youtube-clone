@@ -9,7 +9,6 @@ const USERNAME_RESTRICTIONS = {
 
 export const PASSWORD_RESTRICTIONS = {
   minLength: 8,
-  maxLength: 64,
 };
 
 export const PasswordSchema = z
@@ -17,10 +16,6 @@ export const PasswordSchema = z
   .min(
     PASSWORD_RESTRICTIONS.minLength,
     `min ${PASSWORD_RESTRICTIONS.minLength} characters`
-  )
-  .max(
-    PASSWORD_RESTRICTIONS.maxLength,
-    `max ${PASSWORD_RESTRICTIONS.maxLength} characters`
   )
   .regex(/[a-z]/g, '1 lowercase letter')
   .regex(/[A-Z]/g, '1 uppercase letter')

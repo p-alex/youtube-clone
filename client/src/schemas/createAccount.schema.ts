@@ -5,7 +5,6 @@ export const PasswordSchema = z
   .string({ required_error: 'Password is required' })
   .min(1, "Can't be blank")
   .min(PASSWORD_RESTRICTIONS.minLength, 'Invalid password')
-  .max(PASSWORD_RESTRICTIONS.maxLength, 'Invalid password')
   .regex(/[a-z]/g, 'Invalid password')
   .regex(/[A-Z]/g, 'Invalid password')
   .regex(/[0-9]/g, 'Invalid password')
