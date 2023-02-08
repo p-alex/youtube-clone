@@ -116,14 +116,13 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
         />
       )}
       <br />
-      {user.user_id &&
-        comments.map((comment) => {
-          return (
-            <ReplySectionProvider key={comment.comment_id}>
-              <Comment key={comment.comment_id} comment={comment} />
-            </ReplySectionProvider>
-          );
-        })}
+      {comments.map((comment) => {
+        return (
+          <ReplySectionProvider key={comment.comment_id}>
+            <Comment key={comment.comment_id} comment={comment} />
+          </ReplySectionProvider>
+        );
+      })}
       {showMoreComments && (
         <CommentSection__LoadBtn
           onClick={() => dispatchCommentSection({ type: 'NEXT_PAGE' })}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import useAxios from '../../../hooks/requestHooks/useAxios';
 import Layout from '../../../layout/Layout';
 import {
@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   IProfileInfo,
+  resetProfile,
   setProfileActiveTab,
   setProfileInfo,
   setProfileVideos,
@@ -89,9 +90,15 @@ const ProfilePage = () => {
   }, [profileUserId]);
 
   useEffect(() => {
-    if (!username) return;
+    if (!profileUserId) return;
     handleGetProfileVideos();
   }, [sortBy]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetProfile());
+    };
+  }, []);
 
   return (
     <Layout
