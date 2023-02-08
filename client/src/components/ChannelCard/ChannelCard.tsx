@@ -26,7 +26,6 @@ const ChannelCard = ({ user }: { user: ISubscriptionUser }) => {
         </Text>
         <ChannelCard__Description>{user.description}</ChannelCard__Description>
         <SubscribeButton
-          isSubscribed={user.subscribe_status}
           subscribeToUserId={user.user_id}
           subscribeToUsername={user.username}
           changeStateIn={'manageSubscriptions'}

@@ -58,7 +58,7 @@ export const registerUser = async (input: RegisterInput) => {
 export const getProfileInfo = async (username: string, currentUserId?: string) => {
   if (currentUserId === '') currentUserId = crypto.randomUUID();
   const profileInfoResult = await db.query(
-    'SELECT u.user_id, u.username, u.profile_picture, u.description, u.total_subscribers, u.total_views, u.total_videos, u.created_at, CASE WHEN s.user_id = u.user_id AND s.subscriber_user_id = $2 THEN TRUE ELSE FALSE END subscribe_status FROM users as u LEFT JOIN subscribers as s ON s.user_id = u.user_id AND s.subscriber_user_id = $2 WHERE u.username = $1',
+    'SELECT u.user_id, u.username, u.profile_picture, u.description, u.total_subscribers, u.total_views, u.total_videos, u.created_at FROM users as u LEFT JOIN subscribers as s ON s.user_id = u.user_id AND s.subscriber_user_id = $2 WHERE u.username = $1',
     [username, currentUserId]
   );
 
@@ -117,15 +117,6 @@ export const validateHuman = async (reToken: string) => {
   return response.data.success;
 };
 
-export const getTwoStepMethod = async (userId: string) => {
-  const response = await db.query(
-    'SELECT two_step_method FROM users WHERE user_id = $1',
-    [userId]
-  );
-  const data: { two_step_method: 'authenticator' | null } = response.rows[0];
-  return data;
-};
-
 export const subscribeToUser = async ({
   subscribeToUserId,
   currentUserId,
@@ -168,6 +159,31 @@ export const subscribeToUser = async ({
     success: isSuccess,
     message: `${isSubscribed ? 'Unsubscribed from' : 'Subscribed to'} user`,
   };
+};
+
+export interface Subscriber {
+  user_id: string;
+  subscriber_user_id: string;
+  subscribed_at: string;
+}
+
+export const checkIfCurrentUserIsSubscribedToUser = async ({
+  userId,
+  currentUserId,
+}: {
+  userId: string;
+  currentUserId: string;
+}) => {
+  const response = await db.query(
+    'SELECT * FROM subscribers WHERE user_id = $1 AND subscriber_user_id = $2',
+    [userId, currentUserId]
+  );
+  const data: Subscriber = response.rows[0];
+  if (data?.user_id) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 interface GoogleTokensResult {

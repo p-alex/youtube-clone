@@ -4,6 +4,7 @@ import {
   ChangePasswordInput,
   ChangeProfilePictureInput,
   ChangeUsernameInput,
+  CheckIfCurrentUserIsSubscribedToUserInput,
   DEFAULT_PROFILE_PICTURE_URL,
   GetProfileInfoInput,
   RegisterUserInput,
@@ -18,6 +19,7 @@ import {
   validateHuman,
   subscribeToUser,
   getProfileInfo,
+  checkIfCurrentUserIsSubscribedToUser,
 } from './user.service';
 import argon2 from 'argon2';
 import { sendEmail } from '../../nodemailer/sendEmail';
@@ -223,6 +225,25 @@ export const subscribeToUserController = async (
     });
     if (!success) return errorResponseJson(res, 500, 'Something went wrong...');
     return successResponseJson(res, 200, { success, message });
+  } catch (error: any) {
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
+  }
+};
+
+export const checkIfCurrentUserIsSubscribedToUserController = async (
+  req: Request<CheckIfCurrentUserIsSubscribedToUserInput>,
+  res: Response
+) => {
+  try {
+    const { userId } = req.params;
+    //@ts-ignore
+    const { user_id: currentUserId } = req.user as string;
+    const isSubscribed = await checkIfCurrentUserIsSubscribedToUser({
+      currentUserId,
+      userId,
+    });
+    return successResponseJson(res, 200, { isSubscribed });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

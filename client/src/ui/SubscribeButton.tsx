@@ -1,10 +1,11 @@
 import Router, { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { subscribeToProfileOwner } from '../app/features/profileSlice';
 import { changeSubscriptionSubscribeStatus } from '../app/features/subscriptionsSlice';
 import { subscribeToVideoOwner } from '../app/features/videoSlice';
+import { RootState } from '../app/store';
 import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
 import useAuth from '../hooks/authHooks/useAuth';
 import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
@@ -17,6 +18,9 @@ const SubscribeButton__Btn = styled.button<{ variant: 'subed' | 'normal' }>`
   font-size: 0.85rem;
   width: max-content;
   height: 35px;
+  &:disabled {
+    opacity: 0.2;
+  }
   color: ${(props) =>
     props.variant === 'subed'
       ? props.theme.subscribeBtn.subedTextColor
@@ -35,7 +39,6 @@ const SubscribeButton__Btn = styled.button<{ variant: 'subed' | 'normal' }>`
 `;
 
 interface Props {
-  isSubscribed: boolean;
   subscribeToUserId: string;
   subscribeToUsername: string;
   changeStateIn: 'profile' | 'videopage' | 'manageSubscriptions';
@@ -43,7 +46,6 @@ interface Props {
 }
 
 const SubscribeButton = ({
-  isSubscribed,
   subscribeToUserId,
   subscribeToUsername,
   changeStateIn,
@@ -53,10 +55,32 @@ const SubscribeButton = ({
   const { isAuth } = useAuth();
   const dispatch = useDispatch();
 
-  const [subscribeRequest, { isLoading, errors }] = useAxiosWithRetry<
-    { subscribeToUserId: string },
-    {}
-  >('api/users/subscribe', 'POST');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const currentUserId = useSelector((state: RootState) => state.auth.user.user_id);
+
+  const [
+    checkIfSubscribedRequest,
+    { isLoading: isCheckIfSubscribedLoading, errors: checkIfSubscribedErrors },
+  ] = useAxiosWithRetry<{}, { isSubscribed: boolean }>(
+    'api/users/' + subscribeToUserId + '/subscribe-status'
+  );
+
+  const handleCheckIfSubscribed = async () => {
+    const response = await checkIfSubscribedRequest({});
+    if (!response.success || !response.result) return;
+    setIsSubscribed(response.result.isSubscribed);
+  };
+
+  useEffect(() => {
+    if (!currentUserId) return;
+    handleCheckIfSubscribed();
+  }, [currentUserId]);
+
+  const [
+    subscribeRequest,
+    { isLoading: isSubscribeRequestLoading, errors: subscribeRequestErrors },
+  ] = useAxiosWithRetry<{ subscribeToUserId: string }, {}>('api/users/subscribe', 'POST');
 
   const [isConfirmationActive, setIsConfirmationActive] = useState(false);
 
@@ -75,6 +99,7 @@ const SubscribeButton = ({
     if (!response.success) return;
     handleChangeStateToReflectNewSubscribeStatus();
     setIsConfirmationActive(false);
+    setIsSubscribed((prevState) => !prevState);
   };
 
   const handleToggleConfirm = () => {
@@ -87,7 +112,7 @@ const SubscribeButton = ({
         <ConfirmationModal
           btnName="unsubscribe"
           func={handleSubscribe}
-          isLoading={isLoading}
+          isLoading={isSubscribeRequestLoading}
           message={'Unsubscribe from ' + subscribeToUsername + '?'}
           title="confirm"
           toggle={handleToggleConfirm}
@@ -98,7 +123,7 @@ const SubscribeButton = ({
         variant={isSubscribed ? 'subed' : 'normal'}
         type="button"
         onClick={isSubscribed && withConfirmation ? handleToggleConfirm : handleSubscribe}
-        disabled={isLoading}
+        disabled={isSubscribeRequestLoading || isCheckIfSubscribedLoading}
         id={'subscribe-btn'}
       >
         {isSubscribed ? 'Unsubscribe' : 'Subscribe'}

@@ -102,6 +102,14 @@ export const subscribeToUserSchema = z.object({
   }),
 });
 
+export const checkIfCurrentUserIsSubscribedToUserSchema = z.object({
+  params: z.object({
+    userId: z
+      .string({ required_error: 'User id is required' })
+      .uuid('Current user id must be a uuid'),
+  }),
+});
+
 export type RegisterUserInput = z.TypeOf<typeof registerUserSchema>['body'];
 
 export type GetProfileInfoInput = z.TypeOf<typeof getProfileInfoSchema>;
@@ -115,3 +123,7 @@ export type ChangeProfilePictureInput = z.TypeOf<
 export type ChangePasswordInput = z.TypeOf<typeof changePasswordSchema>['body'];
 
 export type SubscribeToUserInput = z.TypeOf<typeof subscribeToUserSchema>['body'];
+
+export type CheckIfCurrentUserIsSubscribedToUserInput = z.TypeOf<
+  typeof checkIfCurrentUserIsSubscribedToUserSchema
+>['params'];

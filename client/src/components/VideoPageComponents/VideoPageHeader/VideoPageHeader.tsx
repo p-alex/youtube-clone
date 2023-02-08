@@ -38,7 +38,6 @@ const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
           </VideoPageHeader__ColumnContainer>
           {video.user_id !== currentUserId && (
             <SubscribeButton
-              isSubscribed={false}
               subscribeToUserId={video.user_id}
               subscribeToUsername={video.username}
               changeStateIn={'videopage'}

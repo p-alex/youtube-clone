@@ -125,7 +125,6 @@ const ProfilePage = () => {
               </ProfilePage__UserInfoContainer>
               {profileInfo.username !== currentUsername && (
                 <SubscribeButton
-                  isSubscribed={profileInfo.subscribe_status}
                   subscribeToUserId={profileInfo.user_id}
                   subscribeToUsername={profileInfo.username}
                   changeStateIn={'profile'}

@@ -9,11 +9,13 @@ import {
   changeProfilePictureController,
   changePasswordController,
   subscribeToUserController,
+  checkIfCurrentUserIsSubscribedToUserController,
 } from './user.controller';
 import {
   changePasswordSchema,
   changeProfilePictureSchema,
   changeUsernameSchema,
+  checkIfCurrentUserIsSubscribedToUserSchema,
   getProfileInfoSchema,
   registerUserSchema,
   subscribeToUserSchema,
@@ -60,6 +62,13 @@ router.post(
   '/users/:username/profile',
   validateResource(getProfileInfoSchema),
   getProfileInfoController
+);
+
+router.get(
+  '/users/:userId/subscribe-status',
+  requireAuth,
+  validateResource(checkIfCurrentUserIsSubscribedToUserSchema),
+  checkIfCurrentUserIsSubscribedToUserController
 );
 
 export default router;
