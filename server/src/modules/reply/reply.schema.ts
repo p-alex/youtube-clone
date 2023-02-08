@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { UsernameSchema } from '../user/user.schema';
 
 export const getRepliesSchema = z.object({
   params: z.object({
@@ -16,6 +17,7 @@ export const addReplySchema = z.object({
       .string({ required_error: 'Comment id is required' })
       .uuid('Invalid uuid'),
     text: z.string({ required_error: 'Text is required' }).min(1).max(1000),
+    repliedTo: UsernameSchema,
   }),
 });
 

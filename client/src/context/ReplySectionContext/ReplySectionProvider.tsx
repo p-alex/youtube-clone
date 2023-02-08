@@ -22,6 +22,7 @@ export interface InitialState {
   newReplies: IReply[];
   page: number;
   limit: number;
+  toReplyToUsername: string;
   toReplyTo: string;
   toEdit: string;
   toDelete: string;
@@ -32,6 +33,7 @@ const initialState: InitialState = {
   newReplies: [],
   page: 0,
   limit: 10,
+  toReplyToUsername: '',
   toReplyTo: '',
   toEdit: '',
   toDelete: '',
@@ -42,6 +44,7 @@ const ReplySectionContext = createContext<{
   newReplies: IReply[];
   page: number;
   limit: number;
+  toReplyToUsername: string;
   toReplyTo: string;
   toEdit: string;
   toDelete: string;
@@ -51,6 +54,7 @@ const ReplySectionContext = createContext<{
   newReplies: [],
   page: 0,
   limit: 10,
+  toReplyToUsername: '',
   toReplyTo: '',
   toEdit: '',
   toDelete: '',
@@ -59,8 +63,17 @@ const ReplySectionContext = createContext<{
 
 const ReplySectionProvider = ({ children }: { children: ReactNode }) => {
   const [replySectionState, dispatchReplySection] = useReducer(reducer, initialState);
-  const { replies, newReplies, page, limit, toReplyTo, toEdit, toDelete } =
-    replySectionState;
+  const {
+    replies,
+    newReplies,
+    page,
+    limit,
+    toReplyToUsername,
+    toReplyTo,
+    toEdit,
+    toDelete,
+  } = replySectionState;
+  console.log(replies);
   return (
     <ReplySectionContext.Provider
       value={{
@@ -68,6 +81,7 @@ const ReplySectionProvider = ({ children }: { children: ReactNode }) => {
         newReplies,
         page,
         limit,
+        toReplyToUsername,
         toReplyTo,
         toEdit,
         toDelete,

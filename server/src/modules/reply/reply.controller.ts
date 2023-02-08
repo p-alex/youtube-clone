@@ -36,11 +36,11 @@ export const addReplyController = async (
   req: Request<{}, {}, AddReplyInput>,
   res: Response
 ) => {
-  const { commentId, text } = req.body;
+  const { commentId, text, repliedTo } = req.body;
   //@ts-ignore
   const { user_id } = req.user;
   try {
-    const reply = await addReply(commentId, user_id, text);
+    const reply = await addReply(commentId, user_id, text, repliedTo);
     return successResponseJson(res, 200, { reply });
   } catch (error: any) {
     log.error(error);

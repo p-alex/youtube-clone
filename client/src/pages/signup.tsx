@@ -163,7 +163,7 @@ const SignUp = () => {
             </Button>
 
             <FormAlternativeParagraph>
-              <p>Already have an account?</p>
+              Already have an account?{' '}
               <Link href={'/signin'}>
                 <a>Login</a>
               </Link>

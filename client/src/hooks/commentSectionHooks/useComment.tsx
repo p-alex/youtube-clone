@@ -71,10 +71,10 @@ const useComment = (comment: IComment) => {
   };
 
   const [addReply, { isLoading: isAddReplyLoading, errors: addReplyErrors }] =
-    useAxiosWithRetry<{ commentId: string; text: string }, { reply: IReply }>(
-      'api/replies',
-      'POST'
-    );
+    useAxiosWithRetry<
+      { commentId: string; text: string; repliedTo: string },
+      { reply: IReply }
+    >('api/replies', 'POST');
 
   const [likeComment, { isLoading: isLikeCommentLoading }] = useAxiosWithRetry<
     undefined,
@@ -166,6 +166,7 @@ const useComment = (comment: IComment) => {
     const { success, result } = await addReply({
       commentId: comment.comment_id,
       text: removeEmptyLinesFromString(newReplyText),
+      repliedTo: comment.username,
     });
     if (!success || !result) return;
     const newReply = {
@@ -173,7 +174,7 @@ const useComment = (comment: IComment) => {
       user_id: user.user_id,
       username: user.username,
       profile_picture: user.profile_picture,
-      replied_to: comment.comment_id,
+      replied_to: comment.username,
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     setNewReplyText('');

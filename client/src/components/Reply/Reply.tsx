@@ -61,7 +61,7 @@ const Reply = ({ reply, comment }: { reply: IReply; comment: IComment }) => {
     isDeleteReplyLoading,
     addReplyErrors,
     editReplyErrors,
-  } = useReply(reply, comment);
+  } = useReply(reply);
 
   const replyBtn = useRef<HTMLButtonElement>(null);
 

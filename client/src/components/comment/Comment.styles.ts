@@ -95,3 +95,6 @@ export const CommentButton = styled.button`
     font-size: 1rem;
   }
 `;
+export const Comment__FormContainer = styled.div`
+  margin-top: var(--space-medium);
+`;

@@ -6,10 +6,7 @@ import {
   subtractFromTotalComments,
 } from '../../app/features/videoSlice';
 import { RootState } from '../../app/store';
-import {
-  CommentSectionContext,
-  IComment,
-} from '../../context/CommentSectionContext/CommentSectionProvider';
+import { CommentSectionContext } from '../../context/CommentSectionContext/CommentSectionProvider';
 import {
   IReply,
   ReplySectionContext,
@@ -18,7 +15,7 @@ import { removeEmptyLinesFromString } from '../../utils/removeEmptyLinesFromStri
 import useAxiosWithRetry from '../requestHooks/useAxiosWithRetry';
 import router from 'next/router';
 
-const useReply = (reply: IReply, comment: IComment) => {
+const useReply = (reply: IReply) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -27,7 +24,7 @@ const useReply = (reply: IReply, comment: IComment) => {
   const [newReplyText, setNewReplyText] = useState('');
   const [editedReplyText, setEditedReplyText] = useState(reply.text);
 
-  const { dispatchReplySection } = useContext(ReplySectionContext);
+  const { dispatchReplySection, toReplyToUsername } = useContext(ReplySectionContext);
 
   const changeNewReplyText = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setNewReplyText(event.target.value);
@@ -41,7 +38,7 @@ const useReply = (reply: IReply, comment: IComment) => {
     if (!user.user_id) return router.push('/signin');
     dispatchReplySection({
       type: 'SET_TO_REPLY_TO',
-      payload: { reply_id: reply.reply_id },
+      payload: { reply_id: reply.reply_id, reply_username: reply.username },
     });
   };
 
@@ -66,10 +63,10 @@ const useReply = (reply: IReply, comment: IComment) => {
   };
 
   const [addReply, { isLoading: isAddReplyLoading, errors: addReplyErrors }] =
-    useAxiosWithRetry<{ commentId: string; text: string }, { reply: IReply }>(
-      'api/replies',
-      'POST'
-    );
+    useAxiosWithRetry<
+      { commentId: string; text: string; repliedTo: string },
+      { reply: IReply }
+    >('api/replies', 'POST');
 
   const [likeReply, { isLoading: isLikeReplyLoading }] = useAxiosWithRetry<
     undefined,
@@ -110,6 +107,7 @@ const useReply = (reply: IReply, comment: IComment) => {
     const { success, result } = await addReply({
       commentId: reply.comment_id,
       text: removeEmptyLinesFromString(newReplyText),
+      repliedTo: toReplyToUsername,
     });
     if (!success || !result) return;
     const newReply = {
@@ -117,7 +115,7 @@ const useReply = (reply: IReply, comment: IComment) => {
       user_id: user.user_id,
       username: user.username,
       profile_picture: user.profile_picture,
-      replied_to: comment.username,
+      replied_to: toReplyToUsername,
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     dispatchReplySection({ type: 'RESET_IDS' });

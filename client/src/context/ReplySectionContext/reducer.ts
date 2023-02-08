@@ -63,6 +63,7 @@ export const reducer = (state: InitialState, action: ReplySectionActions) => {
         ...state,
         toReplyTo:
           state.toReplyTo === action.payload.reply_id ? '' : action.payload.reply_id,
+        toReplyToUsername: action.payload.reply_username,
       };
     case 'SET_TO_EDIT':
       return {

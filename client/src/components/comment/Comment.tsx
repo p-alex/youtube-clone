@@ -19,6 +19,7 @@ import {
   CommentText,
   CommentUsername,
   CommentUsernameAndDate,
+  Comment__FormContainer,
   ReadMoreToggleBtn,
 } from './Comment.styles';
 import CommentForm from './CommentForm/CommentForm';
@@ -168,19 +169,21 @@ const Comment = ({ comment }: { comment: IComment }) => {
               )}
             </CommentButtons>
             {toReplyTo === comment.comment_id && (
-              <CommentForm
-                value={newReplyText}
-                setValue={changeNewReplyText}
-                toggle={handleResetIds}
-                func={handleAddReply}
-                isLoading={isAddReplyLoading}
-                redirectToElement={replyBtn}
-                btnName={'reply'}
-                placeholder={'Write a reply...'}
-                autoFocus
-                withTrap
-                error={addReplyErrors ? addReplyErrors[0].message : undefined}
-              />
+              <Comment__FormContainer>
+                <CommentForm
+                  value={newReplyText}
+                  setValue={changeNewReplyText}
+                  toggle={handleResetIds}
+                  func={handleAddReply}
+                  isLoading={isAddReplyLoading}
+                  redirectToElement={replyBtn}
+                  btnName={'reply'}
+                  placeholder={'Write a reply...'}
+                  autoFocus
+                  withTrap
+                  error={addReplyErrors ? addReplyErrors[0].message : undefined}
+                />
+              </Comment__FormContainer>
             )}
             <ReplySection comment={comment} />
           </CommentBody>

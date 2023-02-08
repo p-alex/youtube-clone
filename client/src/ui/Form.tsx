@@ -19,14 +19,11 @@ export const FormWrapper = styled.div`
 
 export const Form = styled.form`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 365px;
-  display: block;
   padding: var(--space-large);
   border-radius: 5px;
   margin: calc(${NAV_BAR_HEIGHT}px + 40px) auto 0 auto;
+  height: max-content;
   @media (max-width: 500px) {
     width: 100%;
     border: none;
@@ -49,10 +46,6 @@ export const FormTitle = styled.h1`
 `;
 
 export const FormAlternativeParagraph = styled.p`
-  display: flex;
-  gap: var(--space-small);
-  background-color: ${(props) => props.theme.uiSecondaryBg};
-  padding: var(--space-small);
   border-radius: ${BORDER_RADIUS_ROUND}px;
   color: ${(props) => props.theme.textColor};
   margin-top: var(--space-big);

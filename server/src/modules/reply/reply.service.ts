@@ -17,18 +17,24 @@ export const getReplies = async (comment_id: string, user_id: string, page: stri
   const limit = 6;
   if (!user_id) user_id = crypto.randomUUID();
   const response = await db.query(
-    "SELECT r.reply_id,r.comment_id,r.user_id,cu.username as replied_to,r.text,r.total_likes,r.total_dislikes,ru.user_id,ru.username,ru.profile_picture,CASE WHEN rl.user_id = $1 AND rl.like_status = 'like' THEN 'like' WHEN rl.user_id = $1 AND rl.like_status = 'dislike' THEN 'dislike' END like_status,r.created_at FROM replies AS r LEFT JOIN reply_likes AS rl ON rl.user_id=$1 AND rl.reply_id = r.reply_id LEFT JOIN comments AS c ON r.comment_id=c.comment_id LEFT JOIN users AS ru ON ru.user_id=r.user_id LEFT JOIN users AS cu ON cu.user_id=c.user_id WHERE r.comment_id=$2 ORDER BY r.created_at LIMIT $3 OFFSET $4",
+    "SELECT r.reply_id,r.comment_id,r.user_id,r.replied_to,r.text,r.total_likes,r.total_dislikes,ru.user_id,ru.username,ru.profile_picture,CASE WHEN rl.user_id = $1 AND rl.like_status = 'like' THEN 'like' WHEN rl.user_id = $1 AND rl.like_status = 'dislike' THEN 'dislike' END like_status,r.created_at FROM replies AS r LEFT JOIN reply_likes AS rl ON rl.user_id=$1 AND rl.reply_id = r.reply_id LEFT JOIN comments AS c ON r.comment_id=c.comment_id LEFT JOIN users AS ru ON ru.user_id=r.user_id LEFT JOIN users AS cu ON cu.user_id=c.user_id WHERE r.comment_id=$2 ORDER BY r.created_at LIMIT $3 OFFSET $4",
     [user_id, comment_id, limit, limit * parseInt(page)]
   );
   const data: IReply[] = response.rows;
   return data;
 };
 
-export const addReply = async (comment_id: string, user_id: string, text: string) => {
-  const response = await db.query('SELECT * FROM add_reply($1, $2, $3)', [
+export const addReply = async (
+  comment_id: string,
+  user_id: string,
+  text: string,
+  repliedTo: string
+) => {
+  const response = await db.query('SELECT * FROM add_reply($1, $2, $3, $4)', [
     comment_id,
     user_id,
     text,
+    repliedTo,
   ]);
   const data: IReply = response.rows[0];
   return data;
