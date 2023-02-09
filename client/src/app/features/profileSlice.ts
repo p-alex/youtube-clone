@@ -94,6 +94,12 @@ export const ProfileSlice = createSlice({
           ? state.profileInfo!.total_subscribers + 1
           : state.profileInfo!.total_subscribers - 1;
     },
+    changeProfileDescription: (
+      state,
+      action: PayloadAction<{ newDescription: string }>
+    ) => {
+      state.profileInfo!.description = action.payload.newDescription;
+    },
     resetProfile: (state) => {
       state.profileInfo = null;
       state.videosTab.videos = [];
@@ -112,6 +118,7 @@ export const {
   changeProfileVideosSortBy,
   loadMoreProfileVideos,
   subscribeToProfileOwner,
+  changeProfileDescription,
   resetProfile,
 } = ProfileSlice.actions;
 

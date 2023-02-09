@@ -10,10 +10,12 @@ import {
   changePasswordController,
   subscribeToUserController,
   checkIfCurrentUserIsSubscribedToUserController,
+  changeUserDescriptionController,
 } from './user.controller';
 import {
   changePasswordSchema,
   changeProfilePictureSchema,
+  changeUserDescriptionSchema,
   changeUsernameSchema,
   checkIfCurrentUserIsSubscribedToUserSchema,
   getProfileInfoSchema,
@@ -56,6 +58,13 @@ router.patch(
   requireAuth,
   validateResource(changePasswordSchema),
   changePasswordController
+);
+
+router.patch(
+  '/users/change/description',
+  requireAuth,
+  validateResource(changeUserDescriptionSchema),
+  changeUserDescriptionController
 );
 
 router.post(

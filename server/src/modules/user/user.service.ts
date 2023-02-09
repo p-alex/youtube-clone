@@ -106,6 +106,21 @@ export const getUserInfo = async (userId: string, email?: string): Promise<IUser
   return result.rows[0] as IUser;
 };
 
+export const changeUserDescription = async ({
+  newDescription,
+  userId,
+}: {
+  newDescription: string;
+  userId: string;
+}) => {
+  const response = await db.query(
+    'UPDATE users SET description = $1 WHERE user_id = $2 RETURNING description',
+    [newDescription, userId]
+  );
+  const data: { description: string } = response.rows[0];
+  return data;
+};
+
 export const validateHuman = async (reToken: string) => {
   const secret = config.get('google_recaptcha_secret_key') as string;
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${reToken}`;

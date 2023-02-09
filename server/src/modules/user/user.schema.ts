@@ -3,6 +3,8 @@ import { string, z } from 'zod';
 export const DEFAULT_PROFILE_PICTURE_URL = '/images/default-profile-picture.jpg';
 export const PasswordSymbolsRegex = /[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g;
 
+export const MAX_PROFILE_DESCRIPTION_LENGTH = 1000;
+
 const USERNAME_RESTRICTIONS = {
   minLength: 3,
   maxLength: 20,
@@ -94,6 +96,17 @@ export const changePasswordSchema = z.object({
     ),
 });
 
+export const changeUserDescriptionSchema = z.object({
+  body: z.object({
+    newDescription: z
+      .string({})
+      .max(
+        MAX_PROFILE_DESCRIPTION_LENGTH,
+        `Max ${MAX_PROFILE_DESCRIPTION_LENGTH} characters`
+      ),
+  }),
+});
+
 export const subscribeToUserSchema = z.object({
   body: z.object({
     subscribeToUserId: string({ required_error: 'User id is required' }).uuid(
@@ -121,6 +134,10 @@ export type ChangeProfilePictureInput = z.TypeOf<
 >['body'];
 
 export type ChangePasswordInput = z.TypeOf<typeof changePasswordSchema>['body'];
+
+export type ChangeUserDescriptionInput = z.TypeOf<
+  typeof changeUserDescriptionSchema
+>['body'];
 
 export type SubscribeToUserInput = z.TypeOf<typeof subscribeToUserSchema>['body'];
 

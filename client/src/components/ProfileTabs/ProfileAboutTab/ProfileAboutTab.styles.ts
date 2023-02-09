@@ -25,6 +25,7 @@ export const ProfileAboutTab__Description = styled.p`
   line-height: 20px;
   white-space: pre-line;
   font-size: 0.85rem;
+  margin-bottom: var(--space-large);
 `;
 
 export const ProfileAboutTab__Title = styled.h2`
@@ -55,4 +56,10 @@ export const ProfileAboutTab__Item = styled.li`
 export const ProfileAboutTab__Text = styled.p`
   position: relative;
   color: ${(props) => props.theme.textColor};
+`;
+
+export const ProfileAboutTab__ChangeDescriptionFormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
 `;

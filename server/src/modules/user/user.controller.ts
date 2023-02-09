@@ -3,6 +3,7 @@ import db from '../../db';
 import {
   ChangePasswordInput,
   ChangeProfilePictureInput,
+  ChangeUserDescriptionInput,
   ChangeUsernameInput,
   CheckIfCurrentUserIsSubscribedToUserInput,
   DEFAULT_PROFILE_PICTURE_URL,
@@ -20,6 +21,7 @@ import {
   subscribeToUser,
   getProfileInfo,
   checkIfCurrentUserIsSubscribedToUser,
+  changeUserDescription,
 } from './user.service';
 import argon2 from 'argon2';
 import { sendEmail } from '../../nodemailer/sendEmail';
@@ -205,6 +207,22 @@ export const changePasswordController = async (
     await changePassword(newHashedPassword, user_id);
 
     return successResponseJson(res, 200, null);
+  } catch (error: any) {
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
+  }
+};
+
+export const changeUserDescriptionController = async (
+  req: Request<{}, {}, ChangeUserDescriptionInput>,
+  res: Response
+) => {
+  try {
+    //@ts-ignore
+    const { user_id: userId } = req.user;
+    const { newDescription } = req.body;
+    const response = await changeUserDescription({ newDescription, userId });
+    return successResponseJson(res, 200, { newDescription: response.description });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);
