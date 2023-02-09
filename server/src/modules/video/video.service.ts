@@ -94,9 +94,21 @@ export const saveVideoToDB = async (details: UploadVideoInput) => {
     videoUrl,
     tagList,
   } = details;
+  const tagsText = tagList.join(' ');
+  console.log(tagsText);
   const response = await db.query(
-    'SELECT * FROM create_video($1, $2, $3, $4, $5, $6, $7, $8)',
-    [userId, title, description, duration, mimetype, thumbnailUrl, videoUrl, tagList]
+    'SELECT * FROM create_video($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+    [
+      userId,
+      title,
+      description,
+      duration,
+      mimetype,
+      thumbnailUrl,
+      videoUrl,
+      tagList,
+      tagsText,
+    ]
   );
   const video_id: string = response.rows[0];
   return video_id;
@@ -153,13 +165,16 @@ export const updateVideo = async (
     );
   }
 
-  const response = await db.query('SELECT * FROM update_video ($1,$2,$3,$4,$5,$6)', [
+  const tagsText = videoData.tagList?.join(' ');
+
+  const response = await db.query('SELECT * FROM update_video ($1,$2,$3,$4,$5,$6, $7)', [
     videoData.videoId,
     user_id,
     videoData.title,
     videoData.description,
     new_thumbnail_url ? new_thumbnail_url : videoData.thumbnailData.currentThumbnailUrl,
     videoData.tagList,
+    tagsText,
   ]);
 
   return response.rows[0];
@@ -186,12 +201,12 @@ export const deleteVideo = async (video_id: string, user_id: string) => {
 
   if (deleteThumbnailResponse.result !== 'ok') throw new Error(`Could not delete video`);
 
-  const deleteResponse = await db.query('SELECT * FROM delete_video($1, $2)', [
+  const deleteVideoFromDBResponse = await db.query('SELECT * FROM delete_video($1, $2)', [
     video_id,
     user_id,
   ]);
 
-  const data: { video_id: string } = deleteResponse.rows[0];
+  const data: { video_id: string } = deleteVideoFromDBResponse.rows[0];
   return data;
 };
 

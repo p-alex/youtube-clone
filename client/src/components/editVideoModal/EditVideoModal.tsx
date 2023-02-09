@@ -105,12 +105,13 @@ const EditVideoModal = ({ video }: { video: IVideo }) => {
     if (!isValid) return;
     try {
       const response = await updateVideo(state);
-      if (!response.result) return;
+      if (!response.result) return reRef.current?.reset();
       dispatch(editVideo(state));
       setResult({ success: response.success, error: '' });
       reRef.current?.reset();
       setState((prevState) => ({ ...prevState, reToken: '' }));
     } catch (error: any) {
+      reRef.current?.reset();
       setResult({ success: false, error: error.message });
     }
   };
