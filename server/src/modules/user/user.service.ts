@@ -2,7 +2,6 @@ import db from '../../db';
 import { createRandomCode } from '../../utils/createRandomCode';
 import config from 'config';
 import axios from 'axios';
-import crypto from 'crypto';
 import qs from 'querystring';
 import log from '../../utils/logger';
 interface RegisterInput {
@@ -41,25 +40,33 @@ export interface IProfileInfo {
 }
 
 export const registerUser = async (input: RegisterInput) => {
-  const randomVerificationCode = input.excludeVerificationCode ? '' : createRandomCode(6);
+  const randomVerificationCode = input.excludeVerificationCode
+    ? null
+    : createRandomCode(6);
 
   const profile_picture = input.profile_picture
     ? input.profile_picture
     : '/images/default-profile-picture.jpg';
 
   const result = await db.query(
-    'INSERT INTO users (email, username, password, profile_picture, verification_code) VALUES ($1, $2, $3, $4, $5) RETURNING user_id, verification_code',
-    [input.email, input.username, input.password, profile_picture, randomVerificationCode]
+    'INSERT INTO users (email, username, password, profile_picture, verification_code, is_verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id, verification_code',
+    [
+      input.email,
+      input.username,
+      input.password,
+      profile_picture,
+      randomVerificationCode,
+      input.excludeVerificationCode === true,
+    ]
   );
   const data: { user_id: string; verification_code: string } = result.rows[0];
   return data;
 };
 
-export const getProfileInfo = async (username: string, currentUserId?: string) => {
-  if (currentUserId === '') currentUserId = crypto.randomUUID();
+export const getProfileInfo = async (userId: string, currentUserId?: string) => {
   const profileInfoResult = await db.query(
-    'SELECT u.user_id, u.username, u.profile_picture, u.description, u.total_subscribers, u.total_views, u.total_videos, u.created_at FROM users as u LEFT JOIN subscribers as s ON s.user_id = u.user_id AND s.subscriber_user_id = $2 WHERE u.username = $1',
-    [username, currentUserId]
+    'SELECT u.user_id, u.username, u.profile_picture, u.description, u.total_subscribers, u.total_views, u.total_videos, u.created_at FROM users as u LEFT JOIN subscribers as s ON s.user_id = u.user_id WHERE u.user_id = $1',
+    [userId]
   );
 
   const profileInfoData: IProfileInfo = profileInfoResult.rows[0];

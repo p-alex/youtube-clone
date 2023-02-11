@@ -67,8 +67,8 @@ router.patch(
   changeUserDescriptionController
 );
 
-router.post(
-  '/users/:username/profile',
+router.get(
+  '/users/:userId/profile',
   validateResource(getProfileInfoSchema),
   getProfileInfoController
 );

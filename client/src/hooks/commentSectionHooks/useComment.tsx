@@ -166,7 +166,7 @@ const useComment = (comment: IComment) => {
     const { success, result } = await addReply({
       commentId: comment.comment_id,
       text: removeEmptyLinesFromString(newReplyText),
-      repliedTo: comment.username,
+      repliedTo: comment.user_id,
     });
     if (!success || !result) return;
     const newReply = {
@@ -174,7 +174,8 @@ const useComment = (comment: IComment) => {
       user_id: user.user_id,
       username: user.username,
       profile_picture: user.profile_picture,
-      replied_to: comment.username,
+      replied_to: comment.user_id,
+      replied_to_username: comment.username,
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     setNewReplyText('');

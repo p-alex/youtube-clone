@@ -42,7 +42,7 @@ const ProfilePage = () => {
   );
 
   const currentTab = router.query.tab;
-  const username = router.query.username as string;
+  const userIdQuery = router.query.userId as string;
 
   const dispatch = useDispatch();
 
@@ -52,8 +52,7 @@ const ProfilePage = () => {
     getProfileInfo,
     { isLoading: isGetProfileInfoLoading, errors: getProfileInfoErrors },
   ] = useAxios<{ currentUserId: string | undefined }, { profileInfo: IProfileInfo }>(
-    'api/users/' + username + '/profile',
-    'POST'
+    'api/users/' + userIdQuery + '/profile'
   );
 
   const [
@@ -76,9 +75,9 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    if (!username || username === profileInfo?.username) return;
+    if (!userIdQuery || userIdQuery === profileInfo?.username) return;
     handleGetProfileInfo();
-  }, [username]);
+  }, [userIdQuery]);
 
   useEffect(() => {
     dispatch(setProfileActiveTab({ tab: currentTab as string }));
@@ -120,7 +119,7 @@ const ProfilePage = () => {
                   imageUrl={profileInfo.profile_picture}
                   width={85}
                   height={85}
-                  username={profileInfo.username}
+                  userId={profileInfo.user_id}
                 ></ProfileImage>
                 <ProfilePage__UserInfo>
                   <ProfilePage__Username>{profileInfo.username}</ProfilePage__Username>

@@ -27,7 +27,7 @@ const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
             imageUrl={video.profile_picture}
             width={40}
             height={40}
-            username={video.username}
+            userId={video.user_id}
           />
           <VideoPageHeader__ColumnContainer>
             <VideoPageHeader__Username>{video.username}</VideoPageHeader__Username>

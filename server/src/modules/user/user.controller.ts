@@ -53,14 +53,6 @@ export const registerUserController = async (
     if (userWithEmail.rows[0])
       return errorResponseJson(res, 400, 'A user with that email already exists');
 
-    const userWithUsername = await db.query(
-      'SELECT username FROM users WHERE username = $1',
-      [username]
-    );
-
-    if (userWithUsername.rows[0])
-      return errorResponseJson(res, 400, 'A user with that username already exists');
-
     const hashedPassword = await argon2.hash(password);
 
     const response = await registerUser({
@@ -81,14 +73,13 @@ export const registerUserController = async (
 };
 
 export const getProfileInfoController = async (
-  req: Request<GetProfileInfoInput['params'], {}, GetProfileInfoInput['body']>,
+  req: Request<GetProfileInfoInput>,
   res: Response
 ) => {
   try {
-    const { username } = req.params;
-    const { currentUserId } = req.body;
+    const { userId } = req.params;
 
-    const profileInfo = await getProfileInfo(username, currentUserId);
+    const profileInfo = await getProfileInfo(userId);
 
     if (!profileInfo?.user_id)
       return errorResponseJson(res, 404, 'This profile does not exist');

@@ -10,13 +10,13 @@ const ProfileImageContainer = styled.div<{ width: number; height: number }>`
 `;
 
 const ProfileImage = ({
-  username,
+  userId,
   imageUrl,
   width,
   height,
   elemRef,
 }: {
-  username: string;
+  userId: string;
   imageUrl: string;
   width: number;
   height: number;
@@ -24,8 +24,8 @@ const ProfileImage = ({
 }) => {
   return (
     <ProfileImageContainer width={width} height={height}>
-      <Link href={'/profile/' + username + '/videos'}>
-        <a ref={elemRef} aria-label={`View ${username}'s channel`}>
+      <Link href={'/profile/' + userId + '/videos'}>
+        <a ref={elemRef} aria-label={`View ${userId}'s channel`}>
           <Image
             src={imageUrl}
             width={width}

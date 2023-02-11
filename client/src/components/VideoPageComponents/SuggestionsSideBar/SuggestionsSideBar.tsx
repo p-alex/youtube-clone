@@ -47,7 +47,9 @@ const SuggestionsSideBar = ({ video, isTheatreMode }: ISuggestionsSideBar) => {
 
   return (
     <SuggestionsSideBar__Container isTheatreMode={isTheatreMode}>
-      {!suggestions.length && suggestionsRequestedOnce && <NoResultsMessage />}
+      {!suggestions.length && suggestionsRequestedOnce && (
+        <NoResultsMessage message={'No suggestions found...'} />
+      )}
       {suggestions.map((video, index) => {
         return <SuggestionCard key={index} video={video} />;
       })}

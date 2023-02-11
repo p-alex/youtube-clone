@@ -24,7 +24,8 @@ const useReply = (reply: IReply) => {
   const [newReplyText, setNewReplyText] = useState('');
   const [editedReplyText, setEditedReplyText] = useState(reply.text);
 
-  const { dispatchReplySection, toReplyToUsername } = useContext(ReplySectionContext);
+  const { dispatchReplySection, toReplyToReplyId, toReplyToUsername, toReplyToUserId } =
+    useContext(ReplySectionContext);
 
   const changeNewReplyText = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setNewReplyText(event.target.value);
@@ -38,7 +39,7 @@ const useReply = (reply: IReply) => {
     if (!user.user_id) return router.push('/signin');
     dispatchReplySection({
       type: 'SET_TO_REPLY_TO',
-      payload: { reply_id: reply.reply_id, reply_username: reply.username },
+      payload: { reply },
     });
   };
 
@@ -107,7 +108,7 @@ const useReply = (reply: IReply) => {
     const { success, result } = await addReply({
       commentId: reply.comment_id,
       text: removeEmptyLinesFromString(newReplyText),
-      repliedTo: toReplyToUsername,
+      repliedTo: toReplyToUserId,
     });
     if (!success || !result) return;
     const newReply = {
@@ -115,7 +116,8 @@ const useReply = (reply: IReply) => {
       user_id: user.user_id,
       username: user.username,
       profile_picture: user.profile_picture,
-      replied_to: toReplyToUsername,
+      replied_to: toReplyToUserId,
+      replied_to_username: toReplyToUsername,
     };
     dispatchReplySection({ type: 'ADD_REPLY', payload: { reply: newReply } });
     dispatchReplySection({ type: 'RESET_IDS' });

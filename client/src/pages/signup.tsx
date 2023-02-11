@@ -57,7 +57,7 @@ const SignUp = () => {
     const isValid = verify();
     if (!isValid) return;
     const response = await registerUser(state);
-    if (!response.success) reRef.current?.reset();
+    if (!response.success) return reRef.current?.reset();
     handleReset();
     setIsSuccess(true);
   };

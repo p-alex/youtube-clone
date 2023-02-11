@@ -55,7 +55,7 @@ type DeleteReply = {
 
 type ToggleToReplyTo = {
   type: 'SET_TO_REPLY_TO';
-  payload: { reply_id: string; reply_username: string };
+  payload: { reply: IReply };
 };
 
 type ToggleToEdit = {

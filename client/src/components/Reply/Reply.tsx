@@ -36,7 +36,7 @@ import { IComment } from '../../context/CommentSectionContext/CommentSectionProv
 
 const Reply = ({ reply, comment }: { reply: IReply; comment: IComment }) => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const { toReplyTo, toEdit, toDelete } = useContext(ReplySectionContext);
+  const { toReplyToReplyId, toEdit, toDelete } = useContext(ReplySectionContext);
   const [showMoreText, setShowMoreText] = useState<boolean | null>(null);
   const handleToggleShowMoreText = () => setShowMoreText((prevState) => !prevState);
 
@@ -124,9 +124,9 @@ const Reply = ({ reply, comment }: { reply: IReply; comment: IComment }) => {
               )}
             </Reply__Header>
             <Reply__Text showMoreText={showMoreText} id={`replyText-${reply.reply_id}`}>
-              {reply.replied_to !== comment.username && (
+              {reply.replied_to_username !== comment.username && (
                 <Link href={'/profile/' + reply.replied_to + '/videos'}>
-                  <a>@{reply.replied_to}</a>
+                  <a>@{reply.replied_to_username}</a>
                 </Link>
               )}
               {reply.text}
@@ -161,7 +161,7 @@ const Reply = ({ reply, comment }: { reply: IReply; comment: IComment }) => {
                 </Reply__Button>
               )}
             </Reply__Buttons>
-            {reply.reply_id === toReplyTo && (
+            {reply.reply_id === toReplyToReplyId && (
               <Reply__FormContainer>
                 <CommentForm
                   isLoading={isAddReplyLoading}

@@ -61,10 +61,7 @@ export const registerUserSchema = z.object({
 
 export const getProfileInfoSchema = z.object({
   params: z.object({
-    username: z.string({ required_error: 'Please provide the username param' }),
-  }),
-  body: z.object({
-    currentUserId: z.string({}).optional(),
+    userId: z.string({ required_error: 'Please provide the user id param' }),
   }),
 });
 
@@ -125,7 +122,7 @@ export const checkIfCurrentUserIsSubscribedToUserSchema = z.object({
 
 export type RegisterUserInput = z.TypeOf<typeof registerUserSchema>['body'];
 
-export type GetProfileInfoInput = z.TypeOf<typeof getProfileInfoSchema>;
+export type GetProfileInfoInput = z.TypeOf<typeof getProfileInfoSchema>['params'];
 
 export type ChangeUsernameInput = z.TypeOf<typeof changeUsernameSchema>['body'];
 

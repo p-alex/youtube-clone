@@ -17,7 +17,9 @@ export const addReplySchema = z.object({
       .string({ required_error: 'Comment id is required' })
       .uuid('Invalid uuid'),
     text: z.string({ required_error: 'Text is required' }).min(1).max(1000),
-    repliedTo: UsernameSchema,
+    repliedTo: z
+      .string({ required_error: 'Replied to user id is required' })
+      .uuid('Reply to user id must be a uuid'),
   }),
 });
 

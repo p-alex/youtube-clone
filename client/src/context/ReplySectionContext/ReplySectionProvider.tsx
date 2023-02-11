@@ -14,6 +14,7 @@ export interface IReply {
   total_dislikes: number;
   like_status: LikeStatusType;
   replied_to: string;
+  replied_to_username: string;
   created_at: string | number;
 }
 
@@ -22,8 +23,9 @@ export interface InitialState {
   newReplies: IReply[];
   page: number;
   limit: number;
+  toReplyToUserId: string;
   toReplyToUsername: string;
-  toReplyTo: string;
+  toReplyToReplyId: string;
   toEdit: string;
   toDelete: string;
 }
@@ -34,7 +36,8 @@ const initialState: InitialState = {
   page: 0,
   limit: 10,
   toReplyToUsername: '',
-  toReplyTo: '',
+  toReplyToReplyId: '',
+  toReplyToUserId: '',
   toEdit: '',
   toDelete: '',
 };
@@ -45,7 +48,8 @@ const ReplySectionContext = createContext<{
   page: number;
   limit: number;
   toReplyToUsername: string;
-  toReplyTo: string;
+  toReplyToReplyId: string;
+  toReplyToUserId: string;
   toEdit: string;
   toDelete: string;
   dispatchReplySection: (action: ReplySectionActions) => void;
@@ -55,7 +59,8 @@ const ReplySectionContext = createContext<{
   page: 0,
   limit: 10,
   toReplyToUsername: '',
-  toReplyTo: '',
+  toReplyToReplyId: '',
+  toReplyToUserId: '',
   toEdit: '',
   toDelete: '',
   dispatchReplySection: () => {},
@@ -69,11 +74,12 @@ const ReplySectionProvider = ({ children }: { children: ReactNode }) => {
     page,
     limit,
     toReplyToUsername,
-    toReplyTo,
+    toReplyToReplyId,
+    toReplyToUserId,
     toEdit,
     toDelete,
   } = replySectionState;
-  console.log(replies);
+  console.log(replySectionState);
   return (
     <ReplySectionContext.Provider
       value={{
@@ -82,7 +88,8 @@ const ReplySectionProvider = ({ children }: { children: ReactNode }) => {
         page,
         limit,
         toReplyToUsername,
-        toReplyTo,
+        toReplyToReplyId,
+        toReplyToUserId,
         toEdit,
         toDelete,
         dispatchReplySection,

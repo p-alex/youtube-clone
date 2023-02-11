@@ -90,7 +90,7 @@ const CommentForm = ({
         <ProfileImage
           width={40}
           height={40}
-          username={user.username}
+          userId={user.user_id}
           elemRef={firstFocusableElement}
           imageUrl={user.profile_picture}
         />

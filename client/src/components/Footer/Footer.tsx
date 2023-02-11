@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from '../../ui/Text';
 import { AiFillGithub, AiFillLinkedin } from 'react-icons/ai';
 import { Footer__Container, Footer__Socials, Footer__SocialLink } from './Footer.styles';
 

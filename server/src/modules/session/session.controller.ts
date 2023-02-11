@@ -23,6 +23,10 @@ export const googleOAuthController = async (req: Request, res: Response) => {
     const googleUser = await getGoogleUser({ id_token, access_token });
     // upsert the user
     const user = await getUserInfo('', googleUser.email);
+
+    if (user?.user_id && user?.oauth_provider !== 'google')
+      throw new Error('A user with that email already exists');
+
     let newUserId: string = '';
     if (!user) {
       const password = securePasswordGenerator();
@@ -36,8 +40,7 @@ export const googleOAuthController = async (req: Request, res: Response) => {
       });
       newUserId = registerUserResponse.user_id;
     }
-    if (user.oauth_provider !== 'google')
-      throw new Error('A user with that email already exists');
+
     // create a session
     const session = await createSession(newUserId ? newUserId : user.user_id);
     // create refresh tokens

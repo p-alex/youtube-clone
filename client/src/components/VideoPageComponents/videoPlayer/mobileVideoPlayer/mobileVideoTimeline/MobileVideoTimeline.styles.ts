@@ -23,7 +23,7 @@ export const MobileVideoTimeline__Timeline = styled.div`
 
 export const MobileVideoTimeline__ProgressBar = styled.div`
   height: 100%;
-  background-color: ${(props) => props.theme.accentColor};
+  background-color: #ff0000;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -35,5 +35,5 @@ export const MobileVideoTimeline__ProgressBarCircle = styled.div`
   height: 15px;
   transform: translateX(50%);
   border-radius: 50%;
-  background-color: ${(props) => props.theme.accentColor};
+  background-color: #ff0000;
 `;

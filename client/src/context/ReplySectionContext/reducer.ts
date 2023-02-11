@@ -61,9 +61,12 @@ export const reducer = (state: InitialState, action: ReplySectionActions) => {
     case 'SET_TO_REPLY_TO':
       return {
         ...state,
-        toReplyTo:
-          state.toReplyTo === action.payload.reply_id ? '' : action.payload.reply_id,
-        toReplyToUsername: action.payload.reply_username,
+        toReplyToReplyId:
+          state.toReplyToReplyId === action.payload.reply.reply_id
+            ? ''
+            : action.payload.reply.reply_id,
+        toReplyToUserId: action.payload.reply.user_id,
+        toReplyToUsername: action.payload.reply.username,
       };
     case 'SET_TO_EDIT':
       return {
@@ -77,7 +80,14 @@ export const reducer = (state: InitialState, action: ReplySectionActions) => {
           state.toDelete === action.payload.reply_id ? '' : action.payload.reply_id,
       };
     case 'RESET_IDS':
-      return { ...state, toReplyTo: '', toEdit: '', toDelete: '' };
+      return {
+        ...state,
+        toReplyToReplyId: '',
+        toReplyToUserId: '',
+        toReplyToUsername: '',
+        toEdit: '',
+        toDelete: '',
+      };
     default:
       return state;
   }
