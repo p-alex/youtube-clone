@@ -11,12 +11,12 @@ import {
 import { BiMenu } from 'react-icons/bi';
 import { MdOutlineVideoCall, MdSearch } from 'react-icons/md';
 import Image from 'next/image';
-import Logo from '../Logo/Logo';
+import Logo from '../../ui/Logo/Logo';
 import NavSideBar from '../NavSideBar/NavSideBar';
 import { AnimatePresence } from 'framer-motion';
 
 import useAuth from '../../hooks/authHooks/useAuth';
-import UploadModal from '../UploadModal/UploadModal';
+import UploadModal from '../Modals/UploadModal/UploadModal';
 import { ProfileDropDown } from '../ProfileDropDown/ProfileDropDown';
 import SearchBar from '../SearchBar/SearchBar';
 import { Button } from '../../ui/Button';

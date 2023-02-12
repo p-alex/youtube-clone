@@ -8,7 +8,7 @@ import {
 import { Button } from '../../../ui/Button';
 import InputGroup from '../../../ui/InputGroup';
 import { ErrorText, Text } from '../../../ui/Text';
-import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../Modal/Modal';
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../ui/Modal/Modal';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../../ReCaptchaCheckbox/ReCaptchaCheckbox';

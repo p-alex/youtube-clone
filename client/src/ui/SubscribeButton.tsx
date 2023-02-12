@@ -6,7 +6,7 @@ import { subscribeToProfileOwner } from '../app/features/profileSlice';
 import { changeSubscriptionSubscribeStatus } from '../app/features/subscriptionsSlice';
 import { subscribeToVideoOwner } from '../app/features/videoSlice';
 import { RootState } from '../app/store';
-import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
+import ConfirmationModal from '../components/Modals/ConfirmationModal/ConfirmationModal';
 import useAuth from '../hooks/authHooks/useAuth';
 import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
 import { BORDER_RADIUS_ROUNDER } from '../layout/style';

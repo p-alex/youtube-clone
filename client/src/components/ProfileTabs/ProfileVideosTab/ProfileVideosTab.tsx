@@ -10,7 +10,7 @@ import { RootState } from '../../../app/store';
 import { DefaultResponse } from '../../../hooks/requestHooks/useAxiosWithRetry';
 import { Button } from '../../../ui/Button';
 import Spinner from '../../../ui/Spinner';
-import VideoCard from '../../VideoCard/VideoCard';
+import VideoCard from '../../Cards/VideoCard/VideoCard';
 import {
   ProfileVideosTab__Container,
   ProfileVideosTab__SortBtn,

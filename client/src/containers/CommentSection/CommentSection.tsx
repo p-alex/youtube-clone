@@ -52,7 +52,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
 
   useEffect(() => {
     handleGetComments();
-  }, []);
+  }, [video.video_id]);
 
   const [addComment, { isLoading: isAddCommentLoading, errors }] = useAxiosWithRetry<
     { videoId: string; text: string },

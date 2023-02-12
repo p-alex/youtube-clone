@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import Videos from '../components/VideosDisplay/VideosDisplay';
+import Videos from '../containers/VideosDisplay/VideosDisplay';
 import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../layout/Layout';
 import { useEffect, useState } from 'react';

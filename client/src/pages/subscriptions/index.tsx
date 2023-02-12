@@ -10,7 +10,7 @@ import {
   loadMoreSubscriptionVideos,
   setSubscriptionVideos,
 } from '../../app/features/subscriptionsSlice';
-import VideosDisplay from '../../components/VideosDisplay/VideosDisplay';
+import VideosDisplay from '../../containers/VideosDisplay/VideosDisplay';
 import { Button } from '../../ui/Button';
 import Spinner from '../../ui/Spinner';
 import PageContainer from '../../containers/PageContainer/PageContainer';

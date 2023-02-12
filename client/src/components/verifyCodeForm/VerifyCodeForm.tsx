@@ -12,7 +12,7 @@ import {
   FormWrapper,
 } from '../../ui/Form';
 import { VerifyCodeSchemaType } from '../../schemas/verifyCode.schema';
-import Logo from '../Logo/Logo';
+import Logo from '../../ui/Logo/Logo';
 import Link from 'next/link';
 import InputGroup from '../../ui/InputGroup';
 import ReCaptchaCheckbox, { ReCaptchaType } from '../ReCaptchaCheckbox/ReCaptchaCheckbox';

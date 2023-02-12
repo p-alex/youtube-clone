@@ -81,7 +81,7 @@ export const ProfileDropDown = () => {
       </ProfileDropDown__Header>
       <ProfileDropDown__ButtonList>
         <ProfileDropDown__ButtonItem>
-          <Link href={`/profile/${user.username}/videos`}>
+          <Link href={`/profile/${user.user_id}/videos`}>
             <ListButton>
               <CgProfile /> Your channel
             </ListButton>
@@ -108,7 +108,7 @@ export const ProfileDropDown = () => {
           </ListButton>
         </ProfileDropDown__ButtonItem>
         <ProfileDropDown__ButtonItem>
-          <ListButton onClick={handleLogoutUser}>
+          <ListButton onClick={handleLogoutUser} disabled={isLoading}>
             <MdLogout /> Logout
           </ListButton>
         </ProfileDropDown__ButtonItem>

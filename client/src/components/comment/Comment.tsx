@@ -32,7 +32,7 @@ import {
 import CommentDropDown from '../../ui/CommentDropDown';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import ConfirmationModal from '../Modals/ConfirmationModal/ConfirmationModal';
 
 const Comment = ({ comment }: { comment: IComment }) => {
   const user = useSelector((state: RootState) => state.auth.user);

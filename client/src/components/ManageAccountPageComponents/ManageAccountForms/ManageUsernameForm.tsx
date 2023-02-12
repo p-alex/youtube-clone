@@ -11,7 +11,7 @@ import {
   changeUsernameSchema,
   ChangeUsernameSchemaType,
 } from '../../../schemas/manageAccountFormSchemas';
-import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../Modal/Modal';
+import { MODAL_LAST_FOCUSABLE_ELEMENT } from '../../../ui/Modal/Modal';
 import { ErrorText, Text } from '../../../ui/Text';
 
 const ManageUsernameForm = () => {

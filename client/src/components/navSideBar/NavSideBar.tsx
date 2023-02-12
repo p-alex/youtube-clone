@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { MdMenu, MdHome, MdSubscriptions, MdVideoLibrary } from 'react-icons/md';
-import Logo from '../Logo/Logo';
+import Logo from '../../ui/Logo/Logo';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {

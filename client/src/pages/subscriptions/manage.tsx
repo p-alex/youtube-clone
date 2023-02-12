@@ -7,7 +7,7 @@ import {
   setSubscriptionUsers,
 } from '../../app/features/subscriptionsSlice';
 import { RootState } from '../../app/store';
-import ChannelCard from '../../components/ChannelCard/ChannelCard';
+import ChannelCard from '../../components/Cards/ChannelCard/ChannelCard';
 import PageContainer from '../../containers/PageContainer/PageContainer';
 import useAuth from '../../hooks/authHooks/useAuth';
 import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';

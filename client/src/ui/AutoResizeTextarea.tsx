@@ -50,7 +50,7 @@ const AutoResizeTextarea__Textarea = styled.textarea<{ isError: boolean }>`
   }
   display: block;
   background-color: ${(props) => props.theme.uiSecondaryBg};
-  padding: var(--space-small);
+  padding: var(--space-small) var(--space-medium);
   border-radius: ${BORDER_RADIUS_ROUND}px;
 `;
 

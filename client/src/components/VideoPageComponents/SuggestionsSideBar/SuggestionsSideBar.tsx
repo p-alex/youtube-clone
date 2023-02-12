@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSuggestions } from '../../../app/features/suggestionsSlice';
@@ -5,7 +6,7 @@ import { IVideoSmall, VideoInfo } from '../../../app/features/videoSlice';
 import { RootState } from '../../../app/store';
 import useAxios from '../../../hooks/requestHooks/useAxios';
 import NoResultsMessage from '../../../ui/NoResultsMessage';
-import SuggestionCard from '../../SuggestionCard/SuggestionCard';
+import SuggestionCard from '../../Cards/SuggestionCard/SuggestionCard';
 import { SuggestionsSideBar__Container } from './SuggestionsSideBar.style';
 
 interface ISuggestionsSideBar {
@@ -14,8 +15,11 @@ interface ISuggestionsSideBar {
 }
 
 const SuggestionsSideBar = ({ video, isTheatreMode }: ISuggestionsSideBar) => {
+  const router = useRouter();
   const { suggestions, page } = useSelector((state: RootState) => state.suggestions);
   const dispatch = useDispatch();
+
+  const videoId = router.query.videoId;
 
   const suggestionsRequestedOnce = useRef(false);
 
@@ -37,13 +41,11 @@ const SuggestionsSideBar = ({ video, isTheatreMode }: ISuggestionsSideBar) => {
   };
 
   useEffect(() => {
-    if (!suggestionsRequestedOnce.current) {
-      handleGetSuggestedVideos();
-    }
+    handleGetSuggestedVideos();
     return () => {
       suggestionsRequestedOnce.current = true;
     };
-  }, [suggestions]);
+  }, [videoId]);
 
   return (
     <SuggestionsSideBar__Container isTheatreMode={isTheatreMode}>

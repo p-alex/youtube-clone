@@ -17,8 +17,11 @@ router.post(
   validateResource(loginUserSchema),
   loginUserController
 );
+
 router.get('/auth/refresh', refreshTokenController);
+
 router.post('/auth/logout', validateResource(logoutUserSchema), logoutUserController);
+
 router.post(
   '/auth/verify-email',
   verifyEmailLimiter,

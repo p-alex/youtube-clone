@@ -14,7 +14,7 @@ import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 import useProtectRoute from '../../hooks/useProtectRoute';
 import Image from 'next/image';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../ui/Modal/Modal';
 import ManageUsernameForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageUsernameForm';
 import ManageProfilePictureForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePictureForm';
 import ManageProfilePasswordForm from '../../components/ManageAccountPageComponents/ManageAccountForms/ManageProfilePasswordForm';

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { IUser, setUser } from '../app/features/authSlice';
-import Logo from '../components/Logo/Logo';
+import Logo from '../ui/Logo/Logo';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../components/ReCaptchaCheckbox/ReCaptchaCheckbox';

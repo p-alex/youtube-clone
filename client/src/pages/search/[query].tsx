@@ -3,14 +3,12 @@ import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../../layout/Layout';
 import { useRouter } from 'next/router';
 import { IVideoSmallWithInfo } from '../../app/features/videoSlice';
-import VideoCardWithInfo from '../../components/VideoCardWithInfo/VideoCardWithInfo';
+import VideoCardWithInfo from '../../components/Cards/VideoCardWithInfo/VideoCardWithInfo';
 import styled from 'styled-components';
 import PageContainer from '../../containers/PageContainer/PageContainer';
 
 const SearchPageContainer = styled.div`
   position: relative;
-  max-width: 1080px;
-  margin: auto;
 `;
 
 const PAGE_TITLE = 'Search';
@@ -23,7 +21,7 @@ const SearchPage = () => {
   const [searchVideos, { isLoading, errors }] = useAxiosWithRetry<
     {},
     { searchResults: IVideoSmallWithInfo[] }
-  >(`api/videos/search/${query}`);
+  >('api/videos/search/' + query);
 
   const handleSearchVideos = async () => {
     const response = await searchVideos({});

@@ -5,8 +5,8 @@ import Image from 'next/image';
 
 const ProfileImageContainer = styled.div<{ width: number; height: number }>`
   position: relative;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  min-width: ${(props) => props.width}px;
+  min-height: ${(props) => props.height}px;
 `;
 
 const ProfileImage = ({

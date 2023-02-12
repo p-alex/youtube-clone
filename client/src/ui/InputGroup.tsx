@@ -24,7 +24,6 @@ const InputGroup__Error = styled.p`
 
 const Input = styled.input<{ isError: boolean }>`
   display: block;
-  border: solid red 1px;
   width: 100%;
   border: ${(props) =>
     props.isError

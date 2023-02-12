@@ -9,9 +9,9 @@ import {
   setUserVideos,
 } from '../../app/features/manageVideo';
 import { RootState } from '../../app/store';
-import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
-import EditVideoModal from '../../components/EditVideoModal/EditVideoModal';
-import ManageVideoCard from '../../components/ManageVideoCard/ManageVideoCard';
+import ManageVideoCard from '../../components/Cards/ManageVideoCard/ManageVideoCard';
+import ConfirmationModal from '../../components/Modals/ConfirmationModal/ConfirmationModal';
+import EditVideoModal from '../../components/Modals/EditVideoModal/EditVideoModal';
 import PageContainer from '../../containers/PageContainer/PageContainer';
 import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import useProtectRoute from '../../hooks/useProtectRoute';

@@ -20,7 +20,7 @@ import VerifyCodeForm from '../components/VerifyCodeForm/VerifyCodeForm';
 import InputGroup from '../ui/InputGroup';
 import { useRouter } from 'next/router';
 import useAuth from '../hooks/authHooks/useAuth';
-import Logo from '../components/Logo/Logo';
+import Logo from '../ui/Logo/Logo';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../components/ReCaptchaCheckbox/ReCaptchaCheckbox';

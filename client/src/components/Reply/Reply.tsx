@@ -28,7 +28,7 @@ import {
 } from 'react-icons/ai';
 import CommentForm from '../Comment/CommentForm/CommentForm';
 import CommentDropDown from '../../ui/CommentDropDown';
-import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import ConfirmationModal from '../Modals/ConfirmationModal/ConfirmationModal';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 import { ReadMoreToggleBtn } from '../Comment/Comment.styles';
