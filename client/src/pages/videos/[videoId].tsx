@@ -24,7 +24,7 @@ import { GetServerSideProps } from 'next';
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const videoId = context.params?.videoId as string;
   const res = await axios.get<undefined, { data: DefaultResponse<{ video: VideoInfo }> }>(
-    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/videos/${videoId}`
+    process.env.NEXT_PUBLIC_SERVER_BASE_URL + '/api/videos/' + videoId
   );
   const video = res.data.result?.video;
   return {

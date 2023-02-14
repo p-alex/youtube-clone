@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import useAxios from '../../../hooks/requestHooks/useAxios';
 import Layout from '../../../layout/Layout';
 import {
@@ -27,11 +27,42 @@ import Link from 'next/link';
 import { IVideoSmall } from '../../../app/features/videoSlice';
 import SubscribeButton from '../../../ui/SubscribeButton';
 import PageContainer from '../../../containers/PageContainer/PageContainer';
+import { GetServerSideProps } from 'next';
+import axios from 'axios';
+import { DefaultResponse } from '../../../hooks/requestHooks/useAxiosWithRetry';
+import { ErrorText } from '../../../ui/Text';
 
-const ProfilePage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const userId = context.params?.userId as string;
+  try {
+    const res = await axios.get<
+      undefined,
+      { data: DefaultResponse<{ profileInfo: IProfileInfo }> }
+    >(process.env.NEXT_PUBLIC_SERVER_BASE_URL + '/api/users/' + userId + '/profile');
+    const profileInfo = res.data.result?.profileInfo;
+    return {
+      props: { profileInfo, pageError: null },
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      props: {
+        profileInfo: null,
+        pageError: { message: error.response.data?.errors[0].message },
+      },
+    };
+  }
+};
+
+const ProfilePage = ({
+  profileInfo,
+  pageError,
+}: {
+  profileInfo: IProfileInfo;
+  pageError: { message: string };
+}) => {
   const router = useRouter();
 
-  const currentUserId = useSelector((state: RootState) => state.auth.user.user_id);
   const currentUsername = useSelector((state: RootState) => state.auth.user.username);
   const profileUserId = useSelector(
     (state: RootState) => state.profile.profileInfo?.user_id
@@ -42,18 +73,8 @@ const ProfilePage = () => {
   );
 
   const currentTab = router.query.tab;
-  const userIdQuery = router.query.userId as string;
 
   const dispatch = useDispatch();
-
-  const { profileInfo } = useSelector((state: RootState) => state.profile);
-
-  const [
-    getProfileInfo,
-    { isLoading: isGetProfileInfoLoading, errors: getProfileInfoErrors },
-  ] = useAxios<{ currentUserId: string | undefined }, { profileInfo: IProfileInfo }>(
-    'api/users/' + userIdQuery + '/profile'
-  );
 
   const [
     getProfileVideosRequest,
@@ -62,22 +83,15 @@ const ProfilePage = () => {
     'api/videos/user/' + profileUserId + '/' + sortBy + '/' + page
   );
 
-  const handleGetProfileInfo = async () => {
-    const response = await getProfileInfo({ currentUserId });
-    if (!response.success || !response.result) return;
-    dispatch(setProfileInfo({ profileInfo: response.result.profileInfo }));
-  };
+  useEffect(() => {
+    dispatch(setProfileInfo({ profileInfo }));
+  }, []);
 
   const handleGetProfileVideos = async () => {
     const response = await getProfileVideosRequest({});
     if (!response.success || !response.result) return;
     dispatch(setProfileVideos({ videos: response.result.videos }));
   };
-
-  useEffect(() => {
-    if (!userIdQuery || userIdQuery === profileInfo?.username) return;
-    handleGetProfileInfo();
-  }, [userIdQuery]);
 
   useEffect(() => {
     dispatch(setProfileActiveTab({ tab: currentTab as string }));
@@ -107,11 +121,12 @@ const ProfilePage = () => {
       }}
     >
       <PageContainer width={1250}>
-        {isGetProfileInfoLoading && <p>Loading...</p>}
+        {/* {isGetProfileInfoLoading && <p>Loading...</p>}
         {!isGetProfileInfoLoading && !profileInfo?.user_id && (
           <p>{getProfileInfoErrors !== null && getProfileInfoErrors[0]?.message}</p>
-        )}
-        {!isGetProfileInfoLoading && profileInfo?.user_id && (
+        )} */}
+        {pageError?.message && <ErrorText>{pageError.message}</ErrorText>}
+        {!pageError?.message && profileInfo?.user_id && (
           <>
             <ProfilePage__Header>
               <ProfilePage__UserInfoContainer>
@@ -139,14 +154,14 @@ const ProfilePage = () => {
               )}
             </ProfilePage__Header>
             <ProfilePage__Navigation>
-              <Link href={`/profile/${profileInfo.username}/videos`}>
+              <Link href={`/profile/${profileInfo.user_id}/videos`}>
                 <a>
                   <ProfilePage__NavBtn isActive={currentTab === 'videos'}>
                     VIDEOS
                   </ProfilePage__NavBtn>
                 </a>
               </Link>
-              <Link href={`/profile/${profileInfo.username}/about`}>
+              <Link href={`/profile/${profileInfo.user_id}/about`}>
                 <a>
                   <ProfilePage__NavBtn isActive={currentTab === 'about'}>
                     ABOUT
