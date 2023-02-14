@@ -27,11 +27,17 @@ const Layout = ({ head, children }: Props) => {
     <>
       <Head>
         <title key={'title'}>
-          {head?.title ? head.title + ' | AlexTube' : 'AlexTube'}
+          {head?.title
+            ? head.title + ' | AlexTube by Pistol Alexandru Daniel'
+            : 'AlexTube by Pistol Alexandru Daniel'}
         </title>
         <meta
           name="description"
-          content={head?.description ? head.description : ''}
+          content={
+            head?.description
+              ? head.description
+              : 'AlexTube is a video sharing app created by Pistol Alexandru Daniel'
+          }
           key="description"
         />
         <link rel="icon" href="/favicon.ico" />

@@ -82,7 +82,7 @@ const SignIn = () => {
         <title>Sign in | AlexTube</title>
         <meta
           name="description"
-          content="Sign in so you can like, comment and subscribe"
+          content="Sign in with your AlexTube account so you can like, comment and subscribe"
         />
       </Head>
       <Form onSubmit={handleSubmit}>

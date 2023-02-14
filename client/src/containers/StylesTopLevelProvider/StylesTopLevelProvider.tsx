@@ -10,14 +10,14 @@ const accentColor = '#3ea6ff';
 const lightTheme = {
   siteBg: '#FFFFFF',
   uiBg: '#FFFFFF',
-  uiSecondaryBg: '#F2F2F2',
+  uiSecondaryBg: '#ededed',
   textColor: '#0c161e',
   textMutedColor: '#737373',
   borderColor: '#d2d2d2',
   inputBg: '#fefeff',
   hrColor: 'silver',
   accentColor: accentColor,
-  errorColor: '#ff3434',
+  errorColor: '#eb0000',
   primaryBtn: {
     bg: '#3ea6ff',
     bgHover: '#5db4ff',

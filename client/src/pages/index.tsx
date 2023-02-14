@@ -34,7 +34,6 @@ const Home: NextPage = () => {
     <Layout
       head={{
         title: PAGE_TITLE,
-        description: 'AlexTube is a video sharing app created by Alexandru Daniel Pistol',
       }}
     >
       <PageContainer title={PAGE_TITLE}>

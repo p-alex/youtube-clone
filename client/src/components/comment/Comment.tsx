@@ -59,6 +59,7 @@ const Comment = ({ comment }: { comment: IComment }) => {
     isDeleteLoading,
     addReplyErrors,
     editCommentErrors,
+    error,
   } = useComment(comment);
 
   const replyBtn = useRef<HTMLButtonElement>(null);
@@ -181,7 +182,9 @@ const Comment = ({ comment }: { comment: IComment }) => {
                   placeholder={'Write a reply...'}
                   autoFocus
                   withTrap
-                  error={addReplyErrors ? addReplyErrors[0].message : undefined}
+                  error={
+                    addReplyErrors ? addReplyErrors[0].message : error ? error : undefined
+                  }
                 />
               </Comment__FormContainer>
             )}

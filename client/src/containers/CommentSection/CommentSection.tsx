@@ -22,6 +22,7 @@ const COMMENTS_LIMIT = 10;
 
 const CommentSection = ({ video }: { video: VideoInfo }) => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const [error, setError] = useState<string | undefined>(undefined);
   const dispatch = useDispatch();
 
   const { comments, page, limit, dispatchCommentSection } =
@@ -60,11 +61,12 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
   >('api/comments', 'POST');
 
   const handleAddComment = async () => {
-    const { success, result } = await addComment({
+    setError(undefined);
+    const { success, result, errors } = await addComment({
       videoId: video.video_id,
       text: removeEmptyLinesFromString(newCommentText),
     });
-    if (!success || !result) return;
+    if (!success || !result) return setError(errors[0].message);
     const newComment = {
       ...result.comment,
       user_id: user.user_id,
@@ -112,7 +114,7 @@ const CommentSection = ({ video }: { video: VideoInfo }) => {
           isLoading={isAddCommentLoading}
           btnName="comment"
           placeholder="Write a comment..."
-          error={errors ? errors[0].message : undefined}
+          error={errors ? errors[0].message : error ? error : undefined}
         />
       )}
       <br />

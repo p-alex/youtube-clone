@@ -6,9 +6,9 @@ const limiterErrorResponse = (message: string) => {
 
 export const registerLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 5,
+  max: 6,
   message: limiterErrorResponse(
-    'Too many accounts created from this IP, please try again after an hour'
+    'Too many account creation attempts from this IP, please try again after 1 hour'
   ),
   standardHeaders: true,
   legacyHeaders: false,
@@ -26,7 +26,7 @@ export const loginLimiter = rateLimit({
 
 export const addCommentLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 5,
+  max: 6,
   message: limiterErrorResponse(
     'Too many comments added, please try again after 1 minute'
   ),
@@ -46,7 +46,7 @@ export const commentEditLimiter = rateLimit({
 
 export const searchLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 25,
+  max: 30,
   message: limiterErrorResponse('Too much searching, please try again after 1 minute'),
   standardHeaders: true,
   legacyHeaders: false,
@@ -54,7 +54,7 @@ export const searchLimiter = rateLimit({
 
 export const verifyEmailLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 6,
   message: limiterErrorResponse('Too many tries, please try again after 15 minutes'),
   standardHeaders: true,
   legacyHeaders: false,

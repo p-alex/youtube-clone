@@ -24,7 +24,7 @@ const useComment = (comment: IComment) => {
   const { dispatchReplySection } = useContext(ReplySectionContext);
   const [newReplyText, setNewReplyText] = useState('');
   const [editedCommentText, setEditedCommentText] = useState(comment.text);
-
+  const [error, setError] = useState<string | undefined>(undefined);
   const { dispatchCommentSection } = useContext(CommentSectionContext);
 
   const changeNewReplyText = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -163,12 +163,13 @@ const useComment = (comment: IComment) => {
   };
 
   const handleAddReply = async () => {
-    const { success, result } = await addReply({
+    setError(undefined);
+    const { success, result, errors } = await addReply({
       commentId: comment.comment_id,
       text: removeEmptyLinesFromString(newReplyText),
       repliedTo: comment.user_id,
     });
-    if (!success || !result) return;
+    if (!success || !result) return setError(errors[0].message);
     const newReply = {
       ...result.reply,
       user_id: user.user_id,
@@ -210,6 +211,7 @@ const useComment = (comment: IComment) => {
     isDislikeCommentLoading,
     addReplyErrors,
     editCommentErrors,
+    error,
   };
 };
 

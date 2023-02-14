@@ -65,7 +65,7 @@ const ManageSubscriptions = () => {
   }, [subscriptionUsers.page]);
 
   return (
-    <Layout head={{ title: PAGE_TITLE, description: '' }}>
+    <Layout head={{ title: PAGE_TITLE }}>
       <PageContainer title={PAGE_TITLE} width={800}>
         {isLoading && <Spinner />}
         {!isLoading && subscriptionUsers.list.length === 0 && (

@@ -63,7 +63,7 @@ const Subscriptions = () => {
   }, [subscriptions.videos.page]);
 
   return (
-    <Layout head={{ title: PAGE_TITLE, description: '' }}>
+    <Layout head={{ title: PAGE_TITLE }}>
       <PageContainer title={PAGE_TITLE}>
         {subscriptions.videos.list.length !== 0 && (
           <>

@@ -36,7 +36,7 @@ const SearchPage = () => {
   }, [query]);
 
   return (
-    <Layout head={{ title: PAGE_TITLE, description: '' }}>
+    <Layout head={{ title: PAGE_TITLE }}>
       <PageContainer title={PAGE_TITLE} width={1000}>
         <SearchPageContainer>
           {videos.map((video) => {
