@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { MOBILE_BREAK_POINT } from '../layout/style';
 
 export const ProfilePage__Header = styled.div`
   position: relative;
@@ -7,6 +8,11 @@ export const ProfilePage__Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media (max-width: ${MOBILE_BREAK_POINT}px) {
+    flex-direction: column;
+    gap: var(--space-medium);
+    align-items: flex-start;
+  }
 `;
 
 export const ProfilePage__UserInfoContainer = styled.div`
