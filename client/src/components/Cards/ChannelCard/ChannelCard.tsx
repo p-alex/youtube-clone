@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { ISubscriptionUser } from '../../../app/features/subscriptionsSlice';
+import ProfileImage from '../../../ui/ProfileImage';
 import SubscribeButton from '../../../ui/SubscribeButton';
 import { Text } from '../../../ui/Text';
 import {
@@ -16,7 +16,12 @@ const ChannelCard = ({ user }: { user: ISubscriptionUser }) => {
     <ChannelCard__Container>
       <Link href={'/profile/' + user.user_id + '/videos'}>
         <a>
-          <Image width={150} height={150} src={user.profile_picture} alt="" />
+          <ProfileImage
+            width={150}
+            height={150}
+            imageUrl={user.profile_picture}
+            userId={user.user_id}
+          />
         </a>
       </Link>
       <ChannelCard__Body>

@@ -84,7 +84,7 @@ const NavSideBar = ({ handleToggleSideBar }: { handleToggleSideBar: () => void }
             </>
           )}
         </NavSideBar_ButtonList>
-        <Footer />
+        <Footer lastFocusableElement={lastFocusableElement} />
       </NavSideBar_Container>
       <NavSideBar_Backdrop
         as={motion.div}

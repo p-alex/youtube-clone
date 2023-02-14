@@ -2,7 +2,11 @@ import React from 'react';
 import { AiFillGithub, AiFillLinkedin } from 'react-icons/ai';
 import { Footer__Container, Footer__Socials, Footer__SocialLink } from './Footer.styles';
 
-const Footer = () => {
+const Footer = ({
+  lastFocusableElement,
+}: {
+  lastFocusableElement: React.MutableRefObject<any>;
+}) => {
   return (
     <Footer__Container>
       <Footer__Socials>
@@ -17,6 +21,7 @@ const Footer = () => {
           href="https://www.linkedin.com/in/alexandru-daniel-pistol/"
           target={'_blank'}
           rel="noopener"
+          ref={lastFocusableElement}
         >
           <AiFillLinkedin />
         </Footer__SocialLink>

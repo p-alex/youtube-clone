@@ -61,7 +61,9 @@ export const registerUserSchema = z.object({
 
 export const getProfileInfoSchema = z.object({
   params: z.object({
-    userId: z.string({ required_error: 'Please provide the user id param' }),
+    userId: z
+      .string({ required_error: 'Please provide the user id param' })
+      .uuid('User does not exist'),
   }),
 });
 
