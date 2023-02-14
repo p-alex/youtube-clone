@@ -30,14 +30,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       { data: DefaultResponse<{ video: VideoInfo }> }
     >(process.env.NEXT_PUBLIC_SERVER_BASE_URL + '/api/videos/' + videoId);
     const video = res.data.result?.video;
+    if (!video) throw new Error(res.data.errors[0].message);
     return {
-      props: { video, pageError: null },
+      props: {
+        video: video,
+        pageError: null,
+      },
     };
   } catch (error: any) {
     return {
       props: {
         video: null,
-        pageError: { message: error.response.data?.errors[0].message },
+        pageError: { message: error.response?.data?.errors[0].message || error.message },
       },
     };
   }
@@ -68,7 +72,7 @@ const VideoPage = ({
   useEffect(() => {
     dispatch(setVideo(video));
     return () => {
-      if (video.video_id) dispatch(resetVideo());
+      if (video?.video_id) dispatch(resetVideo());
     };
   }, []);
 

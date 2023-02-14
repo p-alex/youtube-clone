@@ -40,6 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       { data: DefaultResponse<{ profileInfo: IProfileInfo }> }
     >(process.env.NEXT_PUBLIC_SERVER_BASE_URL + '/api/users/' + userId + '/profile');
     const profileInfo = res.data.result?.profileInfo;
+    if (!profileInfo) throw new Error(res.data.errors[0].message);
     return {
       props: { profileInfo, pageError: null },
     };
