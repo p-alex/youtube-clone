@@ -5,7 +5,7 @@ export const getVideoSchema = z.object({
   params: z.object({
     videoId: z
       .string({ required_error: 'Video id is required' })
-      .uuid('Video id is invalid'),
+      .uuid('Video does not exist'),
   }),
 });
 

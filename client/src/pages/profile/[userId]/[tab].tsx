@@ -44,7 +44,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { profileInfo, pageError: null },
     };
   } catch (error: any) {
-    console.log(error);
     return {
       props: {
         profileInfo: null,
@@ -121,10 +120,6 @@ const ProfilePage = ({
       }}
     >
       <PageContainer width={1250}>
-        {/* {isGetProfileInfoLoading && <p>Loading...</p>}
-        {!isGetProfileInfoLoading && !profileInfo?.user_id && (
-          <p>{getProfileInfoErrors !== null && getProfileInfoErrors[0]?.message}</p>
-        )} */}
         {pageError?.message && <ErrorText>{pageError.message}</ErrorText>}
         {!pageError?.message && profileInfo?.user_id && (
           <>

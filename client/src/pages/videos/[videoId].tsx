@@ -20,19 +20,36 @@ import VideoPageDescription from '../../components/VideoPageComponents/VideoPage
 import VideoPageHeader from '../../components/VideoPageComponents/VideoPageHeader/VideoPageHeader';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
+import { ErrorText } from '../../ui/Text';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const videoId = context.params?.videoId as string;
-  const res = await axios.get<undefined, { data: DefaultResponse<{ video: VideoInfo }> }>(
-    process.env.NEXT_PUBLIC_SERVER_BASE_URL + '/api/videos/' + videoId
-  );
-  const video = res.data.result?.video;
-  return {
-    props: { video },
-  };
+  try {
+    const res = await axios.get<
+      undefined,
+      { data: DefaultResponse<{ video: VideoInfo }> }
+    >(process.env.NEXT_PUBLIC_SERVER_BASE_URL + '/api/videos/' + videoId);
+    const video = res.data.result?.video;
+    return {
+      props: { video, pageError: null },
+    };
+  } catch (error: any) {
+    return {
+      props: {
+        video: null,
+        pageError: { message: error.response.data?.errors[0].message },
+      },
+    };
+  }
 };
 
-const VideoPage = ({ video }: { video: VideoInfo }) => {
+const VideoPage = ({
+  video,
+  pageError,
+}: {
+  video: VideoInfo;
+  pageError: { message: string };
+}) => {
   const dispatch = useDispatch();
   const [videoPlayerType, setVideoPlayerType] = useState<'desktop' | 'mobile' | ''>('');
   const [isTheatreMode, setIsTheatreMode] = useState(false);
@@ -57,7 +74,8 @@ const VideoPage = ({ video }: { video: VideoInfo }) => {
 
   return (
     <Layout head={{ title: video?.title, description: video?.description }}>
-      {video.video_id === videoId && (
+      {pageError?.message && <ErrorText>{pageError.message}</ErrorText>}
+      {video?.video_id === videoId && (
         <VideoPageContainer className={isTheatreMode ? 'theatre-mode' : ''}>
           <VideoColumn>
             <VideoContainer>
