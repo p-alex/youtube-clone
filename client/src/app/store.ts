@@ -6,6 +6,7 @@ import manageVideosReducer from './features/manageVideo';
 import suggestionsReducer from './features/suggestionsSlice';
 import profileReducer from './features/profileSlice';
 import subscriptionsReducer from './features/subscriptionsSlice';
+import navbarReducer from './features/navBarSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     manageVideos: manageVideosReducer,
     profile: profileReducer,
     subscriptions: subscriptionsReducer,
+    navbar: navbarReducer,
   },
 });
 

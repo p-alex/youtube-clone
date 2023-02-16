@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   NavBar__AddVideoBtn,
   NavBar__BtnContainer,
@@ -14,7 +14,6 @@ import Image from 'next/image';
 import Logo from '../../ui/Logo/Logo';
 import NavSideBar from '../NavSideBar/NavSideBar';
 import { AnimatePresence } from 'framer-motion';
-
 import useAuth from '../../hooks/authHooks/useAuth';
 import UploadModal from '../Modals/UploadModal/UploadModal';
 import { ProfileDropDown } from '../ProfileDropDown/ProfileDropDown';
@@ -22,44 +21,54 @@ import SearchBar from '../SearchBar/SearchBar';
 import { Button } from '../../ui/Button';
 import Link from 'next/link';
 import MobileSearchBar from './MobileSearchBar/MobileSearchBar';
+import { RootState } from '../../app/store';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  changeSearchQuery,
+  NavBarActiveTab,
+  setNavActiveTab,
+} from '../../app/features/navBarSlice';
 
 const NavBar = () => {
   const { isAuth, user } = useAuth();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const dispatch = useDispatch();
+  const { searchQuery, activeTab } = useSelector((state: RootState) => state.navbar);
 
   const handleSetSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+    dispatch(changeSearchQuery({ searchQuery: event.target.value }));
   };
 
-  const [isSideBarActive, setIsSideBarActive] = useState(false);
-
-  const [isProfileDropDownActive, setIsProfileDropDownActive] = useState(false);
-
-  const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
-
-  const [isUploadModalActive, setIsUploadModalActive] = useState(false);
+  const handleChangeActiveTab = (tab: NavBarActiveTab) => {
+    dispatch(setNavActiveTab({ tab }));
+  };
 
   const uploadModalToggleRef = useRef<HTMLButtonElement>(null);
   const navToggleRef = useRef<HTMLButtonElement>(null);
 
   const handleToggleSideBar = () => {
-    setIsSideBarActive((prevState) => !prevState);
+    dispatch(setNavActiveTab({ tab: '' }));
     navToggleRef.current?.focus();
   };
 
   const handleToggleMobileSearch = () => {
-    setIsMobileSearchActive((prevState) => !prevState);
+    dispatch(setNavActiveTab({ tab: '' }));
   };
 
   const handleToggleUploadModal = () => {
-    setIsUploadModalActive((prevState) => !prevState);
+    dispatch(setNavActiveTab({ tab: '' }));
     uploadModalToggleRef.current?.focus();
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(setNavActiveTab({ tab: '' }));
+    };
+  }, []);
+
   return (
     <>
-      {isMobileSearchActive && (
+      {activeTab === 'mobile-search' && (
         <MobileSearchBar
           handleClose={handleToggleMobileSearch}
           searchQuery={searchQuery}
@@ -69,7 +78,7 @@ const NavBar = () => {
       <NavBar__Container>
         <NavBar__ToggleAndLogoContainer>
           <NavBar__ToggleBtn
-            onClick={handleToggleSideBar}
+            onClick={() => handleChangeActiveTab('sidebar')}
             ref={navToggleRef}
             aria-label="Toggle side bar"
           >
@@ -87,7 +96,7 @@ const NavBar = () => {
         <NavBar__BtnContainer>
           <NavBar__MobileSearchBtn
             aria-label="Search"
-            onClick={() => setIsMobileSearchActive((prevState) => !prevState)}
+            onClick={() => handleChangeActiveTab('mobile-search')}
             id={'nav-bar-search-btn-toggle'}
           >
             <MdSearch />
@@ -97,14 +106,14 @@ const NavBar = () => {
             <>
               <NavBar__AddVideoBtn
                 aria-label="Upload a video"
-                onClick={handleToggleUploadModal}
+                onClick={() => handleChangeActiveTab('upload-modal')}
                 ref={uploadModalToggleRef}
               >
                 <MdOutlineVideoCall />
               </NavBar__AddVideoBtn>
               <NavBar__ProfileBtn
                 aria-label="Go to profile"
-                onClick={() => setIsProfileDropDownActive((prevState) => !prevState)}
+                onClick={() => handleChangeActiveTab('profile-drop-down')}
               >
                 <Image
                   src={user ? user.profile_picture : '/images/default-profile-picture'}
@@ -114,7 +123,7 @@ const NavBar = () => {
                 />
               </NavBar__ProfileBtn>
               <AnimatePresence>
-                {isProfileDropDownActive && <ProfileDropDown />}
+                {activeTab === 'profile-drop-down' && <ProfileDropDown />}
               </AnimatePresence>
             </>
           )}
@@ -127,8 +136,10 @@ const NavBar = () => {
         </NavBar__BtnContainer>
       </NavBar__Container>
       <AnimatePresence>
-        {isSideBarActive && <NavSideBar handleToggleSideBar={handleToggleSideBar} />}
-        {isUploadModalActive && (
+        {activeTab === 'sidebar' && (
+          <NavSideBar handleToggleSideBar={handleToggleSideBar} />
+        )}
+        {activeTab === 'upload-modal' && (
           <UploadModal handleToggleUploadModal={handleToggleUploadModal} />
         )}
       </AnimatePresence>
