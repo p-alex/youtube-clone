@@ -9,6 +9,7 @@ import { IVideoSmall } from '../../../app/features/videoSlice';
 import { RootState } from '../../../app/store';
 import { DefaultResponse } from '../../../hooks/requestHooks/useAxiosWithRetry';
 import { Button } from '../../../ui/Button';
+import FilterButton from '../../../ui/FilterButton';
 import Spinner from '../../../ui/Spinner';
 import VideoCard from '../../Cards/VideoCard/VideoCard';
 import {
@@ -61,18 +62,18 @@ const ProfileVideosTab = ({
   return (
     <ProfileVideosTab__Container>
       <ProfileVideosTab__SortBtnsContainer>
-        <ProfileVideosTab__SortBtn
+        <FilterButton
           isActive={sortBy === 'recent'}
           onClick={() => handleChangeSortBy('recent')}
         >
           Recently uploaded
-        </ProfileVideosTab__SortBtn>
-        <ProfileVideosTab__SortBtn
+        </FilterButton>
+        <FilterButton
           isActive={sortBy === 'popular'}
           onClick={() => handleChangeSortBy('popular')}
         >
           Popular
-        </ProfileVideosTab__SortBtn>
+        </FilterButton>
       </ProfileVideosTab__SortBtnsContainer>
       {isGetProfileVideosLoading && videos.length === 0 && <Spinner />}
       {!isGetProfileVideosLoading && !isGetProfileVideosLoading && (
