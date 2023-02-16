@@ -74,6 +74,22 @@ export const getProfileInfo = async (userId: string, currentUserId?: string) => 
   return profileInfoData;
 };
 
+export const searchForUser = async ({
+  query,
+  page,
+  limit,
+}: {
+  query: string;
+  page: string;
+  limit: number;
+}) => {
+  const offset = parseInt(page) * limit;
+  const users = await db.query(
+    'SELECT user_id, username, profile_picture, description, total_videos, total_subscribers FROM users WHERE username LIKE _$1_ OFFSET $2 LIMIT $3',
+    [query, offset, limit]
+  );
+};
+
 export const changeUsername = async (username: string, userId: string) => {
   const result = await db.query(
     'UPDATE users SET username = $1 WHERE user_id = $2 RETURNING username',
@@ -137,75 +153,6 @@ export const validateHuman = async (reToken: string) => {
   >(url);
 
   return response.data.success;
-};
-
-export const subscribeToUser = async ({
-  subscribeToUserId,
-  currentUserId,
-}: {
-  subscribeToUserId: string;
-  currentUserId: string;
-}) => {
-  const isCurrentUserSubscribedResponse = await db.query(
-    'SELECT s.subscriber_user_id FROM subscribers AS s WHERE s.user_id = $1 AND s.subscriber_user_id = $2',
-    [subscribeToUserId, currentUserId]
-  );
-
-  const isSubscribed = isCurrentUserSubscribedResponse.rows[0];
-
-  let isSuccess: boolean;
-
-  if (isSubscribed) {
-    const response = await db.query(
-      'DELETE FROM subscribers AS s WHERE s.user_id = $1 AND s.subscriber_user_id = $2  RETURNING s.subscriber_user_id',
-      [subscribeToUserId, currentUserId]
-    );
-    isSuccess = response.rows[0].subscriber_user_id !== undefined;
-    await db.query(
-      'UPDATE users SET total_subscribers = users.total_subscribers - 1 WHERE user_id = $1',
-      [subscribeToUserId]
-    );
-  } else {
-    const response = await db.query(
-      'INSERT INTO subscribers (user_id, subscriber_user_id) VALUES ($1, $2) RETURNING subscriber_user_id',
-      [subscribeToUserId, currentUserId]
-    );
-    isSuccess = response.rows[0].subscriber_user_id !== undefined;
-    await db.query(
-      'UPDATE users SET total_subscribers = users.total_subscribers + 1 WHERE user_id = $1',
-      [subscribeToUserId]
-    );
-  }
-
-  return {
-    success: isSuccess,
-    message: `${isSubscribed ? 'Unsubscribed from' : 'Subscribed to'} user`,
-  };
-};
-
-export interface Subscriber {
-  user_id: string;
-  subscriber_user_id: string;
-  subscribed_at: string;
-}
-
-export const checkIfCurrentUserIsSubscribedToUser = async ({
-  userId,
-  currentUserId,
-}: {
-  userId: string;
-  currentUserId: string;
-}) => {
-  const response = await db.query(
-    'SELECT * FROM subscribers WHERE user_id = $1 AND subscriber_user_id = $2',
-    [userId, currentUserId]
-  );
-  const data: Subscriber = response.rows[0];
-  if (data?.user_id) {
-    return true;
-  } else {
-    return false;
-  }
 };
 
 interface GoogleTokensResult {

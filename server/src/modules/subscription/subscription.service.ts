@@ -17,6 +17,12 @@ interface ISubscriptionUser {
   subscribe_status: boolean;
 }
 
+interface ISubscriptionsMini {
+  user_id: string;
+  username: string;
+  profile_picture: string;
+}
+
 export const getSubscriptionVideos = async ({
   userId,
   page,
@@ -43,4 +49,82 @@ export const getSubscriptionUsers = async ({
   );
   const data: ISubscriptionUser[] = response.rows;
   return data;
+};
+
+export const getSubscriptionsUsersMini = async ({ userId }: { userId: string }) => {
+  const response = await db.query(
+    'SELECT u.user_id, u.username, u.profile_picture FROM subscribers as s JOIN users as u ON u.user_id = s.user_id WHERE subscriber_user_id = $1 ORDER BY subscribed_at DESC',
+    [userId]
+  );
+  const data: ISubscriptionsMini[] = response.rows;
+  return data;
+};
+
+export const subscribeToUser = async ({
+  subscribeToUserId,
+  currentUserId,
+}: {
+  subscribeToUserId: string;
+  currentUserId: string;
+}) => {
+  const isCurrentUserSubscribedResponse = await db.query(
+    'SELECT s.subscriber_user_id FROM subscribers AS s WHERE s.user_id = $1 AND s.subscriber_user_id = $2',
+    [subscribeToUserId, currentUserId]
+  );
+
+  const isSubscribed = isCurrentUserSubscribedResponse.rows[0];
+
+  let isSuccess: boolean;
+
+  if (isSubscribed) {
+    const response = await db.query(
+      'DELETE FROM subscribers AS s WHERE s.user_id = $1 AND s.subscriber_user_id = $2  RETURNING s.subscriber_user_id',
+      [subscribeToUserId, currentUserId]
+    );
+    isSuccess = response.rows[0].subscriber_user_id !== undefined;
+    await db.query(
+      'UPDATE users SET total_subscribers = users.total_subscribers - 1 WHERE user_id = $1',
+      [subscribeToUserId]
+    );
+  } else {
+    const response = await db.query(
+      'INSERT INTO subscribers (user_id, subscriber_user_id) VALUES ($1, $2) RETURNING subscriber_user_id',
+      [subscribeToUserId, currentUserId]
+    );
+    isSuccess = response.rows[0].subscriber_user_id !== undefined;
+    await db.query(
+      'UPDATE users SET total_subscribers = users.total_subscribers + 1 WHERE user_id = $1',
+      [subscribeToUserId]
+    );
+  }
+
+  return {
+    success: isSuccess,
+    message: `${isSubscribed ? 'Unsubscribed from' : 'Subscribed to'} user`,
+  };
+};
+
+export interface Subscriber {
+  user_id: string;
+  subscriber_user_id: string;
+  subscribed_at: string;
+}
+
+export const checkIfCurrentUserIsSubscribedToUser = async ({
+  userId,
+  currentUserId,
+}: {
+  userId: string;
+  currentUserId: string;
+}) => {
+  const response = await db.query(
+    'SELECT * FROM subscribers WHERE user_id = $1 AND subscriber_user_id = $2',
+    [userId, currentUserId]
+  );
+  const data: Subscriber = response.rows[0];
+  if (data?.user_id) {
+    return true;
+  } else {
+    return false;
+  }
 };

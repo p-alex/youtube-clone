@@ -35,6 +35,7 @@ const ChannelCard = ({ user }: { user: ISubscriptionUser }) => {
         <SubscribeButton
           subscribeToUserId={user.user_id}
           subscribeToUsername={user.username}
+          subscribeToProfilePicture={user.profile_picture}
           changeStateIn={'manageSubscriptions'}
         />
       </ChannelCard__Body>

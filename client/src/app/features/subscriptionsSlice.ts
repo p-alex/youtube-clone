@@ -11,6 +11,12 @@ export interface ISubscriptionUser {
   subscribe_status: boolean;
 }
 
+export interface ISubscriptionsMini {
+  user_id: string;
+  username: string;
+  profile_picture: string;
+}
+
 interface InitialState {
   videos: {
     list: IVideoSmall[];
@@ -19,6 +25,9 @@ interface InitialState {
   users: {
     list: ISubscriptionUser[];
     page: number;
+  };
+  navSideBarMiniUsers: {
+    list: ISubscriptionsMini[];
   };
 }
 
@@ -30,6 +39,9 @@ const initialState: InitialState = {
   users: {
     list: [],
     page: 0,
+  },
+  navSideBarMiniUsers: {
+    list: [],
   },
 };
 
@@ -45,6 +57,30 @@ const subscriptionSlice = createSlice({
       action: PayloadAction<{ users: ISubscriptionUser[] }>
     ) => {
       state.users.list = action.payload.users;
+    },
+    setMiniSubscriptions: (
+      state,
+      action: PayloadAction<{ subscriptionsMini: ISubscriptionsMini[] }>
+    ) => {
+      state.navSideBarMiniUsers.list = action.payload.subscriptionsMini;
+    },
+    addMiniSubscription: (
+      state,
+      action: PayloadAction<{
+        user_id: string;
+        username: string;
+        profile_picture: string;
+      }>
+    ) => {
+      state.navSideBarMiniUsers.list = [
+        { ...action.payload },
+        ...state.navSideBarMiniUsers.list,
+      ];
+    },
+    removeMiniSubscription: (state, action: PayloadAction<{ userId: string }>) => {
+      state.navSideBarMiniUsers.list = state.navSideBarMiniUsers.list.filter(
+        (subscription) => subscription.user_id !== action.payload.userId
+      );
     },
     loadMoreSubscriptionVideos: (
       state,
@@ -91,11 +127,14 @@ const subscriptionSlice = createSlice({
 export const {
   setSubscriptionVideos,
   setSubscriptionUsers,
+  setMiniSubscriptions,
   loadMoreSubscriptionVideos,
   loadMoreSubscriptionUsers,
   incrementSubscriptionsVideosPage,
   incrementSubscriptionsUsersPage,
   changeSubscriptionSubscribeStatus,
+  addMiniSubscription,
+  removeMiniSubscription,
   resetSubscriptions,
 } = subscriptionSlice.actions;
 

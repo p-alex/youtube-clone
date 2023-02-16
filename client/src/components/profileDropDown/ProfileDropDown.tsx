@@ -24,6 +24,7 @@ import { resetProfile } from '../../app/features/profileSlice';
 import { resetSubscriptions } from '../../app/features/subscriptionsSlice';
 import { resetSuggestions } from '../../app/features/suggestionsSlice';
 import { resetVideoState } from '../../app/features/videoSlice';
+import { resetNavBar } from '../../app/features/navBarSlice';
 
 export const ProfileDropDown = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -42,6 +43,7 @@ export const ProfileDropDown = () => {
     dispatch(resetSubscriptions());
     dispatch(resetSuggestions());
     dispatch(resetVideoState());
+    dispatch(resetNavBar());
   };
 
   const handleChangeTheme = () => {

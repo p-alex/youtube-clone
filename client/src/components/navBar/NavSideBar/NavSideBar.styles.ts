@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { NAV_BAR_HEIGHT } from '../../layout/style';
+import { NAV_BAR_HEIGHT } from '../../../layout/style';
 
-export const NavSideBar_Wrapper = styled.div`
+export const NavSideBar__Wrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@ export const NavSideBar_Wrapper = styled.div`
   z-index: 100;
 `;
 
-export const NavSideBar_Backdrop = styled.div`
+export const NavSideBar__Backdrop = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -20,7 +20,7 @@ export const NavSideBar_Backdrop = styled.div`
   z-index: 101;
 `;
 
-export const NavSideBar_Container = styled.aside`
+export const NavSideBar__Container = styled.aside`
   position: absolute;
   width: 250px;
   background-color: ${(props) => props.theme.uiBg};
@@ -31,7 +31,20 @@ export const NavSideBar_Container = styled.aside`
   flex-direction: column;
 `;
 
-export const NavSideBar_Header = styled.div`
+export const NavSideBar__ButtonsContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: calc(100%);
+  margin-bottom: var(--space-medium);
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const NavSideBar__Header = styled.div`
   display: flex;
   align-items: center;
   gap: var(--space-big);
@@ -39,28 +52,36 @@ export const NavSideBar_Header = styled.div`
   padding: var(--space-big);
 `;
 
-export const NavSideBar_CloseBtn = styled.button`
+export const NavSideBar__CloseBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.textColor};
 `;
 
-export const NavSideBar_HorizontalLine = styled.hr`
+export const NavSideBar__HorizontalLine = styled.hr`
   background-color: ${(props) => props.theme.hrColor};
   border: none;
   height: 1px;
   width: 90%;
 `;
 
-export const NavSideBar_ButtonList = styled.ul`
+export const NavSideBar__ButtonList = styled.ul`
   position: relative;
   width: 100%;
   list-style: none;
-  margin-top: var(--space-big);
+  margin-top: var(--space-medium);
 `;
 
-export const NavSideBar_ButtonItem = styled.li``;
+export const NavSideBar__ListTitle = styled.p`
+  padding: var(--space-medium);
+  font-weight: 700;
+  color: ${(props) => props.theme.textColor};
+  border-bottom: solid 1px ${(props) => props.theme.borderColor};
+  margin-bottom: var(--space-small);
+`;
+
+export const NavSideBar__ButtonItem = styled.li``;
 
 export const LoginContainer = styled.div`
   display: flex;

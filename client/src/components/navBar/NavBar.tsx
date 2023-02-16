@@ -12,7 +12,7 @@ import { BiMenu } from 'react-icons/bi';
 import { MdOutlineVideoCall, MdSearch } from 'react-icons/md';
 import Image from 'next/image';
 import Logo from '../../ui/Logo/Logo';
-import NavSideBar from '../NavSideBar/NavSideBar';
+import NavSideBar from './NavSideBar/NavSideBar';
 import { AnimatePresence } from 'framer-motion';
 import useAuth from '../../hooks/authHooks/useAuth';
 import UploadModal from '../Modals/UploadModal/UploadModal';
@@ -26,14 +26,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   changeSearchQuery,
   NavBarActiveTab,
+  resetNavBar,
   setNavActiveTab,
 } from '../../app/features/navBarSlice';
+import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
+import {
+  ISubscriptionsMini,
+  setMiniSubscriptions,
+} from '../../app/features/subscriptionsSlice';
+import { useRouter } from 'next/router';
 
 const NavBar = () => {
+  const router = useRouter();
   const { isAuth, user } = useAuth();
 
   const dispatch = useDispatch();
   const { searchQuery, activeTab } = useSelector((state: RootState) => state.navbar);
+  const subscriptionsMini = useSelector(
+    (state: RootState) => state.subscriptions.navSideBarMiniUsers.list
+  );
 
   const handleSetSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeSearchQuery({ searchQuery: event.target.value }));
@@ -60,11 +71,32 @@ const NavBar = () => {
     uploadModalToggleRef.current?.focus();
   };
 
+  const [
+    getMiniSubscriptions,
+    { isLoading: isMiniSubscriptionsLoading, errors: miniSubscriptionsErrors },
+  ] = useAxiosWithRetry<{}, { subscriptionsMini: ISubscriptionsMini[] }>(
+    'api/subscriptions/mini'
+  );
+
+  const handleGetMiniSubscriptions = async () => {
+    const response = await getMiniSubscriptions({});
+    if (!response.success || !response.result) return;
+    dispatch(
+      setMiniSubscriptions({ subscriptionsMini: response.result.subscriptionsMini })
+    );
+  };
+
   useEffect(() => {
+    if (subscriptionsMini.length || !isAuth) return;
+    handleGetMiniSubscriptions();
     return () => {
       dispatch(setNavActiveTab({ tab: '' }));
     };
-  }, []);
+  }, [isAuth]);
+
+  useEffect(() => {
+    dispatch(setNavActiveTab({ tab: '' }));
+  }, [router.query]);
 
   return (
     <>

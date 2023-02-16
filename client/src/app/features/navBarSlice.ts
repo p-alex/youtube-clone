@@ -27,9 +27,13 @@ const navBarSlice = createSlice({
     setNavActiveTab: (state, action: PayloadAction<{ tab: NavBarActiveTab }>) => {
       state.activeTab = state.activeTab === action.payload.tab ? '' : action.payload.tab;
     },
+    resetNavBar: (state) => {
+      state.searchQuery = '';
+      state.activeTab = '';
+    },
   },
 });
 
-export const { changeSearchQuery, setNavActiveTab } = navBarSlice.actions;
+export const { changeSearchQuery, setNavActiveTab, resetNavBar } = navBarSlice.actions;
 
 export default navBarSlice.reducer;

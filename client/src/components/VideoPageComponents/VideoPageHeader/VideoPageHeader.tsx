@@ -40,6 +40,7 @@ const VideoPageHeader = ({ video }: { video: VideoInfo }) => {
             <SubscribeButton
               subscribeToUserId={video.user_id}
               subscribeToUsername={video.username}
+              subscribeToProfilePicture={video.profile_picture}
               changeStateIn={'videopage'}
               withConfirmation
             />

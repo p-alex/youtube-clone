@@ -8,8 +8,6 @@ import {
   changeUsernameController,
   changeProfilePictureController,
   changePasswordController,
-  subscribeToUserController,
-  checkIfCurrentUserIsSubscribedToUserController,
   changeUserDescriptionController,
 } from './user.controller';
 import {
@@ -17,10 +15,8 @@ import {
   changeProfilePictureSchema,
   changeUserDescriptionSchema,
   changeUsernameSchema,
-  checkIfCurrentUserIsSubscribedToUserSchema,
   getProfileInfoSchema,
   registerUserSchema,
-  subscribeToUserSchema,
 } from './user.schema';
 
 const router = express.Router();
@@ -30,13 +26,6 @@ router.post(
   registerLimiter,
   validateResource(registerUserSchema),
   registerUserController
-);
-
-router.post(
-  '/users/subscribe',
-  requireAuth,
-  validateResource(subscribeToUserSchema),
-  subscribeToUserController
 );
 
 router.patch(
@@ -71,13 +60,6 @@ router.get(
   '/users/:userId/profile',
   validateResource(getProfileInfoSchema),
   getProfileInfoController
-);
-
-router.get(
-  '/users/:userId/subscribe-status',
-  requireAuth,
-  validateResource(checkIfCurrentUserIsSubscribedToUserSchema),
-  checkIfCurrentUserIsSubscribedToUserController
 );
 
 export default router;

@@ -13,17 +13,6 @@ export const ProfileVideosTab__SortBtnsContainer = styled.div`
   margin-bottom: var(--space-big);
 `;
 
-export const ProfileVideosTab__SortBtn = styled.button<{ isActive: boolean }>`
-  padding: var(--space-small) var(--space-medium);
-  background-color: ${(props) =>
-    props.isActive ? props.theme.normalBtn.bgHover : props.theme.normalBtn.bg};
-  color: ${(props) => props.theme.textColor};
-  border-radius: ${BORDER_RADIUS_ROUND}px;
-  &:hover {
-    background-color: ${(props) => props.theme.normalBtn.bgHover};
-  }
-`;
-
 export const ProfileVideosTab__VideoContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);

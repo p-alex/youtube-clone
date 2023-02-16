@@ -49,9 +49,12 @@ function useAxiosWithRetry<Body, Data>(
 
       return { statusCode: response.status, data };
     } catch (error: any) {
+      const errorsList = error.response.data?.errors;
       const data: DefaultResponse<Data | null> = {
         success: false,
-        errors: [{ message: error.response.data?.errors[0].message }],
+        errors: [
+          { message: errorsList ? errorsList[0].message : 'Something went wrong...' },
+        ],
         result: null,
       };
       return { statusCode: error?.response?.status, data };

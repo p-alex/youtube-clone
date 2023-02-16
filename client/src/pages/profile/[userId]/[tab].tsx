@@ -73,6 +73,7 @@ const ProfilePage = ({
   );
 
   const currentTab = router.query.tab;
+  const currentUserId = router.query.userId;
 
   const dispatch = useDispatch();
 
@@ -83,15 +84,15 @@ const ProfilePage = ({
     'api/videos/user/' + profileUserId + '/' + sortBy + '/' + page
   );
 
-  useEffect(() => {
-    dispatch(setProfileInfo({ profileInfo }));
-  }, []);
-
   const handleGetProfileVideos = async () => {
     const response = await getProfileVideosRequest({});
     if (!response.success || !response.result) return;
     dispatch(setProfileVideos({ videos: response.result.videos }));
   };
+
+  useEffect(() => {
+    dispatch(setProfileInfo({ profileInfo }));
+  }, [currentUserId]);
 
   useEffect(() => {
     dispatch(setProfileActiveTab({ tab: currentTab as string }));
@@ -144,6 +145,7 @@ const ProfilePage = ({
                 <SubscribeButton
                   subscribeToUserId={profileInfo.user_id}
                   subscribeToUsername={profileInfo.username}
+                  subscribeToProfilePicture={profileInfo.profile_picture}
                   changeStateIn={'profile'}
                   withConfirmation
                 />

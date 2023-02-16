@@ -14,7 +14,6 @@ import Spinner from '../../../ui/Spinner';
 import VideoCard from '../../Cards/VideoCard/VideoCard';
 import {
   ProfileVideosTab__Container,
-  ProfileVideosTab__SortBtn,
   ProfileVideosTab__SortBtnsContainer,
   ProfileVideosTab__VideoContainer,
 } from './ProfileVideosTab.styles';

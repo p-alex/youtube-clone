@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { subscribeToProfileOwner } from '../app/features/profileSlice';
-import { changeSubscriptionSubscribeStatus } from '../app/features/subscriptionsSlice';
+import {
+  addMiniSubscription,
+  changeSubscriptionSubscribeStatus,
+  removeMiniSubscription,
+} from '../app/features/subscriptionsSlice';
 import { subscribeToVideoOwner } from '../app/features/videoSlice';
 import { RootState } from '../app/store';
 import ConfirmationModal from '../components/Modals/ConfirmationModal/ConfirmationModal';
@@ -41,6 +45,7 @@ const SubscribeButton__Btn = styled.button<{ variant: 'subed' | 'normal' }>`
 interface Props {
   subscribeToUserId: string;
   subscribeToUsername: string;
+  subscribeToProfilePicture: string;
   changeStateIn: 'profile' | 'videopage' | 'manageSubscriptions';
   withConfirmation?: boolean;
 }
@@ -48,6 +53,7 @@ interface Props {
 const SubscribeButton = ({
   subscribeToUserId,
   subscribeToUsername,
+  subscribeToProfilePicture,
   changeStateIn,
   withConfirmation,
 }: Props) => {
@@ -63,7 +69,7 @@ const SubscribeButton = ({
     checkIfSubscribedRequest,
     { isLoading: isCheckIfSubscribedLoading, errors: checkIfSubscribedErrors },
   ] = useAxiosWithRetry<{}, { isSubscribed: boolean }>(
-    'api/users/' + subscribeToUserId + '/subscribe-status'
+    'api/subscriptions/' + subscribeToUserId + '/subscribe-status'
   );
 
   const handleCheckIfSubscribed = async () => {
@@ -80,7 +86,10 @@ const SubscribeButton = ({
   const [
     subscribeRequest,
     { isLoading: isSubscribeRequestLoading, errors: subscribeRequestErrors },
-  ] = useAxiosWithRetry<{ subscribeToUserId: string }, {}>('api/users/subscribe', 'POST');
+  ] = useAxiosWithRetry<{ subscribeToUserId: string }, {}>(
+    'api/subscriptions/subscribe',
+    'POST'
+  );
 
   const [isConfirmationActive, setIsConfirmationActive] = useState(false);
 
@@ -99,6 +108,17 @@ const SubscribeButton = ({
     if (!response.success) return;
     handleChangeStateToReflectNewSubscribeStatus();
     setIsConfirmationActive(false);
+    if (isSubscribed) {
+      dispatch(removeMiniSubscription({ userId: subscribeToUserId }));
+    } else {
+      dispatch(
+        addMiniSubscription({
+          user_id: subscribeToUserId,
+          username: subscribeToUsername,
+          profile_picture: subscribeToProfilePicture,
+        })
+      );
+    }
     setIsSubscribed((prevState) => !prevState);
   };
 
