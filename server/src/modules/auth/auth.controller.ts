@@ -113,7 +113,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     res.cookie('rtoken', newRefreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       path: '/',
       maxAge: 604800000,
     });
