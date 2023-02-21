@@ -14,6 +14,7 @@ export default {
   access_token_expire: 'ACCESS_TOKEN_EXPIRE',
   refresh_token_expire: 'REFRESH_TOKEN_EXPIRE',
   jwt_sign_algorithm: 'JWT_SIGN_ALGORITHM',
+  app_email: 'APP_EMAIL',
   smtp_user: 'SMTP_USER',
   smtp_pass: 'SMTP_PASS',
   verify_email_token_secret: 'VERIFY_EMAIL_TOKEN_SECRET',

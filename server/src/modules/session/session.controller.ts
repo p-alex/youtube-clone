@@ -27,6 +27,7 @@ export const googleOAuthController = async (req: Request, res: Response) => {
     if (user?.user_id && user?.oauth_provider !== 'google')
       throw new Error('A user with that email already exists');
 
+    //Upsert user if user does not exist
     let newUserId: string = '';
     if (!user) {
       const password = securePasswordGenerator();
@@ -36,9 +37,10 @@ export const googleOAuthController = async (req: Request, res: Response) => {
         username: googleUser.name,
         profile_picture: googleUser.picture,
         password: hashedPassword,
-        excludeVerificationCode: true,
+        oauthProvider: 'google',
       });
-      newUserId = registerUserResponse.user_id;
+      if (!registerUserResponse.data) throw new Error(registerUserResponse.message);
+      newUserId = registerUserResponse.data.user_id;
     }
 
     // create a session

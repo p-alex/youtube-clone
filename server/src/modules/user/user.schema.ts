@@ -106,6 +106,15 @@ export const changeUserDescriptionSchema = z.object({
   }),
 });
 
+export const forgetPasswordSendCodeSchema = z.object({
+  body: z.object({
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email('Must be a valid email'),
+    reToken: ReTokenSchema,
+  }),
+});
+
 export type RegisterUserInput = z.TypeOf<typeof registerUserSchema>['body'];
 
 export type GetProfileInfoInput = z.TypeOf<typeof getProfileInfoSchema>['params'];
@@ -121,3 +130,5 @@ export type ChangePasswordInput = z.TypeOf<typeof changePasswordSchema>['body'];
 export type ChangeUserDescriptionInput = z.TypeOf<
   typeof changeUserDescriptionSchema
 >['body'];
+
+export type ForgetPasswordInput = z.TypeOf<typeof forgetPasswordSendCodeSchema>['body'];

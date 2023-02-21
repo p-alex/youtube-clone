@@ -20,8 +20,6 @@ import {
   changeUserDescription,
 } from './user.service';
 import argon2 from 'argon2';
-import { sendEmail } from '../../nodemailer/sendEmail';
-import { verifyEmailTemplate } from '../../nodemailer/templates';
 import log from '../../utils/logger';
 import { cloudinary } from '../../cloudinary';
 import { extractCloudinaryPublicId } from '../../utils/extractCloudinaryPublicId';
@@ -51,15 +49,13 @@ export const registerUserController = async (
 
     const hashedPassword = await argon2.hash(password);
 
-    const response = await registerUser({
+    const registerResponse = await registerUser({
       email,
       username,
       password: hashedPassword,
     });
 
-    if (!response.verification_code) throw new Error();
-
-    await sendEmail(verifyEmailTemplate(response.verification_code));
+    if (!registerResponse.success) throw new Error(registerResponse.message);
 
     return successResponseJson(res, 201, null);
   } catch (error: any) {

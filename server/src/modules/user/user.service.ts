@@ -4,12 +4,17 @@ import config from 'config';
 import axios from 'axios';
 import qs from 'querystring';
 import log from '../../utils/logger';
+import { sendEmail } from '../../nodemailer/sendEmail';
+import {
+  forgetPasswordVerificationCodeTemplate,
+  verifyEmailTemplate,
+} from '../../nodemailer/templates';
 interface RegisterInput {
   email: string;
   username: string;
   password: string;
   profile_picture?: string;
-  excludeVerificationCode?: boolean;
+  oauthProvider?: 'google';
 }
 
 export interface IUser {
@@ -40,27 +45,46 @@ export interface IProfileInfo {
 }
 
 export const registerUser = async (input: RegisterInput) => {
-  const randomVerificationCode = input.excludeVerificationCode
-    ? null
-    : createRandomCode(6);
+  try {
+    const verificationCode =
+      input.oauthProvider === undefined ? createRandomCode(6) : null;
 
-  const profile_picture = input.profile_picture
-    ? input.profile_picture
-    : '/images/default-profile-picture.jpg';
+    const is_verified = input.oauthProvider === undefined ? false : true;
 
-  const result = await db.query(
-    'INSERT INTO users (email, username, password, profile_picture, verification_code, is_verified) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id, verification_code',
-    [
-      input.email,
-      input.username,
-      input.password,
-      profile_picture,
-      randomVerificationCode,
-      input.excludeVerificationCode === true,
-    ]
-  );
-  const data: { user_id: string; verification_code: string } = result.rows[0];
-  return data;
+    if (!input.oauthProvider && verificationCode) {
+      const response = await sendEmail(
+        verifyEmailTemplate({
+          to: input.email,
+          username: input.username,
+          verificationCode,
+        })
+      );
+      if (!response.success)
+        throw new Error('Failed to send verification email. Try again later...');
+    }
+
+    const profile_picture = input.profile_picture
+      ? input.profile_picture
+      : '/images/default-profile-picture.jpg';
+
+    const result = await db.query(
+      'INSERT INTO users (email, username, password, profile_picture, verification_code, is_verified, oauth_provider) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id, verification_code',
+      [
+        input.email,
+        input.username,
+        input.password,
+        profile_picture,
+        verificationCode,
+        is_verified,
+        input.oauthProvider,
+      ]
+    );
+    const data: { user_id: string; verification_code: string } = result.rows[0];
+    return { success: true, message: 'Success', data };
+  } catch (error: any) {
+    log.error(error.message);
+    return { success: false, message: error.message, data: null };
+  }
 };
 
 export const getProfileInfo = async (userId: string, currentUserId?: string) => {
@@ -221,5 +245,20 @@ export const getGoogleUser = async ({
   } catch (error: any) {
     log.error(error, 'Error fetching Google user');
     throw new Error(error.message);
+  }
+};
+
+export const forgetPasswordSendCode = async (
+  email: string
+): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  try {
+    const code = createRandomCode(6);
+    await sendEmail(forgetPasswordVerificationCodeTemplate(email, code));
+    return { success: true, message: 'Success' };
+  } catch (error: any) {
+    return { success: false, message: error.message };
   }
 };

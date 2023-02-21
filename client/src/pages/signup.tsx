@@ -25,6 +25,7 @@ import ReCaptchaCheckbox, {
   ReCaptchaType,
 } from '../components/ReCaptchaCheckbox/ReCaptchaCheckbox';
 import AuthProviderLink from '../ui/AuthProviderButton';
+import { ErrorText } from '../ui/Text';
 
 const SignUp = () => {
   const router = useRouter();
@@ -97,9 +98,7 @@ const SignUp = () => {
             )}
             {registerUserErrors &&
               registerUserErrors.map((error) => {
-                return (
-                  <FormErrorMessage key={error.message}>{error.message}</FormErrorMessage>
-                );
+                return <ErrorText key={error.message}>{error.message}</ErrorText>;
               })}
 
             <InputGroup

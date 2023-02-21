@@ -95,7 +95,6 @@ export const saveVideoToDB = async (details: UploadVideoInput) => {
     tagList,
   } = details;
   const tagsText = tagList.join(' ');
-  console.log(tagsText);
   const response = await db.query(
     'SELECT * FROM create_video($1, $2, $3, $4, $5, $6, $7, $8, $9)',
     [
