@@ -50,9 +50,8 @@ export const googleOAuthController = async (req: Request, res: Response) => {
     // set cookies
     res.cookie('rtoken', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      path: '/',
       maxAge: 604800000,
     });
     // redirect back to client

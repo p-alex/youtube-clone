@@ -114,7 +114,6 @@ export const refreshTokenController = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      path: '/',
       maxAge: 604800000,
     });
 
