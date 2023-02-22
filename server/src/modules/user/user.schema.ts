@@ -1,7 +1,7 @@
-import { string, z } from 'zod';
+import { z } from 'zod';
 
 export const DEFAULT_PROFILE_PICTURE_URL = '/images/default-profile-picture.jpg';
-export const PasswordSymbolsRegex = /[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g;
+export const PasswordSymbolsRegex = /[-!@#$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g;
 
 export const MAX_PROFILE_DESCRIPTION_LENGTH = 1000;
 
