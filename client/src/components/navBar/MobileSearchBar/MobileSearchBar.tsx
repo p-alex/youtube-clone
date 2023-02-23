@@ -9,11 +9,9 @@ import FocusTrapRedirectFocus from '../../focusTrap';
 
 interface Props {
   handleClose: () => void;
-  searchQuery: string;
-  setSearchQuery: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const MobileSearchBar = ({ searchQuery, setSearchQuery, handleClose }: Props) => {
+const MobileSearchBar = ({ handleClose }: Props) => {
   const handleCloseMobileSearch = () => {
     handleClose();
     document.getElementById('nav-bar-search-btn-toggle')?.focus();
@@ -30,13 +28,7 @@ const MobileSearchBar = ({ searchQuery, setSearchQuery, handleClose }: Props) =>
       >
         <MdArrowBack />
       </MobileSearchBar__CloseBtn>
-      <SearchBar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        isMobile={true}
-        autoFocus
-        lastFocusableElement={lastFocusableElement}
-      />
+      <SearchBar isMobile={true} autoFocus lastFocusableElement={lastFocusableElement} />
       <FocusTrapRedirectFocus element={firstFocusableElement} />
     </MobileSearchBar__Container>
   );

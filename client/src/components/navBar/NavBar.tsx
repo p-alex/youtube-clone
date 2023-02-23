@@ -101,11 +101,7 @@ const NavBar = () => {
   return (
     <>
       {activeTab === 'mobile-search' && (
-        <MobileSearchBar
-          handleClose={handleToggleMobileSearch}
-          searchQuery={searchQuery}
-          setSearchQuery={handleSetSearchQuery}
-        />
+        <MobileSearchBar handleClose={handleToggleMobileSearch} />
       )}
       <NavBar__Container>
         <NavBar__ToggleAndLogoContainer>
@@ -119,11 +115,7 @@ const NavBar = () => {
           <Logo />
         </NavBar__ToggleAndLogoContainer>
 
-        <SearchBar
-          searchQuery={searchQuery}
-          setSearchQuery={handleSetSearchQuery}
-          isMobile={false}
-        />
+        <SearchBar isMobile={false} />
 
         <NavBar__BtnContainer>
           <NavBar__MobileSearchBtn

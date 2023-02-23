@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
-import Layout from '../../layout/Layout';
-import { useRouter } from 'next/router';
-import { IVideoSmallWithInfo } from '../../app/features/videoSlice';
-import VideoCardWithInfo from '../../components/Cards/VideoCardWithInfo/VideoCardWithInfo';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import PageContainer from '../../containers/PageContainer/PageContainer';
-import FilterButton from '../../ui/FilterButton';
+import { IVideoSmallWithInfo } from '../app/features/videoSlice';
+import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
+import Layout from '../layout/Layout';
+import PageContainer from '../containers/PageContainer/PageContainer';
+import FilterButton from '../ui/FilterButton';
+import VideoCardWithInfo from '../components/Cards/VideoCardWithInfo/VideoCardWithInfo';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
 
 const SearchPageContainer = styled.div`
   position: relative;
@@ -22,8 +23,7 @@ const PAGE_TITLE = 'Search';
 type ActiveTab = 'videos' | 'channels';
 
 const SearchPage = () => {
-  const router = useRouter();
-  const query = router.query.query;
+  const searchQuery = useSelector((state: RootState) => state.navbar.searchQuery);
   const [videos, setVideos] = useState<IVideoSmallWithInfo[]>([]);
   const [channels, setChannels] = useState();
 
@@ -33,10 +33,10 @@ const SearchPage = () => {
     setActiveTab(tab);
   };
 
-  const [searchVideos, { isLoading, errors }] = useAxiosWithRetry<
-    {},
-    { searchResults: IVideoSmallWithInfo[] }
-  >('api/videos/search/' + query);
+  const [searchVideos, { isLoading: isSearchVideosLoading, errors: searchVideosErrors }] =
+    useAxiosWithRetry<{}, { searchResults: IVideoSmallWithInfo[] }>(
+      'api/videos/search/' + searchQuery
+    );
 
   const handleSearchVideos = async () => {
     const response = await searchVideos({});
@@ -46,9 +46,9 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    if (!query) return;
+    if (!searchQuery) return;
     handleSearchVideos();
-  }, [query]);
+  }, [searchQuery]);
 
   return (
     <Layout head={{ title: PAGE_TITLE }}>

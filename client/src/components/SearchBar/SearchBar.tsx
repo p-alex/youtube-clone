@@ -1,28 +1,28 @@
-import React from 'react';
+import { useState } from 'react';
 import { MdSearch } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { disableKeyBinds, enableKeyBinds } from '../../app/features/videoSlice';
 import { Search, SearchBtn, SearchForm } from './SearchBar.styles';
 import router from 'next/router';
+import { changeSearchQuery } from '../../app/features/navBarSlice';
 
 const SearchBar = ({
-  searchQuery,
-  setSearchQuery,
   isMobile,
   autoFocus,
   lastFocusableElement,
 }: {
-  searchQuery: string;
-  setSearchQuery: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isMobile: boolean;
   autoFocus?: boolean;
   lastFocusableElement?: React.RefObject<HTMLButtonElement>;
 }) => {
   const dispatch = useDispatch();
 
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
-    router.push(`/search/${searchQuery}`);
+    router.push(`/search`);
+    dispatch(changeSearchQuery({ searchQuery }));
   };
 
   return (
@@ -30,7 +30,7 @@ const SearchBar = ({
       <Search
         placeholder="Search"
         value={searchQuery}
-        onChange={setSearchQuery}
+        onChange={(event) => setSearchQuery(event.target.value)}
         onFocus={() => dispatch(disableKeyBinds())}
         onBlur={() => dispatch(enableKeyBinds())}
         autoComplete="true"
