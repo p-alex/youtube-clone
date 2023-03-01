@@ -1,43 +1,44 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
-import { IUser, setUser } from '../../app/features/authSlice';
+import { IAuthUser } from '../../api/users';
+import { setUser } from '../../app/features/authSlice';
 import { DefaultResponse } from '../requestHooks/useAxiosWithRetry';
 
 const useRefreshToken = () => {
   const dispatch = useDispatch();
 
   const refreshToken = async (): Promise<
-    DefaultResponse<{ user: IUser; accessToken: string } | null>
+    DefaultResponse<{
+      user: IAuthUser;
+      accessToken: string;
+    } | null>
   > => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/refresh`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        }
-      );
-      const data: DefaultResponse<{ user: IUser; accessToken: string }> = response.data;
-      if (data.success && data.result) {
+    const response = axios
+      .get<
+        DefaultResponse<{
+          user: IAuthUser;
+          accessToken: string;
+        }>
+      >(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/refresh`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      })
+      .then((res) => res.data)
+      .then((res) => {
         dispatch(
-          setUser({ user: data.result.user, accessToken: data.result.accessToken })
+          setUser({ user: res.result!.user, accessToken: res.result!.accessToken })
         );
-        return data;
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        errors: [{ message: error.message }],
-        result: null,
-      };
-    }
-    return {
-      success: false,
-      errors: [{ message: 'Something went wrong...' }],
-      result: null,
-    };
+        return res;
+      })
+      .catch((error) => {
+        const err = error as AxiosError<DefaultResponse<null>>;
+        const errors = err.response!.data;
+        return errors;
+      });
+
+    return response;
   };
 
   return refreshToken;

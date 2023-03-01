@@ -37,6 +37,10 @@ export interface IVideoSmallWithInfo extends IVideoSmall {
   duration: number;
 }
 
+export interface IVideoSmallWithInfoRanked extends IVideoSmallWithInfo {
+  rank: number;
+}
+
 interface InitialState {
   canUseVideoKeyBinds: boolean;
   videoInfo: VideoInfo;

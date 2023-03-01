@@ -232,13 +232,16 @@ export const getVideoTagsController = async (
 };
 
 export const searchVideosController = async (
-  req: Request<SearchVideosInput>,
+  req: Request<{}, {}, {}, SearchVideosInput>,
   res: Response
 ) => {
-  const { query } = req.params;
+  const { query, cursor } = req.query;
   try {
-    const searchResults = await searchVideos(query);
-    return successResponseJson(res, 200, { searchResults });
+    const response = await searchVideos({ query, cursor });
+    return successResponseJson(res, 200, {
+      searchResults: response.data,
+      nextCursor: response.nextCursor,
+    });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { IUser } from '../../app/features/authSlice';
+import { IAuthUser } from '../../api/users';
 import { RootState } from '../../app/store';
 
-const useAuth = (): { isAuth: boolean; user: IUser | null } => {
+const useAuth = (): { isAuth: boolean; user: IAuthUser | null } => {
   const auth = useSelector((state: RootState) => state.auth);
   return { isAuth: auth.user.user_id !== '', user: auth.user };
 };

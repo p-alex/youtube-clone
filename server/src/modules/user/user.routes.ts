@@ -9,6 +9,7 @@ import {
   changeProfilePictureController,
   changePasswordController,
   changeUserDescriptionController,
+  searchUsersController,
 } from './user.controller';
 import {
   changePasswordSchema,
@@ -17,9 +18,22 @@ import {
   changeUsernameSchema,
   getProfileInfoSchema,
   registerUserSchema,
+  searchChannelsSchema,
 } from './user.schema';
 
 const router = express.Router();
+
+router.get(
+  '/users/search',
+  validateResource(searchChannelsSchema),
+  searchUsersController
+);
+
+router.get(
+  '/users/:userId/profile',
+  validateResource(getProfileInfoSchema),
+  getProfileInfoController
+);
 
 router.post(
   '/users',
@@ -54,12 +68,6 @@ router.patch(
   requireAuth,
   validateResource(changeUserDescriptionSchema),
   changeUserDescriptionController
-);
-
-router.get(
-  '/users/:userId/profile',
-  validateResource(getProfileInfoSchema),
-  getProfileInfoController
 );
 
 export default router;

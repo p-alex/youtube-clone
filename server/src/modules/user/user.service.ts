@@ -2,7 +2,6 @@ import db from '../../db';
 import { createRandomCode } from '../../utils/createRandomCode';
 import config from 'config';
 import axios from 'axios';
-import qs from 'querystring';
 import log from '../../utils/logger';
 import { sendEmail } from '../../nodemailer/sendEmail';
 import {
@@ -98,20 +97,29 @@ export const getProfileInfo = async (userId: string, currentUserId?: string) => 
   return profileInfoData;
 };
 
-export const searchForUser = async ({
+interface IChannel {
+  user_id: string;
+  username: string;
+  profile_picture: string;
+  description: string;
+  total_videos: number;
+  total_subscribers: number;
+}
+
+export const searchChannels = async ({
   query,
-  page,
-  limit,
+  cursor,
 }: {
   query: string;
-  page: string;
-  limit: number;
+  cursor: string;
 }) => {
-  const offset = parseInt(page) * limit;
-  const users = await db.query(
-    'SELECT user_id, username, profile_picture, description, total_videos, total_subscribers FROM users WHERE username LIKE _$1_ OFFSET $2 LIMIT $3',
-    [query, offset, limit]
+  const limit = 15;
+  const result = await db.query(
+    'SELECT user_id, username, profile_picture, description, total_videos, total_subscribers FROM users WHERE username LIKE $1 AND total_subscribers < $2 ORDER BY total_subscribers DESC LIMIT $3',
+    [`%${query}%`, cursor, limit]
   );
+  const data = result.rows as IChannel[];
+  return { users: data, nextCursor: data[data.length - 1]?.total_subscribers };
 };
 
 export const changeUsername = async (username: string, userId: string) => {
@@ -177,75 +185,6 @@ export const validateHuman = async (reToken: string) => {
   >(url);
 
   return response.data.success;
-};
-
-interface GoogleTokensResult {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-  id_token: string;
-}
-
-export const getGoogleOAuthTokens = async ({
-  code,
-}: {
-  code: string;
-}): Promise<GoogleTokensResult> => {
-  const url = 'https://oauth2.googleapis.com/token';
-  const values = {
-    code,
-    client_id: config.get('google_client_id') as string,
-    client_secret: config.get('google_client_secret') as string,
-    redirect_uri: config.get('google_oauth_redirect_url') as string,
-    grant_type: 'authorization_code',
-  };
-
-  try {
-    const res = await axios.post<GoogleTokensResult>(url, qs.stringify(values), {
-      headers: {
-        Content_Type: 'application/x-www-form-urlencoded',
-      },
-    });
-    return res.data;
-  } catch (error: any) {
-    log.error(error, 'Failed to fetch Google OAuth Tokens');
-    throw new Error(error.message);
-  }
-};
-
-interface GoogleUserResult {
-  id: string;
-  email: string;
-  verified_email: string;
-  name: string;
-  given_name: string;
-  family_name: string;
-  picture: string;
-  locale: string;
-}
-
-export const getGoogleUser = async ({
-  id_token,
-  access_token,
-}: {
-  id_token: string;
-  access_token: string;
-}): Promise<GoogleUserResult> => {
-  try {
-    const res = await axios.get<GoogleUserResult>(
-      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
-      {
-        headers: {
-          Authorization: `Bearer ${id_token}`,
-        },
-      }
-    );
-    return res.data;
-  } catch (error: any) {
-    log.error(error, 'Error fetching Google user');
-    throw new Error(error.message);
-  }
 };
 
 export const forgetPasswordSendCode = async (

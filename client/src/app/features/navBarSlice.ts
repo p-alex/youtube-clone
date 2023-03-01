@@ -22,7 +22,7 @@ const navBarSlice = createSlice({
   initialState,
   reducers: {
     changeSearchQuery: (state, action: PayloadAction<{ searchQuery: string }>) => {
-      state.searchQuery = action.payload.searchQuery;
+      state.searchQuery = action.payload.searchQuery.toLowerCase().trim();
     },
     setNavActiveTab: (state, action: PayloadAction<{ tab: NavBarActiveTab }>) => {
       state.activeTab = state.activeTab === action.payload.tab ? '' : action.payload.tab;

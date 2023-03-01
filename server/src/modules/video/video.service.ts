@@ -1,4 +1,4 @@
-import { QueryResult } from 'pg';
+import { QueryResult, QueryResultRow } from 'pg';
 import { cloudinary } from '../../cloudinary';
 import db from '../../db';
 import { getImagePublicId, getVideoPublicId } from '../../utils/getPublicId';
@@ -237,10 +237,27 @@ export const getVideoTags = async (video_id: string) => {
   return tags;
 };
 
-export const searchVideos = async (query: string) => {
-  const response = await db.query('SELECT * FROM search_video($1)', [query]);
-  const data: IVideoSmall[] = response.rows;
-  return data;
+interface IVideoSmallRanked extends IVideoSmall {
+  rank: number;
+}
+
+export const searchVideos = async ({
+  query,
+  cursor,
+}: {
+  query: string;
+  cursor: string;
+}) => {
+  const sql = 'SELECT * FROM search_video($1, $2, $3)';
+  const limit = 15;
+  const response = (await db.query(sql, [
+    query,
+    limit,
+    parseFloat(cursor),
+  ])) as QueryResult<IVideoSmallRanked>;
+  const data = response.rows;
+  const nextCursor = data[response.rows.length - 1]?.rank;
+  return { data, nextCursor: !nextCursor ? 0 : nextCursor };
 };
 
 export const getSuggestedVideos = async (

@@ -115,6 +115,15 @@ export const forgetPasswordSendCodeSchema = z.object({
   }),
 });
 
+export const searchChannelsSchema = z.object({
+  query: z.object({
+    query: z.string({ required_error: 'Query parameter is required' }),
+    cursor: z
+      .string({ required_error: 'Cursor parameter is required' })
+      .regex(/^[\d]+$/g, 'Cursor must be a number'),
+  }),
+});
+
 export type RegisterUserInput = z.TypeOf<typeof registerUserSchema>['body'];
 
 export type GetProfileInfoInput = z.TypeOf<typeof getProfileInfoSchema>['params'];
@@ -132,3 +141,5 @@ export type ChangeUserDescriptionInput = z.TypeOf<
 >['body'];
 
 export type ForgetPasswordInput = z.TypeOf<typeof forgetPasswordSendCodeSchema>['body'];
+
+export type SearchChannelsInput = z.TypeOf<typeof searchChannelsSchema>['query'];

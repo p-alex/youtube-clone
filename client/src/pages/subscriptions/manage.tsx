@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   incrementSubscriptionsUsersPage,
-  ISubscriptionUser,
+  IChannel,
   loadMoreSubscriptionUsers,
   setSubscriptionUsers,
 } from '../../app/features/subscriptionsSlice';
@@ -16,10 +16,18 @@ import Layout from '../../layout/Layout';
 import { Button } from '../../ui/Button';
 import NoResultsMessage from '../../ui/NoResultsMessage';
 import Spinner from '../../ui/Spinner';
+import styled from 'styled-components';
 
 const PAGE_TITLE = 'Manage Subscriptions';
 
 const SUBSCRIPTION_USERS_LIMIT = 20;
+
+const ManageSubscriptions__Subscriptions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-large);
+  margin-bottom: var(--space-large);
+`;
 
 const ManageSubscriptions = () => {
   useProtectRoute();
@@ -31,7 +39,7 @@ const ManageSubscriptions = () => {
 
   const [getSubscriptionUsersRequest, { isLoading, errors }] = useAxiosWithRetry<
     {},
-    { users: ISubscriptionUser[] }
+    { users: IChannel[] }
   >('api/subscriptions/users/' + subscriptionUsers.page);
 
   const handleGetSubscriptionUsers = async () => {
@@ -71,9 +79,12 @@ const ManageSubscriptions = () => {
         {!isLoading && subscriptionUsers.list.length === 0 && (
           <NoResultsMessage message="Nothing to manage" />
         )}
-        {subscriptionUsers.list.map((user) => {
-          return <ChannelCard user={user} />;
-        })}
+        <ManageSubscriptions__Subscriptions>
+          {subscriptionUsers.list.map((user) => {
+            return <ChannelCard user={user} />;
+          })}
+        </ManageSubscriptions__Subscriptions>
+
         {showLoadMore && (
           <Button
             variant="normal"

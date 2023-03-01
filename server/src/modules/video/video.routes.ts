@@ -42,6 +42,15 @@ const router = express.Router();
 router.get('/videos', getVideosController);
 
 router.get(
+  '/videos/search',
+  searchLimiter,
+  validateResource(searchVideosSchema),
+  searchVideosController
+);
+
+router.get('/videos/:videoId', validateResource(getVideoSchema), getVideoController);
+
+router.get(
   '/videos/like-status/:videoId',
   requireAuth,
   validateResource(checkIfVideoIsLikedSchema),
@@ -61,13 +70,18 @@ router.get(
   getUserVideosController
 );
 
+router.get(
+  '/videos/:videoId/tags',
+  requireAuth,
+  validateResource(getVideoTagsSchema),
+  getVideoTagsController
+);
+
 router.post(
   '/videos/suggested',
   validateResource(getSuggestedVideosSchema),
   getSuggestedVideosController
 );
-
-router.get('/videos/:videoId', validateResource(getVideoSchema), getVideoController);
 
 router.post(
   '/videos',
@@ -105,20 +119,6 @@ router.post(
   requireAuth,
   validateResource(dislikeVideoSchema),
   dislikeVideoController
-);
-
-router.get(
-  '/videos/:videoId/tags',
-  requireAuth,
-  validateResource(getVideoTagsSchema),
-  getVideoTagsController
-);
-
-router.get(
-  '/videos/search/:query',
-  searchLimiter,
-  validateResource(searchVideosSchema),
-  searchVideosController
 );
 
 export default router;

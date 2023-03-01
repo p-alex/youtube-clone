@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
-import { ISubscriptionsMini } from '../app/features/subscriptionsSlice';
+import { IChannelMini } from '../app/features/subscriptionsSlice';
 import { Text } from './Text';
 
 const SubscriptionMiniButton__Container = styled.a`
@@ -19,7 +19,7 @@ const SubscriptionMiniButton__Container = styled.a`
 `;
 
 interface Props {
-  subscription: ISubscriptionsMini;
+  subscription: IChannelMini;
 }
 
 const SubscriptionMiniButton = ({ subscription }: Props) => {

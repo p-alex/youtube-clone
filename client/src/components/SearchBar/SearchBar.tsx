@@ -21,12 +21,13 @@ const SearchBar = ({
 
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
-    router.push(`/search`);
+    if (!searchQuery) return;
     dispatch(changeSearchQuery({ searchQuery }));
+    router.push(`/search`);
   };
 
   return (
-    <SearchForm isMobile={isMobile}>
+    <SearchForm isMobile={isMobile} onSubmit={handleSearch}>
       <Search
         placeholder="Search"
         value={searchQuery}
@@ -36,7 +37,7 @@ const SearchBar = ({
         autoComplete="true"
         autoFocus={autoFocus}
       />
-      <SearchBtn onClick={handleSearch} ref={lastFocusableElement} aria-label="search">
+      <SearchBtn ref={lastFocusableElement} aria-label="search" type="submit">
         <MdSearch />
       </SearchBtn>
     </SearchForm>

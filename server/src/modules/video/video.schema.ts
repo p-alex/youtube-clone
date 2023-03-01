@@ -109,9 +109,16 @@ export const getVideoTagsSchema = z.object({
 });
 
 export const searchVideosSchema = z.object({
-  params: z.object({
-    query: z.string({ required_error: 'Query param is required' }),
-  }),
+  query: z
+    .object({
+      query: z.string({ required_error: 'Query param is required' }),
+      cursor: z.string({ required_error: 'Cursor param is required' }),
+    })
+    .refine((data) => {
+      const parsedRank = parseFloat(data.cursor);
+      if (parsedRank < 0 || parsedRank > 1) return false;
+      return true;
+    }, 'Cursor param must be a float number between 0 and 1'),
 });
 
 export const getSuggestedVideosSchema = z.object({
@@ -153,7 +160,7 @@ export type DislikeVideoInput = z.TypeOf<typeof likeVideoSchema>['params'];
 
 export type GetVideoTagsInput = z.TypeOf<typeof getVideoTagsSchema>['params'];
 
-export type SearchVideosInput = z.TypeOf<typeof searchVideosSchema>['params'];
+export type SearchVideosInput = z.TypeOf<typeof searchVideosSchema>['query'];
 
 export type GetSuggestedVideosInput = z.TypeOf<typeof getSuggestedVideosSchema>['body'];
 

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IAuthUser } from '../../api/users';
 
 export const USERNAME_RESTRICTIONS = {
   minLength: 3,
@@ -20,13 +21,6 @@ interface IInitialState {
   isGettingUser: boolean;
 }
 
-export interface IUser {
-  user_id: string;
-  email: string;
-  username: string;
-  profile_picture: string;
-}
-
 const initialState: IInitialState = {
   user: {
     user_id: '',
@@ -44,7 +38,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<{ user: IUser; accessToken: string }>) => {
+    setUser: (state, action: PayloadAction<{ user: IAuthUser; accessToken: string }>) => {
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
     },

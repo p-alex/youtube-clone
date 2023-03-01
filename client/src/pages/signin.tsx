@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { IUser, setUser } from '../app/features/authSlice';
+import { setUser } from '../app/features/authSlice';
 import Logo from '../ui/Logo/Logo';
 import ReCaptchaCheckbox, {
   ReCaptchaType,
@@ -23,6 +23,7 @@ import {
 } from '../ui/Form';
 import InputGroup from '../ui/InputGroup';
 import { ErrorText } from '../ui/Text';
+import { IAuthUser } from '../api/users';
 
 const SignIn = () => {
   const router = useRouter();
@@ -42,7 +43,7 @@ const SignIn = () => {
     useAxios<
       LoginSchemaType,
       {
-        user: IUser;
+        user: IAuthUser;
         accessToken: string;
       } | null
     >('api/auth', 'POST');

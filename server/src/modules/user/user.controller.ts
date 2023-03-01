@@ -8,6 +8,7 @@ import {
   DEFAULT_PROFILE_PICTURE_URL,
   GetProfileInfoInput,
   RegisterUserInput,
+  SearchChannelsInput,
 } from './user.schema';
 import {
   registerUser,
@@ -18,6 +19,7 @@ import {
   validateHuman,
   getProfileInfo,
   changeUserDescription,
+  searchChannels,
 } from './user.service';
 import argon2 from 'argon2';
 import log from '../../utils/logger';
@@ -206,6 +208,23 @@ export const changeUserDescriptionController = async (
     const { newDescription } = req.body;
     const response = await changeUserDescription({ newDescription, userId });
     return successResponseJson(res, 200, { newDescription: response.description });
+  } catch (error: any) {
+    log.error(error);
+    return errorResponseJson(res, 500, error.message);
+  }
+};
+
+export const searchUsersController = async (
+  req: Request<{}, {}, {}, SearchChannelsInput>,
+  res: Response
+) => {
+  try {
+    const { query, cursor } = req.query;
+    const response = await searchChannels({ query, cursor });
+    return successResponseJson(res, 200, {
+      users: response.users,
+      nextCursor: response.nextCursor,
+    });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

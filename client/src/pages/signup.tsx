@@ -117,7 +117,10 @@ const SignUp = () => {
               label="username"
               value={state.username}
               setValue={(e) =>
-                setState((prevState) => ({ ...prevState, ['username']: e.target.value }))
+                setState((prevState) => ({
+                  ...prevState,
+                  ['username']: e.target.value.toLowerCase(),
+                }))
               }
               disabled={isRegisterUserLoading}
               error={fieldErrors?.username && fieldErrors.username[0]}

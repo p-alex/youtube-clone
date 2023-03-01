@@ -26,12 +26,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   changeSearchQuery,
   NavBarActiveTab,
-  resetNavBar,
   setNavActiveTab,
 } from '../../app/features/navBarSlice';
 import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
 import {
-  ISubscriptionsMini,
+  IChannelMini,
   setMiniSubscriptions,
 } from '../../app/features/subscriptionsSlice';
 import { useRouter } from 'next/router';
@@ -41,14 +40,10 @@ const NavBar = () => {
   const { isAuth, user } = useAuth();
 
   const dispatch = useDispatch();
-  const { searchQuery, activeTab } = useSelector((state: RootState) => state.navbar);
+  const { activeTab } = useSelector((state: RootState) => state.navbar);
   const subscriptionsMini = useSelector(
     (state: RootState) => state.subscriptions.navSideBarMiniUsers.list
   );
-
-  const handleSetSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeSearchQuery({ searchQuery: event.target.value }));
-  };
 
   const handleChangeActiveTab = (tab: NavBarActiveTab) => {
     dispatch(setNavActiveTab({ tab }));
@@ -74,7 +69,7 @@ const NavBar = () => {
   const [
     getMiniSubscriptions,
     { isLoading: isMiniSubscriptionsLoading, errors: miniSubscriptionsErrors },
-  ] = useAxiosWithRetry<{}, { subscriptionsMini: ISubscriptionsMini[] }>(
+  ] = useAxiosWithRetry<{}, { subscriptionsMini: IChannelMini[] }>(
     'api/subscriptions/mini'
   );
 

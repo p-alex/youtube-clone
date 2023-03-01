@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IVideoSmall } from './videoSlice';
 
-export interface ISubscriptionUser {
+export interface IChannel {
   user_id: string;
   username: string;
   profile_picture: string;
   description: string;
   total_subscribers: number;
   total_videos: number;
-  subscribe_status: boolean;
+  subscribe_status?: boolean;
 }
 
-export interface ISubscriptionsMini {
+export interface IChannelMini {
   user_id: string;
   username: string;
   profile_picture: string;
@@ -23,11 +23,11 @@ interface InitialState {
     page: number;
   };
   users: {
-    list: ISubscriptionUser[];
+    list: IChannel[];
     page: number;
   };
   navSideBarMiniUsers: {
-    list: ISubscriptionsMini[];
+    list: IChannelMini[];
   };
 }
 
@@ -52,15 +52,12 @@ const subscriptionSlice = createSlice({
     setSubscriptionVideos: (state, action: PayloadAction<{ videos: IVideoSmall[] }>) => {
       state.videos.list = action.payload.videos;
     },
-    setSubscriptionUsers: (
-      state,
-      action: PayloadAction<{ users: ISubscriptionUser[] }>
-    ) => {
+    setSubscriptionUsers: (state, action: PayloadAction<{ users: IChannel[] }>) => {
       state.users.list = action.payload.users;
     },
     setMiniSubscriptions: (
       state,
-      action: PayloadAction<{ subscriptionsMini: ISubscriptionsMini[] }>
+      action: PayloadAction<{ subscriptionsMini: IChannelMini[] }>
     ) => {
       state.navSideBarMiniUsers.list = action.payload.subscriptionsMini;
     },
@@ -88,10 +85,7 @@ const subscriptionSlice = createSlice({
     ) => {
       state.videos.list = [...state.videos.list, ...action.payload.videos];
     },
-    loadMoreSubscriptionUsers: (
-      state,
-      action: PayloadAction<{ users: ISubscriptionUser[] }>
-    ) => {
+    loadMoreSubscriptionUsers: (state, action: PayloadAction<{ users: IChannel[] }>) => {
       state.users.list = [...state.users.list, ...action.payload.users];
     },
     incrementSubscriptionsVideosPage: (state) => {
