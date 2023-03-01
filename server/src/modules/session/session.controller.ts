@@ -1,16 +1,12 @@
 import { Request, Response } from 'express';
 import log from '../../utils/logger';
-import {
-  getGoogleOAuthTokens,
-  getGoogleUser,
-  getUserInfo,
-  registerUser,
-} from '../user/user.service';
+import { getGoogleOAuthTokens, getGoogleUser } from '../auth/auth.service';
 import config from 'config';
 import { securePasswordGenerator } from '../../utils/securePasswordGenerator';
 import { signRefreshToken } from '../auth/auth.service';
 import argon2 from 'argon2';
 import { createSession } from './session.service';
+import { getUserInfo, registerUser } from '../user/user.service';
 
 export const googleOAuthController = async (req: Request, res: Response) => {
   // get the code from the qs

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { QueryResult } from 'pg';
 import db from '../../db';
 

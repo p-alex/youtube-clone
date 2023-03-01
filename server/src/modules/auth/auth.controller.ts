@@ -1,11 +1,17 @@
 import { Request, Response } from 'express';
+import config from 'config';
 import db from '../../db';
 import { LoginUserInput, LogoutUserInput, VerifyEmailInput } from './auth.schema';
-import { signAccessToken, signRefreshToken } from './auth.service';
+import {
+  getGoogleOAuthTokens,
+  getGoogleUser,
+  signAccessToken,
+  signRefreshToken,
+} from './auth.service';
 import argon2 from 'argon2';
 import { QueryResult } from 'pg';
 import { verifyJwt } from '../../utils/jwt';
-import { IUser, validateHuman } from '../user/user.service';
+import { getUserInfo, IUser, registerUser, validateHuman } from '../user/user.service';
 import {
   errorResponseJson,
   NOT_HUMAN_ERROR_MESSAGE,
@@ -13,6 +19,7 @@ import {
 } from '../../utils/responseJson';
 import log from '../../utils/logger';
 import { createSession } from '../session/session.service';
+import { securePasswordGenerator } from '../../utils/securePasswordGenerator';
 
 export const loginUserController = async (
   req: Request<{}, {}, LoginUserInput>,
