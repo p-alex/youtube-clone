@@ -4,6 +4,14 @@ const limiterErrorResponse = (message: string) => {
   return { success: false, errors: [{ message }], result: null };
 };
 
+export const homepageVideosLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 20,
+  message: limiterErrorResponse('To many requests for videos... Try again in 1 min.'),
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 export const registerLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 6,

@@ -20,11 +20,6 @@ const VideosDisplay = ({ videos }: { videos: IVideoSmall[] }) => {
           );
         })}
       </VideosDisplay__VideoList>
-      {videos.length === 0 && (
-        <NoResultsMessage
-          message={'There are no subscriptions. Find somebody to subscribe to.'}
-        />
-      )}
     </VideosDisplay__Container>
   );
 };

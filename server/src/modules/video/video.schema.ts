@@ -9,6 +9,14 @@ export const getVideoSchema = z.object({
   }),
 });
 
+export const getVideosSchema = z.object({
+  query: z.object({
+    page: z
+      .string({ required_error: 'Page param is required' })
+      .regex(/^[\d]+$/g, 'Page param must be a number'),
+  }),
+});
+
 export const getUserVideosPrivateSchema = z.object({
   params: z.object({
     sortBy: z.enum(['recent', 'popular']),
@@ -137,6 +145,8 @@ export const checkIfVideoIsLikedSchema = z.object({
 });
 
 export type GetVideoInput = z.TypeOf<typeof getVideoSchema>['params'];
+
+export type GetVideosInput = z.TypeOf<typeof getVideosSchema>['query'];
 
 export type GetUserVideosPrivateInput = z.TypeOf<
   typeof getUserVideosPrivateSchema

@@ -7,6 +7,7 @@ import {
   GetUserVideosInput,
   GetUserVideosPrivateInput,
   GetVideoInput,
+  GetVideosInput,
   GetVideoTagsInput,
   LikeVideoInput,
   SearchVideosInput,
@@ -39,10 +40,16 @@ import {
 } from '../../utils/responseJson';
 const unlinkFile = util.promisify(fs.unlink);
 
-export const getVideosController = async (req: Request, res: Response) => {
+export const getVideosController = async (
+  req: Request<{}, {}, {}, GetVideosInput>,
+  res: Response
+) => {
   try {
-    const videos = await getVideos();
-    return res.status(200).json({ success: true, errors: [], result: { videos } });
+    const { page } = req.query;
+    const { videos, nextPage } = await getVideos({ page });
+    return res
+      .status(200)
+      .json({ success: true, errors: [], result: { videos, nextPage } });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

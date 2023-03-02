@@ -32,13 +32,17 @@ export interface IVideoSmall {
   createdAt: string;
 }
 
-export const getVideos = async () => {
+export const getVideos = async ({ page }: { page: string }) => {
+  const limit = 30;
+  const parsedPage = parseInt(page);
+  const offset = parsedPage * limit;
   const response = await db.query(
-    'SELECT v.video_id, v.user_id, v.video_url, v.thumbnail_url, v.title, v.views, v.duration, v.created_at, u.username, u.profile_picture FROM videos v JOIN users u ON v.user_id = u.user_id ORDER BY v.created_at DESC',
-    []
+    'SELECT v.video_id, v.user_id, v.video_url, v.thumbnail_url, v.title, v.views, v.duration, v.created_at, u.username, u.profile_picture FROM videos v JOIN users u ON v.user_id = u.user_id ORDER BY v.created_at DESC OFFSET $1 LIMIT $2',
+    [offset, limit]
   );
-  const data: IVideoSmall[] = response.rows;
-  return data;
+  const videos: IVideoSmall[] = response.rows;
+  const nextPage = videos.length === limit ? parsedPage + 1 : undefined;
+  return { videos, nextPage };
 };
 
 export const getUserVideos = async (

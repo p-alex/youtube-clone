@@ -1,34 +1,40 @@
 import type { NextPage } from 'next';
-import Videos from '../containers/VideosDisplay/VideosDisplay';
-import useAxiosWithRetry from '../hooks/requestHooks/useAxiosWithRetry';
 import Layout from '../layout/Layout';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
-import { IVideoSmall } from '../app/features/videoSlice';
 import PageContainer from '../containers/PageContainer/PageContainer';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { Button } from '../ui/Button';
+import Spinner from '../ui/Spinner';
+import { ErrorText } from '../ui/Text';
+import { getVideos } from '../api/video';
+import VideoCard from '../components/Cards/VideoCard/VideoCard';
+import styled from 'styled-components';
 
 const PAGE_TITLE = 'Discover';
 
+const Homepage__Videos = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: calc(var(--space-large) * 4) var(--space-medium);
+`;
+
 const Home: NextPage = () => {
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  const [videos, setVideos] = useState<IVideoSmall[]>([]);
-
-  const [getVideos, { isLoading, errors }] = useAxiosWithRetry<
-    {},
-    { videos: IVideoSmall[] }
-  >('api/videos');
-
-  const handleGetVideos = async () => {
-    const response = await getVideos({});
-    if (response.success && response.result) {
-      setVideos(response.result.videos);
-    }
-  };
-
-  useEffect(() => {
-    !videos.length && handleGetVideos();
-  }, [accessToken]);
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['homepage-videos'],
+    queryFn: ({ pageParam }) => getVideos({ pageParam }),
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
   return (
     <Layout
@@ -36,8 +42,29 @@ const Home: NextPage = () => {
         title: PAGE_TITLE,
       }}
     >
+      {isLoading && <Spinner />}
       <PageContainer title={PAGE_TITLE}>
-        {videos.length > 0 && <Videos videos={videos} />}
+        {isError && (
+          <ErrorText>
+            {error instanceof AxiosError && error.response?.data.errors[0].message}
+          </ErrorText>
+        )}
+        <Homepage__Videos>
+          {data?.pages &&
+            data.pages.map((page) => {
+              return page.data.result?.videos.map((video) => {
+                return (
+                  <VideoCard key={video.video_id} withProfilePicture video={video} />
+                );
+              });
+            })}
+        </Homepage__Videos>
+
+        {hasNextPage && (
+          <Button variant="normal" onClick={() => fetchNextPage()}>
+            {isFetchingNextPage ? 'Loading' : 'Load more'}
+          </Button>
+        )}
       </PageContainer>
     </Layout>
   );

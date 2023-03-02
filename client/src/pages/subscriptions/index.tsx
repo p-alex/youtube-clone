@@ -15,6 +15,7 @@ import { Button } from '../../ui/Button';
 import Spinner from '../../ui/Spinner';
 import PageContainer from '../../containers/PageContainer/PageContainer';
 import Link from 'next/link';
+import styled from 'styled-components';
 
 const PAGE_TITLE = 'Subscriptions';
 

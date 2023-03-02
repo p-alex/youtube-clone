@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import { checkVideoLimit } from '../../middleware/checkVideoLimit';
 import { parseVideoData } from '../../middleware/parseVideoData';
-import { searchLimiter } from '../../middleware/rateLimit';
+import { homepageVideosLimiter, searchLimiter } from '../../middleware/rateLimit';
 import { requireAuth } from '../../middleware/requireAuth';
 import validateResource from '../../middleware/validateResource';
 import {
@@ -28,6 +28,7 @@ import {
   getUserVideosPrivateSchema,
   getUserVideosSchema,
   getVideoSchema,
+  getVideosSchema,
   getVideoTagsSchema,
   likeVideoSchema,
   searchVideosSchema,
@@ -39,7 +40,12 @@ const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
-router.get('/videos', getVideosController);
+router.get(
+  '/videos',
+  homepageVideosLimiter,
+  validateResource(getVideosSchema),
+  getVideosController
+);
 
 router.get(
   '/videos/search',
