@@ -74,7 +74,7 @@ const ManageSubscriptions = () => {
 
   return (
     <Layout head={{ title: PAGE_TITLE }}>
-      <PageContainer title={PAGE_TITLE} width={800}>
+      <PageContainer title={PAGE_TITLE}>
         {isLoading && <Spinner />}
         {!isLoading && subscriptionUsers.list.length === 0 && (
           <NoResultsMessage message="Nothing to manage" />
