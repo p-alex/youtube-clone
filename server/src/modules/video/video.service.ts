@@ -241,23 +241,17 @@ interface IVideoSmallRanked extends IVideoSmall {
   rank: number;
 }
 
-export const searchVideos = async ({
-  query,
-  cursor,
-}: {
-  query: string;
-  cursor: string;
-}) => {
+export const searchVideos = async ({ query, page }: { query: string; page: string }) => {
   const sql = 'SELECT * FROM search_video($1, $2, $3)';
   const limit = 15;
   const response = (await db.query(sql, [
     query,
     limit,
-    parseFloat(cursor),
+    parseFloat(page),
   ])) as QueryResult<IVideoSmallRanked>;
   const data = response.rows;
-  const nextCursor = data[response.rows.length - 1]?.rank;
-  return { data, nextCursor: !nextCursor ? 0 : nextCursor };
+  const nextPage = response.rows.length ? parseInt(page) + 1 : undefined;
+  return { data, nextPage };
 };
 
 export const getSuggestedVideos = async (

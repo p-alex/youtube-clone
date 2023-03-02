@@ -19,23 +19,23 @@ interface IChannel {
 
 export const searchChannels = async ({
   searchQuery,
-  cursor,
+  pageParam,
 }: {
   searchQuery: string;
-  cursor: number;
+  pageParam: number;
 }) => {
   const response = await axios.get<
-    DefaultResponse<{ users: IChannel[]; nextCursor: number }>
+    DefaultResponse<{ users: IChannel[]; nextPage: number }>
   >(
     process.env.NEXT_PUBLIC_SERVER_BASE_URL! +
       '/api/users/search?query=' +
       searchQuery +
-      '&cursor=' +
-      cursor
+      '&page=' +
+      pageParam
   );
   const result = {
     data: response.data.result?.users,
-    nextCursor: response.data.result?.nextCursor,
+    nextPage: response.data.result?.nextPage,
   };
   return result;
 };

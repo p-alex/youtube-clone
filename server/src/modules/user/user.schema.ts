@@ -118,9 +118,9 @@ export const forgetPasswordSendCodeSchema = z.object({
 export const searchChannelsSchema = z.object({
   query: z.object({
     query: z.string({ required_error: 'Query parameter is required' }),
-    cursor: z
+    page: z
       .string({ required_error: 'Cursor parameter is required' })
-      .regex(/^[\d]+$/g, 'Cursor must be a number'),
+      .regex(/^[\d]+$/g, 'Page param must be a number'),
   }),
 });
 

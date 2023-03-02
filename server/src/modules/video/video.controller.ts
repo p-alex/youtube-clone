@@ -235,12 +235,12 @@ export const searchVideosController = async (
   req: Request<{}, {}, {}, SearchVideosInput>,
   res: Response
 ) => {
-  const { query, cursor } = req.query;
+  const { query, page } = req.query;
   try {
-    const response = await searchVideos({ query, cursor });
+    const response = await searchVideos({ query, page });
     return successResponseJson(res, 200, {
       searchResults: response.data,
-      nextCursor: response.nextCursor,
+      nextPage: response.nextPage,
     });
   } catch (error: any) {
     log.error(error);

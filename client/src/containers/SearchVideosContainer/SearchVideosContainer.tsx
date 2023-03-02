@@ -26,11 +26,9 @@ const SearchVideosContainer = () => {
     queryKey: ['search_videos', searchQuery],
     enabled: searchQuery !== '',
     retry: false,
-    queryFn: async ({ pageParam = 1 }) =>
-      searchVideos({ searchQuery, cursor: pageParam }),
+    queryFn: async ({ pageParam = 0 }) => searchVideos({ searchQuery, pageParam }),
     staleTime: 1000 * 60 * 60, // 60 min
-    getNextPageParam: (lastPage) =>
-      lastPage.nextCursor !== 0 ? lastPage.nextCursor : false,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
     refetchOnWindowFocus: false,
   });
 
@@ -46,9 +44,7 @@ const SearchVideosContainer = () => {
           return <VideoCardWithInfo video={video} />;
         });
       })}
-      {!data?.pages[0].data?.length && !data?.pages[0]?.nextCursor && (
-        <NoResultsMessage />
-      )}
+      {!data?.pages[0].data?.length && !data?.pages[0]?.nextPage && <NoResultsMessage />}
       {isFetching || (isFetchingNextPage && <Spinner />)}
       {hasNextPage && (
         <Button

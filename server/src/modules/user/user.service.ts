@@ -108,18 +108,19 @@ interface IChannel {
 
 export const searchChannels = async ({
   query,
-  cursor,
+  page,
 }: {
   query: string;
-  cursor: string;
+  page: string;
 }) => {
   const limit = 15;
+  const offset = parseInt(page) * limit;
   const result = await db.query(
-    'SELECT user_id, username, profile_picture, description, total_videos, total_subscribers FROM users WHERE username LIKE $1 AND total_subscribers < $2 ORDER BY total_subscribers DESC LIMIT $3',
-    [`%${query}%`, cursor, limit]
+    'SELECT user_id, username, profile_picture, description, total_videos, total_subscribers FROM users WHERE username LIKE $1 ORDER BY total_subscribers DESC OFFSET $2 LIMIT $3',
+    [`%${query}%`, offset, limit]
   );
   const data = result.rows as IChannel[];
-  return { users: data, nextCursor: data[data.length - 1]?.total_subscribers };
+  return { users: data, nextPage: data.length ? parseInt(page) + 1 : undefined };
 };
 
 export const changeUsername = async (username: string, userId: string) => {

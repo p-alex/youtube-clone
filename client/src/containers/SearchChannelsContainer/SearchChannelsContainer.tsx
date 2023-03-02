@@ -35,12 +35,10 @@ const SearchChannelsContainer = () => {
   } = useInfiniteQuery({
     queryKey: ['search_channels', searchQuery],
     enabled: searchQuery !== '',
-    queryFn: async ({ pageParam = 1000000000 }) =>
-      searchChannels({ searchQuery, cursor: pageParam }),
+    queryFn: async ({ pageParam = 0 }) => searchChannels({ searchQuery, pageParam }),
     retry: false,
     staleTime: 1000 * 60 * 60, // 60 min
-    getNextPageParam: (lastPage) =>
-      lastPage.nextCursor !== 0 ? lastPage.nextCursor : false,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
     refetchOnWindowFocus: false,
   });
 
@@ -58,9 +56,7 @@ const SearchChannelsContainer = () => {
           });
         })}
       </SearchChannels__Channels>
-      {!data?.pages[0].data?.length && !data?.pages[0]?.nextCursor && (
-        <NoResultsMessage />
-      )}
+      {!data?.pages[0].data?.length && !data?.pages[0]?.nextPage && <NoResultsMessage />}
       {isFetching || (isFetchingNextPage && <Spinner />)}
       {hasNextPage && (
         <Button

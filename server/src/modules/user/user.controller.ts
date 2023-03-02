@@ -219,11 +219,11 @@ export const searchUsersController = async (
   res: Response
 ) => {
   try {
-    const { query, cursor } = req.query;
-    const response = await searchChannels({ query, cursor });
+    const { query, page } = req.query;
+    const response = await searchChannels({ query, page });
     return successResponseJson(res, 200, {
       users: response.users,
-      nextCursor: response.nextCursor,
+      nextPage: response.nextPage,
     });
   } catch (error: any) {
     log.error(error);
