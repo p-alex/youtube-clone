@@ -1,32 +1,32 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-import express from 'express';
-import helmet from 'helmet';
-import config from 'config';
-import cors from 'cors';
-import log from './utils/logger';
-import router from './modules/routes';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import helmet from "helmet";
+import config from "config";
+import cors from "cors";
+import log from "./utils/logger";
+import router from "./modules/routes";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-const PORT = process.env.PORT || config.get('port');
+const PORT = config.get("port");
 
 app.use(helmet());
 
 app.use(
   cors({
     origin:
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : config.get<string>('client_side_base_url'),
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : config.get<string>("client_side_base_url"),
     credentials: true,
   })
 );
 
 app.use(
   express.json({
-    limit: '101mb',
+    limit: "101mb",
   })
 );
 
@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-app.use('/api', router);
+app.use("/api", router);
 
 app.listen(PORT, () => {
   log.info(`Server started at http://localhost:${PORT}`);

@@ -46,7 +46,7 @@ const Home: NextPage = () => {
       <PageContainer title={PAGE_TITLE}>
         {isError && (
           <ErrorText>
-            {error instanceof AxiosError && error.response?.data.errors[0].message}
+            {error instanceof AxiosError && error?.response?.data?.errors[0]?.message}
           </ErrorText>
         )}
         <Homepage__Videos>

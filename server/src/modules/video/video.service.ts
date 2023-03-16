@@ -265,12 +265,12 @@ export const getSuggestedVideos = async (
   page: number
 ) => {
   const LIMIT = 20;
-  const minifiedDescription = minify(description).code;
+  const minifiedDescription = minify(description);
   const videoTags = await getVideoTags(videoId);
   const videoTagsText = videoTags.join(' , ');
   const response = await db.query(
     'SELECT * FROM get_suggested_videos($1, $2, $3, $4, $5, $6)',
-    [videoId, title, minifiedDescription, videoTagsText, page, LIMIT]
+    [videoId, title, description, videoTagsText, page, LIMIT]
   );
   const data: IVideoSmall[] = response.rows;
   return data;
