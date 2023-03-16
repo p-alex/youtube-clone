@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 app.use("/api", router);
 
-const PORT = parseInt(process.env.PORT!);
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   log.info(`Server started at http://localhost:${PORT}`);
