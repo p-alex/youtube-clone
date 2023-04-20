@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import {
   NavBar__AddVideoBtn,
   NavBar__BtnContainer,
@@ -7,33 +7,32 @@ import {
   NavBar__ProfileBtn,
   NavBar__ToggleAndLogoContainer,
   NavBar__ToggleBtn,
-} from './NavBar.styles';
-import { BiMenu } from 'react-icons/bi';
-import { MdOutlineVideoCall, MdSearch } from 'react-icons/md';
-import Image from 'next/image';
-import Logo from '../../ui/Logo/Logo';
-import NavSideBar from './NavSideBar/NavSideBar';
-import { AnimatePresence } from 'framer-motion';
-import useAuth from '../../hooks/authHooks/useAuth';
-import UploadModal from '../Modals/UploadModal/UploadModal';
-import { ProfileDropDown } from '../ProfileDropDown/ProfileDropDown';
-import SearchBar from '../SearchBar/SearchBar';
-import { Button } from '../../ui/Button';
-import Link from 'next/link';
-import MobileSearchBar from './MobileSearchBar/MobileSearchBar';
-import { RootState } from '../../app/store';
-import { useDispatch, useSelector } from 'react-redux';
+} from "./NavBar.styles";
+import { BiMenu } from "react-icons/bi";
+import { MdOutlineVideoCall, MdSearch } from "react-icons/md";
+import Image from "next/image";
+import Logo from "../../ui/Logo/Logo";
+import NavSideBar from "./NavSideBar/NavSideBar";
+import { AnimatePresence } from "framer-motion";
+import useAuth from "../../hooks/authHooks/useAuth";
+import UploadModal from "../Modals/UploadModal/UploadModal";
+import { ProfileDropDown } from "../ProfileDropDown/ProfileDropDown";
+import SearchBar from "../SearchBar/SearchBar";
+import { Button } from "../../ui/Button";
+import Link from "next/link";
+import MobileSearchBar from "./MobileSearchBar/MobileSearchBar";
+import { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  changeSearchQuery,
   NavBarActiveTab,
   setNavActiveTab,
-} from '../../app/features/navBarSlice';
-import useAxiosWithRetry from '../../hooks/requestHooks/useAxiosWithRetry';
+} from "../../app/features/navBarSlice";
+import useAxiosWithRetry from "../../hooks/requestHooks/useAxiosWithRetry";
 import {
   IChannelMini,
   setMiniSubscriptions,
-} from '../../app/features/subscriptionsSlice';
-import { useRouter } from 'next/router';
+} from "../../app/features/subscriptionsSlice";
+import { useRouter } from "next/router";
 
 const NavBar = () => {
   const router = useRouter();
@@ -53,16 +52,16 @@ const NavBar = () => {
   const navToggleRef = useRef<HTMLButtonElement>(null);
 
   const handleToggleSideBar = () => {
-    dispatch(setNavActiveTab({ tab: '' }));
+    dispatch(setNavActiveTab({ tab: "" }));
     navToggleRef.current?.focus();
   };
 
   const handleToggleMobileSearch = () => {
-    dispatch(setNavActiveTab({ tab: '' }));
+    dispatch(setNavActiveTab({ tab: "" }));
   };
 
   const handleToggleUploadModal = () => {
-    dispatch(setNavActiveTab({ tab: '' }));
+    dispatch(setNavActiveTab({ tab: "" }));
     uploadModalToggleRef.current?.focus();
   };
 
@@ -70,14 +69,16 @@ const NavBar = () => {
     getMiniSubscriptions,
     { isLoading: isMiniSubscriptionsLoading, errors: miniSubscriptionsErrors },
   ] = useAxiosWithRetry<{}, { subscriptionsMini: IChannelMini[] }>(
-    'api/subscriptions/mini'
+    "api/subscriptions/mini"
   );
 
   const handleGetMiniSubscriptions = async () => {
     const response = await getMiniSubscriptions({});
     if (!response.success || !response.result) return;
     dispatch(
-      setMiniSubscriptions({ subscriptionsMini: response.result.subscriptionsMini })
+      setMiniSubscriptions({
+        subscriptionsMini: response.result.subscriptionsMini,
+      })
     );
   };
 
@@ -85,23 +86,23 @@ const NavBar = () => {
     if (subscriptionsMini.length || !isAuth) return;
     handleGetMiniSubscriptions();
     return () => {
-      dispatch(setNavActiveTab({ tab: '' }));
+      dispatch(setNavActiveTab({ tab: "" }));
     };
   }, [isAuth]);
 
   useEffect(() => {
-    dispatch(setNavActiveTab({ tab: '' }));
+    dispatch(setNavActiveTab({ tab: "" }));
   }, [router.query]);
 
   return (
     <>
-      {activeTab === 'mobile-search' && (
+      {activeTab === "mobile-search" && (
         <MobileSearchBar handleClose={handleToggleMobileSearch} />
       )}
       <NavBar__Container>
         <NavBar__ToggleAndLogoContainer>
           <NavBar__ToggleBtn
-            onClick={() => handleChangeActiveTab('sidebar')}
+            onClick={() => handleChangeActiveTab("sidebar")}
             ref={navToggleRef}
             aria-label="Toggle side bar"
           >
@@ -115,8 +116,8 @@ const NavBar = () => {
         <NavBar__BtnContainer>
           <NavBar__MobileSearchBtn
             aria-label="Search"
-            onClick={() => handleChangeActiveTab('mobile-search')}
-            id={'nav-bar-search-btn-toggle'}
+            onClick={() => handleChangeActiveTab("mobile-search")}
+            id={"nav-bar-search-btn-toggle"}
           >
             <MdSearch />
           </NavBar__MobileSearchBtn>
@@ -125,24 +126,28 @@ const NavBar = () => {
             <>
               <NavBar__AddVideoBtn
                 aria-label="Upload a video"
-                onClick={() => handleChangeActiveTab('upload-modal')}
+                onClick={() => handleChangeActiveTab("upload-modal")}
                 ref={uploadModalToggleRef}
               >
                 <MdOutlineVideoCall />
               </NavBar__AddVideoBtn>
               <NavBar__ProfileBtn
                 aria-label="Go to profile"
-                onClick={() => handleChangeActiveTab('profile-drop-down')}
+                onClick={() => handleChangeActiveTab("profile-drop-down")}
               >
                 <Image
-                  src={user ? user.profile_picture : '/images/default-profile-picture'}
+                  src={
+                    user
+                      ? user.profile_picture
+                      : "/images/default-profile-picture"
+                  }
                   width={32}
                   height={32}
                   alt=""
                 />
               </NavBar__ProfileBtn>
               <AnimatePresence>
-                {activeTab === 'profile-drop-down' && <ProfileDropDown />}
+                {activeTab === "profile-drop-down" && <ProfileDropDown />}
               </AnimatePresence>
             </>
           )}
@@ -155,10 +160,10 @@ const NavBar = () => {
         </NavBar__BtnContainer>
       </NavBar__Container>
       <AnimatePresence>
-        {activeTab === 'sidebar' && (
+        {activeTab === "sidebar" && (
           <NavSideBar handleToggleSideBar={handleToggleSideBar} />
         )}
-        {activeTab === 'upload-modal' && (
+        {activeTab === "upload-modal" && (
           <UploadModal handleToggleUploadModal={handleToggleUploadModal} />
         )}
       </AnimatePresence>
