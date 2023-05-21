@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import db from '../../db';
+import { Request, Response } from "express";
+import db from "../../db";
 import {
   ChangePasswordInput,
   ChangeProfilePictureInput,
@@ -9,7 +9,7 @@ import {
   GetProfileInfoInput,
   RegisterUserInput,
   SearchChannelsInput,
-} from './user.schema';
+} from "./user.schema";
 import {
   registerUser,
   changeUsername,
@@ -20,16 +20,16 @@ import {
   getProfileInfo,
   changeUserDescription,
   searchChannels,
-} from './user.service';
-import argon2 from 'argon2';
-import log from '../../utils/logger';
-import { cloudinary } from '../../cloudinary';
-import { extractCloudinaryPublicId } from '../../utils/extractCloudinaryPublicId';
+} from "./user.service";
+import argon2 from "argon2";
+import log from "../../utils/logger";
+import { cloudinary } from "../../cloudinary";
+import { extractCloudinaryPublicId } from "../../utils/extractCloudinaryPublicId";
 import {
   errorResponseJson,
   NOT_HUMAN_ERROR_MESSAGE,
   successResponseJson,
-} from '../../utils/responseJson';
+} from "../../utils/responseJson";
 
 export const registerUserController = async (
   req: Request<{}, {}, RegisterUserInput>,
@@ -42,12 +42,17 @@ export const registerUserController = async (
 
     if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
-    const userWithEmail = await db.query('SELECT email FROM users WHERE email = $1', [
-      email,
-    ]);
+    const userWithEmail = await db.query(
+      "SELECT email FROM users WHERE email = $1",
+      [email]
+    );
 
     if (userWithEmail.rows[0])
-      return errorResponseJson(res, 400, 'A user with that email already exists');
+      return errorResponseJson(
+        res,
+        400,
+        "A user with that email already exists"
+      );
 
     const hashedPassword = await argon2.hash(password);
 
@@ -76,7 +81,7 @@ export const getProfileInfoController = async (
     const profileInfo = await getProfileInfo(userId);
 
     if (!profileInfo?.user_id)
-      return errorResponseJson(res, 404, 'This profile does not exist');
+      return errorResponseJson(res, 404, "This profile does not exist");
 
     return successResponseJson(res, 200, { profileInfo });
   } catch (error: any) {
@@ -97,12 +102,17 @@ export const changeUsernameController = async (
 
     if (!isHuman) return errorResponseJson(res, 400, NOT_HUMAN_ERROR_MESSAGE);
 
-    const isTaken = await db.query('SELECT username FROM users WHERE username = $1', [
-      newUsername,
-    ]);
+    const isTaken = await db.query(
+      "SELECT username FROM users WHERE username = $1",
+      [newUsername]
+    );
 
     if (isTaken.rows[0]?.username)
-      return errorResponseJson(res, 401, 'A user with that username already exists');
+      return errorResponseJson(
+        res,
+        401,
+        "A user with that username already exists"
+      );
 
     const response = await changeUsername(newUsername, user_id);
 
@@ -135,7 +145,7 @@ export const changeProfilePictureController = async (
       );
       await cloudinary.uploader.destroy(
         extractCloudinaryPublicId(userInfo.profile_picture),
-        { resource_type: 'image' }
+        { resource_type: "image" }
       );
       return successResponseJson(res, 200, {
         profile_picture: saveProfilePictureToDb.profile_picture,
@@ -145,19 +155,30 @@ export const changeProfilePictureController = async (
     const { secure_url } = await cloudinary.uploader.upload(
       newProfilePicture.toString(),
       {
-        resource_type: 'image',
-        upload_preset: 'youtube-clone-profile-pictures',
-        transformation: { width: 360, height: 360, gravity: 'center', crop: 'crop' },
+        resource_type: "image",
+        upload_preset: "youtube-clone-profile-pictures",
+        transformation: {
+          width: 360,
+          height: 360,
+          gravity: "center",
+          crop: "crop",
+        },
       }
     );
 
-    if (userInfo.profile_picture !== DEFAULT_PROFILE_PICTURE_URL && secure_url) {
+    if (
+      userInfo.profile_picture !== DEFAULT_PROFILE_PICTURE_URL &&
+      secure_url
+    ) {
       await cloudinary.api.delete_resources([
         extractCloudinaryPublicId(userInfo.profile_picture),
       ]);
     }
 
-    const saveProfilePictureToDb = await changeProfilePicture(secure_url, user_id);
+    const saveProfilePictureToDb = await changeProfilePicture(
+      secure_url,
+      user_id
+    );
 
     return successResponseJson(res, 200, {
       profile_picture: saveProfilePictureToDb.profile_picture,
@@ -185,7 +206,7 @@ export const changePasswordController = async (
 
     const isValid = await argon2.verify(userInfo.password, currentPassword);
 
-    if (!isValid) return errorResponseJson(res, 401, 'Wrong current password');
+    if (!isValid) return errorResponseJson(res, 401, "Wrong current password");
 
     const newHashedPassword = await argon2.hash(newPassword);
 
@@ -207,7 +228,9 @@ export const changeUserDescriptionController = async (
     const { user_id: userId } = req.user;
     const { newDescription } = req.body;
     const response = await changeUserDescription({ newDescription, userId });
-    return successResponseJson(res, 200, { newDescription: response.description });
+    return successResponseJson(res, 200, {
+      newDescription: response.description,
+    });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);
@@ -219,12 +242,9 @@ export const searchUsersController = async (
   res: Response
 ) => {
   try {
-    const { query, page } = req.query;
-    const response = await searchChannels({ query, page });
-    return successResponseJson(res, 200, {
-      users: response.users,
-      nextPage: response.nextPage,
-    });
+    const { query } = req.query;
+    const response = await searchChannels({ query });
+    return successResponseJson(res, 200, { users: response.users });
   } catch (error: any) {
     log.error(error);
     return errorResponseJson(res, 500, error.message);

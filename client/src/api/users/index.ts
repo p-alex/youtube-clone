@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { DefaultResponse } from '../../hooks/requestHooks/useAxiosWithRetry';
+import axios from "axios";
+import { DefaultResponse } from "../../hooks/requestHooks/useAxiosWithRetry";
 
 export interface IAuthUser {
   user_id: string;
@@ -19,23 +19,16 @@ interface IChannel {
 
 export const searchChannels = async ({
   searchQuery,
-  pageParam,
 }: {
   searchQuery: string;
-  pageParam: number;
 }) => {
-  const response = await axios.get<
-    DefaultResponse<{ users: IChannel[]; nextPage: number }>
-  >(
+  const response = await axios.get<DefaultResponse<{ users: IChannel[] }>>(
     process.env.NEXT_PUBLIC_SERVER_BASE_URL! +
-      '/api/users/search?query=' +
-      searchQuery +
-      '&page=' +
-      pageParam
+      "/api/users/search?query=" +
+      searchQuery
   );
   const result = {
     data: response.data.result?.users,
-    nextPage: response.data.result?.nextPage,
   };
   return result;
 };
