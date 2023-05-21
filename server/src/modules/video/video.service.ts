@@ -1,9 +1,9 @@
-import { QueryResult, QueryResultRow } from 'pg';
-import { cloudinary } from '../../cloudinary';
-import db from '../../db';
-import { getImagePublicId, getVideoPublicId } from '../../utils/getPublicId';
-import { GetUserVideosInput, UploadVideoInput } from './video.schema';
-import { minify } from 'uglify-js';
+import { QueryResult, QueryResultRow } from "pg";
+import { cloudinary } from "../../cloudinary";
+import db from "../../db";
+import { getImagePublicId, getVideoPublicId } from "../../utils/getPublicId";
+import { GetUserVideosInput, UploadVideoInput } from "./video.schema";
+import { minify } from "uglify-js";
 
 export interface IVideo {
   video_id: string;
@@ -37,7 +37,7 @@ export const getVideos = async ({ page }: { page: string }) => {
   const parsedPage = parseInt(page);
   const offset = parsedPage * limit;
   const response = await db.query(
-    'SELECT v.video_id, v.user_id, v.video_url, v.thumbnail_url, v.title, v.views, v.duration, v.created_at, u.username, u.profile_picture FROM videos v JOIN users u ON v.user_id = u.user_id ORDER BY v.created_at DESC OFFSET $1 LIMIT $2',
+    "SELECT v.video_id, v.user_id, v.video_url, v.thumbnail_url, v.title, v.views, v.duration, v.created_at, u.username, u.profile_picture FROM videos v JOIN users u ON v.user_id = u.user_id ORDER BY v.created_at DESC OFFSET $1 LIMIT $2",
     [offset, limit]
   );
   const videos: IVideoSmall[] = response.rows;
@@ -47,7 +47,7 @@ export const getVideos = async ({ page }: { page: string }) => {
 
 export const getUserVideos = async (
   user_id: string,
-  sortBy: GetUserVideosInput['sortBy'],
+  sortBy: GetUserVideosInput["sortBy"],
   page: string,
   isPrivateVideoRequest: boolean
 ) => {
@@ -55,33 +55,32 @@ export const getUserVideos = async (
   const OFFSET = LIMIT * parseInt(page);
 
   const recentQuery = `SELECT video_id, title, thumbnail_url, ${
-    isPrivateVideoRequest ? 'description, total_likes, total_dislikes,' : ''
+    isPrivateVideoRequest ? "description, total_likes, total_dislikes," : ""
   } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`;
 
   const popularQuery = `SELECT video_id, title, thumbnail_url, ${
-    isPrivateVideoRequest ? 'description, total_likes, total_dislikes,' : ''
+    isPrivateVideoRequest ? "description, total_likes, total_dislikes," : ""
   } duration, views, created_at FROM videos WHERE user_id = $1 ORDER BY views DESC LIMIT $2 OFFSET $3`;
 
-  const response = await db.query(sortBy === 'recent' ? recentQuery : popularQuery, [
-    user_id,
-    LIMIT,
-    OFFSET,
-  ]);
+  const response = await db.query(
+    sortBy === "recent" ? recentQuery : popularQuery,
+    [user_id, LIMIT, OFFSET]
+  );
 
   const data: IVideo[] = response.rows;
   return data;
 };
 
 export const getVideo = async (video_id: string) => {
-  const response = await db.query('SELECT * FROM get_video($1)', [video_id]);
+  const response = await db.query("SELECT * FROM get_video($1)", [video_id]);
   const data: IVideo = response.rows[0];
   return data;
 };
 
 export const uploadVideo = async ({ path }: { path: string }) => {
   const response = await cloudinary.uploader.upload(path, {
-    resource_type: 'video',
-    upload_preset: 'youtube-clone-videos',
+    resource_type: "video",
+    upload_preset: "youtube-clone-videos",
     chunk_size: 6000000,
   });
   return response;
@@ -98,9 +97,9 @@ export const saveVideoToDB = async (details: UploadVideoInput) => {
     videoUrl,
     tagList,
   } = details;
-  const tagsText = tagList.join(' ');
+  const tagsText = tagList.join(" ");
   const response = await db.query(
-    'SELECT * FROM create_video($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+    "SELECT * FROM create_video($1, $2, $3, $4, $5, $6, $7, $8, $9)",
     [
       userId,
       title,
@@ -119,8 +118,8 @@ export const saveVideoToDB = async (details: UploadVideoInput) => {
 
 export const uploadThumbnail = async (thumbnail: string) => {
   const response = await cloudinary.uploader.upload(thumbnail, {
-    resource_type: 'image',
-    upload_preset: 'youtube-clone-video-thumbnails',
+    resource_type: "image",
+    upload_preset: "youtube-clone-video-thumbnails",
   });
   return response;
 };
@@ -132,8 +131,8 @@ export const changeVideoThumbnail = async (
   const public_id = getImagePublicId(current_thumbnail_url);
   await cloudinary.uploader.destroy(public_id);
   const response = await cloudinary.uploader.upload(new_thumbnail_base64, {
-    resource_type: 'image',
-    upload_preset: 'youtube-clone-video-thumbnails',
+    resource_type: "image",
+    upload_preset: "youtube-clone-video-thumbnails",
   });
   return response.secure_url;
 };
@@ -151,13 +150,14 @@ export const updateVideo = async (
   },
   user_id: string
 ): Promise<string | null> => {
-  const video: QueryResult<{ video_id: string; user_id: string }> = await db.query(
-    'SELECT video_id, user_id FROM videos WHERE video_id = $1 AND user_id = $2',
-    [videoData.videoId, user_id]
-  );
+  const video: QueryResult<{ video_id: string; user_id: string }> =
+    await db.query(
+      "SELECT video_id, user_id FROM videos WHERE video_id = $1 AND user_id = $2",
+      [videoData.videoId, user_id]
+    );
 
   if (video.rows[0].user_id !== user_id)
-    throw new Error('You cannot update a video that is not yours dude');
+    throw new Error("You cannot update a video that is not yours dude");
 
   let new_thumbnail_url: string | null = null;
 
@@ -168,24 +168,29 @@ export const updateVideo = async (
     );
   }
 
-  const tagsText = videoData.tagList?.join(' ');
+  const tagsText = videoData.tagList?.join(" ");
 
-  const response = await db.query('SELECT * FROM update_video ($1,$2,$3,$4,$5,$6, $7)', [
-    videoData.videoId,
-    user_id,
-    videoData.title,
-    videoData.description,
-    new_thumbnail_url ? new_thumbnail_url : videoData.thumbnailData.currentThumbnailUrl,
-    videoData.tagList,
-    tagsText,
-  ]);
+  const response = await db.query(
+    "SELECT * FROM update_video ($1,$2,$3,$4,$5,$6, $7)",
+    [
+      videoData.videoId,
+      user_id,
+      videoData.title,
+      videoData.description,
+      new_thumbnail_url
+        ? new_thumbnail_url
+        : videoData.thumbnailData.currentThumbnailUrl,
+      videoData.tagList,
+      tagsText,
+    ]
+  );
 
   return response.rows[0];
 };
 
 export const deleteVideo = async (video_id: string, user_id: string) => {
   const selectResponse = await db.query(
-    'SELECT thumbnail_url, video_url FROM videos WHERE video_id = $1 AND user_id = $2',
+    "SELECT thumbnail_url, video_url FROM videos WHERE video_id = $1 AND user_id = $2",
     [video_id, user_id]
   );
 
@@ -194,38 +199,44 @@ export const deleteVideo = async (video_id: string, user_id: string) => {
   const video_publicId = getVideoPublicId(videoData.video_url);
   const thumbnail_publicId = getImagePublicId(videoData.thumbnail_url);
 
-  const deleteVideoResponse = await cloudinary.uploader.destroy(video_publicId, {
-    resource_type: 'video',
-  });
+  const deleteVideoResponse = await cloudinary.uploader.destroy(
+    video_publicId,
+    {
+      resource_type: "video",
+    }
+  );
 
-  if (deleteVideoResponse.result !== 'ok') throw new Error(`Could not delete video`);
+  if (deleteVideoResponse.result !== "ok")
+    throw new Error(`Could not delete video`);
 
-  const deleteThumbnailResponse = await cloudinary.uploader.destroy(thumbnail_publicId);
+  const deleteThumbnailResponse = await cloudinary.uploader.destroy(
+    thumbnail_publicId
+  );
 
-  if (deleteThumbnailResponse.result !== 'ok') throw new Error(`Could not delete video`);
+  if (deleteThumbnailResponse.result !== "ok")
+    throw new Error(`Could not delete video`);
 
-  const deleteVideoFromDBResponse = await db.query('SELECT * FROM delete_video($1, $2)', [
-    video_id,
-    user_id,
-  ]);
+  const deleteVideoFromDBResponse = await db.query(
+    "SELECT * FROM delete_video($1, $2)",
+    [video_id, user_id]
+  );
 
   const data: { video_id: string } = deleteVideoFromDBResponse.rows[0];
   return data;
 };
 
 export const likeOrDislikeVideo = async (
-  action_type: 'like' | 'dislike',
+  action_type: "like" | "dislike",
   video_id: string,
   user_id: string
 ) => {
-  const response = await db.query('SELECT * FROM like_or_dislike_video ($1,$2,$3)', [
-    action_type,
-    video_id,
-    user_id,
-  ]);
+  const response = await db.query(
+    "SELECT * FROM like_or_dislike_video ($1,$2,$3)",
+    [action_type, video_id, user_id]
+  );
   const data: {
     video_id: string;
-    like_status: 'like' | 'dislike' | 'none';
+    like_status: "like" | "dislike" | "none";
     total_likes: number;
     total_dislikes: number;
   } = response.rows[0];
@@ -234,7 +245,7 @@ export const likeOrDislikeVideo = async (
 
 export const getVideoTags = async (video_id: string) => {
   const response = await db.query(
-    'SELECT ARRAY(SELECT t.name FROM videos_tags AS vt JOIN tags AS t ON vt.tag_id = t.tag_id WHERE vt.video_id = $1) as tags',
+    "SELECT ARRAY(SELECT t.name FROM videos_tags AS vt JOIN tags AS t ON vt.tag_id = t.tag_id WHERE vt.video_id = $1) as tags",
     [video_id]
   );
   const tags = response.rows[0].tags as string[];
@@ -245,17 +256,15 @@ interface IVideoSmallRanked extends IVideoSmall {
   rank: number;
 }
 
-export const searchVideos = async ({ query, page }: { query: string; page: string }) => {
-  const sql = 'SELECT * FROM search_video($1, $2, $3)';
+export const searchVideos = async ({ query }: { query: string }) => {
+  const sql = "SELECT * FROM search_video($1, $2)";
   const limit = 15;
   const response = (await db.query(sql, [
     query,
     limit,
-    parseFloat(page),
   ])) as QueryResult<IVideoSmallRanked>;
   const data = response.rows;
-  const nextPage = response.rows.length ? parseInt(page) + 1 : undefined;
-  return { data, nextPage };
+  return { data };
 };
 
 export const getSuggestedVideos = async (
@@ -267,10 +276,17 @@ export const getSuggestedVideos = async (
   const LIMIT = 20;
   const minifiedDescription = minify(description);
   const videoTags = await getVideoTags(videoId);
-  const videoTagsText = videoTags.join(' , ');
+  const videoTagsText = videoTags.join(" , ");
   const response = await db.query(
-    'SELECT * FROM get_suggested_videos($1, $2, $3, $4, $5, $6)',
-    [videoId, title, description, videoTagsText, page, LIMIT]
+    "SELECT * FROM get_suggested_videos($1, $2, $3, $4, $5, $6)",
+    [
+      videoId,
+      title.replace(/[-\|><\]\[]/, ""),
+      minifiedDescription,
+      videoTagsText,
+      page,
+      LIMIT,
+    ]
   );
   const data: IVideoSmall[] = response.rows;
   return data;
@@ -284,7 +300,7 @@ export const checkIfVideoIsLiked = async ({
   userId: string;
 }) => {
   const response = await db.query(
-    'SELECT like_status FROM video_likes WHERE video_id = $1 AND user_id = $2',
+    "SELECT like_status FROM video_likes WHERE video_id = $1 AND user_id = $2",
     [videoId, userId]
   );
   const like_status = response.rows[0] ? response.rows[0].like_status : null;

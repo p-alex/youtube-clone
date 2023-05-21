@@ -1,6 +1,9 @@
-import axios from 'axios';
-import { IVideoSmall, IVideoSmallWithInfoRanked } from '../../app/features/videoSlice';
-import { DefaultResponse } from '../../hooks/requestHooks/useAxiosWithRetry';
+import axios from "axios";
+import {
+  IVideoSmall,
+  IVideoSmallWithInfoRanked,
+} from "../../app/features/videoSlice";
+import { DefaultResponse } from "../../hooks/requestHooks/useAxiosWithRetry";
 
 export const getVideos = ({ pageParam = 0 }) =>
   axios
@@ -13,23 +16,20 @@ export const getVideos = ({ pageParam = 0 }) =>
 
 export const searchVideos = async ({
   searchQuery,
-  pageParam,
 }: {
   searchQuery: string;
-  pageParam: number;
 }) => {
   const response = await axios.get<
-    DefaultResponse<{ searchResults: IVideoSmallWithInfoRanked[]; nextPage: number }>
+    DefaultResponse<{
+      searchResults: IVideoSmallWithInfoRanked[];
+    }>
   >(
     process.env.NEXT_PUBLIC_SERVER_BASE_URL! +
-      '/api/videos/search?query=' +
-      searchQuery +
-      '&page=' +
-      pageParam
+      "/api/videos/search?query=" +
+      searchQuery
   );
   const result = {
     data: response.data.result?.searchResults,
-    nextPage: response.data.result?.nextPage,
   };
   return result;
 };

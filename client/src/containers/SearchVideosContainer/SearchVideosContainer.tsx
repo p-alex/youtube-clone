@@ -1,34 +1,23 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { searchVideos } from '../../api/video';
-import { RootState } from '../../app/store';
-import VideoCardWithInfo from '../../components/Cards/VideoCardWithInfo/VideoCardWithInfo';
-import { Button } from '../../ui/Button';
-import NoResultsMessage from '../../ui/NoResultsMessage';
-import Spinner from '../../ui/Spinner';
-import { ErrorText } from '../../ui/Text';
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import React from "react";
+import { useSelector } from "react-redux";
+import { searchVideos } from "../../api/video";
+import { RootState } from "../../app/store";
+import { ErrorText } from "../../ui/Text";
+import VideoCardWithInfo from "../../components/Cards/VideoCardWithInfo/VideoCardWithInfo";
 
 const SearchVideosContainer = () => {
-  const searchQuery = useSelector((state: RootState) => state.navbar.searchQuery);
+  const searchQuery = useSelector(
+    (state: RootState) => state.navbar.searchQuery
+  );
 
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ['search_videos', searchQuery],
-    enabled: searchQuery !== '',
+  const { data, isLoading, isError, error, isFetching } = useQuery({
+    queryKey: ["search_videos", searchQuery],
+    enabled: searchQuery !== "",
     retry: false,
-    queryFn: async ({ pageParam = 0 }) => searchVideos({ searchQuery, pageParam }),
+    queryFn: async () => searchVideos({ searchQuery }),
     staleTime: 1000 * 60 * 60, // 60 min
-    getNextPageParam: (lastPage) => lastPage.nextPage,
     refetchOnWindowFocus: false,
   });
 
@@ -36,25 +25,13 @@ const SearchVideosContainer = () => {
     <div>
       {isError && (
         <ErrorText>
-          {error instanceof AxiosError && error.response?.data.errors[0].message}
+          {error instanceof AxiosError &&
+            error.response?.data.errors[0].message}
         </ErrorText>
       )}
-      {data?.pages.map((page) => {
-        return page.data?.map((video) => {
-          return <VideoCardWithInfo video={video} />;
-        });
+      {data?.data?.map((video) => {
+        return <VideoCardWithInfo key={video.video_id} video={video} />;
       })}
-      {!data?.pages[0].data?.length && !data?.pages[0]?.nextPage && <NoResultsMessage />}
-      {isFetching || (isFetchingNextPage && <Spinner />)}
-      {hasNextPage && (
-        <Button
-          variant="normal"
-          onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
-        >
-          {isLoading ? 'Loading' : 'Load more'}
-        </Button>
-      )}
     </div>
   );
 };
