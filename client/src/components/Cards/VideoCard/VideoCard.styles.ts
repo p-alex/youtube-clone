@@ -1,9 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const VideoCard__Container = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 24px;
 `;
 
 export const VideoCard__ThumbnailContainer = styled.div`
